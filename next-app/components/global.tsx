@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { ReactElement } from "react";
 
-function NavigationBar(): JSX.Element {
+function NavigationBar(): ReactElement {
 	const OptionList: Array<[string, string]> = [
 		["Contest", "/"],
 		["Submissions", "/"],
