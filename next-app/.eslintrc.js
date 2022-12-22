@@ -6,7 +6,11 @@ module.exports = {
 	},
 	"extends": [
 		"eslint:recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"next/core-web-vitals",
+		"next",
+		"prettier"
+
 	],
 	"overrides": [
 	],
