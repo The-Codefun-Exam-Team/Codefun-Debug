@@ -30,7 +30,10 @@ jobs:
         uses: docker/metadata-action@v4.1.0
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/codefun-debug-frontend-ssr
-          
+      
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build and Push Docker image
         uses: docker/build-push-action@v3.2.0
         with:
