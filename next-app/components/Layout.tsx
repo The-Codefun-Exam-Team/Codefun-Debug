@@ -1,3 +1,11 @@
+import { NavigationBar } from "./global";
+import type { ReactNode } from "react";
 
-
-export {};
+export default function Layout({ children }: { children: ReactNode }) {
+	return (
+		<>
+			<NavigationBar></NavigationBar>
+			{children}
+		</>
+	);
+}
