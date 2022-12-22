@@ -13,11 +13,12 @@ RUN npm install
 COPY next-app/ .
 ENV BUILD_STANDALONE=true
 RUN npm run build
-ENTRYPOINT [""]
+
 # Stage 2: Production
 FROM node:19-alpine AS prod
-
 WORKDIR /deploy
+
+# Create structure similar to described at https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
 COPY --from=build /app/public ./public
