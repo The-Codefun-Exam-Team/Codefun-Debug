@@ -34,7 +34,7 @@ jobs:
       - name: Build and Push Docker image
         uses: docker/build-push-action@v3.2.0
         with:
-          context: react-app/
+          context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
