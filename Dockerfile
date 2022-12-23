@@ -25,4 +25,4 @@ COPY --from=build /app/public ./public
 
 EXPOSE 80
 ENV PORT=80
-ENTRYPOINT ["node", "server.js", "start"]
+ENTRYPOINT ["node", "server.js"]
