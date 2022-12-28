@@ -25,3 +25,4 @@ export const userSlice = createSlice({
 	},
 });
 
+export const {setUser} = userSlice.actions;
