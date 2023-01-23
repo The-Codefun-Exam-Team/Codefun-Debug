@@ -3,7 +3,6 @@ import {
 	ThunkAction,
 } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
-import { createWrapper } from "next-redux-wrapper";
 import { userSlice } from "./slice";
 import type { Action } from "redux";
 
@@ -22,7 +21,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   RootState,
   unknown,
   Action<string>
-	>;
+>;
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
