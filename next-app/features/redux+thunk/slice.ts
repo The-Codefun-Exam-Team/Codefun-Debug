@@ -1,5 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
 
+export interface UserState {
+	username: string | null,
+	token: string | null,
+	state: string | null,
+}
+
 /**
  * @description Slice to keep track of the authentication state of user
  */
@@ -8,12 +14,8 @@ export const userSlice = createSlice({
 	initialState: {
 		username: null,
 		token: null,
-		userState: null,
-	} as {
-		username: string | null,
-		token: string | null,
-		userState: string | null,
-        },
+		state: null,
+	} as UserState,
 	// Reducers for testing purposes
 	reducers: {
 		setUser: (state, action) => {
