@@ -4,6 +4,5 @@ export default function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	
-	res.status(200).json({name:"login"});   
+	res.status(200).json({name:"logout"});    
 }
