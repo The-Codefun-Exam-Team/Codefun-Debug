@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactElement } from "react";
+import { useState } from "react";
 
 /**
  *
@@ -13,6 +14,18 @@ function NavigationBar(): ReactElement {
 		["Rankings", "/rankings"],
 		["About", "/about"],
 	];
+	
+	const [checked, setChecked] = useState(false);
+	
+	const uncheck = () => {
+		setChecked(false);
+	};
+
+	const handleChange = () => {
+		setChecked(!checked);
+	};
+
+
 	return (
 		<div className="sticky block justify-between top-0 left-0 right-0 pt-4 pb-3 bg-slate-200 text-gray-700 border-b-2 m-0 border-gray-400">
 			<div className="inline-block md:flex md:justify-between max-w-3xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto px-2 peer">
@@ -27,7 +40,7 @@ function NavigationBar(): ReactElement {
 					))}
 				</div>
 			</div>
-			<input type="checkbox" id="dropdown-check" className="hidden peer"></input>
+			<input type="checkbox" checked={checked} onChange={handleChange} id="dropdown-check" className="hidden peer"></input>
 			<label htmlFor="dropdown-check" className="inline-block md:hidden w-10 h-9 leading-[12px] cursor-pointer float-right mr-4
 				peer-checked:[&>:nth-child(1)]:rotate-45
 				peer-checked:[&>:nth-child(1)]:translate-y-[-3px]
@@ -44,10 +57,10 @@ function NavigationBar(): ReactElement {
 				<span className="inline-block bg-black h-[5px] w-full rounded-md align-middle transition-all ease-out-back duration-300 origin-bottom-left"></span>
 			</label>
 			
-			<div id="dropdown-content" className="hidden peer-checked:flex flex-col w-full md:hidden">
+			<div id="dropdown-content" className="hidden peer-checked:flex md:peer-checked:hidden flex-col w-full md:hidden">
 				{OptionList.map(([title, url]) => (
-					<Link href={url} key={title} passHref>
-						<a id={url.slice(1)} className="pl-10 font-medium py-1 first:pt-3">{title}</a>
+					<Link href={url} key={title} passHref >
+						<a onClick={uncheck} id={url.slice(1)} className="pl-10 font-medium py-1 first:mt-2">{title}</a>
 					</Link>
 				))}
 			</div>
