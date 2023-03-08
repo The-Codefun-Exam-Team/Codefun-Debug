@@ -27,7 +27,7 @@ function NavigationBar(): ReactElement {
 
 
 	return (
-		<div className="sticky block justify-between top-0 left-0 right-0 pt-4 pb-3 bg-slate-200 text-gray-700 border-b-2 m-0 border-gray-400">
+		<div className="sticky block justify-between top-0 left-0 right-0 pt-4 pb-3 bg-slate-200 text-slate-700 border-b-2 m-0 border-gray-400">
 			<div className="inline-block md:flex md:justify-between max-w-3xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto px-2 peer">
 				<Link href={"/"} passHref>
 					<a className="text-3xl font-semibold pt-1 mx-4">Codefun Debug</a>
@@ -52,9 +52,9 @@ function NavigationBar(): ReactElement {
 				peer-checked:[&>:nth-child(3)]:rotate-[-45deg]
 				peer-checked:[&>:nth-child(3)]:translate-x-[6px]
 				">
-				<span className="inline-block bg-black h-[5px] w-full rounded-md align-middle transition-all ease-out-back duration-300 origin-top-left"></span>
-				<span className="inline-block bg-black h-[5px] w-full rounded-md align-middle transition-all ease-out-back duration-300"></span>
-				<span className="inline-block bg-black h-[5px] w-full rounded-md align-middle transition-all ease-out-back duration-300 origin-bottom-left"></span>
+				<span className="inline-block bg-slate-800 h-[5px] w-full rounded-md align-middle transition-all ease-out-back duration-300 origin-top-left"></span>
+				<span className="inline-block bg-slate-800 h-[5px] w-full rounded-md align-middle transition-all ease-out-back duration-300"></span>
+				<span className="inline-block bg-slate-800 h-[5px] w-full rounded-md align-middle transition-all ease-out-back duration-300 origin-bottom-left"></span>
 			</label>
 			
 			<div id="dropdown-content" className="flex h-0 flex-col w-full md:peer-checked:hidden md:hidden peer-checked:h-[136px] opacity-0 peer-checked:opacity-100 
