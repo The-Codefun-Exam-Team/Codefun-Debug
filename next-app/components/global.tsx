@@ -58,7 +58,7 @@ function NavigationBar(): ReactElement {
 			</label>
 			
 			<div id="dropdown-content" className="flex h-0 flex-col w-full md:peer-checked:hidden md:hidden peer-checked:h-[136px] opacity-0 peer-checked:opacity-100 
-												scale-y-0 peer-checked:scale-y-100 transition-all duration-300 ease-out-back
+												scale-y-0 peer-checked:scale-y-100 transition-all duration-200
 												origin-top">
 				{OptionList.map(([title, url]) => (
 					<Link href={url} key={title} passHref >
