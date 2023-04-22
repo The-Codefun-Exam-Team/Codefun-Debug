@@ -3,7 +3,7 @@ import {
 	ThunkAction,
 } from "@reduxjs/toolkit";
 import { userSlice } from "./slice";
-import type { Action } from "redux";
+import type { AnyAction } from "redux";
 
 
 export const store =  configureStore({
@@ -19,7 +19,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,
   unknown,
-  Action<string>
+  AnyAction
 >;
 
 

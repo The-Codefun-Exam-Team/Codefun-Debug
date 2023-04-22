@@ -1,9 +1,20 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-export interface UserState {
-	username: string | null,
-	token: string | null,
-	state: string | null,
+export interface UserData {
+	state: "loading" | "none" | "full" ,
+	id: number | null ,
+    username: string | null,
+    name: string | null ,
+    group: {
+      id: number | null,
+      name: string | null,
+    },
+    status: string | null,
+    avatar: string | null,
+    score: number | null,
+    solved: number | null,
+    ratio: number | null,
+	email: string | null, 
 }
 
 /**
@@ -11,11 +22,7 @@ export interface UserState {
  */
 export const userSlice = createSlice({
 	name: "user" as string,
-	initialState: {
-		username: "???",
-		token: null,
-		state: null,
-	} as UserState,
+	initialState: {} as UserData,
 	// Reducers for testing purposes
 	reducers: {
 		setUser: (state, action: PayloadAction<string>) => {

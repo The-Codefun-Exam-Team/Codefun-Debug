@@ -9,10 +9,10 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const login_data = req.body;
+	const login_data: { username:string , password: string } = req.body;
 	const parsed_login_data = new URLSearchParams(login_data).toString();
 	const response = await fetch(
-		process.env.API_URL + "/auth",
+		process.env.CODEFUN_API_URL + "/auth",
 		{
 			method: "POST",
 			headers: {
@@ -21,17 +21,14 @@ export default async function handler(
 			body: parsed_login_data,
 		}
 	);
-	
-	if (response.status === 200)
-	{
-		const { data } = await response.json() as { data: string };
-		res.setHeader("Set-Cookie", `token=${data}; path=/; HttpOnly; SameSite=Strict`);
-		res.status(200).json({ status: "ok" });
 
-	}
-	else
-	{
-		res.status(response.status).send(response.body);
+	if (response.status === 200) {
+		const { data } = await response.json() as { data: string };
+		res.setHeader("Set-Cookie", `token=${data}; path=/auth; HttpOnly; SameSite=Strict`);
+		res.status(200).json({ status: "ok" });
+	} else {
+		const { error } = await response.json() as { error: string };
+		res.status(response.status).json({ error: error });
 	}
 	
 }
