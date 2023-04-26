@@ -34,9 +34,11 @@ function NavigationBar(): ReactElement {
 				</Link>
 				<div className="hidden md:flex justify-around text-l divide-x-2 divide-gray-500 pt-1 h-min my-auto">
 					{OptionList.map(([title, url]) => (
-						<Link href={url} key={title} passHref>
-							<a className="px-4 font-medium">{title}</a>
-						</Link>
+						<>
+							<Link href={url} key={title} passHref>
+								<a className="px-4 font-medium">{title}</a>
+							</Link>
+						</>
 					))}
 				</div>
 			</div>

@@ -65,7 +65,7 @@ const Login: NextPage = () => {
 	};
 
 	return (
-		<div className="w-[90%] max-w-2xl mx-auto h-auto mt-[25vh] border-solid text-slate-700 border-slate-600 border-2 rounded-3xl">
+		<div className="w-[90%] max-w-2xl mx-auto h-auto mt-[30vh] border-solid text-slate-700 border-slate-600 border-2 rounded-3xl">
 			<div className="text-2xl py-3 px-4 text-center font-semibold">Please login to continue</div>
 			<div className="hidden justify-center mb-2" ref={errorbox} >
 				<div className="inline text-center p-1 text-md font-semibold text-white mx-4 w-full bg-red-400 rounded-md" ref={messagebox}></div>
