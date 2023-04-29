@@ -10,7 +10,7 @@ export default async function handler(
 	res: NextApiResponse
 ) {
 	const login_data: { username:string , password: string } = req.body;
-	const parsed_login_data = new URLSearchParams(login_data).toString();
+	const stringified_login_data = new URLSearchParams(login_data).toString();
 	const response = await fetch(
 		process.env.CODEFUN_API_URL + "/auth",
 		{
@@ -18,7 +18,7 @@ export default async function handler(
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
-			body: parsed_login_data,
+			body: stringified_login_data,
 		}
 	);
 

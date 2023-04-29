@@ -23,14 +23,7 @@ export const userSlice = createSlice({
 	name: "user" as string,
 	initialState: {} as UserData,
 	// Reducers for testing purposes
-	reducers: {
-		setUser: (state, action: PayloadAction<string>) => {
-			return { ...state, ...{username: action.payload} };
-		}
-	},
-	extraReducers: {
-
-	},
+	reducers: {}
 });
 
-export const {setUser} = userSlice.actions;
+
