@@ -6,6 +6,10 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+#drodown-check:checked ~ #dropdown-content {
+	display: flex !important;
+}
+
 
 /* @media (prefers-color-scheme: dark) {
   html {
