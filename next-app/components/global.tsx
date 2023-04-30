@@ -25,6 +25,15 @@ function NavigationBar(): ReactElement {
 		setChecked(!checked);
 	};
 
+	fetch("beta/api/cf/verify",
+		{
+			method: "POST",
+			credentials: "include",
+			headers: {
+				"Content-Type": "x-www-form-urlencoded",
+			},
+		}
+	);
 
 	return (
 		<div className="sticky block justify-between top-0 left-0 right-0 pt-4 pb-3 bg-slate-200 text-slate-700 border-b-2 m-0 border-gray-400">

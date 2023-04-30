@@ -26,7 +26,10 @@ export default async function handler(
 
 	// Handle request body
 	const body = req.body;
-	const bodyStr: string = new URLSearchParams(body).toString();
+	const bodyStr: string = new URLSearchParams(body).toString() ;
+
+	// Get the cookie
+	const cookie = req.cookies;
 
 	// Fetch the real api
 	const response = await fetch(
@@ -36,9 +39,10 @@ export default async function handler(
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
 			},
-			body: bodyStr,
+			body: bodyStr || undefined,
 		}
 	);
 
-	res.status(200).json({url:url,query:queryStr});  
+	// Return response
+	res.status(response.status).json({url: url, body: body, cookie: cookie});
 }
