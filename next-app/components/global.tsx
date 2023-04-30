@@ -30,7 +30,7 @@ function NavigationBar(): ReactElement {
 			method: "POST",
 			credentials: "include",
 			headers: {
-				"Content-Type": "x-www-form-urlencoded",
+				"Content-Type": "application/x-www-form-urlencoded",
 			},
 		}
 	);
