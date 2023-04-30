@@ -22,9 +22,9 @@ export default async function handler(
 		}
 	);
 
-	if (response.status === 200) {
+	if (response.ok) {
 		const { data } = await response.json() as { data: string };
-		res.setHeader("Set-Cookie", `token=${data}; path=/auth; HttpOnly; SameSite=Strict`);
+		res.setHeader("Set-Cookie", `token=${data}; path=/; HttpOnly; SameSite=Strict`);
 		res.status(200).json({ status: "ok" });
 	} else {
 		const { error } = await response.json() as { error: string };

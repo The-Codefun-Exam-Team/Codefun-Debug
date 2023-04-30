@@ -29,7 +29,7 @@ export default async function handler(
 	const bodyStr: string = new URLSearchParams(body).toString() ;
 
 	// Get the cookie
-	const cookie = req.cookies;
+	const cookies = req.cookies;
 
 	// Fetch the real api
 	const response = await fetch(
@@ -38,11 +38,18 @@ export default async function handler(
 			method: req.method,
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
+				"Authorization": "Bearer " + cookies.token,
 			},
 			body: bodyStr || undefined,
 		}
 	);
 
 	// Return response
-	res.status(response.status).json({url: url, body: body, cookie: cookie});
+	const responseBody: Partial<{error:string,data:object}> = await response.json();
+	const { error } = responseBody ;
+	if (error === "Invalid token") {
+		res.setHeader("Set-Cookie", "token=; path=/; HttpOnly; SameSite=Strict");
+	}
+
+	res.status(response.status).json(responseBody);
 }
