@@ -1,19 +1,19 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
+package.json
+pnpm-lock.yaml
 
 # testing
 /coverage
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
-/build
+build
 
 # misc
 .DS_Store
@@ -25,9 +25,8 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
+# env files
 .env*
-!.env.example
 
 # vercel
 .vercel
@@ -35,6 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+tsconfig.json
 
-# vscode
-.vscode
+# ignore scripts in public/ as we may minify these
+**/public/*.js
+
+# tsconfig (Next.js reformats this file anyway)
+tsconfig.json

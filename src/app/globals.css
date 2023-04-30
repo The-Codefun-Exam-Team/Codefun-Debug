@@ -1,0 +1,44 @@
+#drodown-check:checked ~ #dropdown-content {
+  display: flex !important;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+} */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  @apply m-0 flex h-full w-full p-0;
+}
+body {
+  @apply box-border;
+}
+
+#__next,
+#root-container {
+  @apply m-0 flex h-fit min-h-screen w-full flex-col p-0;
+}
+#main-content {
+  @apply flex flex-grow;
+}
+
+@media (prefers-reduced-motion) {
+  html {
+    @apply !animate-none !transition-none;
+  }
+  html *,
+  html *:before,
+  html *:after {
+    @apply !animate-[inherit] !transition-[inherit];
+  }
+}
