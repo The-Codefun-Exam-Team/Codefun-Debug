@@ -1,9 +1,8 @@
 import "./globals.css";
 
+import { NavigationBar } from "@components/NavigationBar";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-
-import { NavigationBar } from "@/components/NavigationBar/index.js";
 
 import { ClientLogic } from "./ClientLogic.js";
 import { ReduxProvider } from "./ReduxProvider.js";

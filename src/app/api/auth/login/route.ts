@@ -1,5 +1,5 @@
-import { loginSchema } from "@schemas/loginSchema.js";
-import { getUserInfo } from "@utils/api/getUserInfo.js";
+import { loginSchema } from "@schemas/loginSchema";
+import { getUserInfo } from "@utils/api/getUserInfo";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -16,16 +16,19 @@ export const POST = async (req: NextRequest) => {
       username,
       password,
     });
-    const reqToCodefun = await fetch("https://codefun.vn/api/auth", {
+    const requestToCodefun = await fetch("https://codefun.vn/api/auth", {
       method: "POST",
       body: params,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
-    const codefunResponse = await reqToCodefun.json();
-    if (!reqToCodefun.ok) {
-      return NextResponse.json({ error: codefunResponse.error }, { status: reqToCodefun.status });
+    const codefunResponse = await requestToCodefun.json();
+    if (!requestToCodefun.ok) {
+      return NextResponse.json(
+        { error: codefunResponse.error },
+        { status: requestToCodefun.status },
+      );
     }
     const userInfo = await getUserInfo(codefunResponse.data);
     if (!userInfo.ok) {

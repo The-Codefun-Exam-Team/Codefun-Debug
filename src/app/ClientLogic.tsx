@@ -1,32 +1,23 @@
 "use client";
-import { useAppDispatch } from "@redux/hooks";
-import { setUser } from "@redux/slice";
+import { setLoading, setUser } from "@redux/slice";
+import { store } from "@redux/store";
 import { useEffect } from "react";
 
-let didCheckInitialAuthentication = false;
-
 export const ClientLogic = () => {
-  const dispatch = useAppDispatch();
   useEffect(() => {
-    const getUser = async () => {
-      if (!didCheckInitialAuthentication) {
-        didCheckInitialAuthentication = true;
-        try {
-          const res = await fetch("/beta/api/auth/authenticate", {
-            method: "GET",
-          });
-          if (!res.ok) {
-            // TODO: handle fetch error
-            return;
-          }
-          const user = (await res.json()) as any;
-          dispatch(setUser(user));
-        } catch (err) {
-          // TODO: handle exception
-        }
+    // We only want to run this on client.
+    store.dispatch(async (dispatch) => {
+      const res = await fetch("/beta/api/auth/authenticate", {
+        method: "GET",
+      });
+      if (!res.ok) {
+        // TODO: handle fetch error
+        return;
       }
-    };
-    getUser();
-  }, [dispatch]);
+      const user = (await res.json()) as any;
+      dispatch(setUser(user));
+      dispatch(setLoading(false));
+    });
+  }, []);
   return <></>;
 };
