@@ -1,7 +1,7 @@
 "use client";
+import { store } from "@redux/store";
 import type { ReactNode } from "react";
 import { Provider } from "react-redux";
-import { store } from "src/features/redux_thunk/store";
 
 export const ReduxProvider = ({ children }: { children: ReactNode }) => (
   <Provider store={store}>{children}</Provider>

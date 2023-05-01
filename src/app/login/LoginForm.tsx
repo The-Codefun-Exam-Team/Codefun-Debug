@@ -1,10 +1,10 @@
 "use client";
+import { useAppDispatch } from "@redux/hooks";
+import { setUser } from "@redux/slice";
 import { loginSchema, type LoginSchemaType } from "@schemas/loginSchema";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAppDispatch } from "src/features/redux_thunk/hooks";
-import { setUser } from "src/features/redux_thunk/slice";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();

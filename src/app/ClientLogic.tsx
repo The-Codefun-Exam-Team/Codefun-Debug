@@ -1,7 +1,7 @@
 "use client";
+import { setLoading, setUser } from "@redux/slice";
+import { store } from "@redux/store";
 import { useEffect } from "react";
-import { setLoading, setUser } from "src/features/redux_thunk/slice";
-import { store } from "src/features/redux_thunk/store";
 
 export const ClientLogic = () => {
   useEffect(() => {
