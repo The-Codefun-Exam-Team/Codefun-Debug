@@ -1,5 +1,5 @@
 "use client";
-import { useAppSelector } from "@redux/hooks";
+import { useAppSelector } from "src/features/redux_thunk/hooks";
 
 // TODO: restyle
 export const UserInfo = () => {

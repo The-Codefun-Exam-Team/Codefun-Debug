@@ -17,7 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["./src/components/*"],
-      "@redux/*": ["./src/features/redux+thunk/*"],
+      "@redux/*": ["src/features/redux_thunk/*"],
       "@schemas/*": ["./src/shared/schemas/*"],
       "@utils/*": ["./src/shared/utils/*"],
     },
