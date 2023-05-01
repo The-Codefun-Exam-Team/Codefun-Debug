@@ -2,7 +2,7 @@
 
 # Stage 1: Build
 FROM node:18-alpine AS build
-WORKDIR /app
+WORKDIR /
 
 # Copy only package files to cache npm install
 COPY package.json package-lock.json ./
