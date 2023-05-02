@@ -1,28 +1,59 @@
 # syntax=docker/dockerfile:1
+FROM node:18-alpine AS base
 
-# Stage 1: Build
+# Stage 1: Install dependencies (separated layer to cache npm install)
+FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Support multiple package managers
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+# Stage 2: Build
 FROM node:18-alpine AS build
 WORKDIR /app
 
-# Copy only package files to cache npm install
-COPY package.json package-lock.json ./
-ENV NODE_ENV=production
-RUN npm install
-
-# Build a standalone version of the project
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ENV BUILD_STANDALONE=true
+
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the build.
+# ENV NEXT_TELEMETRY_DISABLED 1
+ENV BUILD_STANDALONE true
+
 RUN npm run build
 
-# Stage 2: Production
-FROM node:18-alpine AS prod
-WORKDIR /deploy
+# Stage 3: Production image
+FROM base AS runner
+WORKDIR /app
 
-# Create structure similar to described at https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=build /app/.next/standalone ./
-COPY --from=build /app/.next/static ./.next/static
-COPY --from=build /app/public ./public
+ENV NODE_ENV production
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
 
 EXPOSE 80
-ENV PORT=80
-ENTRYPOINT ["node", "server.js"]
+
+ENV PORT 80
+
+CMD ["node", "server.js"]
