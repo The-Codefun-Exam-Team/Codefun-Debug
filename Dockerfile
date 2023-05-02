@@ -1,27 +1,16 @@
 # syntax=docker/dockerfile:1
 FROM node:18-alpine AS base
 
-# Stage 1: Install dependencies (separated layer to cache npm install)
-FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+# Stage 1: Install dependencies then build
+FROM base AS builder
 WORKDIR /app
 
 # Support multiple package managers
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
-# Stage 2: Build
-FROM node:18-alpine AS build
-WORKDIR /app
+COPY package.json pnpm-lock.yaml* ./
+RUN npm i -g pnpm
+RUN pnpm i --frozen-lockfile
 
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
@@ -30,9 +19,9 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED 1
 ENV BUILD_STANDALONE true
 
-RUN npm run build
+RUN pnpm build
 
-# Stage 3: Production image
+# Stage 2: Production image
 FROM base AS runner
 WORKDIR /app
 
