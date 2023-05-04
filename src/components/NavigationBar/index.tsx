@@ -47,6 +47,8 @@ export const NavigationBar = () => (
     <div
       id="dropdown-content"
       className="flex h-0 w-full origin-top scale-y-0 flex-col opacity-0 transition-all duration-200 peer-checked:h-[136px] peer-checked:scale-y-100 peer-checked:opacity-100 md:hidden md:peer-checked:hidden"
-    ></div>
+    >
+      
+    </div>
   </nav>
 );
