@@ -7,7 +7,7 @@ const OPTION_LIST = [
   ["Problems", "/problems", "Probs"],
   ["Submissions", "/submissions", "Subs"],
   ["Rankings", "/rankings", "Ranks"],
-  ["About", "/about", "About"],
+  ["About", "/about", "Abt"],
 ] as const;
 
 // TODO: use react dropdown instead of pure html css
@@ -26,7 +26,7 @@ export const NavigationBar = () => (
         <UserInfo />
         <Loginout />
       </div>
-      <div className="text-l my-auto hidden h-min justify-around divide-x-2 divide-gray-500 font-medium md:flex lg:hidden [&>*]:cursor-pointer [&>*]:px-4">
+      <div className="text-l my-auto hidden h-min justify-around font-medium md:flex lg:hidden [&>*]:cursor-pointer [&>*]:px-4">
         {OPTION_LIST.map(([title, url, subtitle]) => (
           <Link href={url} key={title}>
             {subtitle}
