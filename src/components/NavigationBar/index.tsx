@@ -4,12 +4,11 @@ import { Loginout } from "./Loginout.js";
 import { UserInfo } from "./UserInfo.js";
 
 const OPTION_LIST = [
-  ["Problems", "/problems"],
-  ["Submissions", "/submissions"],
-  ["Rankings", "/rankings"],
-  ["About", "/about"],
+  ["Problems", "/problems", "Probs"],
+  ["Submissions", "/submissions", "Subs"],
+  ["Rankings", "/rankings", "Ranks"],
+  ["About", "/about", "About"],
 ] as const;
-
 
 // TODO: use react dropdown instead of pure html css
 export const NavigationBar = () => (
@@ -18,10 +17,19 @@ export const NavigationBar = () => (
       <Link href="/" className="mx-4 text-3xl font-semibold">
         Codefun Debug
       </Link>
-      <div className="text-l my-auto hidden h-min justify-around divide-x-2 divide-gray-500 font-medium md:flex [&>*]:px-4 [&>*]:cursor-pointer">
+      <div className="text-l my-auto hidden h-min justify-around divide-x-2 divide-gray-500 font-medium lg:flex [&>*]:cursor-pointer [&>*]:px-4">
         {OPTION_LIST.map(([title, url]) => (
           <Link href={url} key={title}>
             {title}
+          </Link>
+        ))}
+        <UserInfo />
+        <Loginout />
+      </div>
+      <div className="text-l my-auto hidden h-min justify-around divide-x-2 divide-gray-500 font-medium md:flex lg:hidden [&>*]:cursor-pointer [&>*]:px-4">
+        {OPTION_LIST.map(([title, url, subtitle]) => (
+          <Link href={url} key={title}>
+            {subtitle}
           </Link>
         ))}
         <UserInfo />
@@ -50,8 +58,6 @@ export const NavigationBar = () => (
     <div
       id="dropdown-content"
       className="flex h-0 w-full origin-top scale-y-0 flex-col opacity-0 transition-all duration-200 peer-checked:h-[136px] peer-checked:scale-y-100 peer-checked:opacity-100 md:hidden md:peer-checked:hidden"
-    >
-      
-    </div>
+    ></div>
   </nav>
 );
