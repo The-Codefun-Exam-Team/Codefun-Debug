@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Loginout } from "./Loginout.js";
 import { UserInfo } from "./UserInfo.js";
 
 const OPTION_LIST = [
@@ -9,6 +10,7 @@ const OPTION_LIST = [
   ["About", "/about"],
 ] as const;
 
+
 // TODO: use react dropdown instead of pure html css
 export const NavigationBar = () => (
   <nav className="sticky inset-x-0 top-0 m-0 block justify-between border-b-2 border-gray-400 bg-slate-200 py-3 text-slate-700">
@@ -16,13 +18,14 @@ export const NavigationBar = () => (
       <Link href="/" className="mx-4 text-3xl font-semibold">
         Codefun Debug
       </Link>
-      <div className="text-l my-auto hidden h-min justify-around divide-x-2 divide-gray-500 font-medium md:flex [&>*]:px-4">
+      <div className="text-l my-auto hidden h-min justify-around divide-x-2 divide-gray-500 font-medium md:flex [&>*]:px-4 [&>*]:cursor-pointer">
         {OPTION_LIST.map(([title, url]) => (
           <Link href={url} key={title}>
             {title}
           </Link>
         ))}
         <UserInfo />
+        <Loginout />
       </div>
     </div>
     <label
