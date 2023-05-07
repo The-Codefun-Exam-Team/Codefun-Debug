@@ -1,20 +1,16 @@
 import Link from "next/link";
 
-import { DropDown } from "./DropDown.js";
+import { DropDown, DropDownCSS } from "./DropDown.js";
 import { Loginout } from "./Loginout.js";
+import { OPTION_LIST } from "./OPTION_LIST.js";
 import { UserInfo } from "./UserInfo.js";
 
-const OPTION_LIST = [
-  ["Problems", "/problems", "Probs"],
-  ["Submissions", "/submissions", "Subs"],
-  ["Rankings", "/rankings", "Ranks"],
-  ["About", "/about", "About"],
-] as const;
+
 
 // TODO: use react dropdown instead of pure html css
 export const NavigationBar = () => (
-  <nav className="sticky inset-x-0 top-0 m-0 block justify-between border-b-2 border-gray-400 bg-slate-200 py-3 text-slate-700">
-    <div className="peer mx-auto inline-block max-w-3xl px-2 md:flex md:max-w-4xl md:justify-between lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
+  <nav className="sticky h-auto inset-x-0 top-0 m-0 block justify-between border-b-2 border-gray-400 bg-slate-200 py-3 text-slate-700">
+    <div className="mx-auto inline-block max-w-3xl px-2 md:flex md:max-w-4xl md:justify-between lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
       <Link href="/" className="mx-4 text-3xl font-semibold">
         Codefun Debug
       </Link>
@@ -37,10 +33,6 @@ export const NavigationBar = () => (
         <Loginout />
       </div>
     </div>
-    <DropDown />
-    <div
-      id="dropdown-content"
-      className="flex h-0 w-full origin-top scale-y-0 flex-col opacity-0 transition-all duration-200 peer-checked:h-[136px] peer-checked:scale-y-100 peer-checked:opacity-100 md:hidden md:peer-checked:hidden"
-    ></div>
+    <DropDownCSS />
   </nav>
 );
