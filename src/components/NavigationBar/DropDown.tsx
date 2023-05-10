@@ -88,22 +88,18 @@ export const DropDown = () => {
 // using css to animate the label
 // Well it do look suck but it fucking works
 export const DropDownCSS = () => {
-  const [isShowing, setIsShowing] = useState(false);
   const { user, loading } = useAppSelector((state) => state.user);
-  const heightSet = useCallback(() => {
+  const heightSet = () => {
     if (loading || !user) {
       return "peer-checked:h-[212px]";
     } else {
       return "peer-checked:h-[252px]";
     }
-  }, [loading, user]);
+  };
   return (
     <>
       <input type="checkbox" id="dropdown-check" className="peer hidden"></input>
       <label
-        onClick={() => {
-          setIsShowing(!isShowing);
-        }}
         htmlFor="dropdown-check"
         className="float-right mr-4 inline-block h-9 w-10 cursor-pointer leading-[12px] md:hidden
 				peer-checked:[&>:nth-child(1)]:translate-x-[6.2px]
