@@ -1,6 +1,8 @@
+import type { UserData } from "@schemas/loginSchema";
+
 export const getUserInfo = async (
   token: string,
-): Promise<{ ok: false; error: string; status: number } | { ok: true; user: any }> => {
+): Promise<{ ok: false; error: string; status: number } | { ok: true; user: UserData }> => {
   const res = await fetch("https://codefun.vn/api/verify", {
     method: "POST",
     headers: {

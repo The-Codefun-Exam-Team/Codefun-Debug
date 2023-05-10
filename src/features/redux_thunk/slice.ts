@@ -1,21 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import type { UserData } from "@schemas/loginSchema";
 
-export interface UserData {
-  id: number;
-  username: string;
-  name: string;
-  group: {
-    id: number;
-    name: string;
-  };
-  status: string;
-  avatar: string;
-  score: number;
-  solved: number;
-  ratio: number;
-  email: string;
-}
 
 export interface UserSliceState {
   loading: boolean;
