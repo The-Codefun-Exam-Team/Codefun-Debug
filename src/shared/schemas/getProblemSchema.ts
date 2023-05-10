@@ -1,4 +1,3 @@
-import type { UserData } from "@schemas/loginSchema";
 import { z } from "zod";
 
 export const getProblemSchema = z.object({
