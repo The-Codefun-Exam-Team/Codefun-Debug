@@ -1,8 +1,7 @@
 import Link from "next/link";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- for testing and comparing purpose
-import { DropDown, DropDownCSS } from "./DropDown.js";
-import { Loginout } from "./Loginout.js";
+import { DropDownCSS } from "./DropDown.js";
+import { LogInOut } from "./LogInOut.js";
 import { OPTION_LIST } from "./OPTION_LIST.js";
 import { UserInfo } from "./UserInfo.js";
 
@@ -20,7 +19,7 @@ export const NavigationBar = () => (
           </Link>
         ))}
         <UserInfo />
-        <Loginout />
+        <LogInOut />
       </div>
       <div className="text-l my-auto hidden h-min justify-around divide-x-2 divide-gray-500 font-medium md:flex lg:hidden [&>*]:cursor-pointer [&>*]:px-4">
         {OPTION_LIST.map(([title, url, subtitle]) => (
@@ -29,7 +28,7 @@ export const NavigationBar = () => (
           </Link>
         ))}
         <UserInfo />
-        <Loginout />
+        <LogInOut />
       </div>
     </div>
     <DropDownCSS />
