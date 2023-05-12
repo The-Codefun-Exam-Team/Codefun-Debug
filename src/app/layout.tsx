@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { NavigationBar } from "@components/NavigationBar";
+import { NavigationBar } from "@components/index.js";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
@@ -8,9 +8,9 @@ import { ClientLogic } from "./ClientLogic.js";
 import { ReduxProvider } from "./ReduxProvider.js";
 
 export const metadata: Metadata = {
-  // Note: temporarily
-  icons: {
-    icon: "/beta/favicon.ico",
+  title: {
+    template: "%s - Codefun Debug",
+    default: "Codefun Debug",
   },
 };
 

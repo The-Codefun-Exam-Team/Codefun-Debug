@@ -4,6 +4,8 @@ export const metadata: Metadata = {
 	title: "Problem",
 };
 
+export const generateStaticParams = () => [];
+
 const Page = () => {
 	
 	return (

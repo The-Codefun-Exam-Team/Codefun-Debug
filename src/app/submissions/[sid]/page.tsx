@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+export const generateStaticParams = () => [];
+
 export const metadata: Metadata = {
   title: "Submissions",
 };
