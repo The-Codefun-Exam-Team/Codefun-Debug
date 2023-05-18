@@ -16,11 +16,11 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
 
   return (
     <>
-      <table className="mx-auto w-[95%] table-auto border-collapse">
+      <table className="mx-auto mt-10 w-[95%] table-auto border-collapse">
         <thead>
           <tr>
             <th
-              className="border-2 border-slate-600 text-2xl font-semibold text-slate-700"
+              className="border-2 border-slate-600 text-2xl font-semibold text-slate-700 py-5"
               colSpan={2}
             >
               Highest score: {data.best_score}
