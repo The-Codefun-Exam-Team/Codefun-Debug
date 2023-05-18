@@ -6,7 +6,9 @@ import { LogInOut } from "./LogInOut";
 import { OPTION_LIST } from "./OPTION_LIST";
 import { UserInfo } from "./UserInfo";
 
+// TODO: handle loading
 export const OptionsList = () => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { user, loading } = useAppSelector((state) => state.user);
 	const isAuth = !!(user);
 	console.log(isAuth);
