@@ -19,8 +19,8 @@ interface Judge {
 }
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const resultDict: Record<string,string> = {
+
+export const resultDict: Record<string,string> = {
 	AC: "Accepted",
 	SS: "Partially Scored",
 	WA: "Wrong Answer",
