@@ -1,16 +1,22 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+
+
 
 export const metadata: Metadata = {
 	title: "Problem",
 };
 
-export const generateStaticParams = () => [];
 
 const Page = () => {
-	
+	const cookiesStore = cookies();
+	const token = cookiesStore.get("token");
+	if (!token) {
+		return <h1>Token not found, please login to try again</h1>
+	}
 	return (
 		<div className="flex h-full w-full items-center self-start">
-			<span className=""></span>
+			{token.value}
 		</div>
 	)
 }

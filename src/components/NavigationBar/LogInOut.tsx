@@ -7,7 +7,7 @@ export const LogInOut = () => {
   const { user, loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const logout = async () => {
-    fetch("beta/api/auth/logout", {
+    fetch("/beta/api/auth/logout", {
       method: "POST",
     });
     dispatch(setUser(null));
