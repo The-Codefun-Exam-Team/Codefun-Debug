@@ -2,6 +2,7 @@
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { setUser } from "@redux/slice";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const LogInOut = () => {
   const { user, loading } = useAppSelector((state) => state.user);
