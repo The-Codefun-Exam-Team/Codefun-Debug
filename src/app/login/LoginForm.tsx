@@ -46,11 +46,11 @@ export const LoginForm = () => {
     <div className="flex h-full w-full items-center justify-center self-center">
       <form
         onSubmit={submitForm}
-        className="flex w-[90vw] max-w-[500px] flex-col justify-center gap-6 rounded-lg border-2 border-solid border-slate-600 p-10 text-slate-700"
+        className="flex w-[90vw] max-w-[500px] flex-col justify-center gap-6 border-2 border-solid border-slate-600 p-10 text-slate-700"
       >
         <div className="text-2xl font-semibold">Please login to continue.</div>
         {serverError && (
-          <p className="text-md w-full rounded-md bg-red-400 p-1 text-center font-semibold text-white">
+          <p className="text-md w-full bg-red-400 p-1 text-center font-semibold text-white">
             Error: {serverError}. Please try again.
           </p>
         )}
@@ -64,7 +64,7 @@ export const LoginForm = () => {
           </label>
           <input
             type="text"
-            className="w-full rounded-md border-2 border-slate-600 p-2.5 text-lg"
+            className="w-full border-2 border-slate-600 p-2.5 text-lg"
             placeholder="Username"
             id="login-form-username-input"
             aria-invalid={!!errors.username}
@@ -87,7 +87,7 @@ export const LoginForm = () => {
           </label>
           <input
             type="password"
-            className="w-full rounded-md border-2 border-slate-600 p-2.5 text-lg"
+            className="w-full border-2 border-slate-600 p-2.5 text-lg"
             placeholder="Password"
             id="login-form-password-input"
             aria-invalid={!!errors.password}
@@ -102,7 +102,7 @@ export const LoginForm = () => {
         </div>
         <button
           type="submit"
-          className="rounded-lg border-2 border-slate-600 p-2 text-lg font-medium text-slate-700"
+          className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700"
         >
           Login
         </button>

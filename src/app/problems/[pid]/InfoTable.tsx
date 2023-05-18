@@ -20,7 +20,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
         <thead>
           <tr>
             <th
-              className="border-2 border-slate-600 text-2xl font-semibold text-slate-700 py-5"
+              className="border-2 border-slate-600 py-5 text-2xl font-semibold text-slate-700"
               colSpan={2}
             >
               Highest score: {data.best_score}
