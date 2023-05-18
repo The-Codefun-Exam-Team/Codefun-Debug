@@ -16,7 +16,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
 
   return (
     <>
-      <table className="mx-auto mt-10 w-[95%] table-auto border-collapse">
+      <table className="mx-auto mt-10 w-[95%] table-auto border-collapse self-start">
         <thead>
           <tr>
             <th

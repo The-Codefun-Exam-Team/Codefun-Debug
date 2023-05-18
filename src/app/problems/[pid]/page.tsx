@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { Editor } from "./Editor";
 import { InfoTable } from "./InfoTable";
 
 export const metadata: Metadata = {
@@ -55,11 +56,13 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
   const data = (await res.json()) as ProblemData;
 
   return (
-    <div className="flex h-full w-full items-center self-start">
-      <div className="h-auto w-[35%]">
+    <div className="flex h-full w-full items-start self-start">
+      <div className="h-auto w-[35%] ">
         <InfoTable data={data} pid={pid} />
       </div>
-      <div className="h-auto w-[65%]"></div>
+      <div className="flex h-auto w-[65%]">
+        <Editor data={data} />
+      </div>
     </div>
   );
 };
