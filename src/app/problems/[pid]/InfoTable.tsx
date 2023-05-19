@@ -20,7 +20,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
         <thead>
           <tr>
             <th
-              className="border-2 border-slate-600 py-5 text-2xl font-semibold text-slate-700"
+              className="border-2 border-slate-600 py-8 text-2xl font-semibold text-slate-700"
               colSpan={2}
             >
               Highest score: {data.best_score}
@@ -29,36 +29,36 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
         </thead>
         <tbody>
           <tr>
-            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700">
+            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700 py-1">
               Problem ID
             </th>
-            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700">
+            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700 py-1">
               {pid}
             </th>
           </tr>
           <tr>
-            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700">
+            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700 py-1">
               Statement
             </th>
-            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700">
+            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700 py-1">
               <Link target="_blank" href={"https://codefun.vn/problems/" + data.problem.id}>
                 {data.problem.id}
               </Link>
             </th>
           </tr>
           <tr>
-            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700">
+            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700 py-1">
               Language
             </th>
-            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700">
+            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700 py-1">
               {data.language}
             </th>
           </tr>
           <tr>
-            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700">
+            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700 py-1">
               Verdicts
             </th>
-            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700">
+            <th className="border-2 border-slate-600 text-lg font-semibold text-slate-700 py-1">
               {data.result === "CE" ? (
                 "CE"
               ) : (

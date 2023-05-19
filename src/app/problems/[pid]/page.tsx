@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
-import { Editor } from "./Editor";
+import { UserEditor } from "./Editor";
 import { InfoTable } from "./InfoTable";
 
 export const metadata: Metadata = {
@@ -60,8 +60,8 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
       <div className="h-auto w-[35%] ">
         <InfoTable data={data} pid={pid} />
       </div>
-      <div className="flex h-auto w-[65%]">
-        <Editor data={data} />
+      <div className="flex flex-col h-auto w-[65%]">
+        <UserEditor data={data} />
       </div>
     </div>
   );
