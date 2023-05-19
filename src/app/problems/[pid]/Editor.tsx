@@ -27,7 +27,7 @@ export const UserEditor = ({ data }: { data: ProblemData }) => {
 					width={"100%"}
 					language="cpp"
 					theme="light"
-					options={{ renderSideBySide: false }}
+					options={{ renderSideBySide: false, renderOverviewRuler: false }}
 					original={data.code}
 					modified={data.code}
 					onMount={handleEditorDidMount}
