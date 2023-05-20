@@ -7,6 +7,6 @@ export const submitSchema = z.object({
 
 export type SubmitSchemaType = z.infer<typeof submitSchema>;
 
-export interface SubmitData {
+export interface submitData {
 	submissionID: number;
 }
