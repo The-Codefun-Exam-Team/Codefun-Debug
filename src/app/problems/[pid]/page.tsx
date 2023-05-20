@@ -45,6 +45,7 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
     headers: {
       Authorization: "Bearer " + token.value,
     },
+    cache: "no-store",
   });
 
   if (!res.ok) {
