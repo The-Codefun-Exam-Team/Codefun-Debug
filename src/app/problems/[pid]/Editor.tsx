@@ -19,6 +19,7 @@ export const UserEditor = ({ data }: { data: ProblemData }) => {
 	return (
 		// TODO: handle loading state
 		// TODO: Add difference box
+		// TODO: support for python problems and more
 		<>
 			<div className="mx-auto mt-10 w-[95%]">
 				<DiffEditor
@@ -27,7 +28,7 @@ export const UserEditor = ({ data }: { data: ProblemData }) => {
 					width={"100%"}
 					language="cpp"
 					theme="light"
-					options={{ renderSideBySide: false, renderOverviewRuler: false }}
+					options={{ renderSideBySide: false, renderOverviewRuler: false , scrollBeyondLastColumn: 10}}
 					original={data.code}
 					modified={data.code}
 					onMount={handleEditorDidMount}

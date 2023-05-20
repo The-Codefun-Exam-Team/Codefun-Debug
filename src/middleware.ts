@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
   if (!request.cookies.get("token")) {
-    return NextResponse.redirect(new URL("/beta/login", request.url));
+    return NextResponse.redirect(new URL("/beta/login", request.url),);
   }
 }
 
 export const config = {
-  matcher: ["/problems/:path*", "/submissions/:path*", "/rankings/:path*", "/about/:path*"],
+  matcher: ["/problems/:path*", "/submissions/:path*", "/rankings/:path*"]
 };
