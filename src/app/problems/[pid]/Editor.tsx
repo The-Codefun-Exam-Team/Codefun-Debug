@@ -5,16 +5,33 @@ import { useRef } from "react";
 
 import type { ProblemData } from "./page";
 
-export const UserEditor = ({ data }: { data: ProblemData }) => {
+export const UserEditor = ({ data , pid }: { data: ProblemData, pid: string }) => {
 	// TODO: add options for editor
 	// TODO: responsive UI
 	const editorRef = useRef<MonacoDiffEditor|null>(null);
 	const handleEditorDidMount = (editor:MonacoDiffEditor) => {
 		editorRef.current = editor;
 	}
-	// const submitCode = async (): Promise<void> => {
-
-	// }
+	const submitCode = async (): Promise<void> => {
+		const code = editorRef.current?.getModifiedEditor().getValue();
+		const res = await fetch("/beta/api/dbg/submit", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				problem: pid,
+				code: code
+			})
+		});
+		if (!res.ok) {
+			// TODO: handle fetch error
+			// show error by replacing submit button with error message
+			// use transition
+		}
+		const data = await res.json();
+		
+	};
 
 	return (
 		// TODO: handle loading state
@@ -34,7 +51,7 @@ export const UserEditor = ({ data }: { data: ProblemData }) => {
 					onMount={handleEditorDidMount}
 				/>
 			</div>
-			<button type="submit" className=" relative bottom-10 mx-auto text-md font-semibold text-slate-700 bg-slate-100 px-4 py-[1px] shadow-md shadow-slate-200 active:shadow-inner rounded-sm" >Submit</button>
+			<button type="submit" onClick={submitCode} className=" relative bottom-10 mx-auto text-md font-semibold text-slate-700 bg-slate-100 px-4 py-[1px] shadow-md shadow-slate-200 active:shadow-inner rounded-sm" >Submit</button>
 			
 		</>
   );

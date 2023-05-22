@@ -62,7 +62,7 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
         <InfoTable data={data} pid={pid} />
       </div>
       <div className="flex flex-col h-auto w-[65%]">
-        <UserEditor data={data} />
+        <UserEditor data={data} pid={pid} />
       </div>
     </div>
   );

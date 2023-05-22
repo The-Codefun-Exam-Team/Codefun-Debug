@@ -1,30 +1,43 @@
 import type { submitData } from "@schemas/submitSchema";
 
-export const submitCode = async( 
+export const submitCode = async(
 	token: string,
-	problemID: string,
+	problem: string,
 	code: string
 ): Promise<{ok:false,error:string,status:number}|{ok:true,data:submitData}> => {
-	const res = await fetch("https://codefun.vn/api/submit", {
+	const res = await fetch("https://debug.codefun.vn/api/submit", {
 		method: "POST",
 		headers: {
 			Authorization: "Bearer " + token,
+			Accept: "application/json",
+			"Content-Type": "application/x-www-form-urlencoded",
+			
 		},
-		body: JSON.stringify({
-			problemID,
+		body: new URLSearchParams({
+			problem,
 			code
-		})
+		}),
+		cache: "no-cache",
 	});
-	const info = await res.json();
+	// temporary solution for weird api (awaiting for fix)
+	// TODO: fix when new api comes out
+	const info = await res.text();
+	if (info.includes("400")) {
+		return {
+			ok: false,
+			error: "Please wait at least 1.5 minutes",
+			status: 400,
+		};
+	}
 	if (!res.ok) {
 		return {
 			ok: false,
-			error: info.error,
+			error: "Something went wrong",
 			status: res.status,
-		};
+		}
 	}
 	return {
 		ok: true,
-		data: info.data,
+		data: JSON.parse(info),
 	};
 }
