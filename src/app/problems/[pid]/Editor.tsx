@@ -1,6 +1,7 @@
 "use client";
 import type { MonacoDiffEditor  } from "@monaco-editor/react";
 import { DiffEditor  } from "@monaco-editor/react";
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
 import type { ProblemData } from "./page";
@@ -8,6 +9,7 @@ import type { ProblemData } from "./page";
 export const UserEditor = ({ data , pid }: { data: ProblemData, pid: string }) => {
 	// TODO: add options for editor
 	// TODO: responsive UI
+	const router = useRouter();
 	const editorRef = useRef<MonacoDiffEditor|null>(null);
 	const handleEditorDidMount = (editor:MonacoDiffEditor) => {
 		editorRef.current = editor;
@@ -28,9 +30,10 @@ export const UserEditor = ({ data , pid }: { data: ProblemData, pid: string }) =
 			// TODO: handle fetch error
 			// show error by replacing submit button with error message
 			// use transition
+			return;
 		}
 		const data = await res.json();
-		
+		router.push(`/submissions/${data.id}`)
 	};
 
 	return (
