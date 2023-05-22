@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import type { NextRequest} from "next/server";
 import { NextResponse } from "next/server";
 
+// TODO: add logging
 export const POST = async (req:NextRequest) => {
 	try {
 		const requestBody = await req.json();
