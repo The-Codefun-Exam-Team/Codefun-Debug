@@ -34,7 +34,6 @@ export const POST = async (req:NextRequest) => {
 		});
 
 	} catch (err) {
-		console.log(err);
 		return NextResponse.json(
 			{
 				error: "An internal server error occurred.",

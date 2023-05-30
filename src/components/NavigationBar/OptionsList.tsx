@@ -11,7 +11,6 @@ export const OptionsList = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { user, loading } = useAppSelector((state) => state.user);
   const isAuth = !!user;
-  console.log(isAuth);
   return (
     <>
       <div className="text-l my-auto hidden h-min justify-around divide-x-2 divide-gray-500 font-medium lg:flex [&>*]:cursor-pointer [&>*]:px-4">
