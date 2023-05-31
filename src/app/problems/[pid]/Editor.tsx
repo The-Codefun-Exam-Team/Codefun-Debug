@@ -37,7 +37,6 @@ export const UserEditor = ({ data , pid }: { data: ProblemData, pid: string }) =
 	};
 
 	return (
-		// TODO: handle loading state
 		// TODO: Add difference box
 		// TODO: support for python problems and more
 		<>
@@ -52,6 +51,10 @@ export const UserEditor = ({ data , pid }: { data: ProblemData, pid: string }) =
 					original={data.code}
 					modified={data.code}
 					onMount={handleEditorDidMount}
+					loading={
+						<div className="flex h-[70vh] w-full border-2 border-slate-600">
+								<div className="text-center text-2xl text-slate-700 self-center grow-1 w-full">Loading editor</div>	
+						</div>}
 				/>
 			</div>
 			<button type="submit" onClick={submitCode} className=" relative bottom-10 mx-auto text-md font-semibold text-slate-700 bg-slate-100 px-4 py-[1px] shadow-md shadow-slate-200 active:shadow-inner rounded-sm" >Submit</button>
