@@ -2,7 +2,7 @@
 import type { MonacoDiffEditor } from "@monaco-editor/react";
 import { DiffEditor } from "@monaco-editor/react";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef , useState } from "react";
 
 import type { ProblemData } from "./page";
 
@@ -10,6 +10,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
   // TODO: add options for editor
   // TODO: responsive UI
   const router = useRouter();
+  const [submitError, setSubmitError]  = useState("");
   const editorRef = useRef<MonacoDiffEditor | null>(null);
   const handleEditorDidMount = (editor: MonacoDiffEditor) => {
     editorRef.current = editor;
@@ -27,13 +28,13 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
       }),
     });
     if (!res.ok) {
-      // TODO: handle fetch error
-      // show error by replacing submit button with error message
-      // use transition
+      setSubmitError("Error submitting code, please try again after 1'30''");
+      setTimeout(() => { setSubmitError("") }, 5000);
       return;
     }
     const data = await res.json();
     router.push(`/submissions/${data.id}`);
+    return;
   };
 
   return (
@@ -41,6 +42,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
     // TODO: support for python problems and more
     <>
       <div className="mx-auto mt-10 w-[95%]">
+        <div className="absolute"></div>
         <DiffEditor
           className="border-2 border-slate-600"
           height="70vh"
@@ -64,13 +66,20 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
           }
         />
       </div>
-      <button
-        type="submit"
-        onClick={submitCode}
-        className=" text-md relative bottom-10 mx-auto rounded-sm bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-200 active:shadow-inner"
-      >
-        Submit
-      </button>
+      {/* TODO: Add transition */}
+      {
+        (submitError) ?
+          <div className=" text-md relative bottom-12 mx-auto rounded-sm bg-red-100 border-2 px-4 py-1 border-red-200 text-red-800">
+            {submitError}
+          </div> :
+          <button
+          type="submit"
+          onClick={submitCode}
+          className=" text-md relative bottom-10 mx-auto rounded-sm bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-400 active:shadow-inner"
+          >
+          Submit
+        </button>
+      }
     </>
   );
 };
