@@ -1,7 +1,6 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { setUser } from "@redux/slice";
-import Link from "next/link";
 
 export const UserInfo = () => {
   const { user, loading } = useAppSelector((state) => state.user);
