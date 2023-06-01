@@ -6,10 +6,11 @@
     "analyze": "cross-env ANALYZE=true pnpm build",
     "build": "next build",
     "dev": "next dev",
-    "format": "prettier --write --embedded-language-formatting=auto .",
+    "format": "prettier --write .",
     "lint": "next lint",
     "start": "next start",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@headlessui/react": "1.7.14",
@@ -33,6 +34,7 @@
     "@types/node": "20.1.2",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "@types/shell-quote": "1.7.1",
     "@typescript-eslint/eslint-plugin": "5.59.5",
     "@typescript-eslint/parser": "5.59.5",
     "autoprefixer": "10.4.14",
@@ -43,10 +45,13 @@
     "eslint-plugin-simple-import-sort": "10.0.0",
     "eslint-plugin-tailwindcss": "3.11.0",
     "eslint-plugin-tsdoc": "0.2.17",
+    "husky": "8.0.3",
+    "lint-staged": "13.2.2",
     "npm-check-updates": "16.10.12",
     "postcss": "8.4.23",
     "prettier": "2.8.8",
     "prettier-plugin-tailwindcss": "0.2.8",
+    "shell-quote": "1.8.1",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.0-dev.20230511"
   },
