@@ -66,7 +66,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
           }
         />
       </div>
-      {/* TODO: Add transition */}
+      {/* TODO: Add transition (if possible) */}
       {
         (submitError) ?
           <div className=" text-md relative bottom-12 mx-auto rounded-sm bg-red-100 border-2 px-4 py-1 border-red-200 text-red-800">
