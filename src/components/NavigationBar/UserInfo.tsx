@@ -21,7 +21,9 @@ export const UserInfo = () => {
   return (
     <>
       <p>{user.username}</p>
-      <button onClick={logout}>Logout</button>
+      <button onClick={logout} className="text-left">
+        Logout
+      </button>
     </>
   );
 };
