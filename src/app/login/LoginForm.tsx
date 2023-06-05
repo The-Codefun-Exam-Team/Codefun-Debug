@@ -48,9 +48,9 @@ export const LoginForm = () => {
         onSubmit={submitForm}
         className="flex w-[90vw] max-w-[500px] flex-col justify-center gap-6 border-2 border-solid border-slate-600 p-10 text-slate-700"
       >
-        <div className="text-2xl font-semibold">Please login to continue.</div>
+        <div className="text-center text-2xl font-semibold">Please login to continue</div>
         {serverError && (
-          <p className="text-md w-full bg-red-400 p-1 text-center font-semibold text-white">
+          <p className="text-md w-full border-2 border-red-200 bg-red-100 p-1 text-center font-semibold text-red-800">
             Error: {serverError}. Please try again.
           </p>
         )}
