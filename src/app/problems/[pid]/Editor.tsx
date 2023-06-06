@@ -42,11 +42,11 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
     // TODO: Add difference box
     // TODO: support for python problems and more
     <>
-      <div className="mx-auto mt-10 w-[95%]">
+      <div className="mx-auto mt-10 w-[95%] md:mt-0">
         <div className="absolute"></div>
         <DiffEditor
           className="border-2 border-slate-600"
-          height="70vh"
+          height="80vh"
           width={"100%"}
           language="cpp"
           theme="light"
@@ -59,7 +59,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
           modified={data.code}
           onMount={handleEditorDidMount}
           loading={
-            <div className="flex h-[70vh] w-full border-2 border-slate-600">
+            <div className="flex h-[80vh] w-full border-2 border-slate-600">
               <div className="grow-1 w-full self-center text-center text-2xl text-slate-700">
                 Loading editor
               </div>
@@ -69,17 +69,21 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
       </div>
       {/* TODO: Add transition (if possible) */}
       {submitError ? (
-        <div className=" text-md relative bottom-12 mx-auto rounded-sm border-2 border-red-200 bg-red-100 px-4 py-1 text-red-800">
-          {submitError}
+        <div className="absolute bottom-3 right-[50%]">
+          <div className="text-md relative right-[-50%] mx-auto w-max rounded-sm border-2 border-red-200 bg-red-100 px-4 py-1 text-red-800">
+            {submitError}
+          </div>
         </div>
       ) : (
-        <button
-          type="submit"
-          onClick={submitCode}
-          className=" text-md relative bottom-10 mx-auto rounded-sm bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-400 active:shadow-inner"
-        >
-          Submit
-        </button>
+        <div className="absolute bottom-4 left-[50%]">
+          <button
+            type="submit"
+            onClick={submitCode}
+            className="text-md relative left-[-50%] mx-auto rounded-sm bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-400 active:shadow-inner"
+          >
+            Submit
+          </button>
+        </div>
       )}
     </>
   );
