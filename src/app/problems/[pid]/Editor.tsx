@@ -33,7 +33,9 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
       }, 5000);
       return;
     }
-    const data = await res.json();
+    const data = (await res.json()) as {
+      id: string;
+    };
     router.push(`/submissions/${data.id}`);
     return;
   };

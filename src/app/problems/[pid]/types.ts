@@ -1,5 +1,5 @@
-type Languages = "Python2" | "Python3" | "C++" | "Nasm" | "Go" | "Java" | "Pascal";
-type Results = "AC" | "SS" | "WA" | "TLE" | "RTE" | "CE" | "MLE" | "Q" | "R" | "...";
+import type { Languages, Results } from "@/shared/types";
+
 interface Judge {
   correct: number;
   total: number;

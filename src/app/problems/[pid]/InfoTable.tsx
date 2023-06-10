@@ -1,15 +1,23 @@
 import Link from "next/link";
 
+import type { Results } from "@/shared/types";
+
 import type { ProblemData } from "./types";
 
 export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => {
-  const verdicts: Record<string, number> = {
+  const verdicts: Record<Results, number> = {
     AC: 0,
     WA: 0,
     TLE: 0,
     RTE: 0,
     MLE: 0,
+    SS: 0,
+    CE: 0,
+    Q: 0,
+    R: 0,
+    "...": 0,
   };
+
   for (const test of data.judge.tests) {
     verdicts[test.verdict] += 1;
   }
