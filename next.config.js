@@ -1,9 +1,7 @@
 // @ts-check
 /* eslint-disable tsdoc/syntax */
 /** @typedef {(config?: import("next").NextConfig | undefined) => import("next").NextConfig} NextConfigPlugin */
-import withBundleAnalyzerInit from "@next/bundle-analyzer";
-
-const withBundleAnalyzer = withBundleAnalyzerInit({
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 
@@ -38,4 +36,4 @@ const plugins = [withBundleAnalyzer];
  */
 const nextComposePlugins = () => plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
 
-export default nextComposePlugins;
+module.exports = nextComposePlugins;

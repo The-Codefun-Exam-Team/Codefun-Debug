@@ -8,7 +8,7 @@ export const submitCode = async (
   const res = await fetch("https://debug.codefun.vn/api/submit", {
     method: "POST",
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: `Bearer ${token}`,
       Accept: "application/json",
       "Content-Type": "application/x-www-form-urlencoded",
     },
