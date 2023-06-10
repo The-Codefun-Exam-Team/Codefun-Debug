@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 // TODO: add logging
 export const POST = async (req: NextRequest) => {
+  return NextResponse.json({ error: "You are not signed in!" }, { status: 400 });
   try {
     const token = req.cookies.has("token");
     if (!token) {

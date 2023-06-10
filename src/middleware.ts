@@ -6,25 +6,24 @@ export function middleware(request: NextRequest) {
 
   const unauthenticatedOnlyPrefixes = ["/login"] as const;
   const authenticatedOnlyPrefixes = ["/problems", "/submissions", "/rankings"] as const;
-  if (
-    unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path)) &&
-    request.cookies.get("token")
-  ) {
-    const providedRedirect = searchParams.get("prev");
-    const redirectTo = decodeURIComponent(providedRedirect ?? "%2Fbeta");
-    return NextResponse.redirect(new URL(redirectTo, request.url));
+
+  if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
+    const redirectTo = decodeURIComponent(searchParams.get("prev") ?? "%2Fbeta");
+
+    if (request.cookies.get("token")) {
+      return NextResponse.redirect(new URL(redirectTo, request.url));
+    }
   }
 
-  if (
-    authenticatedOnlyPrefixes.some((path) => pathname.startsWith(path)) &&
-    !request.cookies.get("token")
-  ) {
+  if (authenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const providedRedirect = searchParams.get("prev");
     const redirectTo = providedRedirect
       ? decodeURIComponent(providedRedirect)
       : `/beta/login?prev=${encodeURIComponent(pathname)}`;
 
-    return NextResponse.redirect(new URL(redirectTo, request.url));
+    if (!request.cookies.get("token")) {
+      return NextResponse.redirect(new URL(redirectTo, request.url));
+    }
   }
 }
 

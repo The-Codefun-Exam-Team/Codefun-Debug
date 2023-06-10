@@ -4,6 +4,7 @@ import { setUser } from "@redux/slice";
 import { clsx } from "@utils/shared";
 import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
+import { useEffect, useState } from "react";
 
 import { SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
 
@@ -11,7 +12,8 @@ export interface NavLinksProps {
   keyPrefix: string;
 }
 
-const navButtonClassName = "rounded-md px-4 py-2 transition-colors duration-100 hover:bg-gray-300";
+const navButtonClassName =
+  "rounded-md px-4 py-2 transition-colors duration-100 flex items-center sm:justify-center hover:bg-gray-300";
 
 const NavLink = ({ href, className, ...rest }: ComponentPropsWithoutRef<typeof Link>) => (
   <Link href={href} className={navButtonClassName} {...rest} />
@@ -20,12 +22,24 @@ const NavLink = ({ href, className, ...rest }: ComponentPropsWithoutRef<typeof L
 const UserInfo = () => {
   const { user, loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const removeErrorTimer = setTimeout(() => setErrorMessage(""), 5000);
+    return () => clearTimeout(removeErrorTimer);
+  }, [errorMessage]);
+
   const logout = async () => {
-    fetch("/beta/api/auth/logout", {
+    const res = await fetch("/beta/api/auth/logout", {
       method: "POST",
     });
-    dispatch(setUser(null));
+    if (res.ok) {
+      dispatch(setUser(null));
+    } else {
+      setErrorMessage((await res.json()).error ?? "unknown error");
+    }
   };
+
   if (loading) {
     return <div className={navButtonClassName}>Loading...</div>;
   }
@@ -45,6 +59,16 @@ const UserInfo = () => {
       <button className={clsx(navButtonClassName, "text-left")} onClick={logout}>
         Logout
       </button>
+      {errorMessage && (
+        <p
+          className={clsx(
+            navButtonClassName,
+            "flex border-red-200 bg-red-100 text-red-800 hover:bg-red-50 sm:w-fit",
+          )}
+        >
+          {errorMessage}
+        </p>
+      )}
     </>
   );
 };
