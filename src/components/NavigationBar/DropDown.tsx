@@ -1,10 +1,10 @@
 "use client";
 import { useAppSelector } from "@redux/hooks";
-import { clsx } from "@utils/shared/index.js";
+import { clsx } from "@utils/shared";
 import Link from "next/link";
 
-import { OPTION_LIST } from "./OPTION_LIST.js";
-import { UserInfo } from "./UserInfo.js";
+import { OPTION_LIST } from "./OPTION_LIST";
+import { UserInfo } from "./UserInfo";
 
 // using css to animate the label
 // Well it do look suck but it fucking works

@@ -1,4 +1,4 @@
-import { getUserInfo } from "@utils/api/getUserInfo";
+import { getUserInfo } from "@utils/api";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 

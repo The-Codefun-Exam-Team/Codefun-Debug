@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import { DropDown } from "./DropDown.js";
-import { OPTION_LIST } from "./OPTION_LIST.js";
-import { UserInfo } from "./UserInfo.js";
+import { DropDown } from "./DropDown";
+import { OPTION_LIST } from "./OPTION_LIST";
+import { UserInfo } from "./UserInfo";
 
 export const NavigationBar = () => (
   <nav className="sticky inset-x-0 top-0 z-50 m-0 block h-auto justify-between border-b-2 border-gray-400 bg-slate-200 py-3 text-slate-700">

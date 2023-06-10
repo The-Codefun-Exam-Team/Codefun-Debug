@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const tailwindConfig = {
   plugins: ["tailwindcss ,autoprefixer"],
   theme: {
     extend: {
@@ -15,3 +15,5 @@ module.exports = {
   },
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
 };
+
+export default tailwindConfig;

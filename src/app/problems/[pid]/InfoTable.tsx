@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { ProblemData } from "./page";
+import type { ProblemData } from "./types";
 
 export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => {
   const verdicts: Record<string, number> = {

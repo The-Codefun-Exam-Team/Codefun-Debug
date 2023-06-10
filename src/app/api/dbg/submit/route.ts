@@ -1,5 +1,5 @@
 import { submitSchema } from "@schemas/submitSchema";
-import { submitCode } from "@utils/api/submitCode";
+import { submitCode } from "@utils/api";
 import { cookies } from "next/headers";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";

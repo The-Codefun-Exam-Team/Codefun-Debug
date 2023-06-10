@@ -2,9 +2,9 @@
 import type { MonacoDiffEditor } from "@monaco-editor/react";
 import { DiffEditor } from "@monaco-editor/react";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import type { ProblemData } from "./page";
+import type { ProblemData } from "./types";
 
 export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) => {
   // TODO: add options for editor
@@ -37,6 +37,10 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
     router.push(`/submissions/${data.id}`);
     return;
   };
+  useEffect(() => {
+    const removeErrorTimer = setTimeout(() => setSubmitError(""), 5000);
+    return () => clearTimeout(removeErrorTimer);
+  }, [submitError]);
 
   return (
     // TODO: Add difference box

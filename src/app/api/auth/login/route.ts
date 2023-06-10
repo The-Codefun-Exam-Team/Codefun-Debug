@@ -1,5 +1,5 @@
-import { loginSchema } from "@schemas/index.js";
-import { getUserInfo } from "@utils/api/index.js";
+import { loginSchema } from "@schemas/loginSchema";
+import { getUserInfo } from "@utils/api";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
