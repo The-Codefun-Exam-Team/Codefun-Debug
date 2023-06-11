@@ -3,35 +3,11 @@ import { cookies } from "next/headers";
 
 import { UserEditor } from "./Editor";
 import { InfoTable } from "./InfoTable";
+import type { ProblemData } from "./types";
 
 export const metadata: Metadata = {
   title: "Problem",
 };
-
-type Languages = "Python2" | "Python3" | "C++" | "Nasm" | "Go" | "Java" | "Pascal";
-type Results = "AC" | "SS" | "WA" | "TLE" | "RTE" | "CE" | "MLE" | "Q" | "R" | "...";
-interface Judge {
-  correct: number;
-  total: number;
-  tests: Array<{
-    verdict: Results;
-    runningTime: number;
-    message: string;
-  }>;
-}
-
-export interface ProblemData {
-  best_score: number;
-  code: string;
-  problem: {
-    code: string;
-    id: number;
-    name: string;
-  };
-  language: Languages;
-  result: Results;
-  judge: Judge;
-}
 
 const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
   const cookieStore = cookies();
@@ -40,10 +16,10 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
     return <h1>Not logged in</h1>;
   }
 
-  const res = await fetch("https://debug.codefun.vn/api/problems/" + pid, {
+  const res = await fetch(`https://debug.codefun.vn/api/problems/${pid}`, {
     method: "GET",
     headers: {
-      Authorization: "Bearer " + token.value,
+      Authorization: `Bearer ${token.value}`,
     },
     cache: "no-store",
   });

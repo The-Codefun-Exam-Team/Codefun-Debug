@@ -15,10 +15,10 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@components/*": ["./src/components/*"],
       "@redux/*": ["./src/features/redux_thunk/*"],
       "@schemas/*": ["./src/shared/schemas/*"],
       "@utils/*": ["./src/shared/utils/*"],
+      "@/*": ["./src/*"]
     },
     "plugins": [
       {

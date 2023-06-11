@@ -2,7 +2,7 @@ import type { ThunkAction } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
 import type { AnyAction } from "redux";
 
-import { userSlice } from "./slice.js";
+import { userSlice } from "./slice";
 
 export const store = configureStore({
   reducer: {

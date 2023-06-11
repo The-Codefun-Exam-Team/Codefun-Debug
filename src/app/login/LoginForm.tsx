@@ -1,7 +1,7 @@
 "use client";
 import { useAppDispatch } from "@redux/hooks";
 import { setUser } from "@redux/slice";
-import { loginSchema, type LoginSchemaType } from "@schemas/index.js";
+import { loginSchema, type LoginSchemaType } from "@schemas/loginSchema";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

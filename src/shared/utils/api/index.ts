@@ -1,2 +1,3 @@
 import "server-only";
-export { getUserInfo } from "./getUserInfo.js";
+export { getUserInfo } from "./getUserInfo";
+export { submitCode } from "./submitCode";

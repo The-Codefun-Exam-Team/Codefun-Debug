@@ -6,7 +6,7 @@ export const getUserInfo = async (
   const res = await fetch("https://codefun.vn/api/verify", {
     method: "POST",
     headers: {
-      Authorization: "Bearer " + token,
+      Authorization: `Bearer ${token}`,
     },
   });
   const info = await res.json();

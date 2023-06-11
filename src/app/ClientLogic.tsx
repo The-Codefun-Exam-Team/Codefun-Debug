@@ -1,6 +1,7 @@
 "use client";
 import { setLoading, setUser } from "@redux/slice";
 import { store } from "@redux/store";
+import type { UserData } from "@schemas/loginSchema";
 import { useEffect } from "react";
 
 export const ClientLogic = () => {
@@ -14,7 +15,7 @@ export const ClientLogic = () => {
         // TODO: handle fetch error
         return;
       }
-      const user = (await res.json()) as any;
+      const user = (await res.json()) as UserData;
       dispatch(setUser(user));
       dispatch(setLoading(false));
     });

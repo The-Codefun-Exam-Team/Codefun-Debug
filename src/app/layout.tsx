@@ -1,17 +1,19 @@
 import "./globals.css";
 
-import { NavigationBar } from "@components/index.js";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-import { ClientLogic } from "./ClientLogic.js";
-import { ReduxProvider } from "./ReduxProvider.js";
+import { NavigationBar } from "@/components";
+
+import { ClientLogic } from "./ClientLogic";
+import { ReduxProvider } from "./ReduxProvider";
 
 export const metadata: Metadata = {
   title: {
     template: "%s - Codefun Debug",
     default: "Codefun Debug",
   },
+  icons: "/beta/favicon.ico",
 };
 
 const RootLayout = ({ children }: { children: ReactNode }) => (

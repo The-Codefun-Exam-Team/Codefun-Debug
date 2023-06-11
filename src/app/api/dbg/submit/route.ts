@@ -1,5 +1,5 @@
 import { submitSchema } from "@schemas/submitSchema";
-import { submitCode } from "@utils/api/submitCode";
+import { submitCode } from "@utils/api";
 import { cookies } from "next/headers";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -30,13 +30,6 @@ export const POST = async (req: NextRequest) => {
       status: 200,
     });
   } catch (err) {
-    return NextResponse.json(
-      {
-        error: "An internal server error occurred.",
-      },
-      {
-        status: 500,
-      },
-    );
+    return NextResponse.json({ error: "An internal server error occurred." }, { status: 500 });
   }
 };

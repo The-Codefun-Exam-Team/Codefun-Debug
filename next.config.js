@@ -1,9 +1,7 @@
 // @ts-check
 /* eslint-disable tsdoc/syntax */
 /** @typedef {(config?: import("next").NextConfig | undefined) => import("next").NextConfig} NextConfigPlugin */
-import withBundleAnalyzerInit from "@next/bundle-analyzer";
-
-const withBundleAnalyzer = withBundleAnalyzerInit({
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 
@@ -13,24 +11,13 @@ const nextConfig = {
   swcMinify: true,
   output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   basePath: "/beta",
-  experimental: {
-    appDir: true,
-    extensionAlias: {
-      ".js": [".js", ".jsx", ".ts", ".tsx"],
-    },
-  },
   modularizeImports: {
-    "@components/index.(js|ts)": {
-      transform: "@components/{{member}}",
+    "@/components/?(((\\w*)?/?)*)": {
+      transform: "@/components/{{ matches.[1] }}/{{member}}",
       preventFullImport: true,
       skipDefaultConversion: true,
     },
-    "@schemas/index.(js|ts)": {
-      transform: "@schemas/{{member}}",
-      preventFullImport: true,
-      skipDefaultConversion: true,
-    },
-    "@utils/?(((\\w*)?/?)*)/index.(js|ts)": {
+    "@utils/?(((\\w*)?/?)*)": {
       transform: "@utils/{{ matches.[1] }}/{{member}}",
       preventFullImport: true,
       skipDefaultConversion: true,
@@ -49,4 +36,4 @@ const plugins = [withBundleAnalyzer];
  */
 const nextComposePlugins = () => plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
 
-export default nextComposePlugins;
+module.exports = nextComposePlugins;
