@@ -13,7 +13,6 @@ export const metadata: Metadata = {
     template: "%s - Codefun Debug",
     default: "Codefun Debug",
   },
-  icons: "/beta/favicon.ico",
 };
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
