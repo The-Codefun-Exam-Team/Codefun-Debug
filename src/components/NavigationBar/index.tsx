@@ -9,7 +9,7 @@ export const NavigationBar = () => (
       <Link href="/" className="mx-4 text-3xl font-semibold">
         Codefun Debug
       </Link>
-      <OptionsList></OptionsList>
+      <OptionsList />
     </div>
     <DropDown />
   </nav>

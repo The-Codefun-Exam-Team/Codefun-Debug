@@ -10,6 +10,7 @@ import { UserInfo } from "./UserInfo";
 // Well it do look suck but it fucking works
 export const DropDown = () => {
   const { user, loading } = useAppSelector((state) => state.user);
+  const isAuth = user !== null;
   return (
     <>
       <input type="checkbox" id="dropdown-check" className="peer hidden" />
@@ -38,9 +39,13 @@ export const DropDown = () => {
           loading || !user ? "peer-checked:h-[212px]" : "peer-checked:h-[252px]",
         )}
       >
-        {OPTION_LIST.map(([title, url]) => (
-          <Link href={url} key={title}>
-            {title}
+        {OPTION_LIST.map(([title, url, subtitle]) => (
+          <Link
+            as={isAuth || title === "About" ? url : "/login"}
+            href={isAuth || title === "About" ? url : "/login"}
+            key={title}
+          >
+            {subtitle}
           </Link>
         ))}
         <UserInfo />
