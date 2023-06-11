@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { DropDown } from "./DropDown";
-import { NavLinks } from "./NavLinks";
+import { OptionsList } from "./OptionsList";
 
 export const NavigationBar = () => (
   <nav className="sticky inset-x-0 top-0 z-50 m-0 block h-auto justify-between border-b-2 border-gray-400 bg-slate-200 py-3 text-slate-700">
@@ -9,12 +9,7 @@ export const NavigationBar = () => (
       <Link href="/" className="mx-4 text-3xl font-semibold">
         Codefun Debug
       </Link>
-      <div className="text-l my-auto hidden h-min justify-around gap-1 font-medium lg:flex">
-        <NavLinks keyPrefix="navbar-link-large" />
-      </div>
-      <div className="text-l my-auto hidden h-min justify-around divide-x-2 font-medium md:flex lg:hidden [&>*]:px-4">
-        <NavLinks keyPrefix="navbar-link-small-mid" />
-      </div>
+      <OptionsList></OptionsList>
     </div>
     <DropDown />
   </nav>
