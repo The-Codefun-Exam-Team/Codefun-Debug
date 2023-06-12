@@ -39,13 +39,13 @@ export const DropDown = () => {
           loading || !user ? "peer-checked:h-[212px]" : "peer-checked:h-[252px]",
         )}
       >
-        {OPTION_LIST.map(([title, url, subtitle]) => (
+        {OPTION_LIST.map(([title, url]) => (
           <Link
             as={isAuth || title === "About" ? url : "/login"}
             href={isAuth || title === "About" ? url : "/login"}
             key={title}
           >
-            {subtitle}
+            {title}
           </Link>
         ))}
         <UserInfo />
