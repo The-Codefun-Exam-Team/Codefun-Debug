@@ -8,7 +8,7 @@ export const ClientLogic = () => {
   useEffect(() => {
     // We only want to run this on client.
     store.dispatch(async (dispatch) => {
-      const res = await fetch("/beta/api/auth/authenticate", {
+      const res = await fetch("https://debug.codefun.vn/beta/api/auth/authenticate", {
         method: "GET",
       });
       if (!res.ok) {
