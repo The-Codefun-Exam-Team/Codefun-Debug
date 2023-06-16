@@ -1,6 +1,6 @@
 "use client";
-import type { MonacoDiffEditor } from "@monaco-editor/react";
-import { DiffEditor } from "@monaco-editor/react";
+import { clsx } from "@utils/shared";
+import type monacoEditor from "monaco-editor";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -10,12 +10,45 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
   // TODO: add options for editor
   const router = useRouter();
   const [submitError, setSubmitError] = useState("");
-  const editorRef = useRef<MonacoDiffEditor | null>(null);
-  const handleEditorDidMount = (editor: MonacoDiffEditor) => {
-    editorRef.current = editor;
-  };
-  const submitCode = async (): Promise<void> => {
-    const code = editorRef.current?.getModifiedEditor().getValue();
+  const editorRef = useRef<monacoEditor.editor.IStandaloneDiffEditor | null>(null);
+  const editorDomRef = useRef<HTMLDivElement | null>(null);
+  const [renderingEditor, setRenderingEditor] = useState(true);
+  useEffect(() => {
+    let ignore = false;
+    const loadEditor = async () => {
+      if (!ignore) {
+        const monaco = await import("monaco-editor");
+        if (editorDomRef.current) {
+          editorRef.current?.dispose();
+
+          editorRef.current = monaco.editor.createDiffEditor(editorDomRef.current, {
+            automaticLayout: true,
+            renderSideBySide: false,
+            renderOverviewRuler: false,
+            scrollBeyondLastColumn: 10,
+          });
+
+          monaco.editor.setTheme("light");
+
+          editorRef.current.setModel({
+            original: monaco.editor.createModel(data.code, "cpp"),
+            modified: monaco.editor.createModel(data.code, "cpp"),
+          });
+        }
+        setRenderingEditor(false);
+      }
+    };
+    loadEditor();
+    return () => {
+      ignore = true;
+    };
+  }, [data.code]);
+  const submitCode = async () => {
+    if (!editorRef.current) {
+      setSubmitError("Editor hasn't been loaded.");
+      return;
+    }
+    const code = editorRef.current.getModifiedEditor().getValue();
     const res = await fetch("/beta/api/dbg/submit", {
       method: "POST",
       headers: {
@@ -27,14 +60,13 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
       }),
     });
     if (!res.ok) {
-      setSubmitError("Error submitting code, please try again after 1'30''");
+      setSubmitError("Error submitting code, please try again after 1'30'.");
       return;
     }
     const data = (await res.json()) as {
       id: string;
     };
     router.push(`/submissions/${data.id}`);
-    return;
   };
   useEffect(() => {
     const removeErrorTimer = setTimeout(() => setSubmitError(""), 5000);
@@ -47,28 +79,19 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
     <>
       <div className="mx-auto mt-10 w-[95%] md:mt-0">
         <div className="absolute"></div>
-        <DiffEditor
-          className="border-2 border-slate-600"
-          height="80vh"
-          width={"100%"}
-          language="cpp"
-          theme="light"
-          options={{
-            renderSideBySide: false,
-            renderOverviewRuler: false,
-            scrollBeyondLastColumn: 10,
-          }}
-          original={data.code}
-          modified={data.code}
-          onMount={handleEditorDidMount}
-          loading={
+        <section className="relative flex h-[80vh] w-full">
+          {renderingEditor && (
             <div className="flex h-[80vh] w-full border-2 border-slate-600">
               <div className="grow-1 w-full self-center text-center text-2xl text-slate-700">
                 Loading editor
               </div>
             </div>
-          }
-        />
+          )}
+          <div
+            className={clsx("w-full border-2 border-slate-600", renderingEditor && "hidden")}
+            ref={editorDomRef}
+          />
+        </section>
       </div>
       {/* TODO: Add transition (if possible) */}
       {submitError ? (
