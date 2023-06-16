@@ -45,7 +45,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
   }, [data.code]);
   const submitCode = async () => {
     if (!editorRef.current) {
-      // handle editor not loaded.
+      setSubmitError("Editor hasn't been loaded.");
       return;
     }
     const code = editorRef.current.getModifiedEditor().getValue();
@@ -60,7 +60,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
       }),
     });
     if (!res.ok) {
-      setSubmitError("Error submitting code, please try again after 1'30''");
+      setSubmitError("Error submitting code, please try again after 1'30'.");
       return;
     }
     const data = (await res.json()) as {
