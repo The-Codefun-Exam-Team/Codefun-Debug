@@ -19,7 +19,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
   };
 
   return (
-    <div className="flex h-full w-full flex-col gap-2 first-letter:h-full">
+    <div className="flex h-full w-full flex-col gap-2">
       <button
         className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
         disabled={buttonWaiting}
