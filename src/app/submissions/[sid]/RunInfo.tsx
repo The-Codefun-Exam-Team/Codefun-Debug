@@ -48,19 +48,20 @@ export const RunInfo = ({
   runData: RunData;
   submissionData: SubmissionsData;
 }) => {
-  const verdictNode = runData.judge?.tests.map(({ verdict, runningTime, message }, idx) => (
-    <TestResult
-      key={`runinfo-${sid}-result-number-${idx}`}
-      count={idx + 1}
-      verdict={verdict}
-      runningTime={runningTime}
-      message={message}
-    />
-  )) ?? <Heading type="title">Unknown verdict, try refreshing.</Heading>;
-  return (
-    <RunInfoClient
-      code={runData.code}
-      verdictNode={runData.result === "Q" ? <InQueue /> : verdictNode}
-    />
-  );
+  const verdictNode =
+    runData.result === "Q" ? (
+      <InQueue />
+    ) : (
+      runData.judge?.tests.map(({ verdict, runningTime, message }, idx) => (
+        <TestResult
+          key={`runinfo-${sid}-result-number-${idx}`}
+          count={idx + 1}
+          verdict={verdict}
+          runningTime={runningTime}
+          message={message}
+        />
+      )) ?? <Heading type="title">Unknown verdict, try refreshing.</Heading>
+    );
+
+  return <RunInfoClient code={runData.code} verdictNode={verdictNode} />;
 };
