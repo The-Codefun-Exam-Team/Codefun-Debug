@@ -1,7 +1,11 @@
 "use client";
 import { Transition } from "@headlessui/react";
+import { useInterval } from "@hooks/useInterval";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { startTransition, useEffect, useState } from "react";
+
+import { Heading } from "@/components";
 
 import { CodeView } from "./CodeView";
 
@@ -15,7 +19,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
   };
 
   return (
-    <div className="flex h-full w-full flex-col gap-2">
+    <div className="flex h-full w-full flex-col gap-2 first-letter:h-full">
       <button
         className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
         disabled={buttonWaiting}
@@ -30,6 +34,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
       </button>
       <Transition
         show={!isTransition && view === "verdict"}
+        className="relative h-full w-full"
         afterEnter={() => setButtonWaiting(false)}
         enter="ease-out duration-150"
         enterFrom="opacity-0"
@@ -39,7 +44,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
         leaveTo="opacity-0"
         afterLeave={toggleView}
       >
-        {verdictNode}
+        <div className="absolute left-0 top-0 h-full w-full overflow-y-auto">{verdictNode}</div>
       </Transition>
       <Transition
         show={!isTransition && view === "editor"}
@@ -58,4 +63,21 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
       </Transition>
     </div>
   );
+};
+
+export const InQueue = () => {
+  const router = useRouter();
+
+  const refresh = () => {
+    startTransition(router.refresh);
+  };
+
+  const { start, stop } = useInterval(refresh, 5000);
+
+  useEffect(() => {
+    start();
+    return stop;
+  }, [start, stop]);
+
+  return <Heading type="title">In queue...</Heading>;
 };

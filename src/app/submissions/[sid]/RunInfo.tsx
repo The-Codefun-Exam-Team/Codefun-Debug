@@ -1,7 +1,8 @@
+import { Heading } from "@/components";
 import { RESULTS_DICT } from "@/shared/constants";
 import type { Results } from "@/shared/types";
 
-import { RunInfoClient } from "./RunInfoClient";
+import { InQueue, RunInfoClient } from "./RunInfoClient";
 import type { RunData, SubmissionsData } from "./types";
 
 const verdictColor = (verdict: Results) => {
@@ -46,17 +47,20 @@ export const RunInfo = ({
   sid: number;
   runData: RunData;
   submissionData: SubmissionsData;
-}) => (
-  <RunInfoClient
-    code={runData.code}
-    verdictNode={runData.judge.tests.map(({ verdict, runningTime, message }, idx) => (
-      <TestResult
-        key={`runinfo-${sid}-result-number-${idx}`}
-        count={idx + 1}
-        verdict={verdict}
-        runningTime={runningTime}
-        message={message}
-      />
-    ))}
-  />
-);
+}) => {
+  const verdictNode = runData.judge?.tests.map(({ verdict, runningTime, message }, idx) => (
+    <TestResult
+      key={`runinfo-${sid}-result-number-${idx}`}
+      count={idx + 1}
+      verdict={verdict}
+      runningTime={runningTime}
+      message={message}
+    />
+  )) ?? <Heading type="title">Unknown verdict, try refreshing.</Heading>;
+  return (
+    <RunInfoClient
+      code={runData.code}
+      verdictNode={runData.result === "Q" ? <InQueue /> : verdictNode}
+    />
+  );
+};
