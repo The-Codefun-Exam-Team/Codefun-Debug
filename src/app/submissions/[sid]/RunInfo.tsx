@@ -47,7 +47,7 @@ export const RunInfo = ({
   runData: RunData;
   submissionData: SubmissionsData;
 }) => (
-  <div className="h-full w-full ">
+  <div className="h-full w-full">
     <RunInfoClient
       code={runData.code}
       verdictNode={runData.judge.tests.map(({ verdict, runningTime, message }, idx) => (
