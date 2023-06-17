@@ -3,7 +3,7 @@ import { clsx } from "@utils/shared";
 import type monacoEditor from "monaco-editor";
 import { useEffect, useRef, useState } from "react";
 
-export const CodeView = ({ show, code }: { show: boolean; code: string }) => {
+export const CodeView = ({ code }: { code: string }) => {
   const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
   const editorDomRef = useRef<HTMLDivElement | null>(null);
   const [renderingEditor, setRenderingEditor] = useState(true);
@@ -44,11 +44,11 @@ export const CodeView = ({ show, code }: { show: boolean; code: string }) => {
   }, [renderingEditor, code]);
 
   return (
-    <section className={clsx("flex h-[70vh] w-full border-2 border-slate-600", !show && "hidden")}>
+    <section className="flex w-full self-stretch border-2 border-slate-600">
       {renderingEditor && (
         <div className="flex h-full w-full">
           <div className="grow-1 w-full self-center text-center text-2xl text-slate-700">
-            Loading..
+            Loading...
           </div>
         </div>
       )}

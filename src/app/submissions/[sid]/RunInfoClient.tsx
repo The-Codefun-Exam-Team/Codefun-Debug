@@ -7,8 +7,8 @@ import { CodeView } from "./CodeView";
 
 export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode: ReactNode }) => {
   const [isTransition, setIsTransition] = useState(false);
+  const [buttonWaiting, setButtonWaiting] = useState(false);
   const [view, setView] = useState<"verdict" | "editor">("verdict");
-  const [waiting, setWaiting] = useState(false);
   const toggleView = () => {
     setView((_view) => (_view === "verdict" ? "editor" : "verdict"));
     setIsTransition(false);
@@ -17,11 +17,11 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
   return (
     <div className="flex h-full w-full flex-col gap-2">
       <button
-        className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700"
+        className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
+        disabled={buttonWaiting}
         onClick={() => {
-          if (!waiting) {
-            setWaiting(true);
-            setTimeout(() => setWaiting(false), 500);
+          if (!buttonWaiting) {
+            setButtonWaiting(true);
             setIsTransition(true);
           }
         }}
@@ -30,6 +30,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
       </button>
       <Transition
         show={!isTransition && view === "verdict"}
+        afterEnter={() => setButtonWaiting(false)}
         enter="ease-out duration-150"
         enterFrom="opacity-0"
         enterTo="opacity-100"
@@ -38,11 +39,13 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
         leaveTo="opacity-0"
         afterLeave={toggleView}
       >
-        {view === "verdict" && verdictNode}
+        {verdictNode}
       </Transition>
       <Transition
         show={!isTransition && view === "editor"}
         unmount={false}
+        afterEnter={() => setButtonWaiting(false)}
+        className="flex h-full w-full"
         enter="ease-out duration-150"
         enterFrom="opacity-0"
         enterTo="opacity-100"
@@ -51,7 +54,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
         leaveTo="opacity-0"
         afterLeave={toggleView}
       >
-        <CodeView code={code} show={view === "editor"} />
+        <CodeView code={code} />
       </Transition>
     </div>
   );

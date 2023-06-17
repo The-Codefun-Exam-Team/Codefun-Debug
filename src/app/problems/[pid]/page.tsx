@@ -33,11 +33,11 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
   const data = (await res.json()) as ProblemData;
 
   return (
-    <div className="flex h-full w-full flex-col items-start gap-5 self-center p-2 md:flex-row md:p-10">
+    <div className="flex w-full flex-col items-start gap-5 self-stretch p-2 md:flex-row md:p-10">
       <div className="h-auto w-full md:flex-[1_1_0]">
         <InfoTable data={data} pid={pid} />
       </div>
-      <div className="relative flex h-min w-full flex-col md:flex-[2_2_0]">
+      <div className="flex h-full w-full md:flex-[2_2_0]">
         <UserEditor data={data} pid={pid} />
       </div>
     </div>
