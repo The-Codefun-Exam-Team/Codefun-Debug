@@ -22,12 +22,9 @@ async function getRankings(group: string, page: string, limit: string, token: st
   return rankingData;
 }
 
-async function getGroups(token: string) {
-  const requestGroups = await fetch("https://debug.codefun.vn/api/groups", {
+async function getGroups() {
+  const requestGroups = await fetch("https://codefun.vn/api/groups", {
     method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   });
   const groupsData = (await requestGroups.json()) as Array<string>;
   return groupsData;
@@ -42,10 +39,18 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
   }
 
   // fetch data
-  const rankingData = getRankings(group, page, "50", token.value);
-  const groupsData = getGroups(token.value);
+  const rankingRequest = getRankings(group, page, "50", token.value);
+  const groupsRequest = getGroups();
 
-  return <div>Rankings page</div>;
+  const [rankingData, groupsData] = await Promise.all([rankingRequest, groupsRequest]);
+
+  console.log(groupsData);
+
+  return (
+    <div className="mx-auto flex w-full max-w-4xl flex-col p-4 md:p-10">
+      <div className="h-10 w-full bg-red-500"></div>
+    </div>
+  );
 };
 
 export default Page;
