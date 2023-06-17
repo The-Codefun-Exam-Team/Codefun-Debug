@@ -8,6 +8,7 @@ import { CodeView } from "./CodeView";
 export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode: ReactNode }) => {
   const [isTransition, setIsTransition] = useState(false);
   const [view, setView] = useState<"verdict" | "editor">("verdict");
+  const [waiting, setWaiting] = useState(false);
   const toggleView = () => {
     setView((_view) => (_view === "verdict" ? "editor" : "verdict"));
     setIsTransition(false);
@@ -17,7 +18,13 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
     <div className="flex h-full w-full flex-col gap-2">
       <button
         className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700"
-        onClick={() => setIsTransition(true)}
+        onClick={() => {
+          if (!waiting) {
+            setWaiting(true);
+            setTimeout(() => setWaiting(false), 500);
+            setIsTransition(true);
+          }
+        }}
       >
         {view === "verdict" ? "Your verdict" : "Your code"}
       </button>
