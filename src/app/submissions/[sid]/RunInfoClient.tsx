@@ -68,9 +68,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
 export const InQueue = () => {
   const router = useRouter();
 
-  const refresh = () => {
-    startTransition(router.refresh);
-  };
+  const refresh = () => startTransition(router.refresh);
 
   const { start, stop } = useInterval(refresh, 5000);
 
