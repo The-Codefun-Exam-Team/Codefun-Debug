@@ -47,18 +47,16 @@ export const RunInfo = ({
   runData: RunData;
   submissionData: SubmissionsData;
 }) => (
-  <div className="h-full w-full">
-    <RunInfoClient
-      code={runData.code}
-      verdictNode={runData.judge.tests.map(({ verdict, runningTime, message }, idx) => (
-        <TestResult
-          key={`runinfo-${sid}-result-number-${idx}`}
-          count={idx + 1}
-          verdict={verdict}
-          runningTime={runningTime}
-          message={message}
-        />
-      ))}
-    />
-  </div>
+  <RunInfoClient
+    code={runData.code}
+    verdictNode={runData.judge.tests.map(({ verdict, runningTime, message }, idx) => (
+      <TestResult
+        key={`runinfo-${sid}-result-number-${idx}`}
+        count={idx + 1}
+        verdict={verdict}
+        runningTime={runningTime}
+        message={message}
+      />
+    ))}
+  />
 );

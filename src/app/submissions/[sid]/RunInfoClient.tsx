@@ -45,6 +45,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
         show={!isTransition && view === "editor"}
         unmount={false}
         afterEnter={() => setButtonWaiting(false)}
+        className="flex h-full w-full"
         enter="ease-out duration-150"
         enterFrom="opacity-0"
         enterTo="opacity-100"

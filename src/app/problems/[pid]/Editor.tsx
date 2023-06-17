@@ -85,35 +85,31 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
   return (
     // TODO: Add difference box
     // TODO: support for python problems and more
-    <>
-      <div>
-        <section className="flex h-[80vh] w-full flex-col border-2 border-slate-600">
-          {renderingEditor && (
-            <div className="flex h-full w-full">
-              <div className="grow-1 w-full self-center text-center text-2xl text-slate-700">
-                Loading editor...
-              </div>
-            </div>
-          )}
-          <div className={clsx("h-full w-full", renderingEditor && "hidden")} ref={editorDomRef} />
-          {/* TODO: Add transition (if possible) */}
-          <div className="absolute bottom-3 flex w-full justify-center">
-            {submitError ? (
-              <div className="rounded-sm border-2 border-red-200 bg-red-100 px-4 py-1 text-red-800">
-                {submitError}
-              </div>
-            ) : (
-              <button
-                type="submit"
-                onClick={submitCode}
-                className="border-2 border-slate-600 bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-400 active:shadow-inner"
-              >
-                Submit
-              </button>
-            )}
+    <section className="relative w-full self-stretch border-2 border-slate-600">
+      {renderingEditor && (
+        <div className="flex h-full w-full">
+          <div className="grow-1 w-full self-center text-center text-2xl text-slate-700">
+            Loading editor...
           </div>
-        </section>
+        </div>
+      )}
+      <div className={clsx("h-full w-full", renderingEditor && "hidden")} ref={editorDomRef} />
+      {/* TODO: Add transition (if possible) */}
+      <div className="absolute bottom-3 flex w-full justify-center">
+        {submitError ? (
+          <div className="rounded-sm border-2 border-red-200 bg-red-100 px-4 py-1 text-red-800">
+            {submitError}
+          </div>
+        ) : (
+          <button
+            type="submit"
+            onClick={submitCode}
+            className="border-2 border-slate-600 bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-400 active:shadow-inner"
+          >
+            Submit
+          </button>
+        )}
       </div>
-    </>
+    </section>
   );
 };

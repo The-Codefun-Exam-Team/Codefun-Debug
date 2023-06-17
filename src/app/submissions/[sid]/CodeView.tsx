@@ -44,7 +44,7 @@ export const CodeView = ({ code }: { code: string }) => {
   }, [renderingEditor, code]);
 
   return (
-    <section className="flex h-[70vh] w-full border-2 border-slate-600">
+    <section className="flex w-full self-stretch border-2 border-slate-600">
       {renderingEditor && (
         <div className="flex h-full w-full">
           <div className="grow-1 w-full self-center text-center text-2xl text-slate-700">
