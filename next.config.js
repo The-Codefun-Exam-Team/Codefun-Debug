@@ -24,6 +24,7 @@ const nextConfig = {
       skipDefaultConversion: true,
     },
   },
+  transpilePackages: ["monaco-editor"],
   /**
    * @param {import("webpack").Configuration} config
    */
@@ -34,6 +35,7 @@ const nextConfig = {
     const monacoPlugin = new MonacoWebpackPlugin({
       languages: ["cpp", "python", "java"],
       filename: "static/[name].worker.js",
+      globalAPI: false,
     });
     // @ts-ignore Monaco's webpack types don't seem to be compatible.
     config.plugins.push(monacoPlugin);

@@ -1,6 +1,6 @@
-import type { Results } from "@/shared/types";
+import type { Results } from "./types";
 
-export const ResultsDict: Record<Results, string> = {
+export const RESULTS_DICT: Record<Results, string> = {
   AC: "Accepted",
   SS: "Partially Scored",
   WA: "Wrong Answer",
