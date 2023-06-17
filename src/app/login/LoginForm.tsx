@@ -6,13 +6,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Box, Heading } from "@/components";
+import { Box, Heading, Input } from "@/components";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
   const {
     handleSubmit,
     register,
@@ -24,6 +25,7 @@ export const LoginForm = () => {
     },
   });
   const submitForm = handleSubmit(async (data) => {
+    setLoading(true);
     const res = await fetch("/beta/api/auth/login", {
       method: "POST",
       headers: {
@@ -39,6 +41,7 @@ export const LoginForm = () => {
     } else {
       setServerError(resBody.error);
     }
+    setLoading(false);
   });
   useEffect(() => {
     const removeErrorTimer = setTimeout(() => setServerError(""), 5000);
@@ -57,54 +60,34 @@ export const LoginForm = () => {
             </p>
           )}
           <div>
-            <label
-              htmlFor="login-form-username-input"
-              id="login-form-username-input-label"
-              className="block text-sm font-medium text-gray-900"
-            >
-              Username
-            </label>
-            <input
-              type="text"
-              className="w-full border-2 border-slate-600 p-2.5 text-lg"
-              placeholder="Username"
+            <Input
               id="login-form-username-input"
-              aria-invalid={!!errors.username}
-              aria-describedby="login-form-username-error-text"
+              label="Username"
+              placeholder="Username"
+              error={!!errors.username}
+              errorTextId="login-form-username-error-text"
+              errorText={errors.username?.message}
+              disabled={loading}
               {...register("username")}
             />
-            {errors?.username?.message && (
-              <p className="text-red-500" id="login-form-username-error-text">
-                {errors.username.message}
-              </p>
-            )}
           </div>
           <div>
-            <label
-              htmlFor="login-form-password-input"
-              id="login-form-password-input-label"
-              className="block text-sm font-medium text-gray-900"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              className="w-full border-2 border-slate-600 p-2.5 text-lg"
-              placeholder="Password"
+            <Input
               id="login-form-password-input"
-              aria-invalid={!!errors.password}
-              aria-describedby="login-form-password-error-text"
+              type="password"
+              label="Password"
+              placeholder="Password"
+              error={!!errors.password}
+              errorTextId="login-form-password-error-text"
+              errorText={errors.password?.message}
+              disabled={loading}
               {...register("password")}
             />
-            {errors?.password?.message && (
-              <p className="text-red-500" id="login-form-password-error-text">
-                {errors.password.message}
-              </p>
-            )}
           </div>
           <button
             type="submit"
-            className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700"
+            className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
+            disabled={loading}
           >
             Login
           </button>
