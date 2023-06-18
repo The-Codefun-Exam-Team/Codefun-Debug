@@ -13,7 +13,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
             <th className="font-semibold">Rank</th>
           </tr>
         </thead>
-        <tbody className="h-fit divide-y-2 divide-gray-200 border-2 border-gray-100">
+        <tbody className="h-fit divide-y-2 divide-gray-200">
           {rankingData.map((user, index) => {
             return (
               <tr key={`ranking-page-${page}-user-${user.id}`} className="h-10 even:bg-gray-100 ">
