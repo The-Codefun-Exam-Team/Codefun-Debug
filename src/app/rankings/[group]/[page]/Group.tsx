@@ -1,3 +1,4 @@
+import { clsx } from "@utils/shared";
 import Link from "next/link";
 
 import type { GroupsData } from "./types";
@@ -7,12 +8,11 @@ import type { GroupsData } from "./types";
 // };
 
 export const Group = ({ group, groupsData }: { group: string; groupsData: GroupsData }) => {
-  let name = groupsData.find((element) => {
+  groupsData.push({ id: 0, name: "Global" });
+  groupsData.reverse();
+  const name = groupsData.find((element) => {
     return element.id.toString() === group;
   })?.name;
-  if (name === undefined) {
-    name = "Global";
-  }
 
   return (
     <>
@@ -23,7 +23,7 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
         peer-checked:[&>svg]:rotate-0
       "
       >
-        <div className="mx-auto h-full w-min  p-2 text-xl">{name}</div>
+        <div className="mx-auto h-full w-fit  p-2 text-xl">{name}</div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -39,11 +39,25 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
       <div className="relative h-fit w-full peer-checked:[&>:nth-child(1)]:h-96 peer-checked:[&>:nth-child(1)]:opacity-100">
         {/* Switch from reltive to absolute depending on desired behaviour */}
         <div
-          className="absolute z-10 h-0 w-full border-2 border-black
-          bg-white opacity-0 transition-all duration-300 ease-out"
-        ></div>
+          className="absolute z-10 h-0 w-full overflow-y-auto border-2 border-black bg-white opacity-0
+           transition-all duration-300 ease-out"
+        >
+          {groupsData.map(({ id, name }) => {
+            return (
+              <Link
+                href={`/rankings/${id}/1`}
+                key={id}
+                className={clsx(
+                  "block h-12 w-full p-2 text-center text-lg hover:bg-gray-200",
+                  id.toString() === group && "bg-gray-200",
+                )}
+              >
+                {name}
+              </Link>
+            );
+          })}
+        </div>
       </div>
-      <h1>fjklsdj;lfkdskl</h1>
     </>
   );
 };

@@ -25,6 +25,9 @@ async function getRankings(group: string, page: string, limit: string, token: st
     return null;
   }
   const rankingData = (await requestRanking.json()) as RankingsData;
+  if (rankingData === null) {
+    return [];
+  }
   return rankingData;
 }
 
@@ -60,7 +63,7 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
   }
 
   return (
-    <div className="relative mx-auto flex w-full max-w-4xl flex-col p-4 md:p-10">
+    <div className="relative mx-auto flex w-full max-w-5xl flex-col p-4 md:p-10">
       <Group group={group} groupsData={groupsData}></Group>
     </div>
   );
