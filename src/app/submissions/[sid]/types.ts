@@ -23,7 +23,7 @@ export interface RunData {
   submitTime: number;
   isScored: boolean;
   score: number;
-  judge: {
+  judge?: {
     correct: number;
     total: number;
     tests: Array<{
