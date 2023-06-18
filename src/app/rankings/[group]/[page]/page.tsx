@@ -19,6 +19,11 @@ async function getRankings(group: string, page: string, limit: string, token: st
       },
     },
   );
+  if (!requestRanking.ok) {
+    const error = await requestRanking.json();
+    console.log("Error fetching rankings", requestRanking.status, requestRanking.statusText, error);
+    return null;
+  }
   const rankingData = (await requestRanking.json()) as RankingsData;
   return rankingData;
 }
@@ -27,6 +32,11 @@ async function getGroups() {
   const requestGroups = await fetch("https://codefun.vn/api/groups", {
     method: "GET",
   });
+  if (!requestGroups.ok) {
+    const error = await requestGroups.json();
+    console.log("Error fetching groups", requestGroups.status, requestGroups.statusText, error);
+    return null;
+  }
   const groupsData = (await requestGroups.json()).data as GroupsData;
   return groupsData;
 }
@@ -44,6 +54,10 @@ const Page = async ({ params: { group, page } }: { params: { group: number; page
   const groupsRequest = getGroups();
 
   const [rankingData, groupsData] = await Promise.all([rankingRequest, groupsRequest]);
+
+  if (rankingData === null || groupsData === null) {
+    return <div>Cannot fetch data</div>;
+  }
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col p-4 md:p-10">
