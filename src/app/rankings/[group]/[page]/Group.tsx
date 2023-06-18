@@ -3,10 +3,6 @@ import Link from "next/link";
 
 import type { GroupsData } from "./types";
 
-// const DropDown = ({ groupsData }: { groupsData: GroupData }) => {
-
-// };
-
 export const Group = ({ group, groupsData }: { group: string; groupsData: GroupsData }) => {
   groupsData.push({ id: 0, name: "Global" });
   groupsData.reverse();
@@ -30,7 +26,7 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          className="absolute right-0 h-full w-12 rotate-180 transition-all duration-300"
+          className="absolute right-2 h-full w-10 rotate-180 transition-all duration-300"
         >
           <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
         </svg>
@@ -46,7 +42,7 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
             return (
               <Link
                 href={`/rankings/${id}/1`}
-                key={id}
+                key={`group-${global}-id-${id}`}
                 className={clsx(
                   "block h-12 w-full p-2 text-center text-lg hover:bg-gray-200",
                   id.toString() === group && "bg-gray-200",
