@@ -4,6 +4,7 @@
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
@@ -22,6 +23,24 @@ const nextConfig = {
       preventFullImport: true,
       skipDefaultConversion: true,
     },
+  },
+  transpilePackages: ["monaco-editor"],
+  /**
+   * @param {import("webpack").Configuration} config
+   */
+  webpack(config) {
+    if (!config.plugins) {
+      config.plugins = [];
+    }
+    const monacoPlugin = new MonacoWebpackPlugin({
+      languages: ["cpp", "python", "java"],
+      filename: "static/[name].worker.js",
+      globalAPI: false,
+    });
+    // @ts-ignore Monaco's webpack types don't seem to be compatible.
+    config.plugins.push(monacoPlugin);
+
+    return config;
   },
 };
 
