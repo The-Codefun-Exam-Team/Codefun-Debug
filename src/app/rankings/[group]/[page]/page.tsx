@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { Group } from "./Group";
+import { Pagination } from "./Pagination";
 import { RankTable } from "./RankTable";
 import type { GroupsData, RankingsData } from "./types";
 
@@ -45,7 +46,7 @@ async function getGroups() {
   return groupsData;
 }
 
-const Page = async ({ params: { group, page } }: { params: { group: string; page: number } }) => {
+const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
   // get token from cookie
   const cookieStore = cookies();
   const token = cookieStore.get("token");
@@ -64,10 +65,13 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
   }
 
   return (
-    <div className="relative mx-auto flex w-full max-w-5xl flex-col p-4 md:p-10">
-      <Group group={group} groupsData={groupsData}></Group>
-      <RankTable rankingData={rankingData} page={page}></RankTable>
-    </div>
+    <>
+      <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
+        <Group group={group} groupsData={groupsData}></Group>
+        <RankTable rankingData={rankingData} page={page}></RankTable>
+      </div>
+      <Pagination group={group} page={page}></Pagination>
+    </>
   );
 };
 

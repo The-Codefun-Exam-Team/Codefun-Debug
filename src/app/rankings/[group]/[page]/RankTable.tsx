@@ -1,6 +1,6 @@
 import type { RankingsData } from "./types";
 
-export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; page: number }) => {
+export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; page: string }) => {
   return (
     <div className="w-full">
       <table className="mt-8 w-full table-auto">
@@ -17,7 +17,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
           {rankingData.map((user, index) => {
             return (
               <tr key={`ranking-page-${page}-user-${user.id}`} className="h-10 even:bg-gray-100 ">
-                <td className="text-center">{(page - 1) * 50 + index + 1}</td>
+                <td className="text-center">{(parseInt(page) - 1) * 50 + index + 1}</td>
                 <td className="text-center">{user.username}</td>
                 <td className="text-center">{user.name}</td>
                 <td className="text-center">{Math.round(user.points * 100) / 100}</td>
