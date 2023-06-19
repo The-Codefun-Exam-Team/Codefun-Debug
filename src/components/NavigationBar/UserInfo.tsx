@@ -16,7 +16,11 @@ export const UserInfo = () => {
     return <div>Loading...</div>;
   }
   if (!user) {
-    return <Link href="/login">Login</Link>;
+    return (
+      <Link href="/login" as="/login" prefetch={false}>
+        Login
+      </Link>
+    );
   }
   return (
     <>
