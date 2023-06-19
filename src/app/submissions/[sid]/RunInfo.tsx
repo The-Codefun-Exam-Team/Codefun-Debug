@@ -40,6 +40,15 @@ const TestResult = ({
   </div>
 );
 
+const CompileError = ({ error }: { error: string }) => {
+  return (
+    <>
+      <Heading type="title">Compile Error</Heading>
+      <div className="my-2 w-full">{error}</div>
+    </>
+  );
+};
+
 export const RunInfo = ({
   sid,
   runData,
@@ -51,6 +60,8 @@ export const RunInfo = ({
   const verdictNode =
     runData.result === "Q" ? (
       <InQueue />
+    ) : typeof runData.judge === "string" ? (
+      <CompileError error={runData.judge} />
     ) : (
       runData.judge?.tests.map(({ verdict, runningTime, message }, idx) => (
         <TestResult
