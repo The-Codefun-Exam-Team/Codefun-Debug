@@ -40,6 +40,24 @@ const TestResult = ({
   </div>
 );
 
+const JudgeError = ({ type, error }: { type: Results; error: string }) => {
+  let judgeErrorMessage: string;
+  switch (type) {
+    case "CE":
+      judgeErrorMessage = "Compile Error";
+      break;
+    default:
+      judgeErrorMessage = "Unknown Judge Error";
+      break;
+  }
+  return (
+    <>
+      <Heading type="title">{judgeErrorMessage}</Heading>
+      <pre className="my-6 break-words border-2 border-slate-600 p-2 text-[.9em]">{error}</pre>
+    </>
+  );
+};
+
 export const RunInfo = ({
   sid,
   runData,
@@ -51,6 +69,8 @@ export const RunInfo = ({
   const verdictNode =
     runData.result === "Q" ? (
       <InQueue />
+    ) : typeof runData.judge === "string" ? (
+      <JudgeError type={runData.result} error={runData.judge} />
     ) : (
       runData.judge?.tests.map(({ verdict, runningTime, message }, idx) => (
         <TestResult

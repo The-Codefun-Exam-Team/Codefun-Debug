@@ -23,14 +23,16 @@ export interface RunData {
   submitTime: number;
   isScored: boolean;
   score: number;
-  judge?: {
-    correct: number;
-    total: number;
-    tests: {
-      verdict: Results;
-      runningTime: number;
-      message: string;
-    }[];
-  };
+  judge?:
+    | {
+        correct: number;
+        total: number;
+        tests: {
+          verdict: Results;
+          runningTime: number;
+          message: string;
+        }[];
+      }
+    | string;
   code: string;
 }
