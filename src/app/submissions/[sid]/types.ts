@@ -27,11 +27,11 @@ export interface RunData {
     | {
         correct: number;
         total: number;
-        tests: Array<{
+        tests: {
           verdict: Results;
           runningTime: number;
           message: string;
-        }>;
+        }[];
       }
     | string;
   code: string;
