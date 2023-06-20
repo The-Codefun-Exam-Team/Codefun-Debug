@@ -9,6 +9,6 @@ interface UserRanking {
   points: number;
 }
 
-export type RankingsData = Array<UserRanking>;
+export type RankingsData = UserRanking[];
 
-export type GroupsData = Array<{ id: number; name: string }>;
+export type GroupsData = { id: number; name: string }[];
