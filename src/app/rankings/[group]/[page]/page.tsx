@@ -39,6 +39,7 @@ const getRankings = async (
     );
     return null;
   }
+
   return (await requestRanking.json()) ?? [];
 };
 
@@ -51,7 +52,10 @@ const getGroups = async (): Promise<GroupsData | null> => {
     console.error("Failed to fetch groups", requestGroups.status, requestGroups.statusText, error);
     return null;
   }
-  return (await requestGroups.json()).data;
+  const res: GroupsData = (await requestGroups.json()).data ?? [];
+  res.push({ id: 0, name: "Global" });
+  res.reverse();
+  return res;
 };
 
 const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
@@ -61,10 +65,10 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
     redirect(`/login?prev=${encodeURIComponent(`/rankings/${group}/${page}`)}`);
   }
 
-  const rankingRequest = getRankings(group.toString(), page.toString(), "50", token.value);
-  const groupsRequest = getGroups();
-
-  const [rankingData, groupsData] = await Promise.all([rankingRequest, groupsRequest]);
+  const [rankingData, groupsData] = await Promise.all([
+    getRankings(group.toString(), page.toString(), "50", token.value),
+    getGroups(),
+  ]);
 
   if (!groupsData || !rankingData) {
     return (
