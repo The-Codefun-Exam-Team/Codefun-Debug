@@ -3,11 +3,11 @@ import type { Languages, Results } from "@/shared/types";
 interface Judge {
   correct: number;
   total: number;
-  tests: Array<{
+  tests: {
     verdict: Results;
     runningTime: number;
     message: string;
-  }>;
+  }[];
 }
 
 export interface ProblemData {
