@@ -1,11 +1,8 @@
-"use client";
-import { useAppSelector } from "@redux/hooks";
 import { clsx } from "@utils/shared";
 
 import { NavLinks } from "./NavLinks";
 
 export const DropDown = () => {
-  const { user, loading } = useAppSelector((state) => state.user);
   return (
     <>
       <input type="checkbox" id="dropdown-check" className="peer hidden" />
@@ -28,10 +25,10 @@ export const DropDown = () => {
       </label>
       <div
         className={clsx(
-          "flex h-0 w-full origin-top scale-y-0 flex-col opacity-0 transition-all duration-300",
-          "peer-checked:scale-y-100 peer-checked:opacity-100 md:hidden",
-          "md:peer-checked:hidden [&>*]:cursor-pointer [&>*]:py-2 [&>*]:pl-10 [&>*]:font-medium [&>:nth-child(1)]:mt-3",
-          loading || !user ? "peer-checked:h-[92px]" : "peer-checked:h-[252px]",
+          "flex w-full origin-top flex-col overflow-hidden transition-all duration-300 ease-in-out",
+          "md:hidden md:peer-checked:hidden",
+          "[&>*]:cursor-pointer [&>*]:py-2 [&>*]:pl-10 [&>*]:font-medium [&>:nth-child(1)]:mt-3",
+          "max-h-0 peer-checked:max-h-96",
         )}
       >
         <NavLinks keyPrefix="navbar-dropdown" />

@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 import { Box, Heading } from "@/components";
 
@@ -17,16 +15,12 @@ const getRankings = async (
   group: string,
   page: string,
   limit: string,
-  token: string,
 ): Promise<RankingsData | null> => {
   const bodyData = { group, pageid: page, limit };
   const requestRanking = await fetch(
     `https://debug.codefun.vn/api/rankings?${new URLSearchParams(bodyData).toString()}`,
     {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     },
   );
   if (!requestRanking.ok) {
@@ -55,13 +49,7 @@ const getGroups = async (): Promise<GroupsData | null> => {
 };
 
 const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
-  const cookieStore = cookies();
-  const token = cookieStore.get("token");
-  if (!token) {
-    redirect(`/login?prev=${encodeURIComponent(`/rankings/${group}/${page}`)}`);
-  }
-
-  const rankingRequest = getRankings(group.toString(), page.toString(), "50", token.value);
+  const rankingRequest = getRankings(group.toString(), page.toString(), "50");
   const groupsRequest = getGroups();
 
   const [rankingData, groupsData] = await Promise.all([rankingRequest, groupsRequest]);
