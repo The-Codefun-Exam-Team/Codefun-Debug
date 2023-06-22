@@ -1,10 +1,27 @@
 import { clsx } from "@utils/shared";
+import Image from "next/image";
 
+import { Heading } from "@/components";
+
+import EmptyPage from "./empty-page.png";
 import type { RankingsData } from "./types";
 
 const RANK_TABLE_DIST = [1, 2, 5, 1, 1] as const;
 
 export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; page: string }) => {
+  if (rankingData.length === 0) {
+    return (
+      <div className="h-full w-full">
+        <Heading type="title-large">Noone here!</Heading>
+        <Heading type="title">If you belong to this group, be the first to submit!</Heading>
+        <div className="h-full w-full py-3">
+          <div className="relative h-full w-full">
+            <Image src={EmptyPage} alt="" fill className="object-fill" />
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <table className="mt-8 w-full table-fixed">
       <thead>

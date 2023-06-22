@@ -13,7 +13,7 @@ export interface NavLinksProps {
 }
 
 const navButtonClassName =
-  "rounded-md px-4 py-2 transition-colors duration-100 flex items-center sm:justify-center hover:bg-gray-300";
+  "rounded-md px-4 py-2 transition-colors duration-100 items-center flex hover:bg-gray-300";
 
 const NavLink = ({ href, className, ...rest }: ComponentPropsWithoutRef<typeof Link>) => (
   <Link href={href} className={navButtonClassName} {...rest} />
