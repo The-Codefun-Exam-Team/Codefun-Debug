@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const { searchParams, pathname } = request.nextUrl;
 
   const unauthenticatedOnlyPrefixes = ["/login"] as const;
-  const authenticatedOnlyPrefixes = ["/problems", "/submissions", "/rankings"] as const;
+  const authenticatedOnlyPrefixes = ["/problems"] as const;
 
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const redirectTo = decodeURIComponent(searchParams.get("prev") ?? "%2Fbeta");
@@ -28,5 +28,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/problems/:path*", "/submissions/:path*", "/rankings/:path*", "/login"],
+  matcher: ["/problems/:path*", "/login"],
 };

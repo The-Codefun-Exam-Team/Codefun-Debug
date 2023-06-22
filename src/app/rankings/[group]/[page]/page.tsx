@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 import { Box, Heading } from "@/components";
 
@@ -17,16 +15,12 @@ const getRankings = async (
   group: string,
   page: string,
   limit: string,
-  token: string,
 ): Promise<RankingsData | null> => {
   const bodyData = { group, pageid: page, limit };
   const requestRanking = await fetch(
     `https://debug.codefun.vn/api/rankings?${new URLSearchParams(bodyData).toString()}`,
     {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     },
   );
   if (!requestRanking.ok) {
@@ -59,14 +53,8 @@ const getGroups = async (): Promise<GroupsData | null> => {
 };
 
 const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
-  const cookieStore = cookies();
-  const token = cookieStore.get("token");
-  if (!token) {
-    redirect(`/login?prev=${encodeURIComponent(`/rankings/${group}/${page}`)}`);
-  }
-
   const [rankingData, groupsData] = await Promise.all([
-    getRankings(group.toString(), page.toString(), "50", token.value),
+    getRankings(group.toString(), page.toString(), "50"),
     getGroups(),
   ]);
 
@@ -84,10 +72,10 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
   return (
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
-        <Group group={group} groupsData={groupsData}></Group>
-        <RankTable rankingData={rankingData} page={page}></RankTable>
+        <Group group={group} groupsData={groupsData} />
+        <RankTable rankingData={rankingData} page={page} />
       </div>
-      <Pagination group={group} page={page}></Pagination>
+      <Pagination group={group} page={page} />
     </>
   );
 };
