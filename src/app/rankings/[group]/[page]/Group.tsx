@@ -4,11 +4,7 @@ import Link from "next/link";
 import type { GroupsData } from "./types";
 
 export const Group = ({ group, groupsData }: { group: string; groupsData: GroupsData }) => {
-  groupsData.push({ id: 0, name: "Global" });
-  groupsData.reverse();
-  const name = groupsData.find((element) => {
-    return element.id.toString() === group;
-  })?.name;
+  const currentGroupName = groupsData.find((element) => element.id.toString() === group)?.name;
 
   return (
     <>
@@ -20,7 +16,7 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
           "peer-checked:[&>svg]:rotate-0",
         )}
       >
-        <div className="mx-auto h-full w-fit  p-2 text-xl">{name}</div>
+        <div className="mx-auto h-full w-fit p-2 text-xl">{currentGroupName}</div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -47,7 +43,7 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
           {groupsData.map(({ id, name }) => (
             <Link
               href={`/rankings/${id}/1`}
-              key={`group-${global}-id-${id}`}
+              key={`rankings-groups-list-group-${id}`}
               className={clsx(
                 "block h-12 w-full p-2 text-center text-lg",
                 id + "" === group ? "bg-gray-200" : "hover:bg-gray-200",
