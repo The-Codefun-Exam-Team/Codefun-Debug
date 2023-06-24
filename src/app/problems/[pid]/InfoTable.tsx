@@ -39,8 +39,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                 className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-bold text-green-600"
                 colSpan={2}
               >
-                {" "}
-                Accepted{" "}
+                Accepted
               </th>
             )}
           </tr>
@@ -51,11 +50,16 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
               className="divide-y-2 divide-slate-300 rounded-md border-[2px] border-slate-300 text-left text-lg font-semibold text-slate-700
             [&>div]:p-2 "
             >
-              <div className="h-fit">Problem ID: {pid}</div>
+              <div className="h-fit">Problem: {pid}</div>
               <div className="h-fit">
                 Statement:{" "}
                 {
-                  <Link target="_blank" href={`https://codefun.vn/problems/${data.problem.id}`}>
+                  <Link
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    href={`https://codefun.vn/problems/${data.problem.id}`}
+                    className="font-bold text-blue-600 underline hover:font-semibold hover:text-blue-500"
+                  >
                     {data.problem.id}
                   </Link>
                 }
@@ -83,11 +87,11 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                   </svg>
                 </label>
                 <ul className="max-h-0 list-inside list-disc overflow-hidden transition-all duration-300 ease-in-out peer-checked:max-h-40 [&>li]:py-1 [&>li]:pl-3">
-                  {verdicts.AC > 0 && <li className="text-green-600">AC x{verdicts.AC}</li>}
-                  {verdicts.WA > 0 && <li className="text-red-600">WA x{verdicts.WA}</li>}
-                  {verdicts.MLE > 0 && <li className="text-gray-600">MLE x{verdicts.MLE}</li>}
-                  {verdicts.TLE > 0 && <li className="text-yellow-600">TLE x{verdicts.TLE}</li>}
-                  {verdicts.RTE > 0 && <li className="text-blue-600">RTE x{verdicts.RTE}</li>}
+                  {verdicts.AC > 0 && <li className="text-green-600">AC x {verdicts.AC}</li>}
+                  {verdicts.WA > 0 && <li className="text-red-600">WA x {verdicts.WA}</li>}
+                  {verdicts.MLE > 0 && <li className="text-gray-600">MLE x {verdicts.MLE}</li>}
+                  {verdicts.TLE > 0 && <li className="text-yellow-600">TLE x {verdicts.TLE}</li>}
+                  {verdicts.RTE > 0 && <li className="text-blue-600">RTE x {verdicts.RTE}</li>}
                 </ul>
               </div>
             </td>
