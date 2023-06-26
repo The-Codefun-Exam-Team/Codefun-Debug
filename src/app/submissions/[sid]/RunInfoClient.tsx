@@ -21,7 +21,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
   return (
     <div className="flex h-full w-full flex-col gap-2">
       <button
-        className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
+        className="rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
         disabled={buttonWaiting}
         onClick={() => {
           if (!buttonWaiting) {
@@ -44,7 +44,9 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
         leaveTo="opacity-0"
         afterLeave={toggleView}
       >
-        <div className="absolute left-0 top-0 h-full w-full overflow-y-auto">{verdictNode}</div>
+        <div className="absolute left-0 top-0 h-full w-full overflow-y-auto rounded-md">
+          {verdictNode}
+        </div>
       </Transition>
       <Transition
         show={!isTransition && view === "editor"}

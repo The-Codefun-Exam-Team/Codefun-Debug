@@ -133,7 +133,7 @@ export const InfoTable = ({
                 />
               </svg>{" "}
               Submit time: {"  "}
-              {subDate.toLocaleString("vi-VN")}
+              <div className="inline-block">{subDate.toLocaleString("vi-VN")}</div>
             </div>
           </td>
         </tr>
