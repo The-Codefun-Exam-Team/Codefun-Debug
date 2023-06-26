@@ -32,7 +32,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                 className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600"
                 colSpan={2}
               >
-                Highest score: {data.best_score}{" "}
+                Highest score: {data.best_score}
               </th>
             ) : (
               <th
