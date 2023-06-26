@@ -48,7 +48,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
           <tr>
             <td
               className="divide-y-2 divide-slate-300 rounded-md border-[2px] border-slate-300 text-left text-lg font-semibold text-slate-700
-            [&>div]:p-2 [&>div]:sm:text-center"
+            [&>div]:p-2 [&>div]:text-center"
             >
               <div className="h-fit">
                 <svg
@@ -137,7 +137,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                     />
                   </svg>
                 </label>
-                <ul className="max-h-0 list-inside list-disc overflow-hidden transition-all duration-300 ease-in-out peer-checked:max-h-40 sm:list-none [&>li]:py-1 [&>li]:pl-3 [&>li]:sm:pl-0">
+                <ul className="max-h-0 overflow-hidden transition-all duration-200 ease-linear peer-checked:max-h-40 [&>li]:py-1 [&>li]:pl-3">
                   {verdicts.AC > 0 && <li className="text-green-600">AC x {verdicts.AC}</li>}
                   {verdicts.WA > 0 && <li className="text-red-600">WA x {verdicts.WA}</li>}
                   {verdicts.MLE > 0 && <li className="text-gray-600">MLE x {verdicts.MLE}</li>}
