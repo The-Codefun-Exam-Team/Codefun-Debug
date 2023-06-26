@@ -25,10 +25,10 @@ export const DropDown = () => {
       </label>
       <div
         className={clsx(
-          "flex w-full origin-top flex-col overflow-hidden px-3 transition-all duration-200 ease-linear",
+          "flex w-full origin-top flex-col overflow-hidden px-3 transition-all duration-150 ease-linear",
           "md:hidden md:peer-checked:hidden",
           "[&>*]:cursor-pointer [&>*]:py-2 [&>*]:pl-10 [&>*]:font-medium [&>:first-child]:mt-3",
-          "max-h-0 peer-checked:max-h-[252px] peer-checked:overflow-y-auto",
+          "max-h-0 peer-checked:max-h-[min(252px,70vh)] peer-checked:overflow-y-auto",
         )}
       >
         <NavLinks keyPrefix="navbar-dropdown" />
