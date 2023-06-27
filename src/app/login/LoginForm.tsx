@@ -86,7 +86,7 @@ export const LoginForm = () => {
           </div>
           <button
             type="submit"
-            className="border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
+            className="rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
             disabled={loading}
           >
             Login
