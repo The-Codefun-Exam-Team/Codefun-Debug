@@ -1,6 +1,8 @@
 import { clsx } from "@utils/shared";
 import Link from "next/link";
 
+import { ChevronDownIcon } from "@/shared/icon";
+
 import type { GroupsData } from "./types";
 
 export const Group = ({ group, groupsData }: { group: string; groupsData: GroupsData }) => {
@@ -17,16 +19,7 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
         )}
       >
         <div className="mx-auto h-full w-fit p-2 text-xl">{currentGroupName}</div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="absolute right-2 h-full w-10 rotate-180 transition-all duration-300"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-        </svg>
+        <ChevronDownIcon className="absolute right-2 h-full w-10 rotate-180 transition-all duration-300" />
       </label>
       <div
         className={clsx(
