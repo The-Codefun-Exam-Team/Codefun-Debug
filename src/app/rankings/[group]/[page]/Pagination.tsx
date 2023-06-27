@@ -10,7 +10,7 @@ export const Pagination = ({ group, page }: { group: string; page: string }) => 
         <div className="flex w-full justify-between">
           <Link
             href={`/rankings/${group}/${prevPage}`}
-            className="h-fit w-fit border-2 border-black bg-white px-3 py-1 opacity-70 transition-opacity hover:opacity-50"
+            className="h-fit w-fit rounded-md border-2 border-black bg-white px-3 py-1 opacity-70 transition-opacity hover:opacity-50"
             aria-label={`Move to page ${prevPage}.`}
           >
             <svg
@@ -31,7 +31,7 @@ export const Pagination = ({ group, page }: { group: string; page: string }) => 
           </Link>
           <Link
             href={`/rankings/${group}/${nextPage}`}
-            className="h-fit w-fit border-2 border-black bg-white px-3 py-1 opacity-70 transition-opacity hover:opacity-50"
+            className="h-fit w-fit rounded-md border-2 border-black bg-white px-3 py-1 opacity-70 transition-opacity hover:opacity-50"
             aria-label={`Move to page ${nextPage}.`}
           >
             <svg
