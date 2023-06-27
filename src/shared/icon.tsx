@@ -138,6 +138,7 @@ export const ChevronDownIcon = ({ className }: { className?: string }) => (
     strokeWidth="1.5"
     stroke="currentColor"
     className={className}
+    aria-hidden
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
   </svg>
