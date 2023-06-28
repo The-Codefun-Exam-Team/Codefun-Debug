@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { Heading } from "@/components";
 import type { UserRanking } from "@/shared/types";
 
 export const metadata: Metadata = {
