@@ -23,7 +23,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
     );
   }
   return (
-    <table className="mt-8 w-full table-fixed">
+    <table className="mt-8 w-full table-fixed border-separate border-spacing-0 rounded-lg border-2">
       <thead>
         <tr
           className={clsx(
@@ -53,7 +53,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
           <tr
             key={`ranking-page-${page}-user-${user.id}`}
             className={clsx(
-              "h-10 text-center even:bg-gray-100",
+              "group h-10 text-center even:bg-gray-100",
               "[&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words",
             )}
           >
