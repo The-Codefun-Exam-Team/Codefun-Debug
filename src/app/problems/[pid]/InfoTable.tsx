@@ -62,10 +62,12 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
               )}
             >
               <div>
+
                 <BookOpenIcon className="relative bottom-[3px] inline h-6 w-6" /> Problem: {pid}
               </div>
               <div>
                 <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
+
                 {
                   <Link
                     target="_blank"
@@ -90,8 +92,11 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                   )}
                   htmlFor="verdict-dropdown"
                 >
+
                   <CheckIcon className="relative bottom-[3px] inline h-6 w-6" /> Verdicts
                   <SolidDownIcon className="relative bottom-[1px] ml-1 inline-block h-5 w-5 transition-all duration-300" />
+
+
                 </label>
                 <div className="invisible max-h-0 overflow-y-hidden transition-all duration-200 ease-linear peer-checked:visible peer-checked:max-h-40">
                   <ul className="mt-3 list-inside list-disc">
