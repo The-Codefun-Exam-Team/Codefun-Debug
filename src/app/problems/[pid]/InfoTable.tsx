@@ -7,7 +7,7 @@ import {
   DocumentTextIcon,
   LanguageIcon,
   SolidDownIcon,
-} from "@/shared/icon";
+} from "@/components/icon";
 import type { Results } from "@/shared/types";
 
 import type { ProblemData } from "./types";

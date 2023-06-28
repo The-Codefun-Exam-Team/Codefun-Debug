@@ -23,7 +23,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
     );
   }
   return (
-    <table className="mt-8 w-full table-fixed border-separate border-spacing-0">
+    <table className="mt-8 w-full table-fixed border-separate border-spacing-0 rounded-lg border-2">
       <thead>
         <tr
           className={clsx(
@@ -31,7 +31,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
             "[&>th>div]:overflow-hidden [&>th>div]:text-ellipsis [&>th>div]:break-words [&>th>div]:p-3",
           )}
         >
-          <th colSpan={RANK_TABLE_DIST[0]} className="rounded-tl-md">
+          <th colSpan={RANK_TABLE_DIST[0]}>
             <div>#</div>
           </th>
           <th colSpan={RANK_TABLE_DIST[1]}>
@@ -43,7 +43,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
           <th colSpan={RANK_TABLE_DIST[3]}>
             <div>Points</div>
           </th>
-          <th colSpan={RANK_TABLE_DIST[4]} className="rounded-tr-md">
+          <th colSpan={RANK_TABLE_DIST[4]}>
             <div>Rank</div>
           </th>
         </tr>
@@ -57,7 +57,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
               "[&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words",
             )}
           >
-            <td colSpan={RANK_TABLE_DIST[0]} className="group-last:rounded-bl-md">
+            <td colSpan={RANK_TABLE_DIST[0]}>
               <div>{(+page - 1) * 50 + index + 1}</div>
             </td>
             <td colSpan={RANK_TABLE_DIST[1]}>
@@ -69,7 +69,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
             <td colSpan={RANK_TABLE_DIST[3]}>
               <div>{Math.round(user.points * 100) / 100}</div>
             </td>
-            <td colSpan={RANK_TABLE_DIST[4]} className="group-last:rounded-br-md">
+            <td colSpan={RANK_TABLE_DIST[4]}>
               <div>{user.rank}</div>
             </td>
           </tr>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ClockIcon, DocumentTextIcon, LanguageIcon, LinkIcon, UserIcon } from "@/shared/icon";
+import { ClockIcon, DocumentTextIcon, LanguageIcon, LinkIcon, UserIcon } from "@/components/icon";
 
 import type { RunData, SubmissionsData } from "./types";
 
