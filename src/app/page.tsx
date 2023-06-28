@@ -23,7 +23,7 @@ const Announcements = () => {
         <div className="w-full border-b-2 border-slate-700">
           <h1 className="m-5 mt-2 block text-3xl">Announcements</h1>
         </div>
-        <div>Welcom to Codefun Debug</div>
+        <div className="p-2">Welcom to Codefun Debug</div>
       </div>
     </>
   );
@@ -67,10 +67,10 @@ const Page = async () => {
   rankingData = rankingData.slice(0, 10);
   return (
     <div className="flex w-full flex-col items-start gap-5 self-stretch p-2 md:flex-row md:p-10">
-      <div className="h-auto w-full md:flex-[1_1_0]">
+      <div className="h-auto w-full md:flex-[1_1_60px]">
         <Rankings data={rankingData} />
       </div>
-      <div className="flex h-full w-full md:flex-[2_2_0]">
+      <div className="flex h-full w-full md:flex-[3_3_0]">
         <Announcements />
       </div>
     </div>
