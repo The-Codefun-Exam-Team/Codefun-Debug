@@ -3,7 +3,7 @@ import type { NavLinkEntry } from "./types";
 export const SIGNED_IN_LINKS = [
   {
     title: "Problems",
-    url: "/problems/1",
+    url: "/problems/all/1",
   },
   {
     title: "Submissions",
@@ -22,7 +22,7 @@ export const SIGNED_IN_LINKS = [
 export const SIGNED_OUT_LINKS = [
   {
     title: "Problems",
-    url: "/problems/1",
+    url: "/problems/all/1",
   },
   {
     title: "Submissions",

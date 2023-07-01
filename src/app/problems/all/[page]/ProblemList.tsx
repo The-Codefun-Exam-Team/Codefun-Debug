@@ -38,7 +38,7 @@ export const ProblemsList = ({ data, page }: { data: DebugProblemBrief[]; page: 
                 <div className="flex w-fit">
                   <Link
                     className="ml-auto h-full text-left font-semibold text-blue-500 hover:font-bold hover:text-blue-600 hover:underline"
-                    href={`/problem/${problem.code}`}
+                    href={`/problems/${problem.code}`}
                   >
                     {problem.name}
                   </Link>

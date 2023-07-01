@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { CreateProblem } from "./CreateProblem";
+import { Pagination } from "./Pagination";
 import { ProblemsList } from "./ProblemList";
 import type { DebugProblemBrief } from "./types";
 
@@ -9,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 const getProblemsList = async (token: string, page: string, limit: string, language: string) => {
-  const bodyData = { page, limit, language };
+  const bodyData = { page_id: page, limit, language };
   const res = await fetch(
     `https://debug.codefun.vn/v3/api/problems?${new URLSearchParams(bodyData)}`,
     {
@@ -40,12 +42,15 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
   if (problemsList === null) {
     return <h1>Error fetching problems list</h1>;
   }
-  console.log(problemsList);
 
   return (
-    <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 md:p-10">
-      <ProblemsList data={problemsList} page={page} />
-    </div>
+    <>
+      <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 md:p-10">
+        <CreateProblem />
+        <ProblemsList data={problemsList} page={page} />
+      </div>
+      <Pagination page={page} />
+    </>
   );
 };
 
