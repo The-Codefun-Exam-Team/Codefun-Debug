@@ -43,7 +43,7 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
   console.log(problemsList);
 
   return (
-    <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
+    <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 md:p-10">
       <ProblemsList data={problemsList} page={page} />
     </div>
   );
