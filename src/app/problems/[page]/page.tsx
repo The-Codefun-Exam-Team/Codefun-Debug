@@ -26,17 +26,17 @@ const getProblemsList = async (token: string, page: string, limit: string, langu
     return null;
   }
   console.log(`https://debug.codefun.vn/v3/api/problems?${new URLSearchParams(bodyData)}`);
-  return (await res.json()) as DebugProblemBrief[];
+  return (await res.json()).data as DebugProblemBrief[];
 };
 
-const Page = async () => {
+const Page = async ({ params: { page } }: { params: { page: string } }) => {
   const cookieStore = cookies();
   const token = cookieStore.get("token");
   if (!token) {
     return <h1>Not logged in</h1>;
   }
 
-  const problemsList = await getProblemsList(token.value, "1", "10", "cpp");
+  const problemsList = await getProblemsList(token.value, page, "50", "");
   if (problemsList === null) {
     return <h1>Error fetching problems list</h1>;
   }
@@ -44,7 +44,7 @@ const Page = async () => {
 
   return (
     <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
-      <ProblemsList data={problemsList} />
+      <ProblemsList data={problemsList} page={page} />
     </div>
   );
 };
