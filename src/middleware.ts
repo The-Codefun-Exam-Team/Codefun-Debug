@@ -28,5 +28,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/problem/:path*", "/login"],
+  matcher: ["/problems/:path?", "/login"],
 };
