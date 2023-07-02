@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Box, Heading } from "@/components";
 import type { UserRanking } from "@/shared/types";
 
 import { Announcements } from "./Announcements";
@@ -16,7 +17,7 @@ const getTopTenGlobal = async () => {
     },
   });
   if (!res.ok) {
-    console.log("Fetch ranking failed in /");
+    console.log("Failed to fetch rankings in homepage.");
     return null;
   }
   const data = (await res.json()) as UserRanking[];
@@ -26,7 +27,14 @@ const getTopTenGlobal = async () => {
 const Page = async () => {
   const rankingData = (await getTopTenGlobal())?.slice(0, 10);
   if (!rankingData) {
-    return <h1>Fail to fetch data</h1>;
+    return (
+      <div className="flex h-full w-full items-center justify-center self-center">
+        <Box>
+          <Heading type="display">Failed to fetch homepage.</Heading>
+          <Heading type="title">Maybe try refreshing?</Heading>
+        </Box>
+      </div>
+    );
   }
   return (
     <div className="flex w-full flex-col items-start gap-5 self-stretch p-2 md:flex-row md:p-10">

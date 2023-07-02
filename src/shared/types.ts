@@ -9,12 +9,13 @@ export interface UserData {
     id: number;
     name: string;
   };
-  status: string;
+  status: "Admin" | "Banned" | "Normal";
   avatar: string;
   score: number;
   solved: number;
   ratio: number;
   email: string;
+  rank: number;
 }
 
 export interface UserRanking {
