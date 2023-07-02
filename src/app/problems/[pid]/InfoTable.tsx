@@ -70,10 +70,10 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                   <Link
                     target="_blank"
                     rel="noreferrer noopener"
-                    href={`https://codefun.vn/problems/${data.problem.id}`}
+                    href={`https://codefun.vn/problems/${data.problem.pid}`}
                     className="font-bold text-blue-600 underline hover:font-semibold hover:text-blue-500"
                   >
-                    {data.problem.id}
+                    {data.problem.pid}
                   </Link>
                 }
               </div>
@@ -94,7 +94,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                   <SolidDownIcon className="relative bottom-[1px] ml-1 inline-block h-5 w-5 transition-all duration-300" />
                 </label>
                 <div className="invisible max-h-0 overflow-y-hidden transition-all duration-200 ease-linear peer-checked:visible peer-checked:max-h-40">
-                  <ul className="mt-3 list-inside list-disc">
+                  <ul className="ml-3 mt-3 list-inside list-disc">
                     {verdicts.AC > 0 && <li className="text-green-600">{verdicts.AC} AC</li>}
                     {verdicts.WA > 0 && <li className="text-red-600">{verdicts.WA} WA</li>}
                     {verdicts.MLE > 0 && <li className="text-gray-600">{verdicts.MLE} MLE</li>}

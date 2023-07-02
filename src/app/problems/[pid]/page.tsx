@@ -16,7 +16,7 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
     return <h1>Not logged in</h1>;
   }
 
-  const res = await fetch(`https://debug.codefun.vn/api/problems/${pid}`, {
+  const res = await fetch(`https://debug.codefun.vn/v3/api/problems/${pid}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token.value}`,
@@ -30,8 +30,8 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
     return <h1>An internal server error has occured</h1>;
   }
 
-  const data = (await res.json()) as ProblemData;
-
+  const data = (await res.json()).data as ProblemData;
+  console.log(data);
   return (
     <div className="flex w-full flex-col items-start gap-5 self-stretch p-2 md:flex-row md:p-10">
       <div className="h-auto w-full md:flex-[1_1_0]">
