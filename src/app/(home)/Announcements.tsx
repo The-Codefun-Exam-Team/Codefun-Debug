@@ -1,12 +1,12 @@
-export const Announcements = () => {
-  return (
-    <>
-      <div className="w-full">
-        <div className="w-full border-b-2 border-slate-700">
-          <h1 className="m-5 mt-2 block text-3xl">Announcements</h1>
-        </div>
-        <div className="p-2">Welcom to Codefun Debug</div>
-      </div>
-    </>
-  );
-};
+import { Heading } from "@/components";
+
+export const Announcements = () => (
+  <div className="w-full divide-y-2 divide-slate-700">
+    <div className="block p-5 pt-0">
+      <Heading type="display">Announcements</Heading>
+    </div>
+    <div className="p-2">
+      <Heading type="title-large">Welcome to Codefun Debug.</Heading>
+    </div>
+  </div>
+);

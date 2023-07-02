@@ -1,7 +1,8 @@
 {
-  "name": "next-app",
+  "name": "@codefun-exam/debug-frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "analyze": "cross-env ANALYZE=true pnpm build",
     "build": "next build",
@@ -29,6 +30,7 @@
     "react-redux": "8.0.7",
     "redux": "4.2.1",
     "server-only": "0.0.1",
+    "sharp": "0.32.1",
     "zod": "3.21.4"
   },
   "devDependencies": {
@@ -46,7 +48,6 @@
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-simple-import-sort": "10.0.0",
     "eslint-plugin-tailwindcss": "3.12.1",
-    "eslint-plugin-tsdoc": "0.2.17",
     "husky": "8.0.3",
     "lint-staged": "13.2.2",
     "npm-check-updates": "16.10.12",

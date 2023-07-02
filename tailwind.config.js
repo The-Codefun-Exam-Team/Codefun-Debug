@@ -1,6 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  plugins: ["tailwindcss,autoprefixer", require("@tailwindcss/typography")],
+import tailwindTypography from "@tailwindcss/typography";
+
+/** @type {import("tailwindcss").Config} */
+const tailwindConfig = {
+  plugins: [tailwindTypography],
   theme: {
     extend: {
       transitionTimingFunction: {
@@ -15,3 +17,5 @@ module.exports = {
   },
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
 };
+
+export default tailwindConfig;

@@ -1,10 +1,11 @@
 // @ts-check
-/* eslint-disable tsdoc/syntax */
 /** @typedef {(config?: import("next").NextConfig | undefined) => import("next").NextConfig} NextConfigPlugin */
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
+import withBundleAnalyzerInit from "@next/bundle-analyzer";
+import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
+
+const withBundleAnalyzer = withBundleAnalyzerInit({
   enabled: process.env.ANALYZE === "true",
 });
-const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
@@ -55,4 +56,4 @@ const plugins = [withBundleAnalyzer];
  */
 const nextComposePlugins = () => plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
 
-module.exports = nextComposePlugins;
+export default nextComposePlugins;
