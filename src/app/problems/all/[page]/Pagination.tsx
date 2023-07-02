@@ -11,14 +11,14 @@ export const Pagination = ({ page }: { page: string }) => {
       <div className="mx-auto h-fit w-full max-w-4xl p-4 md:px-10">
         <div className="flex w-full justify-between">
           <Link
-            href={`/problems/${prevPage}`}
+            href={`/problems/all/${prevPage}`}
             className="h-fit w-fit rounded-lg border-2 border-black bg-white px-3 py-1 opacity-70 transition-opacity hover:opacity-50"
             aria-label={`Move to page ${prevPage}.`}
           >
             <LeftArrowIcon className="h-10 w-10" />
           </Link>
           <Link
-            href={`/problems/${nextPage}`}
+            href={`/problems/all/${nextPage}`}
             className="h-fit w-fit rounded-lg border-2 border-black bg-white px-3 py-1 opacity-70 transition-opacity hover:opacity-50"
             aria-label={`Move to page ${nextPage}.`}
           >

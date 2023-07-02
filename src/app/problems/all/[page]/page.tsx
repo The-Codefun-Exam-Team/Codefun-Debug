@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+import { Box, Heading } from "@/components";
 
 import { CreateProblem } from "./CreateProblem";
 import { Pagination } from "./Pagination";
@@ -22,25 +25,32 @@ const getProblemsList = async (token: string, page: string, limit: string, langu
     },
   );
   if (!res.ok) {
-    console.log("Error fetching problems list");
     const error = await res.json();
-    console.log(error);
+    console.log("Error fetching problems list", error);
     return null;
   }
-  console.log(`https://debug.codefun.vn/v3/api/problems?${new URLSearchParams(bodyData)}`);
   return (await res.json()).data as DebugProblemBrief[];
 };
 
 const Page = async ({ params: { page } }: { params: { page: string } }) => {
   const cookieStore = cookies();
   const token = cookieStore.get("token");
+
   if (!token) {
-    return <h1>Not logged in</h1>;
+    redirect(`/beta/login?prev=${encodeURIComponent(`/problems/all/${page}`)}`);
   }
 
   const problemsList = await getProblemsList(token.value, page, "50", "");
-  if (problemsList === null) {
-    return <h1>Error fetching problems list</h1>;
+
+  if (!problemsList) {
+    return (
+      <div className="flex h-full w-full items-center justify-center self-center">
+        <Box>
+          <Heading type="display">Failed to fetch problems.</Heading>
+          <Heading type="title">Maybe try refreshing?</Heading>
+        </Box>
+      </div>
+    );
   }
 
   return (
