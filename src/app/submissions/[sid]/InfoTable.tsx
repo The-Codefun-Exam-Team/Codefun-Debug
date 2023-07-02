@@ -1,6 +1,13 @@
 import Link from "next/link";
 
-import { ClockIcon, DocumentTextIcon, LanguageIcon, LinkIcon, UserIcon } from "@/components/icon";
+import {
+  BookOpenIcon,
+  ClockIcon,
+  DocumentTextIcon,
+  LanguageIcon,
+  LinkIcon,
+  UserIcon,
+} from "@/components/icon";
 
 import type { RunData, SubmissionsData } from "./types";
 
@@ -46,6 +53,10 @@ export const InfoTable = ({
               <Link target="_blank" href={`https://codefun.vn/profile/${runData.owner.id}`}>
                 {runData.owner.name}
               </Link>
+            </div>
+            <div>
+              <BookOpenIcon className="relative bottom-[1px] inline h-6 w-6" /> Problem:{" "}
+              {submissionData.dpcode}
             </div>
             <div>
               <LinkIcon className="relative bottom-[3px] inline h-6 w-6" /> Submission ID: {sid}

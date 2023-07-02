@@ -38,6 +38,7 @@ const Page = async ({ params: { sid } }: { params: { sid: number } }) => {
     );
   }
   const submissionData = (await requestToDebug.json()).data as SubmissionsData;
+  console.log(submissionData satisfies SubmissionsData);
   const requestToCodefun = await fetch(`https://codefun.vn/api/submissions/${submissionData.rid}`, {
     method: "GET",
     headers: {

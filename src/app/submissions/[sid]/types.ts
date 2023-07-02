@@ -1,7 +1,7 @@
 import type { Languages, Results, UserData } from "@/shared/types";
 
 export interface SubmissionsData {
-  debug_problem_code: string;
+  dpcode: string;
   result: Results;
   score: number;
   rid: number;
