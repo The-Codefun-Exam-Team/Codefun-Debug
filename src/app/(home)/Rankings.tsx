@@ -1,11 +1,12 @@
+import { Heading } from "@/components";
 import type { UserRanking } from "@/shared/types";
 
 export const Rankings = async ({ data }: { data: UserRanking[] }) => (
-  <div className="h-auto overflow-hidden rounded-md border-2 border-gray-300">
-    <h2 className="border-b-[1px] bg-gray-300 p-3 text-left text-xl font-semibold text-slate-700">
-      Top users
-    </h2>
-    <table className="w-full border-spacing-y-4 px-2">
+  <div className="w-full overflow-x-auto rounded-md border-2 border-gray-300 bg-gray-300">
+    <div className="w-full border-b-[1px] p-3">
+      <Heading type="title-large">Top users</Heading>
+    </div>
+    <table className="w-full table-auto border-spacing-y-4 bg-white px-2">
       <thead>
         <tr className="[&>th]:border-b-2 [&>th]:p-2">
           <th className="text-right">#</th>
