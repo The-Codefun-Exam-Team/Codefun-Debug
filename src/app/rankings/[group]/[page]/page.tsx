@@ -18,6 +18,7 @@ const getRankings = async (
 ): Promise<RankingsData | null> => {
   const bodyData = { group, pageid: page, limit };
   const requestRanking = await fetch(
+    // TODO: migrate to api v2
     `https://debug.codefun.vn/api/rankings?${new URLSearchParams(bodyData).toString()}`,
     {
       method: "GET",
