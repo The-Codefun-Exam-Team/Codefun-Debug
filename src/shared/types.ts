@@ -17,3 +17,14 @@ export interface UserData {
   email: string;
   rank: number;
 }
+
+export interface UserRanking {
+  avatar: string;
+  group: number;
+  groupname: string;
+  id: number;
+  username: string;
+  name: string;
+  rank: number;
+  points: number;
+}

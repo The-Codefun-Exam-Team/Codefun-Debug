@@ -1,13 +1,6 @@
-interface UserRanking {
-  avatar: string;
-  group: number;
-  groupname: string;
-  id: number;
-  username: string;
-  name: string;
-  rank: number;
-  points: number;
-}
+import type { UserRanking } from "@/shared/types";
+
+export type { UserRanking };
 
 export type RankingsData = UserRanking[];
 
