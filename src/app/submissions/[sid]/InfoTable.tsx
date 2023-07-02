@@ -18,12 +18,12 @@ export const InfoTable = ({
     <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-600">
       <thead>
         <tr>
-          {submissionData.edit_score < 100 ? (
+          {submissionData.score < 100 ? (
             <th
               className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600"
               colSpan={2}
             >
-              Debug score: {submissionData.edit_score}
+              Debug score: {submissionData.score}
             </th>
           ) : (
             <th

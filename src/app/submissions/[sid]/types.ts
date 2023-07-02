@@ -2,11 +2,9 @@ import type { Languages, Results, UserData } from "@/shared/types";
 
 export interface SubmissionsData {
   debug_problem_code: string;
-  edit_result: number;
-  edit_score: number;
   result: Results;
   score: number;
-  codefun_id: number;
+  rid: number;
 }
 
 export interface RunData {
