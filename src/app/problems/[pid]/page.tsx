@@ -31,7 +31,6 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
   }
 
   const data = (await res.json()).data as ProblemData;
-  console.log(data);
   return (
     <div className="flex w-full flex-col items-start gap-5 self-stretch p-2 md:flex-row md:p-10">
       <div className="h-auto w-full md:flex-[1_1_0]">
