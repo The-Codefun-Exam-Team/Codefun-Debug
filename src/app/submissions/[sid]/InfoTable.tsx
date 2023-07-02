@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { ClockIcon, DocumentTextIcon, LanguageIcon, LinkIcon, UserIcon } from "@/components/icon";
+
 import type { RunData, SubmissionsData } from "./types";
 
 export const InfoTable = ({
@@ -13,61 +15,63 @@ export const InfoTable = ({
 }) => {
   const subDate = new Date(runData.submitTime * 1000);
   return (
-    <table className="w-full table-auto border-collapse self-start">
+    <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-600">
       <thead>
         <tr>
-          <th
-            className="border-2 border-slate-600 py-6 text-2xl font-semibold text-slate-700"
-            colSpan={2}
-          >
-            Debug score: {submissionData.edit_score}
-          </th>
+          {submissionData.edit_score < 100 ? (
+            <th
+              className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600"
+              colSpan={2}
+            >
+              Debug score: {submissionData.edit_score}
+            </th>
+          ) : (
+            <th
+              className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-bold text-green-600"
+              colSpan={2}
+            >
+              Accepted
+            </th>
+          )}
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            Owner
-          </th>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            <Link target="_blank" href={`https://codefun.vn/profile/${runData.owner.id}`}>
-              {runData.owner.name}
-            </Link>
-          </th>
-        </tr>
-        <tr>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            Submission ID
-          </th>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            {sid}
-          </th>
-        </tr>
-        <tr>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            Statement
-          </th>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            <Link target="_blank" href={"https://codefun.vn/problems/" + runData.problem.id}>
-              {runData.problem.id}
-            </Link>
-          </th>
-        </tr>
-        <tr>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            Language
-          </th>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            {runData.language}
-          </th>
-        </tr>
-        <tr>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            Submit time
-          </th>
-          <th className="border-2 border-slate-600 py-2 text-lg font-semibold text-slate-700">
-            {subDate.toLocaleString("vi-VN")}
-          </th>
+          <td
+            className="divide-y-2 divide-slate-300 rounded-md border-[2px] border-slate-300 text-left text-lg font-semibold text-slate-700
+            [&>div]:p-2 [&>div]:text-left"
+          >
+            <div>
+              <UserIcon className="relative bottom-[3px] inline h-6 w-6" /> Owner:{" "}
+              <Link target="_blank" href={`https://codefun.vn/profile/${runData.owner.id}`}>
+                {runData.owner.name}
+              </Link>
+            </div>
+            <div>
+              <LinkIcon className="relative bottom-[3px] inline h-6 w-6" /> Submission ID: {sid}
+            </div>
+            <div>
+              <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
+              {
+                <Link
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href={`https://codefun.vn/problems/${runData.problem.id}`}
+                  className="font-bold text-blue-600 underline hover:font-semibold hover:text-blue-500"
+                >
+                  {runData.problem.id}
+                </Link>
+              }
+            </div>
+            <div>
+              <LanguageIcon className="relative bottom-[3px] inline h-6 w-6" /> Language:{" "}
+              {runData.language}
+            </div>
+            <div>
+              <ClockIcon className="relative bottom-[3px] inline h-6 w-6" /> Submit time: {"  "}
+              <div className="inline-block">{subDate.toLocaleString("vi-VN")}</div>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

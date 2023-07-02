@@ -36,7 +36,7 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
       )}
       <input
         id={id}
-        className="w-full border-2 border-slate-600 p-2.5 text-lg transition-opacity disabled:opacity-50"
+        className="w-full rounded-md border-2 border-slate-600 p-2.5 text-lg transition-opacity disabled:opacity-50"
         aria-invalid={error}
         aria-describedby={errorTextId}
         ref={ref}
