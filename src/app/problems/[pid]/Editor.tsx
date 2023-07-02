@@ -50,7 +50,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
       editorRef.current.getOriginalEditor()?.setValue(data.codetext);
       editorRef.current.getModifiedEditor()?.setValue(data.codetext);
     }
-  }, [renderingEditor, data.code]);
+  }, [renderingEditor, data.codetext]);
 
   const submitCode = async () => {
     if (!editorRef.current) {
