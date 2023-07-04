@@ -9,7 +9,7 @@ export const CONTRIBUTORS = [
   },
   {
     name: "Trần Gia Huy",
-    github_username: "Unknown",
+    github_username: "Unknown15082",
     role: "Backend Developer and Database Admistrator",
     role_description: "",
   },
