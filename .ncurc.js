@@ -1,4 +1,3 @@
-/* eslint-disable tsdoc/syntax */
 // @ts-check
 /** @type {import("npm-check-updates").RunOptions} */
 module.exports = {

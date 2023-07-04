@@ -7,6 +7,7 @@ import type { ComponentPropsWithoutRef } from "react";
 import { useEffect, useState } from "react";
 
 import { SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
+import type { NavLinkEntry } from "./types";
 
 export interface NavLinksProps {
   keyPrefix: string;
@@ -75,7 +76,10 @@ const UserInfo = () => {
 
 export const NavLinks = ({ keyPrefix }: NavLinksProps) => {
   const { user, loading } = useAppSelector((state) => state.user);
-  const links = !loading ? (user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS) : [];
+  const links = [
+    { url: "/problems/all/1", title: "Problems" },
+    ...(!loading ? (user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS) : []),
+  ] satisfies NavLinkEntry[];
   return (
     <>
       {links.map(({ url, title }) => (

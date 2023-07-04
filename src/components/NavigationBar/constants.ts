@@ -2,10 +2,6 @@ import type { NavLinkEntry } from "./types";
 
 export const SIGNED_IN_LINKS = [
   {
-    title: "Problems",
-    url: "/problems",
-  },
-  {
     title: "Submissions",
     url: "/submissions",
   },

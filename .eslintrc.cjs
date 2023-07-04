@@ -1,4 +1,3 @@
-/* eslint-disable tsdoc/syntax */
 /** @type {import("@types/eslint").Linter.BaseConfig} */
 module.exports = {
   extends: [
@@ -12,7 +11,7 @@ module.exports = {
   parserOptions: {
     warnOnUnsupportedTypeScriptVersion: false,
   },
-  plugins: ["@typescript-eslint", "eslint-plugin-tsdoc", "simple-import-sort", "tailwindcss"],
+  plugins: ["@typescript-eslint", "simple-import-sort", "tailwindcss"],
   rules: {
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -26,6 +25,15 @@ module.exports = {
         argsIgnorePattern: "^_",
       },
     ],
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        types: {
+          Array: "Use T[] instead",
+        },
+        extendDefaults: true,
+      },
+    ],
     "import/no-extraneous-dependencies": [
       "error",
       { devDependencies: ["**/*.config.{cjs,mjs,js,ts}"] },
@@ -37,7 +45,6 @@ module.exports = {
     "simple-import-sort/exports": "warn",
     "tailwindcss/no-custom-classname": "off",
     "tailwindcss/classnames-order": "off",
-    "tsdoc/syntax": "warn",
   },
   settings: {
     "import/parsers": {
