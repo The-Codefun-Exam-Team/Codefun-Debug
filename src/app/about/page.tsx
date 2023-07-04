@@ -26,7 +26,7 @@ const Page = () => {
                   </DecoratedLink>{" "}
                 </li>
               )}
-              <li></li>
+              <li>{contributor.role_description}</li>
             </ul>
           </div>
         );
