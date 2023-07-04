@@ -1,6 +1,6 @@
 import { clsx } from "@utils/shared";
-import Link from "next/link";
 
+import { DecoratedLink } from "@/components";
 import {
   BookOpenIcon,
   CheckIcon,
@@ -67,14 +67,13 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
               <div>
                 <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
                 {
-                  <Link
+                  <DecoratedLink
                     target="_blank"
                     rel="noreferrer noopener"
                     href={`https://codefun.vn/problems/${data.problem.id}`}
-                    className="font-bold text-blue-600 underline hover:font-semibold hover:text-blue-500"
                   >
                     {data.problem.id}
-                  </Link>
+                  </DecoratedLink>
                 }
               </div>
               <div>

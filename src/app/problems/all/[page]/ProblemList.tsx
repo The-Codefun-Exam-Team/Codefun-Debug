@@ -1,5 +1,6 @@
 import { clsx } from "@utils/shared";
-import Link from "next/link";
+
+import { DecoratedLink } from "@/components";
 
 import type { DebugProblemBrief } from "./types";
 
@@ -36,12 +37,7 @@ export const ProblemsList = ({ data, page }: { data: DebugProblemBrief[]; page: 
             >
               <td>
                 <div className="flex w-fit">
-                  <Link
-                    className="ml-auto h-full text-left font-semibold text-blue-500 hover:font-bold hover:text-blue-600 hover:underline"
-                    href={`/problems/${problem.code}`}
-                  >
-                    {problem.name}
-                  </Link>
+                  <DecoratedLink href={`/problems/${problem.code}`}>{problem.name}</DecoratedLink>
                 </div>
               </td>
               <td>
