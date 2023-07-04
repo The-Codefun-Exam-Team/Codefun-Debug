@@ -9,10 +9,22 @@ export interface UserData {
     id: number;
     name: string;
   };
-  status: string;
+  status: "Admin" | "Banned" | "Normal";
   avatar: string;
   score: number;
   solved: number;
   ratio: number;
   email: string;
+  rank: number;
+}
+
+export interface UserRanking {
+  avatar: string;
+  group: number;
+  groupname: string;
+  id: number;
+  username: string;
+  name: string;
+  rank: number;
+  points: number;
 }
