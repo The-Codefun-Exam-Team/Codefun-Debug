@@ -13,9 +13,10 @@ interface Judge {
 export interface ProblemData {
   best_score: number;
   code: string;
+  codetext: string;
   problem: {
     code: string;
-    id: number;
+    pid: number;
     name: string;
   };
   language: Languages;

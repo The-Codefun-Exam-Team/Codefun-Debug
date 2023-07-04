@@ -15,7 +15,7 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
         htmlFor="dropdown-group"
         className={clsx(
           "relative flex h-12 w-full cursor-pointer border-2 border-black peer-checked:rounded-b-none peer-checked:border-b-0",
-          "rounded-lg peer-checked:[&>svg]:rotate-0",
+          "rounded-md peer-checked:[&>svg]:rotate-0",
         )}
       >
         <div className="mx-auto h-full w-fit p-2 text-xl">{currentGroupName}</div>
