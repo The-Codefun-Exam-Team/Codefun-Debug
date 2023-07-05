@@ -9,7 +9,7 @@ import { Box, Heading, Input } from "@/components";
 export const CreateProblemForm = () => {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState("");
-  const [successStatus, setSuccessStatus] = useState("fkdslajflksdj");
+  const [successStatus, setSuccessStatus] = useState("");
   const {
     handleSubmit,
     register,
@@ -35,6 +35,7 @@ export const CreateProblemForm = () => {
     });
     const resBody = await res.json();
     if (res.ok) {
+      setSuccessStatus(resBody.data);
     } else {
       setServerError(resBody.error);
     }
