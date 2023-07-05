@@ -7,7 +7,10 @@ export const middleware = async (request: NextRequest) => {
 
   const unauthenticatedOnlyPrefixes = ["/login"] as const;
   const authenticatedOnlyPrefixes = ["/problems"] as const;
-  const adminOnlyPrefixes = ["/problems/create"] as const;
+  const adminOnlyPrefixes = [
+    // uncomment this in production
+    // "/problems/create"
+  ] as const;
 
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const redirectTo = decodeURIComponent(searchParams.get("prev") ?? "%2Fbeta");
