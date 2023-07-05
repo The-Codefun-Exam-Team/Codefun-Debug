@@ -15,19 +15,23 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
   const cookieStore = cookies();
   const token = cookieStore.get("token");
 
-  const res = !token
-    ? await fetch(`https://debug.codefun.vn/v3/api/problems/${pid}`)
-    : await fetch(`https://debug.codefun.vn/v3/api/problems/${pid}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token.value}`,
-        },
-        cache: "no-store",
-      });
+  const res = await fetch(`https://debug.codefun.vn/v3/api/problems/${pid}`, {
+    method: "GET",
+    ...(token && {
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+    }),
+    cache: "no-store",
+  });
 
   if (!res.ok) {
-    const body = await res.json();
-    console.error("Error fetching data problem page:", res.status, res.statusText, body);
+    console.error(
+      "Error fetching data problem page:",
+      res.status,
+      res.statusText,
+      await res.text(),
+    );
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>

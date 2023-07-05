@@ -19,14 +19,17 @@ const getProblemsList = async (
   language: string,
 ) => {
   const bodyData = { page_id: page, limit, language };
-  const res = !token
-    ? await fetch(`https://debug.codefun.vn/v3/api/problems?${new URLSearchParams(bodyData)}`)
-    : await fetch(`https://debug.codefun.vn/v3/api/problems?${new URLSearchParams(bodyData)}`, {
-        method: "GET",
+  const res = await fetch(
+    `https://debug.codefun.vn/v3/api/problems?${new URLSearchParams(bodyData)}`,
+    {
+      method: "GET",
+      ...(token && {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      }),
+    },
+  );
   if (!res.ok) {
     const error = await res.json();
     console.log("Error fetching problems list", error);
@@ -56,7 +59,7 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 md:p-10">
         <CreateProblem />
-        <ProblemsList data={problemsList} page={page} />
+        <ProblemsList isLoggedIn={!!token} data={problemsList} page={page} />
       </div>
       <Pagination page={page} />
     </>
