@@ -36,7 +36,12 @@ export const LoginForm = () => {
     });
     const resBody = await res.json();
     if (res.ok) {
-      dispatch(setUser(resBody));
+      dispatch(
+        setUser({
+          user: resBody,
+          refresh: router.refresh,
+        }),
+      );
       router.push(searchParams?.get("prev") || "/");
     } else {
       setServerError(resBody.error);

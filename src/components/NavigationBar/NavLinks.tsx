@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { setUser } from "@redux/slice";
 import { clsx } from "@utils/shared";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { ComponentPropsWithoutRef } from "react";
 import { useEffect, useState } from "react";
 
@@ -21,6 +22,7 @@ const NavLink = ({ href, className, ...rest }: ComponentPropsWithoutRef<typeof L
 );
 
 const UserInfo = () => {
+  const router = useRouter();
   const { user, loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,7 +37,12 @@ const UserInfo = () => {
       method: "POST",
     });
     if (res.ok) {
-      dispatch(setUser(null));
+      dispatch(
+        setUser({
+          user: null,
+          refresh: router.refresh,
+        }),
+      );
     } else {
       setErrorMessage((await res.json()).error ?? "unknown error");
     }

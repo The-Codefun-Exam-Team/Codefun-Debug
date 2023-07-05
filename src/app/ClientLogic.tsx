@@ -20,7 +20,11 @@ export const ClientLogic = () => {
           return;
         }
         const user = (await res.json()) as UserData;
-        dispatch(setUser(user));
+        dispatch(
+          setUser({
+            user,
+          }),
+        );
         dispatch(setLoading(false));
       });
     }

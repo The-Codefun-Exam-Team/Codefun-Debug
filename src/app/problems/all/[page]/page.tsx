@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 import { Box, Heading } from "@/components";
 
@@ -37,7 +36,14 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
   const token = cookieStore.get("token");
 
   if (!token) {
-    redirect(`/beta/login?prev=${encodeURIComponent(`/problems/all/${page}`)}`);
+    return (
+      <div className="flex h-full w-full items-center justify-center self-center">
+        <Box>
+          <Heading type="display">You are not signed in.</Heading>
+          <Heading type="title">Please sign in first, then revisit the page!</Heading>
+        </Box>
+      </div>
+    );
   }
 
   const problemsList = await getProblemsList(token.value, page, "50", "");

@@ -17,10 +17,17 @@ export const userSlice = createSlice({
     user: null,
   } as UserSliceState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserData | null>) => {
-      state.user = action.payload;
+    setUser(
+      state,
+      action: PayloadAction<{
+        user: UserData | null;
+        refresh?(): void;
+      }>,
+    ) {
+      state.user = action.payload.user;
+      action.payload.refresh?.();
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
+    setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
   },

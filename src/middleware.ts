@@ -10,9 +10,13 @@ export const middleware = async (request: NextRequest) => {
   const adminOnlyPrefixes = ["/problems/create"] as const;
 
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
-    const redirectTo = decodeURIComponent(searchParams.get("prev") ?? "%2Fbeta");
+    const providedRedirect = searchParams.get("prev");
+    const redirectTo = decodeURIComponent(`%2Fbeta${providedRedirect || ""}`);
+
     if (request.cookies.get("token")) {
-      return NextResponse.redirect(new URL(redirectTo, request.url));
+      return NextResponse.redirect(new URL(redirectTo, request.url), {
+        headers: { "x-middleware-cache": "no-cache" },
+      });
     }
   }
 
