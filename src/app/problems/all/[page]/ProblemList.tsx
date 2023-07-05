@@ -49,7 +49,11 @@ export const ProblemsList = ({ data, page }: { data: DebugProblemBrief[]; page: 
               </td>
               <td>
                 {problem.best_score < 100 ? (
-                  <div className="text-right">{Math.round(problem.best_score * 100) / 100}</div>
+                  problem.best_score === -1 ? (
+                    <div className="text-right">???</div>
+                  ) : (
+                    <div className="text-right">{Math.round(problem.best_score * 100) / 100}</div>
+                  )
                 ) : (
                   <div className="text-right font-bold text-green-600">Accepted</div>
                 )}
