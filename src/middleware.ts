@@ -6,7 +6,7 @@ export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;
 
   const unauthenticatedOnlyPrefixes = ["/login"] as const;
-  const authenticatedOnlyPrefixes = ["/problems"] as const;
+  const authenticatedOnlyPrefixes = [] as const;
   const adminOnlyPrefixes = ["/problems/create"] as const;
 
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {

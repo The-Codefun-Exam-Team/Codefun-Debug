@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { Box, Heading } from "@/components";
+
 import { UserEditor } from "./Editor";
 import { InfoTable } from "./InfoTable";
 import type { ProblemData } from "./types";
@@ -12,22 +14,28 @@ export const metadata: Metadata = {
 const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
   const cookieStore = cookies();
   const token = cookieStore.get("token");
-  if (!token) {
-    return <h1>Not logged in</h1>;
-  }
 
-  const res = await fetch(`https://debug.codefun.vn/v3/api/problems/${pid}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token.value}`,
-    },
-    cache: "no-store",
-  });
+  const res = !token
+    ? await fetch(`https://debug.codefun.vn/v3/api/problems/${pid}`)
+    : await fetch(`https://debug.codefun.vn/v3/api/problems/${pid}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+        cache: "no-store",
+      });
 
   if (!res.ok) {
-    // const body = await res.json();
-    // TODO: handle fetch error
-    return <h1>An internal server error has occured</h1>;
+    const body = await res.json();
+    console.error("Error fetching data problem page:", res.status, res.statusText, body);
+    return (
+      <div className="flex h-full w-full items-center justify-center self-center">
+        <Box>
+          <Heading type="display">Error fetching data</Heading>
+          <Heading type="title">Maybe try to reload?</Heading>
+        </Box>
+      </div>
+    );
   }
 
   const data = (await res.json()).data as ProblemData;

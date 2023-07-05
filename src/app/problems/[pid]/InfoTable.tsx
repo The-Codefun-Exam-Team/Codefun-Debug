@@ -36,12 +36,21 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
         <thead>
           <tr>
             {data.best_score < 100 ? (
-              <th
-                className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600"
-                colSpan={2}
-              >
-                Highest score: {data.best_score}
-              </th>
+              data.best_score === -1 ? (
+                <th
+                  className="font-norma border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-medium"
+                  colSpan={2}
+                >
+                  Login to view score
+                </th>
+              ) : (
+                <th
+                  className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600"
+                  colSpan={2}
+                >
+                  Highest score: {data.best_score}
+                </th>
+              )
             ) : (
               <th
                 className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-bold text-green-600"
