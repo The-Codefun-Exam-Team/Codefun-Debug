@@ -6,7 +6,7 @@ export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;
 
   const unauthenticatedOnlyPrefixes = ["/login"] as const;
-  const authenticatedOnlyPrefixes = ["/problems"] as const;
+  const authenticatedOnlyPrefixes = ["/problems/create"] as const;
   const adminOnlyPrefixes = ["/problems/create"] as const;
 
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
@@ -14,9 +14,7 @@ export const middleware = async (request: NextRequest) => {
     const redirectTo = decodeURIComponent(`%2Fbeta${providedRedirect || ""}`);
 
     if (request.cookies.get("token")) {
-      return NextResponse.redirect(new URL(redirectTo, request.url), {
-        headers: { "x-middleware-cache": "no-cache" },
-      });
+      return NextResponse.redirect(new URL(redirectTo, request.url));
     }
   }
 

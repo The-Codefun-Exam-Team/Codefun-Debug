@@ -12,15 +12,22 @@ export const metadata: Metadata = {
   title: "Problems",
 };
 
-const getProblemsList = async (token: string, page: string, limit: string, language: string) => {
+const getProblemsList = async (
+  token: string | undefined,
+  page: string,
+  limit: string,
+  language: string,
+) => {
   const bodyData = { page_id: page, limit, language };
   const res = await fetch(
     `https://debug.codefun.vn/v3/api/problems?${new URLSearchParams(bodyData)}`,
     {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      ...(token && {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
     },
   );
   if (!res.ok) {
@@ -35,18 +42,7 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
   const cookieStore = cookies();
   const token = cookieStore.get("token");
 
-  if (!token) {
-    return (
-      <div className="flex h-full w-full items-center justify-center self-center">
-        <Box>
-          <Heading type="display">You are not signed in.</Heading>
-          <Heading type="title">Please sign in first, then revisit the page!</Heading>
-        </Box>
-      </div>
-    );
-  }
-
-  const problemsList = await getProblemsList(token.value, page, "50", "");
+  const problemsList = await getProblemsList(token?.value, page, "50", "");
 
   if (!problemsList) {
     return (
@@ -63,7 +59,7 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 md:p-10">
         <CreateProblem />
-        <ProblemsList data={problemsList} page={page} />
+        <ProblemsList isLoggedIn={!!token} data={problemsList} page={page} />
       </div>
       <Pagination page={page} />
     </>
