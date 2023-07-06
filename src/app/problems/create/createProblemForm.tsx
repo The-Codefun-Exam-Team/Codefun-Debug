@@ -34,10 +34,10 @@ export const CreateProblemForm = () => {
       body: JSON.stringify(data),
     });
     const resBody = await res.json();
-    if (res.ok) {
-      setSuccessStatus(resBody.data);
-    } else {
+    if (!res.ok) {
       setServerError(resBody.error);
+    } else {
+      setSuccessStatus(resBody.data);
     }
     setLoading(false);
   });

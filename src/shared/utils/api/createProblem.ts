@@ -7,6 +7,9 @@ export const createProblem = async (
 ): Promise<
   { ok: false; error: string; status: number } | { ok: true; data: createProblemResponse }
 > => {
+  const bodyData = !name
+    ? new URLSearchParams({ id: submission_id })
+    : new URLSearchParams({ id: submission_id, name: name });
   const res = await fetch("https://debug.codefun.vn/v3/api/new_problem", {
     method: "POST",
     headers: {
@@ -14,10 +17,7 @@ export const createProblem = async (
       Accept: "application/json",
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify({
-      name: name,
-      id: submission_id,
-    }),
+    body: bodyData,
   });
   const info = await res.json();
   if (!res.ok) {
