@@ -12,7 +12,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ error: "Invalid request." }, { status: 400 });
     }
     const { name, submission_id } = validatedBody.data;
-
+    console.log(name, submission_id);
     const cookiesStore = cookies();
     const token = cookiesStore.get("token");
     if (!token) {

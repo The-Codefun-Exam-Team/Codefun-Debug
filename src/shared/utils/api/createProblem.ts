@@ -15,8 +15,8 @@ export const createProblem = async (
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: JSON.stringify({
-      name,
-      submission_id,
+      name: name,
+      id: submission_id,
     }),
   });
   const info = await res.json();
