@@ -19,14 +19,14 @@ export const CONTRIBUTORS = [
     name: "Tran Gia Huy",
     github_username: "Unknown15082",
     role: "Backend Developer and Database Admistrator",
-    role_description: "",
+    role_description: "Implements API functions. Designs, maintains and migrates database.",
   },
   {
     name: "Bui Tuan Khanh",
     github_username: "kbnopro",
     role: "Frontend Developer",
     role_description:
-      "Design the UI and decide main API functions. API tester and document-writer.",
+      "Designs the UI and decide main API functions, tests API and writes API documents.",
   },
   {
     name: "Natsu Kagami",
@@ -40,6 +40,6 @@ export const CONTRIBUTORS = [
     github_username: "DuCanhGH",
     role: "Frontend Supervisor",
     role_description:
-      "Help with NextJS, CSS. Organize frontend's repository, as well as ensure code legibility and consistency.",
+      "Helps with NextJS, CS,. organizes frontend's repository, as well as ensures code legibility and consistency.",
   },
 ] satisfies contributorsEntry[];
