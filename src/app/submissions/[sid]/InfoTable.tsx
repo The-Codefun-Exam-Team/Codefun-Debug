@@ -1,7 +1,14 @@
 import Link from "next/link";
 
 import { DecoratedLink } from "@/components";
-import { ClockIcon, DocumentTextIcon, LanguageIcon, LinkIcon, UserIcon } from "@/components/icon";
+import {
+  BookOpenIcon,
+  ClockIcon,
+  DocumentTextIcon,
+  LanguageIcon,
+  LinkIcon,
+  UserIcon,
+} from "@/components/icon";
 
 import type { RunData, SubmissionsData } from "./types";
 

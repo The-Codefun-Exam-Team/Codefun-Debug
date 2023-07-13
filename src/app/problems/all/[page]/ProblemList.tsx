@@ -55,7 +55,9 @@ export const ProblemsList = ({
             {isLoggedIn && (
               <td>
                 {problem.best_score < 100 ? (
-                  <div className="text-right">{problem.best_score.toFixed(2)}</div>
+                  <div className="text-right">
+                    {problem.best_score === -1 ? "Not yet scored" : problem.best_score.toFixed(2)}
+                  </div>
                 ) : (
                   <div className="text-right font-bold text-green-600">Accepted</div>
                 )}

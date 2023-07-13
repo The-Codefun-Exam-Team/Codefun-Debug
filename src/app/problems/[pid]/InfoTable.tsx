@@ -75,15 +75,13 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
               </div>
               <div>
                 <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
-                {
-                  <DecoratedLink
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    href={`https://codefun.vn/problems/${data.problem.id}`}
-                  >
-                    {data.problem.id}
-                  </DecoratedLink>
-                }
+                <DecoratedLink
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href={`https://codefun.vn/problems/${data.problem.pid}`}
+                >
+                  {data.problem.pid}
+                </DecoratedLink>
               </div>
               <div>
                 <LanguageIcon className="relative bottom-[3px] inline h-6 w-6" /> Language:{" "}
