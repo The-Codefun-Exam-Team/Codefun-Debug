@@ -6,13 +6,14 @@ export const CONTRIBUTORS = [
     github_username: null,
     role: "Supervisor",
     role_description:
-      "The original idea of this web page belongs to teacher Ho Dac Phuong from HUS - High school for Gifted Students. He is also the one who gathers our team (all from HSGS). ",
+      "The original idea of this webpage belongs to Mr. Ho Dac Phuong, teacher at High school for Gifted Students, Hanoi University of Science. He is also the one who formed our team. ",
   },
   {
     name: "Nguyen Minh Nhat",
     github_username: "minhnhatnoe",
     role: "Sysadmin, DevOps, and Project Manager",
-    role_description: "",
+    role_description:
+      "Designs the API. In charge of the CD workflow and live deployments. Manages the project, including deadlines and external communication.",
   },
   {
     name: "Tran Gia Huy",
@@ -32,7 +33,7 @@ export const CONTRIBUTORS = [
     github_username: "natsukagami",
     role: "Server provider",
     role_description:
-      "This web is hosted as a subdomain of codefun.vn and utilizes API from Codefun thanks to the help of Natsu Kagami.",
+      "Allows us to use his APIs and hosts our website as a subdomain of his (codefun.vn).",
   },
   {
     name: "Ngo Duc Anh",
