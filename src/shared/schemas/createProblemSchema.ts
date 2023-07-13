@@ -8,7 +8,7 @@ export const createProblemSchema = z.object({
 export type createProblemSchemaType = z.infer<typeof createProblemSchema>;
 
 export interface createProblemResponse {
-  status: "OK" | "Failed";
+  status: "OK" | "DUPLICATED" | "FAILED";
   message: string;
   code: string;
 }

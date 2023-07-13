@@ -37,7 +37,7 @@ export const CreateProblemForm = () => {
     if (!res.ok) {
       setServerError(resBody.error);
     } else {
-      setSuccessStatus(resBody.data);
+      setSuccessStatus(resBody.message + " - PID: " + resBody.code);
     }
     setLoading(false);
   });
