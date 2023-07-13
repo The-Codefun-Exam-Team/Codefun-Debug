@@ -36,12 +36,21 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
         <thead>
           <tr>
             {data.best_score < 100 ? (
-              <th
-                className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600"
-                colSpan={2}
-              >
-                Highest score: {data.best_score}
-              </th>
+              data.best_score === -1 ? (
+                <th
+                  className="font-norma border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-medium"
+                  colSpan={2}
+                >
+                  Login to view score
+                </th>
+              ) : (
+                <th
+                  className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600"
+                  colSpan={2}
+                >
+                  Highest score: {data.best_score}
+                </th>
+              )
             ) : (
               <th
                 className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-bold text-green-600"
@@ -93,7 +102,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                   <SolidDownIcon className="relative bottom-[1px] ml-1 inline-block h-5 w-5 transition-all duration-300" />
                 </label>
                 <div className="invisible max-h-0 overflow-y-hidden transition-all duration-200 ease-linear peer-checked:visible peer-checked:max-h-40">
-                  <ul className="mt-3 list-inside list-disc">
+                  <ul className="ml-3 mt-3 list-inside list-disc">
                     {verdicts.AC > 0 && <li className="text-green-600">{verdicts.AC} AC</li>}
                     {verdicts.WA > 0 && <li className="text-red-600">{verdicts.WA} WA</li>}
                     {verdicts.MLE > 0 && <li className="text-gray-600">{verdicts.MLE} MLE</li>}

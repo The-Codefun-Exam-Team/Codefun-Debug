@@ -6,8 +6,6 @@ import { Heading } from "@/components";
 import EmptyPage from "./empty-page.png";
 import type { RankingsData } from "./types";
 
-const RANK_TABLE_DIST = [1, 2, 5, 1, 1] as const;
-
 export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; page: string }) => {
   if (rankingData.length === 0) {
     return (
@@ -23,28 +21,33 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
     );
   }
   return (
-    <div className="mt-8 overflow-hidden rounded-md border-2 border-gray-300">
-      <table className="w-full table-fixed border-collapse border-spacing-0">
-        <thead>
+    <div className="mt-8 w-full overflow-x-auto rounded-md border-2 border-gray-300">
+      <table className="w-full table-auto border-collapse border-spacing-0">
+        <thead
+          className={clsx(
+            "[&>*>:nth-child(1)]:w-[10%] [&>*>:nth-child(2)]:w-[10%] [&>*>:nth-child(3)]:w-[50%]",
+            "[&>*>:nth-child(4)]:w-[10%] [&>*>:nth-child(5)]:w-[10%]",
+          )}
+        >
           <tr
             className={clsx(
               "h-fit bg-gray-300 text-sm font-semibold md:text-lg",
               "[&>th>div]:overflow-hidden [&>th>div]:text-ellipsis [&>th>div]:break-words [&>th>div]:p-3",
             )}
           >
-            <th colSpan={RANK_TABLE_DIST[0]}>
+            <th>
               <div>#</div>
             </th>
-            <th colSpan={RANK_TABLE_DIST[1]}>
+            <th>
               <div>Username</div>
             </th>
-            <th colSpan={RANK_TABLE_DIST[2]}>
+            <th>
               <div>Name</div>
             </th>
-            <th colSpan={RANK_TABLE_DIST[3]}>
+            <th>
               <div>Points</div>
             </th>
-            <th colSpan={RANK_TABLE_DIST[4]}>
+            <th>
               <div>Rank</div>
             </th>
           </tr>
@@ -58,19 +61,19 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
                 "[&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words",
               )}
             >
-              <td colSpan={RANK_TABLE_DIST[0]}>
+              <td>
                 <div>{(+page - 1) * 50 + index + 1}</div>
               </td>
-              <td colSpan={RANK_TABLE_DIST[1]}>
+              <td>
                 <div>{user.username}</div>
               </td>
-              <td colSpan={RANK_TABLE_DIST[2]}>
+              <td>
                 <div>{user.name}</div>
               </td>
-              <td colSpan={RANK_TABLE_DIST[3]}>
+              <td>
                 <div>{Math.round(user.points * 100) / 100}</div>
               </td>
-              <td colSpan={RANK_TABLE_DIST[4]}>
+              <td>
                 <div>{user.rank}</div>
               </td>
             </tr>

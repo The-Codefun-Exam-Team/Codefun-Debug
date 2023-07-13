@@ -20,12 +20,13 @@ const Page = async ({ params: { sid } }: { params: { sid: number } }) => {
     return <h1>Not logged in</h1>;
   }
 
-  const requestToDebug = await fetch(`https://debug.codefun.vn/api/submission/${sid}`, {
+  const requestToDebug = await fetch(`https://debug.codefun.vn/v3/api/submissions/${sid}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token.value}`,
     },
   });
+
   if (!requestToDebug.ok) {
     const info = await requestToDebug.text();
     return (
@@ -37,16 +38,15 @@ const Page = async ({ params: { sid } }: { params: { sid: number } }) => {
       </div>
     );
   }
-  const submissionData = (await requestToDebug.json()) as SubmissionsData;
-  const requestToCodefun = await fetch(
-    `https://codefun.vn/api/submissions/${submissionData.codefun_id}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
+
+  const submissionData = (await requestToDebug.json()).data as SubmissionsData;
+  const requestToCodefun = await fetch(`https://codefun.vn/api/submissions/${submissionData.rid}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token.value}`,
     },
-  );
+  });
+
   if (!requestToCodefun.ok) {
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
@@ -56,6 +56,7 @@ const Page = async ({ params: { sid } }: { params: { sid: number } }) => {
       </div>
     );
   }
+
   const runData = (await requestToCodefun.json()).data as RunData;
 
   return (

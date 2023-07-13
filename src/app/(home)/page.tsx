@@ -38,7 +38,7 @@ const Page = async () => {
   }
   return (
     <div className="flex w-full flex-col items-start gap-5 self-stretch p-2 md:flex-row md:p-10">
-      <div className="h-auto w-full md:flex-[1_1_60px]">
+      <div className="w-full md:flex-[1_1_60px]">
         <Rankings data={rankingData} />
       </div>
       <div className="flex h-full w-full md:flex-[3_3_0]">

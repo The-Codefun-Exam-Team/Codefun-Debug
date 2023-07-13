@@ -47,10 +47,10 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
   }, []);
   useEffect(() => {
     if (!renderingEditor && editorRef.current) {
-      editorRef.current.getOriginalEditor()?.setValue(data.code);
-      editorRef.current.getModifiedEditor()?.setValue(data.code);
+      editorRef.current.getOriginalEditor()?.setValue(data.codetext);
+      editorRef.current.getModifiedEditor()?.setValue(data.codetext);
     }
-  }, [renderingEditor, data.code]);
+  }, [renderingEditor, data.codetext]);
 
   const submitCode = async () => {
     if (!editorRef.current) {
