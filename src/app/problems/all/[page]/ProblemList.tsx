@@ -28,34 +28,34 @@ export const ProblemsList = ({
             <th>
               <div className="text-right">Score</div>
             </th>
-          </tr>
-        </thead>
-        <tbody className="h-fit divide-y-2 divide-gray-300">
-          {data.map((problem) => (
-            <tr
-              key={`problem-page-${page}-code-${problem.code}`}
-              className={clsx(
-                "h-10 text-center",
-                {
-                  "even:bg-gray-100": problem.best_score < 100,
-                  "bg-green-100": problem.best_score == 100,
-                },
-                "[&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3",
-              )}
-            >
-              <td>
-                <div className="flex w-fit">
-                  <DecoratedLink href={`/problems/${problem.code}`}>{problem.name}</DecoratedLink>
-                </div>
-              </td>
-              <td>
-                <div className="text-left">{problem.language}</div>
-              </td>
+          )}
+        </tr>
+      </thead>
+      <tbody className="h-fit divide-y-2 divide-gray-300">
+        {data.map((problem) => (
+          <tr
+            key={`problem-page-${page}-code-${problem.code}`}
+            className={clsx(
+              "h-10 text-center",
+              {
+                "even:bg-gray-100": problem.best_score < 100,
+                "bg-green-100": problem.best_score == 100,
+              },
+              "[&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3",
+            )}
+          >
+            <td>
+              <div className="flex w-fit">
+                <DecoratedLink href={`/problems/${problem.code}`}>{problem.name}</DecoratedLink>
+              </div>
+            </td>
+            <td>
+              <div className="text-left">{problem.language}</div>
+            </td>
+            {isLoggedIn && (
               <td>
                 {problem.best_score < 100 ? (
-                  <div className="text-right">
-                    {problem.best_score === -1 ? "Not yet scored" : problem.best_score.toFixed(2)}
-                  </div>
+                  <div className="text-right">{problem.best_score.toFixed(2)}</div>
                 ) : (
                   <div className="text-right font-bold text-green-600">Accepted</div>
                 )}
