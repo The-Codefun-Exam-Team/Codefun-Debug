@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { DecoratedLink } from "@/components";
 import {
   BookOpenIcon,
   ClockIcon,
@@ -64,14 +65,13 @@ export const InfoTable = ({
             <div>
               <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
               {
-                <Link
+                <DecoratedLink
                   target="_blank"
                   rel="noreferrer noopener"
                   href={`https://codefun.vn/problems/${runData.problem.id}`}
-                  className="font-bold text-blue-600 underline hover:font-semibold hover:text-blue-500"
                 >
                   {runData.problem.id}
-                </Link>
+                </DecoratedLink>
               }
             </div>
             <div>

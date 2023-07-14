@@ -1,6 +1,6 @@
 import { clsx } from "@utils/shared";
-import Link from "next/link";
 
+import { DecoratedLink } from "@/components";
 import {
   BookOpenIcon,
   CheckIcon,
@@ -75,16 +75,13 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
               </div>
               <div>
                 <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
-                {
-                  <Link
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    href={`https://codefun.vn/problems/${data.problem.pid}`}
-                    className="font-bold text-blue-600 underline hover:font-semibold hover:text-blue-500"
-                  >
-                    {data.problem.pid}
-                  </Link>
-                }
+                <DecoratedLink
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href={`https://codefun.vn/problems/${data.problem.pid}`}
+                >
+                  {data.problem.pid}
+                </DecoratedLink>
               </div>
               <div>
                 <LanguageIcon className="relative bottom-[3px] inline h-6 w-6" /> Language:{" "}
@@ -109,6 +106,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                     {verdicts.MLE > 0 && <li className="text-gray-600">{verdicts.MLE} MLE</li>}
                     {verdicts.TLE > 0 && <li className="text-yellow-600">{verdicts.TLE} TLE</li>}
                     {verdicts.RTE > 0 && <li className="text-blue-600">{verdicts.RTE} RTE</li>}
+                    {data.judge.total === 0 && <li className="text-gray-600">CE</li>}
                   </ul>
                 </div>
               </div>

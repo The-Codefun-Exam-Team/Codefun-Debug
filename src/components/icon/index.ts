@@ -2,6 +2,7 @@ export { BookOpenIcon } from "./BookOpenIcon";
 export { CheckIcon } from "./CheckIcon";
 export { ChevronDownIcon } from "./ChevronDownIcon";
 export { ClockIcon } from "./ClockIcon";
+export { CrossIcon } from "./CrossIcon";
 export { DocumentTextIcon } from "./DocumentTextIcon";
 export { LanguageIcon } from "./LanguageIcon";
 export { LeftArrowIcon } from "./LeftArrowIcon";
