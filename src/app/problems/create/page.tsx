@@ -6,8 +6,6 @@ export const metadata: Metadata = {
   title: "Create Problem",
 };
 
-const Page = () => {
-  return <CreateProblemForm />;
-};
+const Page = () => <CreateProblemForm />;
 
 export default Page;
