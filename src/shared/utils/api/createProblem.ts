@@ -1,15 +1,13 @@
-import type { createProblemResponse } from "@schemas/createProblemSchema";
+import type { CreateProblemResponse } from "@schemas/createProblemSchema";
 
 export const createProblem = async (
   token: string,
-  submission_id: string,
+  submissionId: string,
   name?: string,
 ): Promise<
-  { ok: false; error: string; status: number } | { ok: true; data: createProblemResponse }
+  { ok: false; error: string; status: number } | { ok: true; data: CreateProblemResponse }
 > => {
-  const bodyData = !name
-    ? new URLSearchParams({ id: submission_id })
-    : new URLSearchParams({ id: submission_id, name: name });
+  const bodyData = new URLSearchParams({ id: submissionId, ...(name && { name: name }) });
   const res = await fetch("https://debug.codefun.vn/v3/api/new_problem", {
     method: "POST",
     headers: {

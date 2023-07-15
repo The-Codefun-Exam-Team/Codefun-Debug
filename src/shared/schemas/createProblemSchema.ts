@@ -2,12 +2,12 @@ import { z } from "zod";
 
 export const createProblemSchema = z.object({
   name: z.string().optional(),
-  submission_id: z.string(),
+  submissionId: z.string(),
 });
 
-export type createProblemSchemaType = z.infer<typeof createProblemSchema>;
+export type CreateProblemSchemaType = z.infer<typeof createProblemSchema>;
 
-export interface createProblemResponse {
+export interface CreateProblemResponse {
   status: "OK" | "DUPLICATED" | "FAILED";
   message: string;
   code: string;

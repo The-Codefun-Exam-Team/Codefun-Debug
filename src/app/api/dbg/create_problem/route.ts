@@ -11,7 +11,7 @@ export const POST = async (req: NextRequest) => {
     if (!validatedBody.success) {
       return NextResponse.json({ error: "Invalid request." }, { status: 400 });
     }
-    const { name, submission_id } = validatedBody.data;
+    const { name, submissionId } = validatedBody.data;
     const cookiesStore = cookies();
     const token = cookiesStore.get("token");
     if (!token) {
@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest) => {
         status: 200,
       });
     }
-    const createProblemInfo = await createProblem(token.value, submission_id, name);
+    const createProblemInfo = await createProblem(token.value, submissionId, name);
     if (!createProblemInfo.ok) {
       const { error, status } = createProblemInfo;
       return NextResponse.json({ error }, { status });

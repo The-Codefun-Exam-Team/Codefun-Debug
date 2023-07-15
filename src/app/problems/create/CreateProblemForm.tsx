@@ -1,5 +1,5 @@
 "use client";
-import type { createProblemSchemaType } from "@schemas/createProblemSchema";
+import type { CreateProblemSchemaType } from "@schemas/createProblemSchema";
 import { createProblemSchema } from "@schemas/createProblemSchema";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -14,7 +14,7 @@ export const CreateProblemForm = () => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<createProblemSchemaType>({
+  } = useForm<CreateProblemSchemaType>({
     resolver: async (data, context, options) => {
       const zodResolver = (await import("@hookform/resolvers/zod")).zodResolver;
       return zodResolver(createProblemSchema)(data, context, options);
@@ -87,11 +87,11 @@ export const CreateProblemForm = () => {
               id="create-problem-form-submission-id-input"
               label="Submission ID"
               placeholder="Submission ID"
-              error={!!errors.submission_id}
+              error={!!errors.submissionId}
               errorTextId="create-problem-form-submission-id-error-text"
-              errorText={errors.submission_id?.message}
+              errorText={errors.submissionId?.message}
               disabled={loading}
-              {...register("submission_id")}
+              {...register("submissionId")}
             />
           </div>
           <button

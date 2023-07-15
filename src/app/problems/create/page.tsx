@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { CreateProblemForm } from "./createProblemForm";
+import { CreateProblemForm } from "./CreateProblemForm";
 
 export const metadata: Metadata = {
   title: "Create Problem",
