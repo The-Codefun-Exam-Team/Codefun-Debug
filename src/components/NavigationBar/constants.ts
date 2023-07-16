@@ -1,6 +1,11 @@
 import type { NavLinkEntry } from "./types";
 
+// keep the struture for further development of public pages
 export const SIGNED_IN_LINKS = [
+  {
+    url: "/problems/all/1",
+    title: "Problems",
+  },
   {
     title: "Submissions",
     url: "/submissions",
@@ -8,28 +13,20 @@ export const SIGNED_IN_LINKS = [
   {
     title: "Rankings",
     url: "/rankings/0/1",
-  },
-  {
-    title: "About",
-    url: "/about",
   },
 ] satisfies NavLinkEntry[];
 
 export const SIGNED_OUT_LINKS = [
   {
+    url: "/problems/all/1",
+    title: "Problems",
+  },
+  {
     title: "Submissions",
     url: "/submissions",
   },
   {
     title: "Rankings",
     url: "/rankings/0/1",
-  },
-  {
-    title: "About",
-    url: "/about",
-  },
-  {
-    title: "Login",
-    url: "/login",
   },
 ] satisfies NavLinkEntry[];

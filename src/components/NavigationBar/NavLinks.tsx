@@ -8,14 +8,13 @@ import type { ComponentPropsWithoutRef } from "react";
 import { useEffect, useState } from "react";
 
 import { SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
-import type { NavLinkEntry } from "./types";
 
 export interface NavLinksProps {
   keyPrefix: string;
 }
 
 const navButtonClassName =
-  "rounded-md px-4 py-2 transition-colors duration-100 items-center flex hover:bg-gray-300";
+  "rounded-md px-4 py-2 transition-colors duration-100 items-center font-semibold flex hover:text-blue-500";
 
 const NavLink = ({ href, className, ...rest }: ComponentPropsWithoutRef<typeof Link>) => (
   <Link href={href} className={navButtonClassName} {...rest} />
@@ -52,7 +51,11 @@ const UserInfo = () => {
     return <div className={navButtonClassName}>Loading...</div>;
   }
   if (!user) {
-    return <></>;
+    return (
+      <NavLink className={navButtonClassName} href="/login">
+        Login
+      </NavLink>
+    );
   }
   return (
     <>
@@ -60,7 +63,7 @@ const UserInfo = () => {
         target="_blank"
         rel="noopener noreferrer"
         href={`https://codefun.vn/profile/${user.username}`}
-        className={navButtonClassName}
+        className={clsx(navButtonClassName, "user-grandmaster")}
       >
         {user.username}
       </a>
@@ -83,10 +86,7 @@ const UserInfo = () => {
 
 export const NavLinks = ({ keyPrefix }: NavLinksProps) => {
   const { user, loading } = useAppSelector((state) => state.user);
-  const links = [
-    { url: "/problems/all/1", title: "Problems" },
-    ...(!loading ? (user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS) : []),
-  ] satisfies NavLinkEntry[];
+  const links = !loading ? (user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS) : [];
   return (
     <>
       {links.map(({ url, title }) => (
