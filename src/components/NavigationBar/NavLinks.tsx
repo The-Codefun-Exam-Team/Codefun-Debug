@@ -2,6 +2,7 @@
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { setUser } from "@redux/slice";
 import { clsx } from "@utils/shared";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ComponentPropsWithoutRef } from "react";
@@ -59,14 +60,21 @@ const UserInfo = () => {
   }
   return (
     <>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href={`https://codefun.vn/profile/${user.username}`}
-        className={clsx(navButtonClassName, "user-grandmaster")}
+      <button
+        className={clsx(
+          "flex w-auto items-center rounded-full px-1 hover:bg-blue-100",
+          "user-grandmaster",
+        )}
       >
-        {user.username}
-      </a>
+        <Image
+          src={user.avatar}
+          width={30}
+          height={30}
+          alt="user avatar"
+          className="mr-1 rounded-full border-[1px]"
+        />
+        <div className="inline font-bold">{user.name}</div>
+      </button>
       <button className={clsx(navButtonClassName, "text-left")} onClick={logout}>
         Logout
       </button>

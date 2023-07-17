@@ -13,6 +13,16 @@ const nextConfig = {
   swcMinify: true,
   output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   basePath: "/beta",
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "www.gravatar.com",
+        port: "",
+        pathname: "**",
+      },
+    ],
+  },
   modularizeImports: {
     "@/components/?(((\\w*)?/?)*)": {
       transform: "@/components/{{ matches.[1] }}/{{member}}",
