@@ -28,3 +28,6 @@ export interface UserRanking {
   rank: number;
   points: number;
 }
+
+import type { CODEFUN_ROLES } from "./constants";
+export type CodefunRoles = (typeof CODEFUN_ROLES)[number];

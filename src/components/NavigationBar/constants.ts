@@ -30,3 +30,10 @@ export const SIGNED_OUT_LINKS = [
     url: "/rankings/0/1",
   },
 ] satisfies NavLinkEntry[];
+
+export const ADDITIONAL_LINKS = [
+  {
+    url: "/about",
+    title: "About us",
+  },
+] satisfies NavLinkEntry[];
