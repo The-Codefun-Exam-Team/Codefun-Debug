@@ -12,7 +12,7 @@ export const ClientLogic = () => {
       didFetchUser = true;
       // We only want to run this on client.
       store.dispatch(async (dispatch) => {
-        const res = await fetch("/api/auth/authenticate", {
+        const res = await fetch("/api/temp/auth/authenticate", {
           method: "GET",
         });
         if (!res.ok) {
