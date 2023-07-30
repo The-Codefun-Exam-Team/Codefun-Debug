@@ -22,7 +22,7 @@ export const middleware = async (request: NextRequest) => {
     const providedRedirect = searchParams.get("prev");
     const redirectTo = providedRedirect
       ? decodeURIComponent(providedRedirect)
-      : `/beta/login?prev=${encodeURIComponent(pathname)}`;
+      : `/login?prev=${encodeURIComponent(pathname)}`;
 
     const token = request.cookies.get("token");
 
@@ -33,7 +33,7 @@ export const middleware = async (request: NextRequest) => {
     if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
       const userInfo = await getUserInfo(token.value);
       if (!userInfo.ok || userInfo.user.status !== "Admin") {
-        return NextResponse.redirect(new URL("/beta", request.url));
+        return NextResponse.redirect(new URL("", request.url));
       }
     }
   }

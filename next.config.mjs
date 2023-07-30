@@ -12,7 +12,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
-  basePath: "/beta",
+  basePath: "",
   modularizeImports: {
     "@/components/?(((\\w*)?/?)*)": {
       transform: "@/components/{{ matches.[1] }}/{{member}}",
