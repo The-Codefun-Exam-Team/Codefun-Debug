@@ -33,7 +33,7 @@ const UserInfo = () => {
   }, [errorMessage]);
 
   const logout = async () => {
-    const res = await fetch("/beta/api/auth/logout", {
+    const res = await fetch("/api/auth/logout", {
       method: "POST",
     });
     if (res.ok) {

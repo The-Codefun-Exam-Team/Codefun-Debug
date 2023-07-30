@@ -26,7 +26,7 @@ export const LoginForm = () => {
   });
   const submitForm = handleSubmit(async (data) => {
     setLoading(true);
-    const res = await fetch("/beta/api/auth/login", {
+    const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
