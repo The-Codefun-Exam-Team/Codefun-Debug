@@ -11,7 +11,7 @@ export const middleware = async (request: NextRequest) => {
 
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const providedRedirect = searchParams.get("prev");
-    const redirectTo = decodeURIComponent(`%2Fbeta${providedRedirect || ""}`);
+    const redirectTo = decodeURIComponent(`%2F${providedRedirect || ""}`);
 
     if (request.cookies.get("token")) {
       return NextResponse.redirect(new URL(redirectTo, request.url));
@@ -33,7 +33,7 @@ export const middleware = async (request: NextRequest) => {
     if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
       const userInfo = await getUserInfo(token.value);
       if (!userInfo.ok || userInfo.user.status !== "Admin") {
-        return NextResponse.redirect(new URL("", request.url));
+        return NextResponse.redirect(new URL("/", request.url));
       }
     }
   }
