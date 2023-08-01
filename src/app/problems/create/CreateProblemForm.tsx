@@ -25,7 +25,7 @@ export const CreateProblemForm = () => {
     setLoading(true);
     setServerError("");
     setSuccessStatus("");
-    const res = await fetch("/api/next/dbg/create_problem", {
+    const res = await fetch("/api/temp/dbg/create_problem", {
       method: "POST",
       headers: {
         Accept: "application/json",
