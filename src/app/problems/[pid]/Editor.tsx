@@ -58,7 +58,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
       return;
     }
     const code = editorRef.current.getModifiedEditor().getValue();
-    const res = await fetch("/api/temp/dbg/submit", {
+    const res = await fetch("/api/next/dbg/submit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
