@@ -8,6 +8,9 @@ export const NavigationBar = () => (
     <div className="mx-auto inline-block max-w-3xl px-2 lg:flex lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
       <Link href="/" className="mx-4 text-3xl font-semibold">
         Codefun Debug
+        <div className="ml-1 inline-block align-top text-base font-extrabold text-blue-600">
+          BETA
+        </div>
       </Link>
       <div className="overflow-x-overlay hidden h-full grow flex-row-reverse items-center gap-[5px] overflow-x-auto md:flex">
         <div className="text-l my-auto hidden h-min justify-around gap-1 font-medium lg:flex">
