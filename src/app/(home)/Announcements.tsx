@@ -6,7 +6,7 @@ export const Announcements = () => (
       <Heading type="display">Announcements</Heading>
     </div>
     <div className="p-2">
-      <Heading type="title-large">Welcome to Codefun Debug (BETA version)</Heading>
+      <Heading type="title-large">Welcome to Codefun Debug (BETA).</Heading>
     </div>
   </div>
 );
