@@ -8,7 +8,7 @@ export const DropDownToggler = () => (
     <label
       htmlFor="dropdown-check"
       className={clsx(
-        "float-right mr-4 inline-block h-9 w-10 cursor-pointer leading-[12px] md:hidden",
+        "float-right h-9 w-10 cursor-pointer leading-[12px] md:hidden",
         "peer-checked:[&>:nth-child(1)]:translate-x-[6.2px]",
         "peer-checked:[&>:nth-child(1)]:translate-y-[-3px]",
         "peer-checked:[&>:nth-child(1)]:rotate-45",
@@ -30,8 +30,8 @@ export const DropDownContent = () => {
     <>
       <div
         className={clsx(
-          "flex w-full origin-top flex-col overflow-hidden px-3 transition-all duration-150 ease-linear",
-          "md:hidden md:peer-checked:hidden",
+          "flex w-9 shrink-0 origin-top flex-col overflow-hidden px-3 transition-all duration-150 ease-linear",
+          "sm:hidden sm:peer-checked:hidden",
           "[&>*]:cursor-pointer [&>*]:py-2 [&>*]:pl-10 [&>*]:font-medium [&>:first-child]:mt-3",
           "max-h-0 peer-checked:max-h-[min(252px,70vh)] peer-checked:overflow-y-auto",
         )}
