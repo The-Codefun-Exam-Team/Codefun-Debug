@@ -1,6 +1,6 @@
 import { clsx } from "@utils/shared";
 
-import { NavLinks } from "./NavLinks";
+import { VerticalNavLinks } from "./NavLinks";
 
 export const DropDownToggler = () => (
   <>
@@ -8,19 +8,18 @@ export const DropDownToggler = () => (
     <label
       htmlFor="dropdown-check"
       className={clsx(
-        "float-right h-9 w-10 cursor-pointer leading-[12px] md:hidden",
-        "peer-checked:[&>:nth-child(1)]:translate-x-[6.2px]",
-        "peer-checked:[&>:nth-child(1)]:translate-y-[-3px]",
+        "relative top-1 float-left h-8 w-8 cursor-pointer leading-[10px] md:hidden",
+        "peer-checked:[&>:nth-child(1)]:translate-y-[10px]",
         "peer-checked:[&>:nth-child(1)]:rotate-45",
         "peer-checked:[&>:nth-child(2)]:w-1",
         "peer-checked:[&>:nth-child(2)]:opacity-0",
-        "peer-checked:[&>:nth-child(3)]:translate-x-[6px]",
+        "peer-checked:[&>:nth-child(3)]:translate-y-[-10px]",
         "peer-checked:[&>:nth-child(3)]:rotate-[-45deg]",
       )}
     >
-      <span className="inline-block h-[5px] w-full origin-top-left rounded-md bg-slate-800 align-middle transition-all duration-300 ease-out-back" />
-      <span className="inline-block h-[5px] w-full rounded-md bg-slate-800 align-middle transition-all duration-200 ease-out" />
-      <span className="inline-block h-[5px] w-full origin-bottom-left rounded-md bg-slate-800 align-middle transition-all duration-300 ease-out-back" />
+      <span className="inline-block h-[4px] w-full origin-center rounded-md bg-slate-800 align-middle transition-all duration-300 ease-out-back" />
+      <span className="inline-block h-[4px] w-full rounded-md bg-slate-800 align-middle transition-all duration-200 ease-out" />
+      <span className="inline-block h-[4px] w-full origin-center rounded-md bg-slate-800 align-middle transition-all duration-300 ease-out-back" />
     </label>
   </>
 );
@@ -30,13 +29,13 @@ export const DropDownContent = () => {
     <>
       <div
         className={clsx(
-          "flex w-9 shrink-0 origin-top flex-col overflow-hidden px-3 transition-all duration-150 ease-linear",
-          "sm:hidden sm:peer-checked:hidden",
-          "[&>*]:cursor-pointer [&>*]:py-2 [&>*]:pl-10 [&>*]:font-medium [&>:first-child]:mt-3",
-          "max-h-0 peer-checked:max-h-[min(252px,70vh)] peer-checked:overflow-y-auto",
+          "flex w-full shrink-0 origin-top flex-col px-3 transition-all duration-150 ease-linear",
+          "md:hidden md:peer-checked:hidden ",
+          "[&>*]:cursor-pointer [&>*]:py-1 [&>*]:font-medium [&>:first-child]:mt-3",
+          "max-h-0 overflow-hidden peer-checked:max-h-[min(252px,70vh)]",
         )}
       >
-        <NavLinks keyPrefix="navbar-dropdown" />
+        <VerticalNavLinks keyPrefix="navbar-dropdown" />
       </div>
     </>
   );

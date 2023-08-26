@@ -5,7 +5,7 @@ import { setUser } from "@redux/slice";
 import { clsx, getCodefunRole, getCodefunRoleTextClass } from "@utils/shared";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { ComponentPropsWithoutRef } from "react";
 import { useEffect, useState } from "react";
 
@@ -15,11 +15,12 @@ export interface NavLinksProps {
   keyPrefix: string;
 }
 
+// default classnames for nav links
 const navButtonClassName =
-  "rounded-md px-3 py-2 transition-colors duration-100 items-center font-semibold flex hover:text-blue-500";
+  "px-3 py-2 transition-colors duration-100 items-center font-semibold flex";
 
 const NavLink = ({ href, className, ...rest }: ComponentPropsWithoutRef<typeof Link>) => (
-  <Link href={href} className={navButtonClassName} {...rest} />
+  <Link href={href} className={clsx(navButtonClassName, className)} {...rest} />
 );
 
 export const UserInfo = () => {
@@ -68,7 +69,7 @@ export const UserInfo = () => {
         <Menu as="div" className="relative">
           <Menu.Button
             className={clsx(
-              "flex w-auto items-center rounded-full p-2 hover:bg-blue-100",
+              "flex w-auto items-center rounded-full p-[5px] hover:bg-blue-100 hover:ring-[1.5px] hover:ring-blue-200",
               "outline-none focus:outline-none focus:ring-2 focus:ring-blue-400",
               roleColor,
             )}
@@ -126,16 +127,85 @@ export const UserInfo = () => {
   );
 };
 
-export const NavLinks = ({ keyPrefix }: NavLinksProps) => {
+export const HorizontalNavLinks = ({ keyPrefix }: NavLinksProps) => {
   const { user, loading } = useAppSelector((state) => state.user);
   const links = !loading ? (user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS) : [];
+  let pathname = usePathname().split("/").slice(1);
+
+  // delete when merged to main
+  if (pathname[0] === "beta") {
+    pathname = pathname.slice(1);
+  }
+
   return (
     <>
-      {links.map(({ url, title }) => (
-        <NavLink className={navButtonClassName} key={`${keyPrefix}-${title}`} href={url}>
-          {title}
-        </NavLink>
-      ))}
+      {links.map(({ url, title }) => {
+        let path = url.split("/").slice(1);
+
+        // delete when merged to main
+        if (path[0] === "beta") {
+          path = path.slice(1);
+        }
+
+        const active = path[0] === pathname[0];
+        return (
+          <div key={`${keyPrefix}-${title}`} className="group relative mx-2 overflow-visible">
+            <NavLink className="peer px-2 py-1" href={url}>
+              {title}
+            </NavLink>
+            <div className="flex justify-around">
+              <div
+                className={clsx(
+                  "h-0 rounded-md  border-t-2 transition-all duration-200 ease-in-out group-hover:w-full",
+                  active ? "w-full border-blue-500" : "w-0 border-blue-300",
+                )}
+              ></div>
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
+export const VerticalNavLinks = ({ keyPrefix }: NavLinksProps) => {
+  const { user, loading } = useAppSelector((state) => state.user);
+  const links = !loading ? (user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS) : [];
+  let pathname = usePathname().split("/").slice(1);
+
+  // delete when merged to main
+  if (pathname[0] === "beta") {
+    pathname = pathname.slice(1);
+  }
+
+  return (
+    <>
+      {links.map(({ url, title }) => {
+        let path = url.split("/").slice(1);
+
+        // delete when merged to main
+        if (path[0] === "beta") {
+          path = path.slice(1);
+        }
+
+        const active = path[0] === pathname[0];
+        return (
+          <div key={`${keyPrefix}-${title}`} className="group relative overflow-visible">
+            <NavLink className="peer px-4 py-2" href={url}>
+              {title}
+            </NavLink>
+            <div>
+              <div
+                className={clsx(
+                  "absolute h-0 rounded-md border-t-2 transition-all duration-500 ease-in-out group-hover:w-full",
+                  active ? "w-full border-blue-500" : "w-0 border-blue-200",
+                )}
+              ></div>
+              <div className={clsx("h-0 rounded-md border-t-2 border-gray-200")}></div>
+            </div>
+          </div>
+        );
+      })}
     </>
   );
 };
