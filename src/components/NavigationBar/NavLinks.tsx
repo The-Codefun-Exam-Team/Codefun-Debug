@@ -132,11 +132,10 @@ export const HorizontalNavLinks = ({ keyPrefix }: NavLinksProps) => {
   const links = !loading ? (user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS) : [];
   const pathname = usePathname();
   const pathnameFirstSegment = pathname.slice(0, pathname.indexOf("/", 1));
-  console.log(pathnameFirstSegment);
   return (
     <>
       {links.map(({ url, title }) => {
-        const active = url.startsWith(pathnameFirstSegment);
+        const active = url.startsWith(pathnameFirstSegment) && pathnameFirstSegment;
         return (
           <div key={`${keyPrefix}-${title}`} className="group relative mx-2 overflow-visible">
             <NavLink className="peer px-2 py-1" href={url}>
@@ -165,7 +164,7 @@ export const VerticalNavLinks = ({ keyPrefix }: NavLinksProps) => {
   return (
     <>
       {links.map(({ url, title }) => {
-        const active = url.startsWith(pathnameFirstSegment);
+        const active = url.startsWith(pathnameFirstSegment) && pathnameFirstSegment;
         return (
           <div key={`${keyPrefix}-${title}`} className="group relative overflow-visible">
             <NavLink className="peer px-4 py-2" href={url}>
