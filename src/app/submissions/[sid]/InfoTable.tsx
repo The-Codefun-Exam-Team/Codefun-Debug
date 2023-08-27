@@ -70,7 +70,7 @@ export const InfoTable = ({
                   rel="noreferrer noopener"
                   href={`https://codefun.vn/problems/${runData.problem.id}`}
                 >
-                  {runData.problem.id}
+                  {runData.problem.code}
                 </DecoratedLink>
               }
             </div>

@@ -80,7 +80,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                   rel="noreferrer noopener"
                   href={`https://codefun.vn/problems/${data.problem.pid}`}
                 >
-                  {data.problem.pid}
+                  {data.problem.code}
                 </DecoratedLink>
               </div>
               <div>
