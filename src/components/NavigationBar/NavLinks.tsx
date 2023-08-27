@@ -30,15 +30,16 @@ const DarkModeToggler = () => {
   const dispatch = useAppDispatch();
   return (
     <div className={clsx(navButtonClassName, "flex flex-col px-1")}>
+      <div className="w-full pb-2 text-left">Theme</div>
       <RadioGroup
         value={option}
         onChange={(value) => {
           dispatch(setScheme(value));
           setOption(value);
         }}
-        className="flex w-full justify-around"
+        className="flex w-full justify-between"
       >
-        <RadioGroup.Option value="dark" className="flex w-full justify-center pt-1" title="Dark">
+        <RadioGroup.Option value="dark" className=" pt-1" title="Dark">
           {({ checked }) => (
             <div
               className={clsx(
@@ -46,11 +47,11 @@ const DarkModeToggler = () => {
                 checked ? "border-blue-400" : "border-transparent hover:border-blue-200 ",
               )}
             >
-              <MoonIcon className="h-6 w-6 stroke-blue-500" />
+              <MoonIcon className="h-6 w-6 stroke-blue-500" aria-label="Dark" />
             </div>
           )}
         </RadioGroup.Option>
-        <RadioGroup.Option value={null} className="flex w-full justify-center pt-1" title="Default">
+        <RadioGroup.Option value={null} className=" pt-1" title="Default">
           {({ checked }) => (
             <div
               className={clsx(
@@ -58,11 +59,11 @@ const DarkModeToggler = () => {
                 checked ? "border-blue-400" : "border-transparent hover:border-blue-200",
               )}
             >
-              <ComputerIcon className="h-6 w-6 stroke-blue-500" />
+              <ComputerIcon className="h-6 w-6 stroke-blue-500" aria-label="System" />
             </div>
           )}
         </RadioGroup.Option>
-        <RadioGroup.Option value="light" className="flex w-full justify-center pt-1" title="Light">
+        <RadioGroup.Option value="light" className=" pt-1" title="Light">
           {({ checked }) => (
             <div
               className={clsx(
@@ -70,7 +71,7 @@ const DarkModeToggler = () => {
                 checked ? "border-blue-400" : "border-transparent hover:border-blue-200",
               )}
             >
-              <SunIcon className="h-6 w-6 stroke-blue-500" />
+              <SunIcon className="h-6 w-6 stroke-blue-500" aria-label="Light" />
             </div>
           )}
         </RadioGroup.Option>
@@ -142,7 +143,7 @@ export const UserInfo = () => {
             />
             <div className="inline max-w-[15ch] truncate font-bold">{user.name}</div>
           </Menu.Button>
-          <div className="absolute right-0 z-50 w-48">
+          <div className="absolute right-0 z-50 w-44">
             <Transition
               enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"
@@ -173,7 +174,7 @@ export const UserInfo = () => {
               </Menu.Items>
             </Transition>
             {errorMessage && (
-              <div className="right-0 mt-2 flex h-auto w-48 items-center overflow-hidden text-clip rounded-md border-red-200 bg-red-100 px-4 py-2 text-red-800">
+              <div className="right-0 mt-2 flex h-auto w-44 items-center overflow-hidden text-clip rounded-md border-red-200 bg-red-100 px-4 py-2 text-red-800">
                 {errorMessage}
               </div>
             )}
