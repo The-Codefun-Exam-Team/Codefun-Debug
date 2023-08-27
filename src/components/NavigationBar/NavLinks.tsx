@@ -152,13 +152,11 @@ export const UserInfo = () => {
               >
                 <DarkModeToggler />
                 {ADDITIONAL_LINKS.map(({ url, title }) => (
-                  <BaseNavLink
-                    className={menuItemsClassName}
-                    key={`navbar-dropdown-${title}`}
-                    href={url}
-                  >
-                    {title}
-                  </BaseNavLink>
+                  <Menu.Item key={`navbar-dropdown-${title}`}>
+                    <BaseNavLink className={menuItemsClassName} href={url}>
+                      {title}
+                    </BaseNavLink>
+                  </Menu.Item>
                 ))}
                 <Menu.Item>
                   {user ? (

@@ -1,3 +1,4 @@
+import { clsx } from "@utils/shared";
 import type { Metadata } from "next";
 
 import { Box, Heading } from "@/components";
@@ -37,12 +38,17 @@ const Page = async () => {
     );
   }
   return (
-    <div className="flex w-full flex-col items-start gap-5 self-stretch p-4 md:flex-row md:pt-8">
-      <div className="w-full md:flex-[1_1_0]">
-        <Rankings data={rankingData} />
-      </div>
-      <div className="flex h-full w-full md:flex-[3_3_0]">
+    <div
+      className={clsx(
+        "flex w-full flex-col items-start divide-y-[1px] divide-gray-400 self-stretch p-4 md:flex-row",
+        "md:divide-y-0",
+      )}
+    >
+      <div className="flex h-fit w-full p-4 md:h-full md:flex-[4]">
         <Announcements />
+      </div>
+      <div className="w-full p-4 md:h-full md:flex-[3]">
+        <Rankings data={rankingData} />
       </div>
     </div>
   );
