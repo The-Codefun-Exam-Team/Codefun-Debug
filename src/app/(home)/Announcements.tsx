@@ -1,12 +1,10 @@
-import { Heading } from "@/components";
-
 export const Announcements = () => (
-  <div className="w-full divide-y-2 divide-slate-700">
-    <div className="block p-5 pt-0">
-      <Heading type="display">Announcements</Heading>
+  <div className="w-full">
+    <div className="pb-4">
+      <div className="text-2xl font-extrabold text-sky-500 dark:text-sky-400">Announcements</div>
     </div>
-    <div className="p-2">
-      <Heading type="title-large">Welcome to Codefun Debug.</Heading>
+    <div className="w-full">
+      <div className="text-xl font-semibold">Welcome to Codefun Debug (BETA).</div>
     </div>
   </div>
 );

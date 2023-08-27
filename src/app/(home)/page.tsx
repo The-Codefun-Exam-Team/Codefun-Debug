@@ -37,8 +37,8 @@ const Page = async () => {
     );
   }
   return (
-    <div className="flex w-full flex-col items-start gap-5 self-stretch p-2 md:flex-row md:p-10">
-      <div className="w-full md:flex-[1_1_60px]">
+    <div className="flex w-full flex-col items-start gap-5 self-stretch p-4 md:flex-row md:pt-8">
+      <div className="w-full md:flex-[1_1_0]">
         <Rankings data={rankingData} />
       </div>
       <div className="flex h-full w-full md:flex-[3_3_0]">
