@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { ComputerIcon, MoonIcon, SunIcon } from "@/components/icon";
+import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
 
 import { ADDITIONAL_LINKS, SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
 import { BaseNavLink, HorizontalNavLink, NAV_BUTTON_CLASS, VerticalNavLink } from "./NavLink";
@@ -101,11 +101,8 @@ export const UserInfo = () => {
   if (loading) {
     return <div className={NAV_BUTTON_CLASS}>Loading...</div>;
   }
-  if (!user) {
-    return <HorizontalNavLink href="/login">Sign in</HorizontalNavLink>;
-  }
 
-  const role = getCodefunRole(user.ratio, user.status);
+  const role = user ? getCodefunRole(user.ratio, user.status) : "newbie";
   const roleColor = getCodefunRoleTextClass(role);
 
   const menuItemsClassName =
@@ -122,14 +119,20 @@ export const UserInfo = () => {
               roleColor,
             )}
           >
-            <Image
-              src={user.avatar}
-              width={30}
-              height={30}
-              alt="user avatar"
-              className="mr-1 rounded-full border-[1px] border-gray-300 dark:border-gray-600"
-            />
-            <div className="inline max-w-[15ch] truncate font-bold">{user.name}</div>
+            {user ? (
+              <Image
+                src={user.avatar}
+                width={30}
+                height={30}
+                alt="user avatar"
+                className="mr-2 rounded-full border-[1px] border-gray-300 dark:border-gray-600"
+              />
+            ) : (
+              <UserIcon className="mr-2 h-7 w-7 rounded-full border-[1px] border-gray-300 p-[1px] dark:border-gray-600" />
+            )}
+            <div className="inline max-w-[15ch] truncate font-bold">
+              {user ? user.name : "Guest"}
+            </div>
           </Menu.Button>
           <div className="absolute right-0 z-50 w-44">
             <Transition
@@ -158,9 +161,15 @@ export const UserInfo = () => {
                   </BaseNavLink>
                 ))}
                 <Menu.Item>
-                  <button className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)} onClick={logout}>
-                    Sign out
-                  </button>
+                  {user ? (
+                    <button className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)} onClick={logout}>
+                      Sign out
+                    </button>
+                  ) : (
+                    <BaseNavLink className={menuItemsClassName} href="/login">
+                      Sign in
+                    </BaseNavLink>
+                  )}
                 </Menu.Item>
               </Menu.Items>
             </Transition>
