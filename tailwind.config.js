@@ -2,6 +2,7 @@ import tailwindTypography from "@tailwindcss/typography";
 
 /** @type {import("tailwindcss").Config} */
 const tailwindConfig = {
+  darkMode: "class",
   plugins: [tailwindTypography],
   theme: {
     extend: {

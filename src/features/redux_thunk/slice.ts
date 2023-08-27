@@ -35,4 +35,32 @@ export const userSlice = createSlice({
 
 export const { setLoading, setUser } = userSlice.actions;
 
-export default userSlice.reducer;
+export const colorSlice = createSlice({
+  name: "color" as string,
+  initialState: {
+    scheme: null,
+  } as { scheme: "light" | "dark" | null },
+  reducers: {
+    setScheme(state, action: PayloadAction<"light" | "dark" | null>) {
+      state.scheme = action.payload;
+      localStorage.theme = action.payload;
+      if (action.payload === "dark") {
+        localStorage.theme = "dark";
+      } else if (action.payload === "light") {
+        localStorage.theme = "light";
+      } else {
+        localStorage.removeItem("theme");
+      }
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    },
+  },
+});
+
+export const { setScheme } = colorSlice.actions;

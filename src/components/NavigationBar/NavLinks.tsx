@@ -1,13 +1,15 @@
 "use client";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu, RadioGroup, Transition } from "@headlessui/react";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { setUser } from "@redux/slice";
+import { setScheme, setUser } from "@redux/slice";
 import { clsx, getCodefunRole, getCodefunRoleTextClass } from "@utils/shared";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ComponentPropsWithoutRef } from "react";
 import { useEffect, useState } from "react";
+
+import { ComputerIcon, MoonIcon, SunIcon } from "@/components/icon";
 
 import { ADDITIONAL_LINKS, SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
 
@@ -17,11 +19,65 @@ export interface NavLinksProps {
 
 // default classnames for nav links
 const navButtonClassName =
-  "px-3 py-2 transition-colors duration-100 items-center font-semibold flex";
+  "px-3 py-2 transition-colors duration-100 items-center font-semibold flex cursor-pointer";
 
 const NavLink = ({ href, className, ...rest }: ComponentPropsWithoutRef<typeof Link>) => (
   <Link href={href} className={clsx(navButtonClassName, className)} {...rest} />
 );
+
+const DarkModeToggler = () => {
+  const [option, setOption] = useState(useAppSelector((state) => state.color.scheme));
+  const dispatch = useAppDispatch();
+  return (
+    <div className={clsx(navButtonClassName, "flex flex-col px-1")}>
+      <RadioGroup
+        value={option}
+        onChange={(value) => {
+          dispatch(setScheme(value));
+          setOption(value);
+        }}
+        className="flex w-full justify-around"
+      >
+        <RadioGroup.Option value="dark" className="flex w-full justify-center pt-1" title="Dark">
+          {({ checked }) => (
+            <div
+              className={clsx(
+                "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
+                checked ? "border-blue-400" : "border-white hover:border-blue-200",
+              )}
+            >
+              <MoonIcon className="h-6 w-6 stroke-blue-500" />
+            </div>
+          )}
+        </RadioGroup.Option>
+        <RadioGroup.Option value={null} className="flex w-full justify-center pt-1" title="Default">
+          {({ checked }) => (
+            <div
+              className={clsx(
+                "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
+                checked ? "border-blue-400" : "border-white hover:border-blue-200",
+              )}
+            >
+              <ComputerIcon className="h-6 w-6 stroke-blue-500" />
+            </div>
+          )}
+        </RadioGroup.Option>
+        <RadioGroup.Option value="light" className="flex w-full justify-center pt-1" title="Light">
+          {({ checked }) => (
+            <div
+              className={clsx(
+                "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
+                checked ? "border-blue-400" : "border-white hover:border-blue-200",
+              )}
+            >
+              <SunIcon className="h-6 w-6 stroke-blue-500" />
+            </div>
+          )}
+        </RadioGroup.Option>
+      </RadioGroup>
+    </div>
+  );
+};
 
 export const UserInfo = () => {
   const router = useRouter();
@@ -99,6 +155,7 @@ export const UserInfo = () => {
                 as="div"
                 className="mt-2 divide-y-[0.5px] divide-gray-200 rounded-md border-[1px] border-gray-300 bg-white"
               >
+                <DarkModeToggler />
                 {ADDITIONAL_LINKS.map(({ url, title }) => (
                   <NavLink
                     className={menuItemsClassName}

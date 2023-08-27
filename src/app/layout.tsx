@@ -17,7 +17,18 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
   <html lang="en">
-    <head></head>
+    <head>
+      {
+        // script to avoid FOUC (from TailwindCSS docs)
+        <script
+          id="get-initial-color-scheme"
+          dangerouslySetInnerHTML={{
+            __html:
+              "if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {document.documentElement.classList.add('dark')} else {document.documentElement.classList.remove('dark')}",
+          }}
+        ></script>
+      }
+    </head>
     <body>
       <ReduxProvider>
         <div id="root-container">
