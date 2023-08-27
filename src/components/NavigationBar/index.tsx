@@ -17,7 +17,7 @@ export const NavigationBar = () => (
               </div>
             </div>
             <div className="sm:hidden">
-              CD
+              CF DB
               <div className="ml-1 inline-block align-top text-base font-extrabold text-blue-600">
                 BETA
               </div>

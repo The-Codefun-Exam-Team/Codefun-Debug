@@ -63,13 +63,16 @@ export const UserInfo = () => {
 
   const role = getCodefunRole(user.ratio, user.status);
   const roleColor = getCodefunRoleTextClass(role);
+
+  const menuItemsClassName =
+    "w-full rounded-none text-left transition-colors duration-200 hover:text-blue-500";
   return (
     <>
       <div className="relative">
         <Menu as="div" className="relative">
           <Menu.Button
             className={clsx(
-              "flex w-auto items-center rounded-full p-[5px] hover:bg-blue-100 hover:ring-[1.5px] hover:ring-blue-200",
+              "flex w-auto items-center rounded-full p-[5px] hover:bg-blue-50 hover:ring-[1.5px] hover:ring-blue-200",
               "outline-none focus:outline-none focus:ring-2 focus:ring-blue-400",
               roleColor,
             )}
@@ -94,11 +97,11 @@ export const UserInfo = () => {
             >
               <Menu.Items
                 as="div"
-                className="mt-2 divide-y-[0.5px] divide-gray-200 rounded-md border-[0.25px] border-gray-300 bg-white"
+                className="mt-2 divide-y-[0.5px] divide-gray-200 rounded-md border-[1px] border-gray-300 bg-white"
               >
                 {ADDITIONAL_LINKS.map(({ url, title }) => (
                   <NavLink
-                    className={clsx(navButtonClassName, "w-full rounded-none text-left")}
+                    className={menuItemsClassName}
                     key={`navbar-dropdown-${title}`}
                     href={url}
                   >
@@ -106,10 +109,7 @@ export const UserInfo = () => {
                   </NavLink>
                 ))}
                 <Menu.Item>
-                  <button
-                    className={clsx(navButtonClassName, "w-full rounded-none text-left")}
-                    onClick={logout}
-                  >
+                  <button className={clsx(navButtonClassName, menuItemsClassName)} onClick={logout}>
                     Sign out
                   </button>
                 </Menu.Item>

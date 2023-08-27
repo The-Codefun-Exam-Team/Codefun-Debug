@@ -29,10 +29,10 @@ export const DropDownContent = () => {
     <>
       <div
         className={clsx(
-          "flex w-full shrink-0 origin-top flex-col px-3 transition-all duration-150 ease-linear",
+          "flex w-full shrink-0 origin-top flex-col px-3 transition-all duration-200 ease-in-out",
           "md:hidden md:peer-checked:hidden ",
           "[&>*]:cursor-pointer [&>*]:py-1 [&>*]:font-medium [&>:first-child]:mt-3",
-          "max-h-0 overflow-hidden peer-checked:max-h-[min(252px,70vh)]",
+          "max-h-0 overflow-hidden peer-checked:max-h-[163px]",
         )}
       >
         <VerticalNavLinks keyPrefix="navbar-dropdown" />
