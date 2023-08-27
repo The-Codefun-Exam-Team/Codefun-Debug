@@ -17,9 +17,9 @@ export const DropDownToggler = () => (
         "peer-checked:[&>:nth-child(3)]:rotate-[-45deg]",
       )}
     >
-      <span className="inline-block h-[4px] w-full origin-center rounded-md bg-slate-800 align-middle transition-all duration-300 ease-out-back" />
-      <span className="inline-block h-[4px] w-full rounded-md bg-slate-800 align-middle transition-all duration-200 ease-out" />
-      <span className="inline-block h-[4px] w-full origin-center rounded-md bg-slate-800 align-middle transition-all duration-300 ease-out-back" />
+      <span className="inline-block h-[4px] w-full origin-center rounded-md bg-slate-800 align-middle transition-all duration-300 ease-out-back dark:bg-slate-200" />
+      <span className="inline-block h-[4px] w-full rounded-md bg-slate-800 align-middle transition-all duration-200 ease-out dark:bg-slate-200" />
+      <span className="inline-block h-[4px] w-full origin-center rounded-md bg-slate-800 align-middle transition-all duration-300 ease-out-back dark:bg-slate-200" />
     </label>
   </>
 );

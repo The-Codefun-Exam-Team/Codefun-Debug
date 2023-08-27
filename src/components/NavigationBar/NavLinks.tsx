@@ -43,7 +43,7 @@ const DarkModeToggler = () => {
             <div
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
-                checked ? "border-blue-400" : "border-white hover:border-blue-200",
+                checked ? "border-blue-400" : "border-transparent hover:border-blue-200 ",
               )}
             >
               <MoonIcon className="h-6 w-6 stroke-blue-500" />
@@ -55,7 +55,7 @@ const DarkModeToggler = () => {
             <div
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
-                checked ? "border-blue-400" : "border-white hover:border-blue-200",
+                checked ? "border-blue-400" : "border-transparent hover:border-blue-200",
               )}
             >
               <ComputerIcon className="h-6 w-6 stroke-blue-500" />
@@ -67,7 +67,7 @@ const DarkModeToggler = () => {
             <div
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
-                checked ? "border-blue-400" : "border-white hover:border-blue-200",
+                checked ? "border-blue-400" : "border-transparent hover:border-blue-200",
               )}
             >
               <SunIcon className="h-6 w-6 stroke-blue-500" />
@@ -128,8 +128,8 @@ export const UserInfo = () => {
         <Menu as="div" className="relative">
           <Menu.Button
             className={clsx(
-              "flex w-auto items-center rounded-full p-[5px] hover:bg-blue-50 hover:ring-[1.5px] hover:ring-blue-200",
-              "outline-none focus:outline-none focus:ring-2 focus:ring-blue-400",
+              "flex w-auto items-center rounded-full p-[5px] hover:bg-blue-50 hover:ring-[1.5px] hover:ring-blue-200 dark:hover:bg-blue-950 dark:hover:ring-blue-800",
+              "outline-none focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-400",
               roleColor,
             )}
           >
@@ -138,11 +138,11 @@ export const UserInfo = () => {
               width={30}
               height={30}
               alt="user avatar"
-              className="mr-1 rounded-full border-[1px]"
+              className="mr-1 rounded-full border-[1px] border-gray-300 dark:border-gray-600"
             />
             <div className="inline max-w-[15ch] truncate font-bold">{user.name}</div>
           </Menu.Button>
-          <div className="absolute right-0 w-48">
+          <div className="absolute right-0 z-50 w-48">
             <Transition
               enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"
@@ -153,7 +153,7 @@ export const UserInfo = () => {
             >
               <Menu.Items
                 as="div"
-                className="mt-2 divide-y-[0.5px] divide-gray-200 rounded-md border-[1px] border-gray-300 bg-white"
+                className="mt-2 divide-y-[0.5px] divide-gray-300 rounded-md border-[1px] border-gray-400 bg-white dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5] dark:bg-slate-900"
               >
                 <DarkModeToggler />
                 {ADDITIONAL_LINKS.map(({ url, title }) => (
@@ -194,7 +194,10 @@ export const HorizontalNavLinks = ({ keyPrefix }: NavLinksProps) => {
       {links.map(({ url, title }) => {
         const active = url.startsWith(pathnameFirstSegment) && pathnameFirstSegment;
         return (
-          <div key={`${keyPrefix}-${title}`} className="group relative mx-2 overflow-visible">
+          <div
+            key={`${keyPrefix}-${title}`}
+            className="group relative top-[1px] mx-2 overflow-visible"
+          >
             <NavLink className="peer px-2 py-1" href={url}>
               {title}
             </NavLink>
@@ -202,7 +205,9 @@ export const HorizontalNavLinks = ({ keyPrefix }: NavLinksProps) => {
               <div
                 className={clsx(
                   "h-0 rounded-md  border-t-2 transition-all duration-200 ease-in-out group-hover:w-full",
-                  active ? "w-full border-blue-500" : "w-0 border-blue-300",
+                  active
+                    ? "w-full border-blue-500 dark:border-blue-600"
+                    : "w-0 border-blue-300 dark:border-blue-400",
                 )}
               ></div>
             </div>
@@ -231,7 +236,9 @@ export const VerticalNavLinks = ({ keyPrefix }: NavLinksProps) => {
               <div
                 className={clsx(
                   "absolute h-0 rounded-md border-t-[3px] transition-all duration-500 ease-in-out group-hover:w-full",
-                  active ? "w-full border-blue-500" : "w-0 border-blue-200",
+                  active
+                    ? "w-full border-blue-500 dark:border-blue-600"
+                    : "w-0 border-blue-200 dark:border-blue-300",
                 )}
               ></div>
               <div className={clsx("h-0 rounded-md border-t-[3px] border-gray-200")}></div>
