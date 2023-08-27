@@ -4,33 +4,17 @@ import { DropDownContent, DropDownToggler } from "./DropDown";
 import { HorizontalNavLinks, UserInfo } from "./NavLinks";
 
 export const NavigationBar = () => (
-  <nav className="sticky inset-x-0 top-0 z-40 h-auto max-h-screen justify-between border-b-[0.25px] border-gray-400 bg-white text-gray-800 dark:border-slate-500 dark:bg-slate-900 dark:text-slate-200">
-    <div className="mx-auto max-w-4xl items-center px-2 lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
-      <div className="mx-2 my-3">
-        <DropDownToggler />
-        <div className="relative flex items-center justify-between">
-          <Link href="/" className="mx-4 flex items-center text-2xl font-bold lg:text-3xl">
-            <div className="hidden sm:inline-block">
-              Codefun Debug
-              <div className="ml-1 inline-block align-top text-sm font-extrabold text-blue-600 dark:text-sky-500 lg:text-base">
-                BETA
-              </div>
-            </div>
-            <div className="sm:hidden">
-              CFDB
-              <div className="ml-1 inline-block align-top text-sm font-extrabold text-blue-600 dark:text-sky-500">
-                BETA
-              </div>
-            </div>
-          </Link>
-          <div className="flex h-full grow flex-row-reverse items-center gap-[5px]">
-            <div className="text-md my-auto flex h-min items-center justify-around gap-2 font-medium">
-              <div className="my-auto hidden h-min items-center justify-around md:flex">
-                <HorizontalNavLinks keyPrefix="navbar-link-large" />
-              </div>
-              <UserInfo />
-            </div>
-          </div>
+  <nav className="sticky inset-x-0 top-0 z-50 m-0 block h-auto max-h-screen justify-between border-b-2 border-gray-400 bg-slate-200 py-3 text-slate-700">
+    <div className="mx-auto inline-block max-w-3xl px-2 lg:flex lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
+      <Link href="/" className="mx-4 text-3xl font-semibold">
+        Codefun Debug
+        <div className="ml-1 inline-block align-top text-base font-extrabold text-blue-600">
+          BETA
+        </div>
+      </Link>
+      <div className="overflow-x-overlay hidden h-full grow flex-row-reverse items-center gap-[5px] overflow-x-auto md:flex">
+        <div className="text-l my-auto hidden h-min justify-around gap-1 font-medium lg:flex">
+          <NavLinks keyPrefix="navbar-link-large" />
         </div>
         <DropDownContent />
       </div>
