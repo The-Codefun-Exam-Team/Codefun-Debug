@@ -20,17 +20,17 @@ const DarkModeToggler = () => {
   const [option, setOption] = useState(useAppSelector((state) => state.color.scheme));
   const dispatch = useAppDispatch();
   return (
-    <div className={clsx(NAV_BUTTON_CLASS, "flex flex-col px-1")}>
-      <div className="w-full pb-2 text-left">Theme</div>
+    <div className="flex flex-col gap-2 px-3 py-2 font-semibold transition-colors duration-100">
+      <span>Theme</span>
       <RadioGroup
         value={option}
         onChange={(value) => {
           dispatch(setScheme(value));
           setOption(value);
         }}
-        className="flex w-full justify-between"
+        className="flex w-full justify-between [&>*]:cursor-pointer"
       >
-        <RadioGroup.Option value="dark" className=" pt-1" title="Dark">
+        <RadioGroup.Option value="dark" title="Dark">
           {({ checked }) => (
             <div
               className={clsx(
@@ -42,7 +42,7 @@ const DarkModeToggler = () => {
             </div>
           )}
         </RadioGroup.Option>
-        <RadioGroup.Option value={null} className=" pt-1" title="Default">
+        <RadioGroup.Option value={null} title="Default">
           {({ checked }) => (
             <div
               className={clsx(
@@ -54,7 +54,7 @@ const DarkModeToggler = () => {
             </div>
           )}
         </RadioGroup.Option>
-        <RadioGroup.Option value="light" className=" pt-1" title="Light">
+        <RadioGroup.Option value="light" title="Light">
           {({ checked }) => (
             <div
               className={clsx(
