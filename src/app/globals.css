@@ -12,69 +12,72 @@
   .overflow-y-overlay {
     overflow-y: overlay;
   }
+  .text-user-grandmaster-light {
+    @apply animate-rainbow-light;
+  }
+
+  .text-user-grandmaster-dark {
+    @apply animate-rainbow-dark;
+  }
+}
+
+@layer components {
+  .nav-button {
+    @apply flex cursor-pointer items-center px-3 py-2 font-semibold transition-colors duration-100;
+  }
 }
 
 @layer base {
   :root {
     --navbar-height: 4rem;
   }
-}
-
-html,
-body {
-  @apply m-0 flex h-full w-full;
-}
-body {
-  @apply box-border h-fit overflow-y-scroll bg-white dark:bg-slate-900 dark:text-slate-300;
-}
-
-#__next,
-#root-container {
-  @apply m-0 flex h-fit min-h-screen w-full flex-col p-0;
-}
-#main-content {
-  @apply flex flex-grow;
-}
-
-@media (prefers-reduced-motion) {
-  html {
-    @apply !animate-none !transition-none;
+  html,
+  body {
+    @apply m-0 flex h-full w-full;
   }
-  html *,
-  html *:before,
-  html *:after {
-    @apply !animate-[inherit] !transition-[inherit];
+  body {
+    @apply box-border h-fit overflow-y-scroll bg-white dark:bg-slate-900 dark:text-slate-400;
   }
-}
 
-.text-user-grandmaster-light {
-  @apply animate-rainbow-light;
-}
+  #__next,
+  #root-container {
+    @apply m-0 flex h-fit min-h-screen w-full flex-col p-0;
+  }
+  #main-content {
+    @apply flex flex-grow;
+  }
+  @media (prefers-reduced-motion) {
+    html {
+      @apply !animate-none !transition-none;
+    }
+    html *,
+    html *:before,
+    html *:after {
+      @apply !animate-[inherit] !transition-[inherit];
+    }
+  }
 
-.text-user-grandmaster-dark {
-  @apply animate-rainbow-dark;
-}
+  *::-webkit-scrollbar {
+    display: absolute;
+    width: 16px;
+    @apply bg-transparent;
+  }
 
-*::-webkit-scrollbar {
-  display: absolute;
-  width: 16px;
-  @apply bg-transparent;
-}
+  *::-webkit-scrollbar-button {
+    display: none;
+  }
 
-*::-webkit-scrollbar-button {
-  display: none;
-}
+  *::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
 
-*::-webkit-scrollbar-track {
-  @apply bg-gray-200 dark:bg-slate-800;
-}
+  *::-webkit-scrollbar-track-piece {
+    background-color: #00000000;
+  }
 
-*::-webkit-scrollbar-track-piece {
-  background-color: #00000000;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: #00000040;
-  border: 1px solid #ffffff40;
-  border-radius: 24px;
+  *::-webkit-scrollbar-thumb {
+    background-color: #00000040;
+    border: 1px solid #ffffff40;
+    border-radius: 24px;
+  }
 }

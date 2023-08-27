@@ -42,6 +42,7 @@ const nextConfig = {
     if (!config.plugins) {
       config.plugins = [];
     }
+
     const monacoPlugin = new MonacoWebpackPlugin({
       languages: ["cpp", "python", "java"],
       filename: "static/[name].worker.js",
