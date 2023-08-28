@@ -1,4 +1,4 @@
-import { createNamespaceComponent } from "@utils/shared";
+import { clsx, createNamespaceComponent } from "@utils/shared";
 import type { Optional, RequireFields } from "@utils/types";
 import type { ComponentPropsWithoutRef } from "react";
 import { forwardRef } from "react";
@@ -36,7 +36,10 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
       )}
       <input
         id={id}
-        className="w-full rounded-md border-2 border-slate-600 p-2.5 text-lg transition-opacity disabled:opacity-50"
+        className={clsx(
+          "w-full rounded-md border-2 border-slate-600 p-2.5 text-lg text-black transition-opacity focus:outline-none disabled:opacity-70",
+          "shadow-[inset_0_0_0px_1000px] shadow-slate-100 dark:border-[1px] dark:border-slate-500 dark:text-white dark:shadow-slate-800 dark:[color-scheme:dark]",
+        )}
         aria-invalid={error}
         aria-describedby={errorTextId}
         ref={ref}

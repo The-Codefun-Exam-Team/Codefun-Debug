@@ -99,7 +99,12 @@ export const UserInfo = () => {
   };
 
   if (loading) {
-    return <div className={NAV_BUTTON_CLASS}>Loading...</div>;
+    // transparent border to prevent shifting of navbar
+    return (
+      <div className={clsx(NAV_BUTTON_CLASS, "border-b-[1.6px] border-transparent")}>
+        Loading...
+      </div>
+    );
   }
 
   const role = user ? getCodefunRole(user.ratio, user.status) : "newbie";
@@ -113,9 +118,10 @@ export const UserInfo = () => {
         <Menu as="div" className="relative">
           <Menu.Button
             className={clsx(
-              "flex w-auto items-center rounded-full p-[5px]",
+              "flex w-auto items-center rounded-full p-[6px]",
               "hover:bg-blue-50 hover:ring-[1.5px] hover:ring-blue-200 dark:hover:bg-blue-950 dark:hover:ring-blue-800",
               "outline-none focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-400",
+              "border-b-[1.6px] border-transparent", // transparent border to prevent shifting of navbar
               roleColor,
             )}
           >
@@ -128,9 +134,9 @@ export const UserInfo = () => {
                 className="mr-2 rounded-full border-[1px] border-gray-300 dark:border-gray-600"
               />
             ) : (
-              <UserIcon className="mr-2 h-7 w-7 rounded-full border-[1px] border-gray-300 p-[1px] dark:border-gray-600" />
+              <UserIcon className="mr-2 h-7 w-7 rounded-full border-[1px] border-gray-300 dark:border-gray-600" />
             )}
-            <div className="inline max-w-[15ch] truncate font-bold">
+            <div className="inline max-w-[15ch] truncate pr-1 font-bold">
               {user ? user.name : "Guest"}
             </div>
           </Menu.Button>

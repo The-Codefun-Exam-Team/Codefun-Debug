@@ -50,7 +50,7 @@ export const VerticalNavLink = ({ href, ...rest }: NavLinkProps) => {
 export const HorizontalNavLink = ({ href, ...rest }: NavLinkProps) => {
   const active = useIsPathActive(href);
   return (
-    <div className="group relative top-[1px] mx-2 overflow-visible">
+    <div className="group mx-2 overflow-visible">
       <BaseNavLink href={href} className="peer px-2 py-1" {...rest} />
       <div className="flex justify-around">
         <div

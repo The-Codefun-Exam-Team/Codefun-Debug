@@ -1,9 +1,10 @@
 import tailwindTypography from "@tailwindcss/typography";
+import autoprefixer from "autoprefixer";
 
 /** @type {import("tailwindcss").Config} */
 const tailwindConfig = {
   darkMode: "class",
-  plugins: [tailwindTypography],
+  plugins: [tailwindTypography, autoprefixer],
   theme: {
     extend: {
       transitionTimingFunction: {
