@@ -40,7 +40,7 @@ const Page = async () => {
   return (
     <div
       className={clsx(
-        "flex w-full flex-col items-start divide-y-[1px] divide-gray-400 self-stretch p-4 md:flex-row",
+        "flex w-full flex-col items-start divide-y-[1px] divide-gray-400 self-stretch p-4 md:flex-row-reverse",
         "md:divide-y-0",
       )}
     >

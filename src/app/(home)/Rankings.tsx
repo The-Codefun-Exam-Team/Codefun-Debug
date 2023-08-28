@@ -1,4 +1,3 @@
-import { Heading } from "@/components";
 import type { UserRanking } from "@/shared/types";
 
 export const Rankings = async ({ data }: { data: UserRanking[] }) => (
