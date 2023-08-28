@@ -1,9 +1,12 @@
+import { Heading } from "@/components";
 import type { UserRanking } from "@/shared/types";
 
 export const Rankings = async ({ data }: { data: UserRanking[] }) => (
   <div className="w-full">
     <div className="w-full">
-      <div className="text-2xl font-extrabold text-sky-500 dark:text-sky-400">Top ranking</div>
+      <Heading type="display">
+        <div className="text-sky-500 dark:text-sky-400">Top ranking</div>
+      </Heading>
     </div>
     <table className="mt-4 w-full  table-auto bg-white px-2 dark:bg-slate-900">
       <thead>

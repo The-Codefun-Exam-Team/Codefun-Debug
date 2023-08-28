@@ -62,7 +62,7 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
         className={clsx(
           "break-words",
           {
-            "text-slate-700": variant === "default",
+            "text-slate-700 dark:text-slate-300": variant === "default",
           },
           screenReaderOnly && "sr-only",
           mappedComponent.className,
