@@ -9,6 +9,7 @@ export { LanguageIcon } from "./LanguageIcon";
 export { LeftArrowIcon } from "./LeftArrowIcon";
 export { LinkIcon } from "./LinkIcon";
 export { MoonIcon } from "./MoonIcon";
+export { PlusSignIcon } from "./PlusSignIcon";
 export { RightArrowIcon } from "./RightArrowIcon";
 export { SolidDownIcon } from "./SolidDownIcon";
 export { SunIcon } from "./SunIcon";

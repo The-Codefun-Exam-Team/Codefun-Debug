@@ -58,7 +58,7 @@ export const LoginForm = () => {
       <Box>
         <form
           onSubmit={submitForm}
-          className={clsx("flex w-full flex-col", serverError ? "gap-2" : "gap-6")}
+          className={clsx("flex w-full flex-col", serverError ? "gap-3" : "gap-6")}
         >
           <div className="text-center">
             <Heading type="title-large">
@@ -68,8 +68,8 @@ export const LoginForm = () => {
           {serverError && (
             <p
               className={clsx(
-                "text-md w-full rounded-md border-2 border-red-200 bg-red-100 p-1 text-center font-semibold text-red-700",
-                "dark:border-red-300/60 dark:bg-red-500/80 dark:text-red-100",
+                "text-md relative top-2 w-full rounded-md border-2 border-red-200 bg-red-100 p-1 text-center font-semibold text-red-700",
+                "dark:border-red-300/60 dark:bg-red-500/60 dark:text-red-100",
               )}
             >
               Error: {serverError}. Please try again.

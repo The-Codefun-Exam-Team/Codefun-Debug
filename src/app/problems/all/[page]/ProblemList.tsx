@@ -2,6 +2,7 @@ import { clsx } from "@utils/shared";
 
 import { DecoratedLink } from "@/components";
 
+import { CreateProblem } from "./CreateProblem";
 import type { DebugProblemBrief } from "./types";
 
 export const ProblemsList = ({
@@ -13,12 +14,15 @@ export const ProblemsList = ({
   data: DebugProblemBrief[];
   page: string;
 }) => (
-  <div className="w-full overflow-hidden rounded-md border-2 border-gray-300">
+  <div className="w-full overflow-hidden rounded-md">
     <table className="w-full table-auto overflow-hidden">
       <thead>
-        <tr className="bg-gray-300 text-lg font-semibold [&>th>div]:overflow-hidden [&>th>div]:text-ellipsis [&>th>div]:break-words [&>th>div]:p-3">
+        <tr className="border-b-[1px] border-gray-400 text-xl font-bold dark:border-slate-600 dark:text-slate-100 [&>th>div]:overflow-hidden [&>th>div]:text-ellipsis [&>th>div]:break-words [&>th>div]:p-3">
           <th className="text-left">
-            <div>Problem</div>
+            <div className="flex gap-2">
+              <div>Problems</div>
+              <CreateProblem />
+            </div>
           </th>
 
           <th className="text-left">
@@ -31,17 +35,14 @@ export const ProblemsList = ({
           )}
         </tr>
       </thead>
-      <tbody className="h-fit divide-y-2 divide-gray-300">
+      <tbody className="h-fit divide-y-[1px] divide-gray-400 dark:divide-slate-600">
         {data.map((problem) => (
           <tr
             key={`problem-page-${page}-code-${problem.code}`}
             className={clsx(
               "h-10 text-center",
-              {
-                "even:bg-gray-100": problem.best_score < 100,
-                "bg-green-100": problem.best_score == 100,
-              },
-              "[&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3",
+              // "even:bg-gray-100",
+              "font-semibold text-slate-600 dark:text-slate-300 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
             )}
           >
             <td>

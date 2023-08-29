@@ -10,7 +10,7 @@ export const Rankings = async ({ data }: { data: UserRanking[] }) => (
     </div>
     <table className="mt-4 w-full  table-auto bg-white px-2 dark:bg-slate-900">
       <thead>
-        <tr className="border-b-2 border-slate-200 text-slate-950 dark:border-b-[0.5px] dark:border-slate-700 dark:text-slate-100 [&>th]:p-[14px] [&>th]:text-xl [&>th]:font-bold">
+        <tr className="border-b-2 border-slate-200 text-slate-800 dark:border-b-[0.5px] dark:border-slate-700 dark:text-slate-100 [&>th]:p-[14px] [&>th]:text-xl [&>th]:font-bold">
           <th className="text-left">#</th>
           <th className="text-left">User</th>
           <th className="text-right">Score</th>

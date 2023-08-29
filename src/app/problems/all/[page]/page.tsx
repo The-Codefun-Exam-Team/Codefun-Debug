@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 
 import { Box, Heading } from "@/components";
 
-import { CreateProblem } from "./CreateProblem";
 import { Pagination } from "./Pagination";
 import { ProblemsList } from "./ProblemList";
 import type { DebugProblemBrief } from "./types";
@@ -57,11 +56,10 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
 
   return (
     <>
-      <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 md:p-10">
-        <CreateProblem />
+      <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 pt-10">
         <ProblemsList isLoggedIn={!!token} data={problemsList} page={page} />
       </div>
-      <Pagination page={page} />
+      {/* <Pagination page={page} /> */}
     </>
   );
 };

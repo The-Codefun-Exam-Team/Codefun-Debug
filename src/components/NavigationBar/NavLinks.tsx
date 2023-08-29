@@ -118,7 +118,7 @@ export const UserInfo = () => {
         <Menu as="div" className="relative">
           <Menu.Button
             className={clsx(
-              "flex w-auto items-center rounded-full p-[6px]",
+              "flex w-auto items-center rounded-full p-[5px]",
               "hover:bg-blue-50 hover:ring-[1.5px] hover:ring-blue-200 dark:hover:bg-blue-950 dark:hover:ring-blue-800",
               "outline-none focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-400",
               "border-b-[1.6px] border-transparent", // transparent border to prevent shifting of navbar
@@ -131,10 +131,10 @@ export const UserInfo = () => {
                 width={30}
                 height={30}
                 alt="user avatar"
-                className="mr-2 rounded-full border-[1px] border-gray-300 dark:border-gray-600"
+                className="mr-2 rounded-full border-2 border-gray-400 dark:border-gray-600"
               />
             ) : (
-              <UserIcon className="mr-2 h-7 w-7 rounded-full border-[1px] border-gray-300 dark:border-gray-600" />
+              <UserIcon className="mr-2 h-7 w-7 rounded-full border-2 border-gray-600 stroke-gray-600 dark:border-gray-400 dark:stroke-gray-400" />
             )}
             <div className="inline max-w-[15ch] truncate pr-1 font-bold">
               {user ? user.name : "Guest"}
