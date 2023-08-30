@@ -14,16 +14,14 @@ export const ProblemsList = ({
   data: DebugProblemBrief[];
   page: string;
 }) => (
-  <div className="w-full overflow-scroll rounded-md">
+  <div className="w-full rounded-md">
     <table className="w-full table-auto">
       <thead>
-        <tr className="border-b-[1px] border-gray-400 text-lg font-bold dark:border-slate-600 md:text-xl [&>th>div]:p-3">
-          <th className="text-left">
-            <div className="flex gap-2">
-              <div className="hidden sm:block">Problems</div>
-              <div className="text-ellipsis sm:hidden ">Probs</div>
-              <CreateProblem />
-            </div>
+        <tr className="border-b-[1px] border-gray-400 text-lg font-bold dark:border-slate-600 md:text-xl [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>th]:p-3">
+          <th className="flex gap-2 text-left">
+            <div className="hidden sm:block">Problems</div>
+            <div className="text-ellipsis sm:hidden ">Probs</div>
+            <CreateProblem />
           </th>
           <th className="text-left">
             <div className="hidden sm:block">Language</div>
@@ -31,7 +29,7 @@ export const ProblemsList = ({
           </th>
           {isLoggedIn && (
             <th>
-              <div className="break-all text-right sm:break-words">Score</div>
+              <div className="text-right">Score</div>
             </th>
           )}
         </tr>

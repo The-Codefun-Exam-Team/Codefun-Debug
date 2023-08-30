@@ -1,6 +1,10 @@
 export { BookOpenIcon } from "./BookOpenIcon";
 export { CheckIcon } from "./CheckIcon";
+export { ChevronDoubleLeftIcon } from "./ChevronDoubleLeftIcon";
+export { ChevronDoubleRightIcon } from "./ChevronDoubleRightIcon";
 export { ChevronDownIcon } from "./ChevronDownIcon";
+export { ChevronLeftIcon } from "./ChevronLeftIcon";
+export { ChevronRightIcon } from "./ChevronRightIcon";
 export { ClockIcon } from "./ClockIcon";
 export { ComputerIcon } from "./ComputerIcon";
 export { CrossIcon } from "./CrossIcon";

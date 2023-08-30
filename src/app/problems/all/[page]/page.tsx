@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
-import { Box, Heading } from "@/components";
+import { Box, Heading, Pagination } from "@/components";
 
-import { Pagination } from "./Pagination";
 import { ProblemsList } from "./ProblemList";
 import type { DebugProblemBrief } from "./types";
 
@@ -56,9 +55,12 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
 
   return (
     <>
-      <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 pt-10">
-        <Pagination page={page} />
+      <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 ">
+        <Pagination page={page} baseURL="/problems/all/" lastPage="100" />
         <ProblemsList isLoggedIn={!!token} data={problemsList} page={page} />
+        {problemsList.length !== 0 && (
+          <Pagination page={page} baseURL="/problems/all/" lastPage="100" />
+        )}
       </div>
     </>
   );
