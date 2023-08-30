@@ -16,9 +16,9 @@ export const NavigationBar = () => (
                 BETA
               </div>
             </div>
-            <div className="sm:hidden">
+            <div className="text-xl sm:hidden">
               CFDB
-              <div className="ml-1 inline-block align-top text-sm font-extrabold text-sky-500 dark:text-sky-500">
+              <div className="ml-1 inline-block align-top text-xs font-extrabold text-sky-500 dark:text-sky-500">
                 BETA
               </div>
             </div>

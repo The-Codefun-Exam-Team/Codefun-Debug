@@ -57,9 +57,9 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
   return (
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-4xl flex-col p-4 pt-10">
+        <Pagination page={page} />
         <ProblemsList isLoggedIn={!!token} data={problemsList} page={page} />
       </div>
-      {/* <Pagination page={page} /> */}
     </>
   );
 };

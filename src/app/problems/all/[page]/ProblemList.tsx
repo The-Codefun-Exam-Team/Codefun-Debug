@@ -14,23 +14,24 @@ export const ProblemsList = ({
   data: DebugProblemBrief[];
   page: string;
 }) => (
-  <div className="w-full overflow-hidden rounded-md">
-    <table className="w-full table-auto overflow-hidden">
+  <div className="w-full overflow-scroll rounded-md">
+    <table className="w-full table-auto">
       <thead>
-        <tr className="border-b-[1px] border-gray-400 text-xl font-bold dark:border-slate-600 dark:text-slate-100 [&>th>div]:overflow-hidden [&>th>div]:text-ellipsis [&>th>div]:break-words [&>th>div]:p-3">
+        <tr className="border-b-[1px] border-gray-400 text-lg font-bold dark:border-slate-600 md:text-xl [&>th>div]:p-3">
           <th className="text-left">
             <div className="flex gap-2">
-              <div>Problems</div>
+              <div className="hidden sm:block">Problems</div>
+              <div className="text-ellipsis sm:hidden ">Probs</div>
               <CreateProblem />
             </div>
           </th>
-
           <th className="text-left">
-            <div>Language</div>
+            <div className="hidden sm:block">Language</div>
+            <div className="text-ellipsis sm:hidden">Lang</div>
           </th>
           {isLoggedIn && (
             <th>
-              <div className="text-right">Score</div>
+              <div className="break-all text-right sm:break-words">Score</div>
             </th>
           )}
         </tr>
@@ -42,7 +43,7 @@ export const ProblemsList = ({
             className={clsx(
               "h-10 text-center",
               // "even:bg-gray-100",
-              "font-semibold text-slate-600 dark:text-slate-300 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
+              "font-semibold text-slate-600 dark:text-slate-400 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
             )}
           >
             <td>
@@ -60,7 +61,9 @@ export const ProblemsList = ({
                     {problem.best_score === -1 ? "Not yet scored" : problem.best_score.toFixed(2)}
                   </div>
                 ) : (
-                  <div className="text-right font-bold text-green-600">Accepted</div>
+                  <div className="text-right font-bold text-green-600 dark:text-green-500">
+                    Accepted
+                  </div>
                 )}
               </td>
             )}
