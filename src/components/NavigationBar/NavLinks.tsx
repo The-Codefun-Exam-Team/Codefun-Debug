@@ -35,10 +35,12 @@ const DarkModeToggler = () => {
             <div
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
-                checked ? "border-blue-400" : "border-transparent hover:border-blue-200 ",
+                checked
+                  ? "border-blue-400 dark:border-sky-400"
+                  : "border-transparent hover:border-blue-200 hover:dark:border-sky-200",
               )}
             >
-              <MoonIcon className="h-6 w-6 stroke-blue-500" aria-label="Dark" />
+              <MoonIcon className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500" aria-label="Dark" />
             </div>
           )}
         </RadioGroup.Option>
@@ -47,10 +49,15 @@ const DarkModeToggler = () => {
             <div
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
-                checked ? "border-blue-400" : "border-transparent hover:border-blue-200",
+                checked
+                  ? "border-blue-400 dark:border-sky-400"
+                  : "border-transparent hover:border-blue-200 hover:dark:border-sky-200",
               )}
             >
-              <ComputerIcon className="h-6 w-6 stroke-blue-500" aria-label="System" />
+              <ComputerIcon
+                className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500"
+                aria-label="System"
+              />
             </div>
           )}
         </RadioGroup.Option>
@@ -59,10 +66,12 @@ const DarkModeToggler = () => {
             <div
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
-                checked ? "border-blue-400" : "border-transparent hover:border-blue-200",
+                checked
+                  ? "border-blue-400 dark:border-sky-400"
+                  : "border-transparent hover:border-blue-200 hover:dark:border-sky-200",
               )}
             >
-              <SunIcon className="h-6 w-6 stroke-blue-500" aria-label="Light" />
+              <SunIcon className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500" aria-label="Light" />
             </div>
           )}
         </RadioGroup.Option>

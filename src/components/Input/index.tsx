@@ -38,7 +38,7 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
         id={id}
         className={clsx(
           "w-full rounded-md border-2 border-slate-600 p-2.5 text-lg text-black transition-opacity focus:outline-none disabled:opacity-70",
-          "shadow-[inset_0_0_0px_1000px] shadow-slate-100 placeholder:text-slate-400 dark:border-[1px] dark:border-slate-500 dark:text-white dark:shadow-slate-800 dark:[color-scheme:dark] dark:placeholder:text-slate-600",
+          "shadow-[inset_0_0_0px_1000px] shadow-blue-50 placeholder:text-slate-400 dark:border-[1px] dark:border-slate-500 dark:text-white dark:shadow-slate-800 dark:[color-scheme:dark] dark:placeholder:text-slate-600",
         )}
         aria-invalid={error}
         aria-describedby={errorTextId}
