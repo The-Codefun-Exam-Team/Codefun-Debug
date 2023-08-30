@@ -24,23 +24,23 @@ export const Pagination = ({
   const nextPage = Math.min(pageInt + 1, lastPageInt);
   const next5Page = Math.min(pageInt + 5, lastPageInt);
   const buttonClassNames =
-    "p-1 w-fit h-fit my-4 mx-1 text-sky-500 border-2 border-sky-500 rounded-md w-8 text-center flex items-center";
+    "p-1 w-fit h-fit my-4 mx-1 text-blue-500 dark:text-sky-500 border-2 border-blue-500 dark:border-sky-500 rounded-md w-8 text-center flex items-center";
   return (
     <div className="flex w-full justify-between">
       <div className="flex w-fit">
         <Link
           href={`${baseURL}${prev5Page}`}
-          className={clsx(buttonClassNames, "hover:bg-sky-900/30")}
+          className={clsx(buttonClassNames, "hover:bg-blue-100 dark:hover:bg-sky-900/30")}
           aria-label={`Move to page ${prev5Page}.`}
         >
-          <ChevronDoubleLeftIcon className="h-6 w-6 stroke-sky-500" />
+          <ChevronDoubleLeftIcon className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500" />
         </Link>
         <Link
           href={`${baseURL}${prevPage}`}
-          className={clsx(buttonClassNames, "hover:bg-sky-900/30")}
+          className={clsx(buttonClassNames, "hover:bg-blue-100 dark:hover:bg-sky-900/30")}
           aria-label={`Move to page ${prevPage}.`}
         >
-          <ChevronLeftIcon className="h-6 w-6 stroke-sky-500" />
+          <ChevronLeftIcon className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500" />
         </Link>
       </div>
 
@@ -49,17 +49,17 @@ export const Pagination = ({
       <div className="flex w-fit">
         <Link
           href={`${baseURL}${nextPage}`}
-          className={clsx(buttonClassNames, "hover:bg-sky-900/30")}
+          className={clsx(buttonClassNames, "hover:bg-blue-100 dark:hover:bg-sky-900/30")}
           aria-label={`Move to page ${nextPage}.`}
         >
-          <ChevronRightIcon className="h-6 w-6 stroke-sky-500" />
+          <ChevronRightIcon className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500" />
         </Link>
         <Link
           href={`${baseURL}${next5Page}`}
-          className={clsx(buttonClassNames, "hover:bg-sky-900/30")}
+          className={clsx(buttonClassNames, "hover:bg-blue-100 dark:hover:bg-sky-900/30")}
           aria-label={`Move to page ${next5Page}.`}
         >
-          <ChevronDoubleRightIcon className="h-6 w-6 stroke-sky-500" />
+          <ChevronDoubleRightIcon className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500" />
         </Link>
       </div>
     </div>
