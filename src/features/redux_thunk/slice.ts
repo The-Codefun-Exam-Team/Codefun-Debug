@@ -39,7 +39,8 @@ export const colorSlice = createSlice({
   name: "color" as string,
   initialState: {
     scheme: null,
-  } as { scheme: "light" | "dark" | null },
+    darkmode: false,
+  } as { scheme: "light" | "dark" | null; darkmode: boolean },
   reducers: {
     setScheme(state, action: PayloadAction<"light" | "dark" | null>) {
       state.scheme = action.payload;
@@ -56,8 +57,10 @@ export const colorSlice = createSlice({
         (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
       ) {
         document.documentElement.classList.add("dark");
+        state.darkmode = true;
       } else {
         document.documentElement.classList.remove("dark");
+        state.darkmode = false;
       }
     },
   },

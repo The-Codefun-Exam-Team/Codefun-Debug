@@ -44,7 +44,7 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
 
   const data = (await res.json()).data as ProblemData;
   return (
-    <div className="flex w-full flex-col items-start gap-5 self-stretch p-2 md:flex-row md:p-10">
+    <div className="mx-auto flex w-full flex-col items-start gap-6 self-stretch px-3 py-5 md:max-w-7xl md:flex-row md:gap-4 md:px-2 md:py-10 lg:gap-8 lg:px-4">
       <div className="h-auto w-full md:flex-[1_1_0]">
         <InfoTable data={data} pid={pid} />
       </div>
