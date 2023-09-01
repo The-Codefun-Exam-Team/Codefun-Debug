@@ -11,7 +11,8 @@ export const CodeView = ({ code }: { code: string }) => {
   const editorDomRef = useRef<HTMLDivElement | null>(null);
   const [renderingEditor, setRenderingEditor] = useState(true);
   const monaco = useRef<typeof monacoEditor | null>(null);
-  const darkmode = useAppSelector((state) => state.color.darkmode);
+  const colorScheme = useAppSelector((state) => state.color.scheme);
+  const isDark = colorScheme === "dark";
 
   useEffect(() => {
     let ignore = false;
@@ -54,12 +55,12 @@ export const CodeView = ({ code }: { code: string }) => {
   }, []);
 
   useEffect(() => {
-    if (darkmode) {
+    if (isDark) {
       monaco.current?.editor.setTheme("dark");
     } else {
       monaco.current?.editor.setTheme("light");
     }
-  }, [darkmode]);
+  }, [isDark]);
 
   useEffect(() => {
     if (!renderingEditor && editorRef.current) {

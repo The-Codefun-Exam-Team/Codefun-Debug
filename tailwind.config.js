@@ -3,7 +3,7 @@ import autoprefixer from "autoprefixer";
 
 /** @type {import("tailwindcss").Config} */
 const tailwindConfig = {
-  darkMode: "class",
+  darkMode: ["class", "[data-theme='dark']"],
   plugins: [tailwindTypography, autoprefixer],
   theme: {
     extend: {

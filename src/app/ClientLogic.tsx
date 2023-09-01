@@ -2,6 +2,7 @@
 import { setLoading, setScheme, setUser } from "@redux/slice";
 import { store } from "@redux/store";
 import type { UserData } from "@schemas/loginSchema";
+import { isColorScheme } from "@utils/shared";
 import { useEffect } from "react";
 
 let didFetchUser = false;
@@ -34,9 +35,9 @@ export const ClientLogic = () => {
   useEffect(() => {
     if (!didCheckInitialTheme) {
       didCheckInitialTheme = true;
-      const theme = localStorage.theme;
-      store.dispatch(async (dispatch) => {
-        dispatch(setScheme(theme === undefined ? null : theme));
+      const theme = localStorage.getItem("theme");
+      store.dispatch((dispatch) => {
+        dispatch(setScheme(isColorScheme(theme) ? theme : null));
       });
     }
   }, []);

@@ -2,6 +2,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { UserData } from "@schemas/loginSchema";
 
+import type { ColorScheme } from "@/shared/types";
+
 export interface UserSliceState {
   loading: boolean;
   user: UserData | null;
@@ -35,32 +37,28 @@ export const userSlice = createSlice({
 
 export const { setLoading, setUser } = userSlice.actions;
 
+export interface ColorSliceState {
+  scheme: ColorScheme | null;
+}
+
 export const colorSlice = createSlice({
   name: "color" as string,
   initialState: {
     scheme: null,
-    darkmode: false,
-  } as { scheme: "light" | "dark" | null; darkmode: boolean },
+  } as ColorSliceState,
   reducers: {
-    setScheme(state, action: PayloadAction<"light" | "dark" | null>) {
-      state.scheme = action.payload;
-      localStorage.theme = action.payload;
-      if (action.payload === "dark") {
-        localStorage.theme = "dark";
-      } else if (action.payload === "light") {
-        localStorage.theme = "light";
+    setScheme(state, action: PayloadAction<ColorScheme | null>) {
+      if (action.payload) {
+        state.scheme = action.payload;
+        document.documentElement.dataset.theme = action.payload;
+        localStorage.setItem("theme", action.payload);
       } else {
+        state.scheme = null;
+        const systemTheme: ColorScheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        document.documentElement.dataset.theme = systemTheme;
         localStorage.removeItem("theme");
-      }
-      if (
-        localStorage.theme === "dark" ||
-        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.add("dark");
-        state.darkmode = true;
-      } else {
-        document.documentElement.classList.remove("dark");
-        state.darkmode = false;
       }
     },
   },

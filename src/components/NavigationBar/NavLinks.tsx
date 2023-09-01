@@ -17,16 +17,15 @@ export interface NavLinksProps {
 }
 
 const DarkModeToggler = () => {
-  const [option, setOption] = useState(useAppSelector((state) => state.color.scheme));
+  const colorScheme = useAppSelector((state) => state.color.scheme);
   const dispatch = useAppDispatch();
   return (
     <div className="flex flex-col gap-2 px-3 py-2 font-semibold transition-colors duration-100">
       <span>Theme</span>
       <RadioGroup
-        value={option}
+        value={colorScheme}
         onChange={(value) => {
           dispatch(setScheme(value));
-          setOption(value);
         }}
         className="flex w-full justify-between [&>*]:cursor-pointer"
       >

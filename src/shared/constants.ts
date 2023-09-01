@@ -27,3 +27,5 @@ export const CODEFUN_ROLES = [
   "admin",
   "mod",
 ] as const;
+
+export const COLOR_SCHEMES = ["dark", "light"] as const;

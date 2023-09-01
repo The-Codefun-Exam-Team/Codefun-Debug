@@ -16,18 +16,15 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
-  <html lang="en">
+  <html lang="en" suppressHydrationWarning>
     <head>
-      {
-        // script to avoid FOUC (from TailwindCSS docs)
-        <script
-          id="get-initial-color-scheme"
-          dangerouslySetInnerHTML={{
-            __html:
-              "if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {document.documentElement.classList.add('dark')} else {document.documentElement.classList.remove('dark')}",
-          }}
-        ></script>
-      }
+      {/* Avoid FOUC */}
+      <script
+        id="get-initial-color-scheme"
+        dangerouslySetInnerHTML={{
+          __html: `window.DID_FETCH_INITIAL_COLOR||(window.DID_FETCH_INITIAL_COLOR=!0,document.documentElement.dataset.theme=(()=>{const e=localStorage.getItem("theme");if(e&&["dark","light"].includes(e))return e;return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"})());`,
+        }}
+      />
     </head>
     <body>
       <ReduxProvider>
