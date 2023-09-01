@@ -128,8 +128,8 @@ export const UserInfo = () => {
           <Menu.Button
             className={clsx(
               "flex w-auto items-center rounded-full p-[5px]",
-              "hover:bg-blue-50 hover:ring-[1.5px] hover:ring-blue-200 dark:hover:bg-blue-950 dark:hover:ring-blue-800",
-              "outline-none focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-400",
+              "hover:bg-blue-50 hover:ring-[1.5px] hover:ring-blue-200 dark:hover:bg-sky-950/50 dark:hover:ring-sky-800",
+              "outline-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-sky-500",
               "border-b-[1.6px] border-transparent", // transparent border to prevent shifting of navbar
               roleColor,
             )}

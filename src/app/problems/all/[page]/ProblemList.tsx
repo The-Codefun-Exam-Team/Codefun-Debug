@@ -14,7 +14,7 @@ export const ProblemsList = ({
   data: DebugProblemBrief[];
   page: string;
 }) => (
-  <div className="w-full rounded-md">
+  <div className="w-full">
     <table className="w-full table-auto">
       <thead>
         <tr className="border-b-[1px] border-gray-400 text-lg font-bold dark:border-slate-600 md:text-xl [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>th]:p-3">
@@ -40,7 +40,6 @@ export const ProblemsList = ({
             key={`problem-page-${page}-code-${problem.code}`}
             className={clsx(
               "h-10 text-center",
-              // "even:bg-gray-100",
               "font-semibold text-slate-600 dark:text-slate-400 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
             )}
           >
