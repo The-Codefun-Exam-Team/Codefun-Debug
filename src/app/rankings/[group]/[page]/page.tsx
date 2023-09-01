@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 
-import { Box, Heading } from "@/components";
+import { Box, Heading, Pagination } from "@/components";
 
 import { Group } from "./Group";
-import { Pagination } from "./Pagination";
 import { RankTable } from "./RankTable";
 import type { GroupsData, RankingsData } from "./types";
 
@@ -74,9 +73,12 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
         <Group group={group} groupsData={groupsData} />
+        <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage="100" />
         <RankTable rankingData={rankingData} page={page} />
+        {rankingData.length > 10 && (
+          <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage="100" />
+        )}
       </div>
-      <Pagination group={group} page={page} />
     </>
   );
 };

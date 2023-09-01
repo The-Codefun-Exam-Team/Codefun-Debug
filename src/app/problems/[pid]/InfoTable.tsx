@@ -32,20 +32,20 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
 
   return (
     <>
-      <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-600">
+      <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
         <thead>
           <tr>
             {data.best_score < 100 ? (
               data.best_score === -1 ? (
                 <th
-                  className="font-norma border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-medium"
+                  className="font-norma border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-medium dark:border-slate-500"
                   colSpan={2}
                 >
                   Login to view score
                 </th>
               ) : (
                 <th
-                  className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600"
+                  className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600 dark:border-slate-500 dark:text-green-500"
                   colSpan={2}
                 >
                   Highest score: {data.best_score}
@@ -53,7 +53,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
               )
             ) : (
               <th
-                className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-bold text-green-600"
+                className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-bold text-green-600 dark:border-slate-500 dark:text-green-500"
                 colSpan={2}
               >
                 Accepted
@@ -65,8 +65,8 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
           <tr>
             <td
               className={clsx(
-                "rounded-md text-left text-lg font-semibold text-slate-700",
-                "divide-y-2 divide-slate-300 border-[2px] border-slate-300",
+                "rounded-md text-left text-lg font-semibold text-slate-700 dark:text-slate-400",
+                "divide-y-[1px] divide-slate-300 border-[1px] border-slate-300 dark:divide-slate-600 dark:border-slate-600",
                 "[&>div]:p-2",
               )}
             >
@@ -97,15 +97,25 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                   htmlFor="verdict-dropdown"
                 >
                   <CheckIcon className="relative bottom-[3px] inline h-6 w-6" /> Verdicts
-                  <SolidDownIcon className="relative bottom-[1px] ml-1 inline-block h-5 w-5 transition-all duration-300" />
+                  <SolidDownIcon className="relative bottom-[1px] ml-1 inline-block h-5 w-5 fill-slate-700 stroke-slate-700 transition-all duration-300 dark:fill-slate-400 dark:stroke-slate-400" />
                 </label>
-                <div className="invisible max-h-0 overflow-y-hidden transition-all duration-200 ease-linear peer-checked:visible peer-checked:max-h-40">
+                <div className="invisible max-h-0 overflow-y-hidden transition-all duration-200 ease-in-out peer-checked:visible peer-checked:max-h-40">
                   <ul className="ml-3 mt-3 list-inside list-disc">
-                    {verdicts.AC > 0 && <li className="text-green-600">{verdicts.AC} AC</li>}
-                    {verdicts.WA > 0 && <li className="text-red-600">{verdicts.WA} WA</li>}
-                    {verdicts.MLE > 0 && <li className="text-gray-600">{verdicts.MLE} MLE</li>}
-                    {verdicts.TLE > 0 && <li className="text-yellow-600">{verdicts.TLE} TLE</li>}
-                    {verdicts.RTE > 0 && <li className="text-blue-600">{verdicts.RTE} RTE</li>}
+                    {verdicts.AC > 0 && (
+                      <li className="text-green-600 dark:text-green-500">{verdicts.AC} AC</li>
+                    )}
+                    {verdicts.WA > 0 && (
+                      <li className="text-red-600 dark:text-red-500">{verdicts.WA} WA</li>
+                    )}
+                    {verdicts.MLE > 0 && (
+                      <li className="text-gray-600 dark:text-gray-500">{verdicts.MLE} MLE</li>
+                    )}
+                    {verdicts.TLE > 0 && (
+                      <li className="text-yellow-600 dark:text-yellow-500">{verdicts.TLE} TLE</li>
+                    )}
+                    {verdicts.RTE > 0 && (
+                      <li className="text-blue-600 dark:text-blue-500">{verdicts.RTE} RTE</li>
+                    )}
                     {data.judge.total === 0 && <li className="text-gray-600">CE</li>}
                   </ul>
                 </div>

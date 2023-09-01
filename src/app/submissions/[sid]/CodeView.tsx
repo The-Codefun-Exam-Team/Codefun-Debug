@@ -1,19 +1,28 @@
 "use client";
+import { useAppSelector } from "@redux/hooks";
 import { clsx } from "@utils/shared";
 import type monacoEditor from "monaco-editor";
 import { useEffect, useRef, useState } from "react";
+
+import AtlanticNight from "@/features/monaco-themes/atlantic-night.json";
 
 export const CodeView = ({ code }: { code: string }) => {
   const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
   const editorDomRef = useRef<HTMLDivElement | null>(null);
   const [renderingEditor, setRenderingEditor] = useState(true);
   const monaco = useRef<typeof monacoEditor | null>(null);
+  const colorScheme = useAppSelector((state) => state.color.selectedScheme);
+  const isDark = colorScheme === "dark";
 
   useEffect(() => {
     let ignore = false;
     const loadEditor = async () => {
       if (!ignore) {
         monaco.current = await import("monaco-editor");
+        monaco.current.editor.defineTheme(
+          "dark",
+          AtlanticNight as monacoEditor.editor.IStandaloneThemeData,
+        );
         if (editorDomRef.current) {
           editorRef.current?.dispose();
 
@@ -24,9 +33,9 @@ export const CodeView = ({ code }: { code: string }) => {
             domReadOnly: true,
           });
 
-          editorRef.current?.setModel(monaco.current.editor.createModel("", "cpp"));
+          monaco.current?.editor.setTheme("light");
 
-          monaco.current.editor.setTheme("light");
+          editorRef.current.setModel(monaco.current.editor.createModel("", "cpp"));
         }
         setRenderingEditor(false);
       }
@@ -38,21 +47,36 @@ export const CodeView = ({ code }: { code: string }) => {
   }, []);
 
   useEffect(() => {
+    if (renderingEditor) return;
+    if (isDark) {
+      monaco.current?.editor.setTheme("dark");
+    } else {
+      monaco.current?.editor.setTheme("light");
+    }
+  }, [isDark, renderingEditor]);
+
+  useEffect(() => {
     if (!renderingEditor && editorRef.current) {
       editorRef.current.getModel()?.setValue(code);
     }
   }, [renderingEditor, code]);
 
   return (
-    <section className="flex w-full self-stretch rounded-md border-2 border-slate-600 py-1">
+    <section className="flex h-full w-full">
       {renderingEditor && (
         <div className="flex h-full w-full">
-          <div className="grow-1 w-full self-center text-center text-2xl text-slate-700">
-            Loading...
+          <div className="grow-1 flex w-full flex-col justify-around rounded-md border-2 border-slate-500 text-2xl text-slate-700 dark:border-slate-600">
+            <div className="text-center text-3xl">Loading...</div>
           </div>
         </div>
       )}
-      <div className={clsx("h-full w-full", renderingEditor && "hidden")} ref={editorDomRef} />
+      <div
+        className={clsx(
+          "h-full w-full overflow-hidden rounded-md border-2 border-slate-500 dark:border-slate-600",
+          renderingEditor && "hidden",
+        )}
+        ref={editorDomRef}
+      />
     </section>
   );
 };

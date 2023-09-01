@@ -1,53 +1,53 @@
+"use client";
+import { Menu, Transition } from "@headlessui/react";
 import { clsx } from "@utils/shared";
 import Link from "next/link";
-
-import { ChevronDownIcon } from "@/components/icon";
 
 import type { GroupsData } from "./types";
 
 export const Group = ({ group, groupsData }: { group: string; groupsData: GroupsData }) => {
   const currentGroupName = groupsData.find((element) => element.id.toString() === group)?.name;
-
   return (
-    <>
-      <input type="checkbox" id="dropdown-group" className="peer hidden" />
-      <label
-        htmlFor="dropdown-group"
+    <Menu>
+      <Menu.Button
         className={clsx(
-          "relative flex h-12 w-full cursor-pointer border-2 border-black peer-checked:rounded-b-none peer-checked:border-b-0",
-          "rounded-md peer-checked:[&>svg]:rotate-0",
+          "flex w-full items-center rounded-md border-2 border-slate-700 p-[5px] text-2xl font-semibold text-slate-700 dark:border-slate-400 dark:text-slate-400",
         )}
       >
-        <div className="mx-auto h-full w-fit p-2 text-xl">{currentGroupName}</div>
-        <ChevronDownIcon className="absolute right-2 h-full w-10 rotate-180 transition-all duration-300" />
-      </label>
-      <div
-        className={clsx(
-          "relative h-fit w-full",
-          "peer-checked:[&>:nth-child(1)]:h-[70vh] peer-checked:[&>:nth-child(1)]:opacity-100",
-        )}
-      >
-        <ul
-          className={clsx(
-            "absolute z-10 h-0 w-full overflow-y-auto border-x-2 border-b-2 border-black bg-white opacity-0",
-            "rounded-b-lg transition-all duration-300 ease-out",
-          )}
+        <div className="grow text-center">{currentGroupName}</div>
+      </Menu.Button>
+      <div className="relative">
+        <Transition
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
         >
-          {groupsData.map(({ id, name }) => (
-            <li key={`rankings-groups-list-group-${id}`}>
-              <Link
-                href={`/rankings/${id}/1`}
-                className={clsx(
-                  "block h-12 w-full p-2 text-center text-lg",
-                  id + "" === group ? "bg-gray-200" : "hover:bg-gray-200",
-                )}
+          <Menu.Items className="absolute left-0 top-2 z-10 flex h-[60vh] w-full flex-col divide-y-[1px] divide-slate-300 overflow-auto rounded-md border-2 border-slate-700 bg-white dark:divide-slate-800 dark:border-slate-500 dark:bg-slate-900">
+            {groupsData.map(({ id, name }) => (
+              <Menu.Item
+                key={`rankings-groups-list-group-${id}`}
+                disabled={name === currentGroupName}
               >
-                {name}
-              </Link>
-            </li>
-          ))}
-        </ul>
+                {({ active }) => (
+                  <Link
+                    href={`/rankings/${id}/1`}
+                    className={clsx(
+                      "p-2 text-center text-xl text-slate-700 dark:text-slate-500",
+                      name === currentGroupName && "hidden",
+                      active && "bg-blue-50 dark:bg-sky-800/20",
+                    )}
+                  >
+                    {name}
+                  </Link>
+                )}
+              </Menu.Item>
+            ))}
+          </Menu.Items>
+        </Transition>
       </div>
-    </>
+    </Menu>
   );
 };

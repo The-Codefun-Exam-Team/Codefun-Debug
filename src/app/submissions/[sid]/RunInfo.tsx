@@ -27,7 +27,7 @@ const TestResult = ({
   message: string;
   count: number;
 }) => (
-  <div className="flex w-full justify-between px-4 py-2 odd:bg-gray-200 even:bg-gray-50">
+  <div className="flex w-full justify-between px-4 py-2 odd:bg-blue-100/70 even:bg-blue-50/70 dark:odd:bg-sky-900/30 dark:even:bg-sky-950/30">
     <div>
       <div className="text-lg font-bold">
         #{count}. Verdict: <span className={verdictColor(verdict)}>{RESULTS_DICT[verdict]}</span>

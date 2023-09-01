@@ -60,7 +60,7 @@ const Page = async ({ params: { sid } }: { params: { sid: number } }) => {
   const runData = (await requestToCodefun.json()).data as RunData;
 
   return (
-    <div className="flex w-full flex-col items-start justify-between gap-5 self-stretch p-2 md:mb-0 md:flex-row md:p-10">
+    <div className="mx-auto flex w-full flex-col items-start gap-6 self-stretch px-3 py-5 md:max-w-7xl md:flex-row md:gap-4 md:px-2 md:py-10 lg:gap-8 lg:px-4">
       <div className="h-auto w-full flex-[1_1_0]">
         <InfoTable submissionData={submissionData} runData={runData} sid={sid} />
       </div>

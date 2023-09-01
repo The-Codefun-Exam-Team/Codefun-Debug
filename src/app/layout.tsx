@@ -16,8 +16,16 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
-  <html lang="en">
-    <head></head>
+  <html lang="en" suppressHydrationWarning>
+    <head>
+      {/* Avoid FOUC */}
+      <script
+        id="get-initial-color-scheme"
+        dangerouslySetInnerHTML={{
+          __html: `window.DID_FETCH_INITIAL_COLOR||(window.DID_FETCH_INITIAL_COLOR=!0,document.documentElement.dataset.theme=(()=>{const e=localStorage.getItem("theme");if(e&&["dark","light"].includes(e))return e;return window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"})());`,
+        }}
+      />
+    </head>
     <body>
       <ReduxProvider>
         <div id="root-container">

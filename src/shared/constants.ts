@@ -12,3 +12,20 @@ export const RESULTS_DICT: Record<Results, string> = {
   R: "To Be Rejudged...",
   "...": "Scoring...",
 };
+
+export const CODEFUN_ROLES = [
+  "newbie",
+  "beginner",
+  "novice",
+  "coder",
+  "expert",
+  "master",
+  "hacker",
+  "grandmaster",
+  "banned",
+  "problemsetter",
+  "admin",
+  "mod",
+] as const;
+
+export const COLOR_SCHEMES = ["dark", "light"] as const;

@@ -1,4 +1,3 @@
-import IMAGE_HDP123 from "./info-hdp123.jpg";
 import type { ContributorsEntry, TeamMembers } from "./types";
 
 export const TEAM = [
@@ -17,7 +16,7 @@ export const CONTRIBUTORS_INFO = {
     role: "Supervisor",
     roleDescription:
       "Came up with the original idea and gathered the original 3 of our team. Ensures that we don't drag this project out far too long.",
-    image: IMAGE_HDP123,
+    image: null,
   },
   minhnhatnoe: {
     name: "Nguyen Minh Nhat",

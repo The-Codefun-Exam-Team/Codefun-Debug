@@ -23,19 +23,19 @@ export const InfoTable = ({
 }) => {
   const subDate = new Date(runData.submitTime * 1000);
   return (
-    <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-600">
+    <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
       <thead>
         <tr>
           {submissionData.score < 100 ? (
             <th
-              className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-normal text-green-600"
+              className="border-b-[1px] border-slate-500 pb-8 pt-6 text-2xl font-normal text-green-600 dark:border-slate-600 dark:text-green-500"
               colSpan={2}
             >
               Debug score: {submissionData.score}
             </th>
           ) : (
             <th
-              className="border-b-[1px] border-slate-300 pb-8 pt-6 text-2xl font-bold text-green-600"
+              className="border-b-[1px] border-slate-500 pb-8 pt-6 text-2xl font-bold text-green-600 dark:border-slate-600 dark:text-green-500"
               colSpan={2}
             >
               Accepted
@@ -46,8 +46,8 @@ export const InfoTable = ({
       <tbody>
         <tr>
           <td
-            className="divide-y-2 divide-slate-300 rounded-md border-[2px] border-slate-300 text-left text-lg font-semibold text-slate-700
-            [&>div]:p-2 [&>div]:text-left"
+            className="divide-y-[1px] divide-slate-400 rounded-md border-[1px] border-slate-400 text-left text-lg font-semibold text-slate-700 dark:divide-slate-600 dark:border-slate-600
+            dark:text-slate-400 [&>div]:p-2 [&>div]:text-left"
           >
             <div>
               <UserIcon className="relative bottom-[3px] inline h-6 w-6" /> Owner:{" "}
@@ -64,15 +64,13 @@ export const InfoTable = ({
             </div>
             <div>
               <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
-              {
-                <DecoratedLink
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href={`https://codefun.vn/problems/${runData.problem.id}`}
-                >
-                  {runData.problem.code}
-                </DecoratedLink>
-              }
+              <DecoratedLink
+                target="_blank"
+                rel="noreferrer noopener"
+                href={`https://codefun.vn/problems/${runData.problem.id}`}
+              >
+                {runData.problem.code}
+              </DecoratedLink>
             </div>
             <div>
               <LanguageIcon className="relative bottom-[3px] inline h-6 w-6" /> Language:{" "}
