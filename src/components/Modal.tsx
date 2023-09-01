@@ -44,19 +44,25 @@ export const Modal = ({ show, closeModal, title, description, children }: ModalP
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-md overflow-hidden rounded-xl bg-white p-6  text-left align-middle shadow-xl transition-all dark:bg-slate-900">
                 <div className="flex flex-row items-center justify-between">
                   <div>
-                    <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg font-medium leading-6 text-gray-900 dark:text-slate-300"
+                    >
                       {title}
                     </Dialog.Title>
-                    <Dialog.Title as="h4" className="text-sm font-medium leading-5 text-gray-900">
+                    <Dialog.Title
+                      as="h4"
+                      className="text-sm font-medium leading-5 text-gray-900 dark:text-slate-300"
+                    >
                       {description}
                     </Dialog.Title>
                   </div>
                   <button
                     onClick={closeModal}
-                    className="rounded-md p-2 transition-colors duration-100 hover:bg-gray-100"
+                    className="rounded-md p-2 transition-colors duration-100 hover:bg-gray-100 dark:hover:bg-slate-800"
                   >
                     <CrossIcon className="h-6 w-6" />
                     <span className="sr-only">Close modal</span>
