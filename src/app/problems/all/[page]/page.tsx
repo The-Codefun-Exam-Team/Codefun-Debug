@@ -58,7 +58,7 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
       <div className="relative mx-auto flex w-full max-w-4xl flex-col p-4 ">
         <Pagination page={page} baseURL="/problems/all/" lastPage="100" />
         <ProblemsList isLoggedIn={!!token} data={problemsList} page={page} />
-        {problemsList.length !== 0 && (
+        {problemsList.length > 0 && (
           <Pagination page={page} baseURL="/problems/all/" lastPage="100" />
         )}
       </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PlusSignIcon } from "@/components/icon";
 
 export const CreateProblem = () => {
-  const { user } = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user.user);
   return user?.status === "Admin" ? (
     <Link href="/problems/create" className="flex items-center">
       <PlusSignIcon
@@ -14,7 +14,7 @@ export const CreateProblem = () => {
       />
     </Link>
   ) : (
-    <div className="h-7 w-7 border-2 border-transparent"></div>
+    // invisible box to keep the table aligned
+    <div className="h-7 w-7 border-2 border-transparent" />
   );
-  // invisible box to keep the table aligned
 };

@@ -5,7 +5,7 @@ import type monacoEditor from "monaco-editor";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import AtlanticNight from "@/features/monaco-themes/atlantic-night.json";
+import atlanticNight from "@/features/monaco-themes/atlantic-night.json";
 
 import type { ProblemData } from "./types";
 
@@ -17,7 +17,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
   const editorDomRef = useRef<HTMLDivElement | null>(null);
   const [renderingEditor, setRenderingEditor] = useState(true);
   const monaco = useRef<typeof monacoEditor | null>(null);
-  const colorScheme = useAppSelector((state) => state.color.scheme);
+  const colorScheme = useAppSelector((state) => state.color.selectedScheme);
   const isDark = colorScheme === "dark";
 
   useEffect(() => {
@@ -25,10 +25,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
     const loadEditor = async () => {
       if (!ignore) {
         monaco.current = await import("monaco-editor");
-        monaco.current.editor.defineTheme(
-          "dark",
-          AtlanticNight as monacoEditor.editor.IStandaloneThemeData,
-        );
+        monaco.current.editor.defineTheme("dark", atlanticNight);
         if (editorDomRef.current) {
           editorRef.current?.dispose();
 
@@ -39,15 +36,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
             scrollBeyondLastColumn: 10,
           });
 
-          if (
-            localStorage.theme === "dark" ||
-            (!("theme" in localStorage) &&
-              window.matchMedia("(prefers-color-scheme: dark)").matches)
-          ) {
-            monaco.current?.editor.setTheme("dark");
-          } else {
-            monaco.current?.editor.setTheme("light");
-          }
+          monaco.current.editor.setTheme("light");
 
           editorRef.current.setModel({
             original: monaco.current.editor.createModel("", "cpp"),
@@ -64,12 +53,13 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
   }, []);
 
   useEffect(() => {
+    if (renderingEditor) return;
     if (isDark) {
       monaco.current?.editor.setTheme("dark");
     } else {
       monaco.current?.editor.setTheme("light");
     }
-  }, [isDark]);
+  }, [isDark, renderingEditor]);
 
   useEffect(() => {
     if (!renderingEditor && editorRef.current) {

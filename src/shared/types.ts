@@ -2,7 +2,6 @@ import type { CODEFUN_ROLES, COLOR_SCHEMES } from "./constants";
 
 export type Languages = "Python2" | "Python3" | "C++" | "Nasm" | "Go" | "Java" | "Pascal";
 export type Results = "AC" | "SS" | "WA" | "TLE" | "RTE" | "CE" | "MLE" | "Q" | "R" | "...";
-export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
 export interface UserData {
   id: number;
@@ -31,5 +30,7 @@ export interface UserRanking {
   rank: number;
   points: number;
 }
+
+export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
 export type CodefunRoles = (typeof CODEFUN_ROLES)[number];

@@ -17,13 +17,13 @@ export interface NavLinksProps {
 }
 
 const DarkModeToggler = () => {
-  const colorScheme = useAppSelector((state) => state.color.scheme);
+  const { selectedScheme: colorScheme, isSystemScheme } = useAppSelector((state) => state.color);
   const dispatch = useAppDispatch();
   return (
     <div className="flex flex-col gap-2 px-3 py-2 font-semibold transition-colors duration-100">
       <span>Theme</span>
       <RadioGroup
-        value={colorScheme}
+        value={isSystemScheme ? null : colorScheme}
         onChange={(value) => {
           dispatch(setScheme(value));
         }}
@@ -148,55 +148,57 @@ export const UserInfo = () => {
               {user ? user.name : "Guest"}
             </div>
           </Menu.Button>
-          <div className="absolute right-0 z-50 w-44">
-            <Transition
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
+          <Transition
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items
+              as="div"
+              className={clsx(
+                "absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md border-gray-400 bg-white dark:bg-slate-900",
+                "divide-y-[0.5px] divide-gray-300 border-[1px] dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5]",
+              )}
             >
-              <Menu.Items
-                as="div"
-                className={clsx(
-                  "mt-2 rounded-md border-gray-400 bg-white dark:bg-slate-900",
-                  "divide-y-[0.5px] divide-gray-300 border-[1px] dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5]",
-                )}
-              >
-                <DarkModeToggler />
-                {ADDITIONAL_LINKS.map(({ url, title }) => (
-                  <Menu.Item key={`navbar-dropdown-${title}`}>
+              <DarkModeToggler />
+              {ADDITIONAL_LINKS.map(({ url, title }) => (
+                <Menu.Item key={`navbar-dropdown-${title}`}>
+                  <div>
                     <BaseNavLink className={menuItemsClassName} href={url}>
                       {title}
                     </BaseNavLink>
-                  </Menu.Item>
-                ))}
-                <Menu.Item>
-                  {user ? (
-                    <button className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)} onClick={logout}>
-                      Sign out
-                    </button>
-                  ) : (
+                  </div>
+                </Menu.Item>
+              ))}
+              <Menu.Item>
+                {user ? (
+                  <button className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)} onClick={logout}>
+                    Sign out
+                  </button>
+                ) : (
+                  <div>
                     <BaseNavLink className={menuItemsClassName} href="/login">
                       Sign in
                     </BaseNavLink>
-                  )}
-                </Menu.Item>
-              </Menu.Items>
-            </Transition>
-            {errorMessage && (
-              <div
-                className={clsx(
-                  "right-0 mt-2 w-44 px-4 py-2",
-                  "flex h-auto items-center overflow-hidden text-clip rounded-md",
-                  "border-red-200 bg-red-100 text-red-800",
+                  </div>
                 )}
-              >
-                {errorMessage}
-              </div>
-            )}
-          </div>
+              </Menu.Item>
+            </Menu.Items>
+          </Transition>
+          {errorMessage && (
+            <div
+              className={clsx(
+                "right-0 mt-2 w-44 px-4 py-2",
+                "flex h-auto items-center overflow-hidden text-clip rounded-md",
+                "border-red-200 bg-red-100 text-red-800",
+              )}
+            >
+              {errorMessage}
+            </div>
+          )}
         </Menu>
       </div>
     </>

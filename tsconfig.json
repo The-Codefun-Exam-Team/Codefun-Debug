@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@redux/*": ["./src/features/redux_thunk/*"],
+      "@redux/*": ["./src/features/redux-thunk/*"],
       "@schemas/*": ["./src/shared/schemas/*"],
       "@hooks/*": ["./src/shared/hooks/*"],
       "@utils/*": ["./src/shared/utils/*"],

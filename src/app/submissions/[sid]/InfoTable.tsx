@@ -64,15 +64,13 @@ export const InfoTable = ({
             </div>
             <div>
               <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
-              {
-                <DecoratedLink
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href={`https://codefun.vn/problems/${runData.problem.id}`}
-                >
-                  {runData.problem.code}
-                </DecoratedLink>
-              }
+              <DecoratedLink
+                target="_blank"
+                rel="noreferrer noopener"
+                href={`https://codefun.vn/problems/${runData.problem.id}`}
+              >
+                {runData.problem.code}
+              </DecoratedLink>
             </div>
             <div>
               <LanguageIcon className="relative bottom-[3px] inline h-6 w-6" /> Language:{" "}

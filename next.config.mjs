@@ -13,14 +13,7 @@ const nextConfig = {
   swcMinify: true,
   output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "www.gravatar.com",
-        port: "",
-        pathname: "**",
-      },
-    ],
+    domains: ["www.gravatar.com"],
   },
   modularizeImports: {
     "@/components/?(((\\w*)?/?)*)": {

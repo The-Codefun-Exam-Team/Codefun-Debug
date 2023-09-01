@@ -38,25 +38,29 @@ export const userSlice = createSlice({
 export const { setLoading, setUser } = userSlice.actions;
 
 export interface ColorSliceState {
-  scheme: ColorScheme | null;
+  selectedScheme: ColorScheme;
+  isSystemScheme: boolean;
 }
 
 export const colorSlice = createSlice({
   name: "color" as string,
   initialState: {
-    scheme: null,
+    selectedScheme: "light",
+    isSystemScheme: false,
   } as ColorSliceState,
   reducers: {
     setScheme(state, action: PayloadAction<ColorScheme | null>) {
       if (action.payload) {
-        state.scheme = action.payload;
+        state.selectedScheme = action.payload;
+        state.isSystemScheme = false;
         document.documentElement.dataset.theme = action.payload;
         localStorage.setItem("theme", action.payload);
       } else {
-        state.scheme = null;
         const systemTheme: ColorScheme = window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "dark"
           : "light";
+        state.selectedScheme = systemTheme;
+        state.isSystemScheme = true;
         document.documentElement.dataset.theme = systemTheme;
         localStorage.removeItem("theme");
       }

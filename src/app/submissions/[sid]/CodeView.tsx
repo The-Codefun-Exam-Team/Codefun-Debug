@@ -11,7 +11,7 @@ export const CodeView = ({ code }: { code: string }) => {
   const editorDomRef = useRef<HTMLDivElement | null>(null);
   const [renderingEditor, setRenderingEditor] = useState(true);
   const monaco = useRef<typeof monacoEditor | null>(null);
-  const colorScheme = useAppSelector((state) => state.color.scheme);
+  const colorScheme = useAppSelector((state) => state.color.selectedScheme);
   const isDark = colorScheme === "dark";
 
   useEffect(() => {
@@ -33,15 +33,7 @@ export const CodeView = ({ code }: { code: string }) => {
             domReadOnly: true,
           });
 
-          if (
-            localStorage.theme === "dark" ||
-            (!("theme" in localStorage) &&
-              window.matchMedia("(prefers-color-scheme: dark)").matches)
-          ) {
-            monaco.current?.editor.setTheme("dark");
-          } else {
-            monaco.current?.editor.setTheme("light");
-          }
+          monaco.current?.editor.setTheme("light");
 
           editorRef.current.setModel(monaco.current.editor.createModel("", "cpp"));
         }
@@ -55,12 +47,13 @@ export const CodeView = ({ code }: { code: string }) => {
   }, []);
 
   useEffect(() => {
+    if (renderingEditor) return;
     if (isDark) {
       monaco.current?.editor.setTheme("dark");
     } else {
       monaco.current?.editor.setTheme("light");
     }
-  }, [isDark]);
+  }, [isDark, renderingEditor]);
 
   useEffect(() => {
     if (!renderingEditor && editorRef.current) {
