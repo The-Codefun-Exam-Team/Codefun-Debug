@@ -32,7 +32,7 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
 
   return (
     <>
-      <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-600">
+      <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
         <thead>
           <tr>
             {data.best_score < 100 ? (

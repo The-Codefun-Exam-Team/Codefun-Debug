@@ -19,9 +19,9 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
   };
 
   return (
-    <div className="flex h-full w-full flex-col gap-2">
+    <div className="flex h-[70vh] w-full flex-col gap-2 md:h-full">
       <button
-        className="rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
+        className="rounded-md border-2 border-slate-500 p-2 text-lg font-medium text-slate-700 transition-opacity dark:border-slate-600 dark:text-slate-400"
         disabled={buttonWaiting}
         onClick={() => {
           if (!buttonWaiting) {
@@ -30,7 +30,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
           }
         }}
       >
-        {view === "verdict" ? "Your verdict" : "Your code"}
+        {view === "verdict" ? "Verdict" : "Code"}
       </button>
       <Transition
         show={!isTransition && view === "verdict"}
@@ -52,7 +52,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
         show={!isTransition && view === "editor"}
         unmount={false}
         afterEnter={() => setButtonWaiting(false)}
-        className="flex h-full w-full"
+        className="relative h-full w-full"
         enter="ease-out duration-150"
         enterFrom="opacity-0"
         enterTo="opacity-100"
@@ -61,7 +61,9 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
         leaveTo="opacity-0"
         afterLeave={toggleView}
       >
-        <CodeView code={code} />
+        <div className="absolute left-0 top-0 h-full w-full rounded-md">
+          <CodeView code={code} />
+        </div>
       </Transition>
     </div>
   );

@@ -120,7 +120,7 @@ export const UserInfo = () => {
   const roleColor = getCodefunRoleTextClass(role);
 
   const menuItemsClassName =
-    "w-full rounded-none text-left transition-colors duration-200 hover:text-blue-500";
+    "w-full rounded-none text-left transition-colors duration-200 hover:text-blue-500 dark:hover:text-sky-500";
   return (
     <>
       <div className="relative">

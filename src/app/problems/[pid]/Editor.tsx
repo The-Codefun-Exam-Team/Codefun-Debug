@@ -5,7 +5,7 @@ import type monacoEditor from "monaco-editor";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import AtlaticNight from "@/features/monaco-themes/atlantic-night.json";
+import AtlanticNight from "@/features/monaco-themes/atlantic-night.json";
 
 import type { ProblemData } from "./types";
 
@@ -24,7 +24,10 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
     const loadEditor = async () => {
       if (!ignore) {
         monaco.current = await import("monaco-editor");
-        monaco.current.editor.defineTheme("dark", AtlaticNight as any);
+        monaco.current.editor.defineTheme(
+          "dark",
+          AtlanticNight as monacoEditor.editor.IStandaloneThemeData,
+        );
         if (editorDomRef.current) {
           editorRef.current?.dispose();
 
@@ -109,7 +112,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
     // TODO: support for python problems and more
     <section className="relative h-[60vh] w-full self-stretch md:h-auto">
       {renderingEditor && (
-        <div className="flex h-full w-full rounded-md border-2 border-slate-600">
+        <div className="flex h-full w-full rounded-md border-2 border-slate-500 dark:border-slate-600">
           <div className="grow-1 w-full self-center text-center text-2xl text-slate-700">
             Loading editor...
           </div>
@@ -117,7 +120,7 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
       )}
       <div
         className={clsx(
-          "h-full w-full overflow-hidden rounded-md border-2 border-slate-700 dark:border-slate-600",
+          "h-full w-full overflow-hidden rounded-md border-2 border-slate-500 dark:border-slate-600",
           renderingEditor && "hidden",
         )}
         ref={editorDomRef}
