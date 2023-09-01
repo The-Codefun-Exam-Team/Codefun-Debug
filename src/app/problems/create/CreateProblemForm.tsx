@@ -57,7 +57,9 @@ export const CreateProblemForm = () => {
       <Box>
         <form onSubmit={submitForm} className="flex w-full flex-col gap-6 text-slate-700">
           <div className="text-center">
-            <Heading type="title-large">Create Problem</Heading>
+            <Heading type="title-large">
+              <div className="text-blue-500 dark:text-sky-500">Create problem</div>
+            </Heading>
             {successStatus && (
               <p className="text-md relative top-4 w-full border-2 border-green-200 bg-green-100 p-1 text-center font-semibold text-green-800">
                 Success: {successStatus}
@@ -96,7 +98,7 @@ export const CreateProblemForm = () => {
           </div>
           <button
             type="submit"
-            className="rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-50"
+            className="disabled:opacity-7x0 rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity dark:border-[1px] dark:border-slate-400 dark:text-slate-300"
             disabled={loading}
           >
             Create
