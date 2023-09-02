@@ -40,10 +40,10 @@ export const LoginForm = () => {
       dispatch(
         setUser({
           user: resBody,
-          refresh: router.refresh,
+          // refresh: router.refresh,
         }),
       );
-      router.push("/");
+      router.push(searchParams?.get("prev") || "/");
     } else {
       setServerError(resBody.error);
     }
