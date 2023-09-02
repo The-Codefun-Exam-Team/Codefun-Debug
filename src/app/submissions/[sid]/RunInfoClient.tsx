@@ -70,16 +70,16 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
 };
 
 export const InQueue = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const refresh = () => startTransition(router.refresh);
+  // const refresh = () => startTransition(router.refresh);
 
-  const { start, stop } = useInterval(refresh, 5000);
+  // const { start, stop } = useInterval(refresh, 5000);
 
-  useEffect(() => {
-    start();
-    return stop;
-  }, [start, stop]);
+  // useEffect(() => {
+  //   start();
+  //   return stop;
+  // }, [start, stop]);
 
   return <Heading type="title">In queue...</Heading>;
 };

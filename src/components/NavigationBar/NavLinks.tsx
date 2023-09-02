@@ -98,7 +98,7 @@ export const UserInfo = () => {
       dispatch(
         setUser({
           user: null,
-          refresh: router.refresh,
+          // refresh: router.refresh,
         }),
       );
     } else {
