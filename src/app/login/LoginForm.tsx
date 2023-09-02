@@ -43,7 +43,7 @@ export const LoginForm = () => {
           refresh: router.refresh,
         }),
       );
-      router.push(searchParams?.get("prev") || "/");
+      router.push("/");
     } else {
       setServerError(resBody.error);
     }
