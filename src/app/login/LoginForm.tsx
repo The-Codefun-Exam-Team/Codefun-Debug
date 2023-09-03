@@ -62,7 +62,9 @@ export const LoginForm = () => {
         >
           <div className="text-center">
             <Heading type="title-large">
-              <div className="text-blue-600 dark:text-sky-400">Please login to continue</div>
+              <div className="text-accent-light dark:text-accent-dark">
+                Please login to continue
+              </div>
             </Heading>
           </div>
           {serverError && (

@@ -35,11 +35,14 @@ const DarkModeToggler = () => {
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
                 checked
-                  ? "border-blue-600 dark:border-sky-400"
+                  ? "border-accent-light dark:border-accent-dark"
                   : "border-transparent hover:border-blue-200 hover:dark:border-sky-200",
               )}
             >
-              <MoonIcon className="h-6 w-6 stroke-blue-600 dark:stroke-sky-400" aria-label="Dark" />
+              <MoonIcon
+                className="h-6 w-6 stroke-accent-light dark:stroke-accent-dark"
+                aria-label="Dark"
+              />
             </div>
           )}
         </RadioGroup.Option>
@@ -49,12 +52,12 @@ const DarkModeToggler = () => {
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
                 checked
-                  ? "border-blue-600 dark:border-sky-400"
+                  ? "border-accent-light dark:border-accent-dark"
                   : "border-transparent hover:border-blue-200 hover:dark:border-sky-200",
               )}
             >
               <ComputerIcon
-                className="h-6 w-6 stroke-blue-600 dark:stroke-sky-400"
+                className="h-6 w-6 stroke-accent-light dark:stroke-accent-dark"
                 aria-label="System"
               />
             </div>
@@ -66,11 +69,14 @@ const DarkModeToggler = () => {
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
                 checked
-                  ? "border-blue-600 dark:border-sky-400"
+                  ? "border-accent-light dark:border-accent-dark"
                   : "border-transparent hover:border-blue-200 hover:dark:border-sky-200",
               )}
             >
-              <SunIcon className="h-6 w-6 stroke-blue-600 dark:stroke-sky-400" aria-label="Light" />
+              <SunIcon
+                className="h-6 w-6 stroke-accent-light dark:stroke-accent-dark"
+                aria-label="Light"
+              />
             </div>
           )}
         </RadioGroup.Option>
@@ -119,7 +125,7 @@ export const UserInfo = () => {
   const roleColor = getCodefunRoleTextClass(role);
 
   const menuItemsClassName =
-    "w-full rounded-none text-left transition-colors duration-200 hover:text-blue-600 dark:hover:text-sky-400";
+    "w-full rounded-none text-left transition-colors duration-200 hover:text-accent-light dark:hover:text-accent-dark";
   return (
     <>
       <div className="relative">
@@ -128,7 +134,7 @@ export const UserInfo = () => {
             className={clsx(
               "flex w-auto items-center rounded-full p-[5px]",
               "hover:bg-blue-50 hover:ring-[1.5px] hover:ring-blue-200 dark:hover:bg-sky-950/50 dark:hover:ring-sky-800",
-              "outline-none focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-sky-400",
+              "outline-none focus:outline-none focus:ring-2 focus:ring-accent-light dark:focus:ring-accent-dark",
               "border-b-[1.6px] border-transparent", // transparent border to prevent shifting of navbar
               roleColor,
             )}

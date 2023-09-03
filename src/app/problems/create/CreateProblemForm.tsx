@@ -58,7 +58,7 @@ export const CreateProblemForm = () => {
         <form onSubmit={submitForm} className="flex w-full flex-col gap-6 text-slate-700">
           <div className="text-center">
             <Heading type="title-large">
-              <div className="text-blue-600 dark:text-sky-400">Create problem</div>
+              <div className="text-accent-light dark:text-accent-dark">Create problem</div>
             </Heading>
             {successStatus && (
               <p className="text-md relative top-4 w-full border-2 border-green-200 bg-green-100 p-1 text-center font-semibold text-green-800">

@@ -12,7 +12,7 @@ const verdictColor = (verdict: Results) => {
     case "WA":
       return "text-red-500";
     default:
-      return "text-blue-600";
+      return "text-accent-light";
   }
 };
 

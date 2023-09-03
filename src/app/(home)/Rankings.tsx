@@ -5,7 +5,7 @@ export const Rankings = async ({ data }: { data: UserRanking[] }) => (
   <div className="w-full">
     <div className="w-full">
       <Heading type="display">
-        <div className="text-blue-600 dark:text-sky-400">Top ranking</div>
+        <div className="text-accent-light dark:text-accent-dark">Top ranking</div>
       </Heading>
     </div>
     <table className="mt-4 w-full  table-auto bg-white px-2 dark:bg-slate-900">

@@ -114,7 +114,9 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                       <li className="text-yellow-600 dark:text-yellow-500">{verdicts.TLE} TLE</li>
                     )}
                     {verdicts.RTE > 0 && (
-                      <li className="text-blue-600 dark:text-blue-600">{verdicts.RTE} RTE</li>
+                      <li className="text-accent-light dark:text-accent-light">
+                        {verdicts.RTE} RTE
+                      </li>
                     )}
                     {data.judge.total === 0 && <li className="text-gray-600">CE</li>}
                   </ul>

@@ -24,23 +24,23 @@ export const Pagination = ({
   const nextPage = Math.min(pageInt + 1, lastPageInt);
   const next5Page = Math.min(pageInt + 5, lastPageInt);
   const buttonClassNames =
-    "p-2 w-fit h-fit text-blue-600 dark:text-sky-400 w-8 text-center flex items-center text-xl divide-[1px]";
+    "p-2 w-fit h-fit text-accent-light dark:text-accent-dark w-8 text-center flex items-center text-xl divide-[1px]";
   return (
-    <div className="my-6 flex w-full justify-between divide-x-2 divide-blue-600 overflow-hidden rounded-md border-2 border-blue-600 dark:divide-sky-400 dark:border-sky-400">
-      <div className="flex w-fit divide-x-2 divide-blue-600 dark:divide-sky-400">
+    <div className="my-6 flex w-full justify-between divide-x-2 divide-accent-light overflow-hidden rounded-md border-2 border-accent-light dark:divide-accent-dark dark:border-accent-dark">
+      <div className="flex w-fit divide-x-2 divide-accent-light dark:divide-accent-dark">
         <Link
           href={`${baseURL}${prev5Page}`}
           className={clsx(buttonClassNames, "hover:bg-blue-50 dark:hover:bg-sky-900/30")}
           aria-label={`Move to page ${prev5Page}.`}
         >
-          <ChevronDoubleLeftIcon className="h-7 w-7 stroke-blue-600 dark:stroke-sky-400" />
+          <ChevronDoubleLeftIcon className="h-7 w-7 stroke-accent-light dark:stroke-accent-dark" />
         </Link>
         <Link
           href={`${baseURL}${prevPage}`}
           className={clsx(buttonClassNames, "hover:bg-blue-50 dark:hover:bg-sky-900/30")}
           aria-label={`Move to page ${prevPage}.`}
         >
-          <ChevronLeftIcon className="h-7 w-7 stroke-blue-600 dark:stroke-sky-400" />
+          <ChevronLeftIcon className="h-7 w-7 stroke-accent-light dark:stroke-accent-dark" />
         </Link>
       </div>
 
@@ -48,20 +48,20 @@ export const Pagination = ({
         <div className="w-full text-center">{page}</div>
       </div>
 
-      <div className="flex w-fit divide-x-2 divide-blue-600 dark:divide-sky-400">
+      <div className="flex w-fit divide-x-2 divide-accent-light dark:divide-accent-dark">
         <Link
           href={`${baseURL}${nextPage}`}
           className={clsx(buttonClassNames, "hover:bg-blue-50 dark:hover:bg-sky-900/30")}
           aria-label={`Move to page ${nextPage}.`}
         >
-          <ChevronRightIcon className="h-7 w-7 stroke-blue-600 dark:stroke-sky-400" />
+          <ChevronRightIcon className="h-7 w-7 stroke-accent-light dark:stroke-accent-dark" />
         </Link>
         <Link
           href={`${baseURL}${next5Page}`}
           className={clsx(buttonClassNames, "hover:bg-blue-50 dark:hover:bg-sky-900/30")}
           aria-label={`Move to page ${next5Page}.`}
         >
-          <ChevronDoubleRightIcon className="h-7 w-7 stroke-blue-600 dark:stroke-sky-400" />
+          <ChevronDoubleRightIcon className="h-7 w-7 stroke-accent-light dark:stroke-accent-dark" />
         </Link>
       </div>
     </div>

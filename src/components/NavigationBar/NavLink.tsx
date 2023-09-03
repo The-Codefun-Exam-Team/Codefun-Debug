@@ -37,8 +37,8 @@ export const VerticalNavLink = ({ href, ...rest }: NavLinkProps) => {
           className={clsx(
             "absolute h-0 rounded-md border-t-[3px] transition-all duration-500 ease-in-out group-hover:w-full",
             active
-              ? "w-full border-blue-600 dark:border-sky-400"
-              : "w-0 border-blue-200 dark:border-sky-400/30",
+              ? "w-full border-accent-light dark:border-accent-dark"
+              : "w-0 border-blue-200 dark:border-accent-dark/30",
           )}
         />
         <div
@@ -59,8 +59,8 @@ export const HorizontalNavLink = ({ href, ...rest }: NavLinkProps) => {
           className={clsx(
             "h-0 rounded-md border-t-2 transition-all duration-200 ease-in-out group-hover:w-full",
             active
-              ? "w-full border-blue-600 dark:border-sky-400"
-              : "w-0 border-blue-200 dark:border-sky-400/30",
+              ? "w-full border-accent-light dark:border-accent-dark"
+              : "w-0 border-blue-200 dark:border-accent-dark/30",
           )}
         />
       </div>
