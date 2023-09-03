@@ -12,13 +12,13 @@ export const NavigationBar = () => (
           <Link href="/" className="mx-4 flex items-center text-2xl font-bold lg:text-3xl">
             <div className="hidden sm:inline-block">
               Codefun Debug
-              <div className="ml-1 inline-block align-top text-sm font-extrabold text-blue-500 dark:text-sky-300 lg:text-base">
+              <div className="ml-1 inline-block align-top text-sm font-extrabold text-blue-600 dark:text-sky-400 lg:text-base">
                 BETA
               </div>
             </div>
             <div className="text-xl sm:hidden">
               CFDB
-              <div className="ml-1 inline-block align-top text-xs font-extrabold text-blue-500 dark:text-sky-300">
+              <div className="ml-1 inline-block align-top text-xs font-extrabold text-blue-600 dark:text-sky-400">
                 BETA
               </div>
             </div>
