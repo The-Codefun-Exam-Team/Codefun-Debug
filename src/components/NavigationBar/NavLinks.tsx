@@ -35,11 +35,14 @@ const DarkModeToggler = () => {
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
                 checked
-                  ? "border-blue-400 dark:border-sky-400"
-                  : "border-transparent hover:border-blue-200 hover:dark:border-sky-200",
+                  ? "border-accent-light dark:border-accent-dark"
+                  : "border-transparent hover:border-accent-light/40 hover:dark:border-accent-dark/40",
               )}
             >
-              <MoonIcon className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500" aria-label="Dark" />
+              <MoonIcon
+                className="h-6 w-6 stroke-accent-light dark:stroke-accent-dark"
+                aria-label="Dark"
+              />
             </div>
           )}
         </RadioGroup.Option>
@@ -49,12 +52,12 @@ const DarkModeToggler = () => {
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
                 checked
-                  ? "border-blue-400 dark:border-sky-400"
-                  : "border-transparent hover:border-blue-200 hover:dark:border-sky-200",
+                  ? "border-accent-light dark:border-accent-dark"
+                  : "border-transparent hover:border-accent-light/40 hover:dark:border-accent-dark/40",
               )}
             >
               <ComputerIcon
-                className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500"
+                className="h-6 w-6 stroke-accent-light dark:stroke-accent-dark"
                 aria-label="System"
               />
             </div>
@@ -66,11 +69,14 @@ const DarkModeToggler = () => {
               className={clsx(
                 "h-fit w-fit rounded-md border-2 p-1 transition-colors duration-200",
                 checked
-                  ? "border-blue-400 dark:border-sky-400"
-                  : "border-transparent hover:border-blue-200 hover:dark:border-sky-200",
+                  ? "border-accent-light dark:border-accent-dark"
+                  : "border-transparent hover:border-accent-light/40 hover:dark:border-accent-dark/40",
               )}
             >
-              <SunIcon className="h-6 w-6 stroke-blue-500 dark:stroke-sky-500" aria-label="Light" />
+              <SunIcon
+                className="h-6 w-6 stroke-accent-light dark:stroke-accent-dark"
+                aria-label="Light"
+              />
             </div>
           )}
         </RadioGroup.Option>
@@ -119,7 +125,7 @@ export const UserInfo = () => {
   const roleColor = getCodefunRoleTextClass(role);
 
   const menuItemsClassName =
-    "w-full rounded-none text-left transition-colors duration-200 hover:text-blue-500 dark:hover:text-sky-500";
+    "w-full rounded-none text-left transition-colors duration-200 hover:text-accent-light dark:hover:text-accent-dark";
   return (
     <>
       <div className="relative">
@@ -127,8 +133,8 @@ export const UserInfo = () => {
           <Menu.Button
             className={clsx(
               "flex w-auto items-center rounded-full p-[5px]",
-              "hover:bg-blue-50 hover:ring-[1.5px] hover:ring-blue-200 dark:hover:bg-sky-950/50 dark:hover:ring-sky-800",
-              "outline-none focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-sky-500",
+              "hover:bg-accent-light/10 hover:ring-[1.5px] hover:ring-accent-light/60 dark:hover:bg-accent-dark/10 dark:hover:ring-accent-dark/60",
+              "outline-none focus:outline-none focus:ring-2 focus:ring-accent-light dark:focus:ring-accent-dark",
               "border-b-[1.6px] border-transparent", // transparent border to prevent shifting of navbar
               roleColor,
             )}
@@ -149,6 +155,7 @@ export const UserInfo = () => {
             </div>
           </Menu.Button>
           <Transition
+            className="absolute right-0 z-50 mt-2 w-44"
             enter="transition ease-out duration-100"
             enterFrom="transform opacity-0 scale-95"
             enterTo="transform opacity-100 scale-100"
@@ -159,8 +166,8 @@ export const UserInfo = () => {
             <Menu.Items
               as="div"
               className={clsx(
-                "absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md border-gray-400 bg-white dark:bg-slate-900",
-                "divide-y-[0.5px] divide-gray-300 border-[1px] dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5]",
+                "origin-top-right rounded-md border-gray-400 bg-white dark:bg-slate-900",
+                "divide-y-[0.5px] divide-gray-300 border-[1px] dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5px]",
               )}
             >
               <DarkModeToggler />
