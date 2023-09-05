@@ -12,7 +12,7 @@ const verdictColor = (verdict: Results) => {
     case "WA":
       return "text-red-500";
     default:
-      return "text-blue-500";
+      return "text-accent-light";
   }
 };
 
@@ -27,7 +27,7 @@ const TestResult = ({
   message: string;
   count: number;
 }) => (
-  <div className="flex w-full justify-between px-4 py-2 odd:bg-blue-100/70 even:bg-blue-50/70 dark:odd:bg-sky-900/30 dark:even:bg-sky-950/30">
+  <div className="flex w-full justify-between px-4 py-2 odd:bg-accent-light/5 even:bg-accent-light/20 dark:odd:bg-accent-dark/5 dark:even:bg-accent-dark/20">
     <div>
       <div className="text-lg font-bold">
         #{count}. Verdict: <span className={verdictColor(verdict)}>{RESULTS_DICT[verdict]}</span>

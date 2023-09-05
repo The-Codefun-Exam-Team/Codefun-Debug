@@ -11,7 +11,7 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
     <Menu>
       <Menu.Button
         className={clsx(
-          "flex w-full items-center rounded-md border-2 border-slate-700 p-[5px] text-2xl font-semibold text-slate-700 dark:border-slate-400 dark:text-slate-400",
+          "flex w-full items-center rounded-md border-2 border-slate-700 p-[5px] text-2xl font-semibold text-slate-900 dark:border-slate-300 dark:text-slate-300",
         )}
       >
         <div className="grow text-center">{currentGroupName}</div>
@@ -35,9 +35,9 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
                   <Link
                     href={`/rankings/${id}/1`}
                     className={clsx(
-                      "p-2 text-center text-xl text-slate-700 dark:text-slate-500",
+                      "p-2 text-center text-xl text-slate-700 dark:text-slate-400",
                       name === currentGroupName && "hidden",
-                      active && "bg-blue-50 dark:bg-sky-800/20",
+                      active && "bg-accent-light/10 dark:bg-accent-dark/10",
                     )}
                   >
                     {name}

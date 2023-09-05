@@ -4,7 +4,7 @@ export const Announcements = () => (
   <div className="w-full">
     <div className="pb-4">
       <Heading type="display">
-        <div className=" text-blue-500 dark:text-sky-400">Announcements</div>
+        <div className=" text-accent-light dark:text-accent-dark">Announcements</div>
       </Heading>
     </div>
     <div className="w-full">

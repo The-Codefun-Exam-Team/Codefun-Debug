@@ -15,6 +15,10 @@ const tailwindConfig = {
         "in-out-circ": "cubic-bezier(0.85, 0.00, 0.15, 1.00)",
       },
       colors: {
+        accent: {
+          light: "#2563eb",
+          dark: "#38bdf8",
+        },
         user: {
           newbie: {
             light: "#000000",
