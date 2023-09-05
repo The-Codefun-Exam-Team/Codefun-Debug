@@ -8,11 +8,11 @@ import type { RunData, SubmissionsData } from "./types";
 const verdictColor = (verdict: Results) => {
   switch (verdict) {
     case "AC":
-      return "text-green-500";
+      return "text-green-600 dark:text-green-500";
     case "WA":
-      return "text-red-500";
+      return "text-red-600 dark:text-red-500";
     default:
-      return "text-accent-light";
+      return "text-blue-600 dark:text-blue-500";
   }
 };
 
