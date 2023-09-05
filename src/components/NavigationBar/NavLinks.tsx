@@ -145,16 +145,18 @@ export const UserInfo = () => {
                 width={30}
                 height={30}
                 alt="user avatar"
-                className="mr-2 rounded-full border-2 border-gray-400 dark:border-gray-600"
+                className="mr-2 rounded-full border-2 border-gray-800 dark:border-slate-300"
               />
             ) : (
-              <UserIcon className="mr-2 h-7 w-7 rounded-full border-2 border-gray-600 stroke-gray-600 dark:border-gray-400 dark:stroke-gray-400" />
+              <UserIcon className="mr-2 h-7 w-7 rounded-full border-2 border-gray-800 stroke-gray-800 dark:border-slate-300 dark:stroke-slate-300" />
             )}
-            <div className="inline max-w-[15ch] truncate pr-1 font-bold">
+            <div className="inline max-w-[15ch] truncate pr-1 font-bold text-slate-800 dark:text-slate-300">
               {user ? user.name : "Guest"}
             </div>
           </Menu.Button>
           <Transition
+            as="div"
+            className="absolute right-0 z-50 mt-2 w-44"
             enter="transition ease-out duration-100"
             enterFrom="transform opacity-0 scale-95"
             enterTo="transform opacity-100 scale-100"
@@ -165,8 +167,8 @@ export const UserInfo = () => {
             <Menu.Items
               as="div"
               className={clsx(
-                "absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md border-gray-400 bg-white dark:bg-slate-900",
-                "divide-y-[0.5px] divide-gray-300 border-[1px] dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5]",
+                "origin-top-right rounded-md border-gray-400 bg-white dark:bg-slate-900",
+                "divide-y-[0.5px] divide-gray-300 border-[1px] dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5px]",
               )}
             >
               <DarkModeToggler />
