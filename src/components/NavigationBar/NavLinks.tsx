@@ -155,6 +155,7 @@ export const UserInfo = () => {
             </div>
           </Menu.Button>
           <Transition
+            className="absolute right-0 z-50 mt-2 w-44"
             enter="transition ease-out duration-100"
             enterFrom="transform opacity-0 scale-95"
             enterTo="transform opacity-100 scale-100"
@@ -165,7 +166,7 @@ export const UserInfo = () => {
             <Menu.Items
               as="div"
               className={clsx(
-                "absolute right-0 z-50 mt-2 w-44 origin-top-right rounded-md border-gray-400 bg-white dark:bg-slate-900",
+                "origin-top-right rounded-md border-gray-400 bg-white dark:bg-slate-900",
                 "divide-y-[0.5px] divide-gray-300 border-[1px] dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5]",
               )}
             >
