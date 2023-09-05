@@ -150,7 +150,7 @@ export const UserInfo = () => {
             ) : (
               <UserIcon className="mr-2 h-7 w-7 rounded-full border-2 border-gray-800 stroke-gray-800 dark:border-slate-300 dark:stroke-slate-300" />
             )}
-            <div className="inline max-w-[15ch] truncate pr-1 font-bold text-slate-800 dark:text-slate-300">
+            <div className="inline max-w-[15ch] truncate pr-1 font-bold">
               {user ? user.name : "Guest"}
             </div>
           </Menu.Button>
