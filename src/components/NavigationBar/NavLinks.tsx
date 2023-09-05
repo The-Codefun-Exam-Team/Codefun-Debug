@@ -167,7 +167,7 @@ export const UserInfo = () => {
               as="div"
               className={clsx(
                 "origin-top-right rounded-md border-gray-400 bg-white dark:bg-slate-900",
-                "divide-y-[0.5px] divide-gray-300 border-[1px] dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5]",
+                "divide-y-[0.5px] divide-gray-300 border-[1px] dark:divide-y-[0.25px] dark:divide-gray-500 dark:border-[0.5px]",
               )}
             >
               <DarkModeToggler />
