@@ -12,7 +12,8 @@
     "lint": "next lint",
     "start": "next start",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "db:pull": "prisma db pull --schema src/features/prisma/schema.prisma"
   },
   "dependencies": {
     "@headlessui/react": "1.7.16",
@@ -55,6 +56,7 @@
     "postcss": "8.4.27",
     "prettier": "3.0.1",
     "prettier-plugin-tailwindcss": "0.5.2",
+    "prisma": "^5.2.0",
     "shell-quote": "1.8.1",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6"

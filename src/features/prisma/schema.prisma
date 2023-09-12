@@ -1,0 +1,347 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id       Int     @id @default(autoincrement())
+  variable String? @db.TinyText
+  value    String? @db.LongText
+}
+
+model blog_comments {
+  id      Int    @id @default(autoincrement())
+  blogid  Int
+  tid     Int
+  time    Int    @default(dbgenerated("(current_timestamp())"))
+  parent  Int    @default(0)
+  content String @db.LongText
+  access  String @default("") @db.Text
+
+  @@index([blogid, tid], map: "blogid")
+}
+
+model blogs {
+  id       Int     @id @default(autoincrement())
+  name     String  @db.Text
+  tid      Int
+  time     Int     @default(dbgenerated("(current_timestamp())"))
+  content  String  @db.LongText
+  access   String  @default("") @db.Text
+  official Boolean @default(false)
+
+  @@index([tid], map: "tid")
+}
+
+model broadcast {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.TinyText
+  msg       String   @db.Text
+  createdOn DateTime @db.DateTime(0)
+  updatedOn DateTime @db.DateTime(0)
+  deleted   Int      @default(0)
+}
+
+model clar {
+  time       Int     @id
+  tid        Int?
+  pid        Int?
+  query      String? @db.Text
+  reply      String? @db.Text
+  access     String? @db.TinyText
+  createtime Int?
+}
+
+model contest {
+  id           Int     @id @default(autoincrement())
+  code         String  @db.TinyText
+  name         String  @db.Text
+  starttime    Int
+  endtime      Int
+  announcement String  @db.Text
+  ranktable    String? @db.Text
+}
+
+model contest_hacks {
+  hid     Int    @id @default(autoincrement())
+  tid     Int
+  cid     Int
+  pid     Int
+  subtime Int
+  input   String @db.LongText
+  result  String @db.Text
+  score   Float
+
+  @@index([tid, cid, pid], map: "tid")
+}
+
+model contest_problems_bak {
+  pid       Int    @id @unique(map: "pid") @default(autoincrement())
+  cid       Int
+  sid       Int
+  name      String @db.Text
+  shortname String @db.Text
+  pdesc     String @db.LongText
+  timelimit Float
+  score     Int
+
+  @@index([cid], map: "cid")
+  @@index([cid], map: "cid_2")
+}
+
+model contest_runs {
+  rid     Int     @id @default(autoincrement())
+  tid     Int
+  cid     Int
+  pid     Int
+  code    String  @db.LongText
+  iscpp   Boolean @default(true)
+  time    Float
+  result  String  @db.Text
+  subtime Int
+  scored  Boolean @default(false)
+  score   Float   @default(0)
+
+  @@index([cid], map: "cid")
+  @@index([tid, pid, scored], map: "tid")
+}
+
+model contest_status {
+  id   Int @id @default(autoincrement())
+  tid  Int
+  type Int
+  rid  Int @default(0)
+
+  @@index([tid, type], map: "tid")
+}
+
+model contest_tests {
+  tid            Int    @id @default(autoincrement())
+  pid            Int    @unique(map: "pid")
+  cid            Int
+  pretest_input  String @db.LongText
+  pretest_output String @db.LongText
+  final_input    String @db.LongText
+  final_output   String @db.LongText
+  checker        String @db.LongText
+  validator      String @db.LongText
+  jury_code      String @db.LongText
+}
+
+model contest_users {
+  cid       Int
+  id        Int    @id @default(autoincrement())
+  last_hack Int
+  tid       Int
+  sum       Int
+  penalty   Int
+  scores    String @db.Text
+
+  @@index([cid, tid], map: "cid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model contests {
+  cid          Int      @id @default(autoincrement())
+  contestname  String   @db.Text
+  starttime    DateTime @db.DateTime(0)
+  duration     Int
+  contesttype  String   @db.Text
+  sid          Int
+  announcement String?  @db.LongText
+  rated        Boolean
+}
+
+model debug_problems {
+  dpid              Int                 @id @default(autoincrement())
+  code              String              @unique(map: "code") @db.VarChar(20)
+  name              String              @db.TinyText
+  status            String?             @default("Active") @db.TinyText
+  solved            Int                 @default(0)
+  total             Int                 @default(0)
+  rid               Int
+  pid               Int
+  language          String              @db.VarChar(8)
+  score             Float               @default(0)
+  result            String              @db.VarChar(8)
+  mindiff           Int                 @default(0)
+  runs              runs                @relation(fields: [rid], references: [rid], onUpdate: Restrict, map: "debug_problems_ibfk_1")
+  debug_submissions debug_submissions[]
+
+  @@index([rid], map: "rid")
+}
+
+model debug_queue {
+  rid  Int @id
+  drid Int @unique(map: "drid")
+}
+
+model debug_submissions {
+  drid           Int            @id @default(autoincrement())
+  dpid           Int
+  rid            Int
+  tid            Int
+  language       String         @db.VarChar(8)
+  submittime     Int
+  result         String         @db.VarChar(8)
+  score          Float
+  diff           Int?
+  code           String         @db.LongText
+  debug_problems debug_problems @relation(fields: [dpid], references: [dpid], onUpdate: Restrict, map: "debug_submissions_ibfk_1")
+  teams          teams          @relation(fields: [tid], references: [tid], onUpdate: Restrict, map: "debug_submissions_ibfk_2")
+
+  @@index([dpid], map: "dpid")
+  @@index([tid], map: "tid")
+}
+
+model goose_db_version {
+  id         BigInt    @id @unique(map: "id") @default(autoincrement()) @db.UnsignedBigInt
+  version_id BigInt
+  is_applied Boolean
+  tstamp     DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model groups {
+  gid       Int    @id @default(autoincrement())
+  groupname String @db.TinyText
+}
+
+/// This model has been renamed to 'Renamedin' during introspection, because the original name 'in' is reserved.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model Renamedin {
+  a Int
+
+  @@map("in")
+  @@ignore
+}
+
+model logs {
+  time    Int     @id
+  ip      String? @db.TinyText
+  tid     String? @db.Text
+  request String? @db.Text
+}
+
+model messages {
+  mid       Int     @id @default(autoincrement())
+  sender    Int
+  recipient Int
+  content   String  @db.LongText
+  time      Int
+  isread    Boolean @default(false)
+
+  @@index([sender, recipient, time], map: "sender")
+}
+
+model password_resets {
+  id      Int      @id @default(autoincrement())
+  user    Int
+  token   String   @db.VarChar(64)
+  timeout DateTime @db.DateTime(0)
+
+  @@index([token], map: "token")
+  @@index([user], map: "user")
+}
+
+model problems {
+  pid         Int     @id @default(autoincrement())
+  sid         Int     @default(1)
+  code        String  @unique(map: "code") @db.VarChar(20)
+  name        String  @db.TinyText
+  type        String  @db.TinyText
+  scoretype   String  @db.Text
+  cid         Int?
+  status      String? @db.TinyText
+  pgroup      String  @db.TinyText
+  statement   String  @db.LongText
+  timelimit   Float   @db.Float
+  score       Float   @default(0)
+  usechecker  Boolean @default(false)
+  checkercode String  @db.LongText
+  solved      Int     @default(0)
+  total       Int     @default(0)
+
+  @@index([cid], map: "cid")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model room_rankings {
+  roomid Int
+  tid    Int
+  time   Int @default(0)
+  change Int @default(0)
+
+  @@index([roomid, tid], map: "roomid")
+  @@ignore
+}
+
+model rooms {
+  id       Int @id @default(autoincrement())
+  pid      Int
+  duration Int
+  lastrun  Int
+
+  @@index([pid], map: "pid")
+}
+
+model runs {
+  rid            Int              @id @default(autoincrement())
+  pid            Int
+  tid            Int
+  language       String           @db.VarChar(8)
+  time           Float            @default(0)
+  result         String           @db.VarChar(3)
+  access         String           @default("private") @db.TinyText
+  submittime     Int
+  scored         Boolean          @default(false)
+  score          Float            @default(0)
+  debug_problems debug_problems[]
+
+  @@index([pid], map: "pid")
+  @@index([pid, tid, score], map: "pid_2")
+  @@index([result], map: "result")
+  @@index([rid], map: "rid")
+  @@index([tid], map: "tid")
+}
+
+model subs_code {
+  rid   Int    @id @default(autoincrement())
+  code  String @db.LongText
+  error String @default("") @db.Text
+}
+
+model teams {
+  tid               Int                 @id @default(autoincrement())
+  teamname          String              @unique(map: "teamname") @db.VarChar(32)
+  group             Int
+  teamname2         String?             @db.TinyText
+  pass              String              @db.TinyText
+  email             String              @default("") @db.Text
+  name              String              @db.Text
+  signature         String              @default("") @db.LongText
+  facebook          String              @default("") @db.Text
+  status            String              @db.TinyText
+  score             Int                 @default(0)
+  penalty           Int                 @default(0)
+  pscore            Float               @default(0)
+  cscore            Float               @default(0)
+  rating            Int                 @default(1500)
+  solved            Int                 @default(0)
+  lastlogin         Int                 @default(0)
+  game_time         Int                 @default(0)
+  game_wins         Int                 @default(0)
+  debug_submissions debug_submissions[]
+
+  @@index([pscore], map: "pscore")
+  @@index([pscore], map: "pscore_2")
+}
+
+model xo_tables {
+  id        Int    @id @default(autoincrement())
+  p1        Int    @default(0)
+  p2        Int    @default(0)
+  last_move String @db.Text
+  move_log  String @db.Text
+
+  @@index([p1, p2], map: "p1")
+}
