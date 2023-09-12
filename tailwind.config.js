@@ -16,8 +16,8 @@ const tailwindConfig = {
       },
       colors: {
         accent: {
-          light: "#2563eb",
-          dark: "#38bdf8",
+          light: "#1e40af",
+          dark: "#7dd3fc",
         },
         user: {
           newbie: {
