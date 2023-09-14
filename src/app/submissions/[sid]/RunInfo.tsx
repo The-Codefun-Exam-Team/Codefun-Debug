@@ -83,5 +83,10 @@ export const RunInfo = ({
       )) ?? <Heading type="title">Unknown verdict, try refreshing.</Heading>
     );
 
-  return <RunInfoClient code={runData.code} verdictNode={verdictNode} />;
+  return (
+    <RunInfoClient
+      code={runData.code ?? "Not allowed to view the code."}
+      verdictNode={verdictNode}
+    />
+  );
 };
