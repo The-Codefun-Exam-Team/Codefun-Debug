@@ -1,6 +1,9 @@
+import { Prisma } from "@prisma/client";
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 
 import { Box, Heading, Pagination } from "@/components";
+import prisma from "@/database/prisma/instance";
 
 import { Group } from "./Group";
 import { RankTable } from "./RankTable";
@@ -38,18 +41,26 @@ const getRankings = async (
 };
 
 const getGroups = async (): Promise<GroupsData | null> => {
-  const requestGroups = await fetch("https://codefun.vn/api/groups", {
-    method: "GET",
-  });
-  if (!requestGroups.ok) {
-    const error = await requestGroups.text();
-    console.error("Failed to fetch groups", requestGroups.status, requestGroups.statusText, error);
+  try {
+    return unstable_cache(
+      async () => {
+        const groups = prisma.groups.findMany();
+        const data = await groups;
+        data.push({ gid: 0, groupname: "Global" });
+        data.reverse();
+        return groups;
+      },
+      ["groups"],
+      { revalidate: 30 },
+    )();
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error(e.message);
+    } else {
+      console.error(e);
+    }
     return null;
   }
-  const res: GroupsData = (await requestGroups.json()).data ?? [];
-  res.push({ id: 0, name: "Global" });
-  res.reverse();
-  return res;
 };
 
 const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {

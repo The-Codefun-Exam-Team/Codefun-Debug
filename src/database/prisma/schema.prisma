@@ -1,15 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model admin {
+model Admin {
   id       Int     @id @default(autoincrement())
   variable String? @db.TinyText
   value    String? @db.LongText
+
+  @@map("admin")
 }
 
-model blog_comments {
+model BlogComments {
   id      Int    @id @default(autoincrement())
   blogid  Int
   tid     Int
@@ -19,9 +25,10 @@ model blog_comments {
   access  String @default("") @db.Text
 
   @@index([blogid, tid], map: "blogid")
+  @@map("blog_comments")
 }
 
-model blogs {
+model Blogs {
   id       Int     @id @default(autoincrement())
   name     String  @db.Text
   tid      Int
@@ -31,18 +38,21 @@ model blogs {
   official Boolean @default(false)
 
   @@index([tid], map: "tid")
+  @@map("blogs")
 }
 
-model broadcast {
+model Broadcast {
   id        Int      @id @default(autoincrement())
   title     String   @db.TinyText
   msg       String   @db.Text
   createdOn DateTime @db.DateTime(0)
   updatedOn DateTime @db.DateTime(0)
   deleted   Int      @default(0)
+
+  @@map("broadcast")
 }
 
-model clar {
+model Clar {
   time       Int     @id
   tid        Int?
   pid        Int?
@@ -50,9 +60,11 @@ model clar {
   reply      String? @db.Text
   access     String? @db.TinyText
   createtime Int?
+
+  @@map("clar")
 }
 
-model contest {
+model Contest {
   id           Int     @id @default(autoincrement())
   code         String  @db.TinyText
   name         String  @db.Text
@@ -60,9 +72,11 @@ model contest {
   endtime      Int
   announcement String  @db.Text
   ranktable    String? @db.Text
+
+  @@map("contest")
 }
 
-model contest_hacks {
+model ContestHacks {
   hid     Int    @id @default(autoincrement())
   tid     Int
   cid     Int
@@ -73,9 +87,10 @@ model contest_hacks {
   score   Float
 
   @@index([tid, cid, pid], map: "tid")
+  @@map("contest_hacks")
 }
 
-model contest_problems_bak {
+model ContestProblemsBak {
   pid       Int    @id @unique(map: "pid") @default(autoincrement())
   cid       Int
   sid       Int
@@ -87,9 +102,10 @@ model contest_problems_bak {
 
   @@index([cid], map: "cid")
   @@index([cid], map: "cid_2")
+  @@map("contest_problems_bak")
 }
 
-model contest_runs {
+model ContestRuns {
   rid     Int     @id @default(autoincrement())
   tid     Int
   cid     Int
@@ -104,18 +120,20 @@ model contest_runs {
 
   @@index([cid], map: "cid")
   @@index([tid, pid, scored], map: "tid")
+  @@map("contest_runs")
 }
 
-model contest_status {
+model ContestStatus {
   id   Int @id @default(autoincrement())
   tid  Int
   type Int
   rid  Int @default(0)
 
   @@index([tid, type], map: "tid")
+  @@map("contest_status")
 }
 
-model contest_tests {
+model ContestTests {
   tid            Int    @id @default(autoincrement())
   pid            Int    @unique(map: "pid")
   cid            Int
@@ -126,9 +144,11 @@ model contest_tests {
   checker        String @db.LongText
   validator      String @db.LongText
   jury_code      String @db.LongText
+
+  @@map("contest_tests")
 }
 
-model contest_users {
+model ContestUsers {
   cid       Int
   id        Int    @id @default(autoincrement())
   last_hack Int
@@ -138,10 +158,11 @@ model contest_users {
   scores    String @db.Text
 
   @@index([cid, tid], map: "cid")
+  @@map("contest_users")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model contests {
+model Contests {
   cid          Int      @id @default(autoincrement())
   contestname  String   @db.Text
   starttime    DateTime @db.DateTime(0)
@@ -150,48 +171,54 @@ model contests {
   sid          Int
   announcement String?  @db.LongText
   rated        Boolean
+
+  @@map("contests")
 }
 
-model debug_problems {
-  dpid              Int                 @id @default(autoincrement())
-  code              String              @unique(map: "code") @db.VarChar(20)
-  name              String              @db.TinyText
-  status            String?             @default("Active") @db.TinyText
-  solved            Int                 @default(0)
-  total             Int                 @default(0)
+model DebugProblems {
+  dpid              Int                @id @default(autoincrement())
+  code              String             @unique(map: "code") @db.VarChar(20)
+  name              String             @db.TinyText
+  status            String?            @default("Active") @db.TinyText
+  solved            Int                @default(0)
+  total             Int                @default(0)
   rid               Int
   pid               Int
-  language          String              @db.VarChar(8)
-  score             Float               @default(0)
-  result            String              @db.VarChar(8)
-  mindiff           Int                 @default(0)
-  runs              runs                @relation(fields: [rid], references: [rid], onUpdate: Restrict, map: "debug_problems_ibfk_1")
-  debug_submissions debug_submissions[]
+  language          String             @db.VarChar(8)
+  score             Float              @default(0)
+  result            String             @db.VarChar(8)
+  mindiff           Int                @default(0)
+  runs              Runs               @relation(fields: [rid], references: [rid], onUpdate: Restrict, map: "debug_problems_ibfk_1")
+  debug_submissions DebugSubmissions[]
 
   @@index([rid], map: "rid")
+  @@map("debug_problems")
 }
 
-model debug_queue {
+model DebugQueue {
   rid  Int @id
   drid Int @unique(map: "drid")
+
+  @@map("debug_queue")
 }
 
-model debug_submissions {
-  drid           Int            @id @default(autoincrement())
+model DebugSubmissions {
+  drid           Int           @id @default(autoincrement())
   dpid           Int
   rid            Int
   tid            Int
-  language       String         @db.VarChar(8)
+  language       String        @db.VarChar(8)
   submittime     Int
-  result         String         @db.VarChar(8)
+  result         String        @db.VarChar(8)
   score          Float
   diff           Int?
-  code           String         @db.LongText
-  debug_problems debug_problems @relation(fields: [dpid], references: [dpid], onUpdate: Restrict, map: "debug_submissions_ibfk_1")
-  teams          teams          @relation(fields: [tid], references: [tid], onUpdate: Restrict, map: "debug_submissions_ibfk_2")
+  code           String        @db.LongText
+  debug_problems DebugProblems @relation(fields: [dpid], references: [dpid], onUpdate: Restrict, map: "debug_submissions_ibfk_1")
+  teams          Teams         @relation(fields: [tid], references: [tid], onUpdate: Restrict, map: "debug_submissions_ibfk_2")
 
   @@index([dpid], map: "dpid")
   @@index([tid], map: "tid")
+  @@map("debug_submissions")
 }
 
 model goose_db_version {
@@ -201,9 +228,11 @@ model goose_db_version {
   tstamp     DateTime? @default(now()) @db.Timestamp(0)
 }
 
-model groups {
+model Groups {
   gid       Int    @id @default(autoincrement())
   groupname String @db.TinyText
+
+  @@map("groups")
 }
 
 /// This model has been renamed to 'Renamedin' during introspection, because the original name 'in' is reserved.
@@ -275,65 +304,70 @@ model room_rankings {
   @@ignore
 }
 
-model rooms {
+model Rooms {
   id       Int @id @default(autoincrement())
   pid      Int
   duration Int
   lastrun  Int
 
   @@index([pid], map: "pid")
+  @@map("rooms")
 }
 
-model runs {
-  rid            Int              @id @default(autoincrement())
+model Runs {
+  rid            Int             @id @default(autoincrement())
   pid            Int
   tid            Int
-  language       String           @db.VarChar(8)
-  time           Float            @default(0)
-  result         String           @db.VarChar(3)
-  access         String           @default("private") @db.TinyText
+  language       String          @db.VarChar(8)
+  time           Float           @default(0)
+  result         String          @db.VarChar(3)
+  access         String          @default("private") @db.TinyText
   submittime     Int
-  scored         Boolean          @default(false)
-  score          Float            @default(0)
-  debug_problems debug_problems[]
+  scored         Boolean         @default(false)
+  score          Float           @default(0)
+  debug_problems DebugProblems[]
 
   @@index([pid], map: "pid")
   @@index([pid, tid, score], map: "pid_2")
   @@index([result], map: "result")
   @@index([rid], map: "rid")
   @@index([tid], map: "tid")
+  @@map("runs")
 }
 
-model subs_code {
+model SubsCode {
   rid   Int    @id @default(autoincrement())
   code  String @db.LongText
   error String @default("") @db.Text
+
+  @@map("subs_code")
 }
 
-model teams {
-  tid               Int                 @id @default(autoincrement())
-  teamname          String              @unique(map: "teamname") @db.VarChar(32)
+model Teams {
+  tid               Int                @id @default(autoincrement())
+  teamname          String             @unique(map: "teamname") @db.VarChar(32)
   group             Int
-  teamname2         String?             @db.TinyText
-  pass              String              @db.TinyText
-  email             String              @default("") @db.Text
-  name              String              @db.Text
-  signature         String              @default("") @db.LongText
-  facebook          String              @default("") @db.Text
-  status            String              @db.TinyText
-  score             Int                 @default(0)
-  penalty           Int                 @default(0)
-  pscore            Float               @default(0)
-  cscore            Float               @default(0)
-  rating            Int                 @default(1500)
-  solved            Int                 @default(0)
-  lastlogin         Int                 @default(0)
-  game_time         Int                 @default(0)
-  game_wins         Int                 @default(0)
-  debug_submissions debug_submissions[]
+  teamname2         String?            @db.TinyText
+  pass              String             @db.TinyText
+  email             String             @default("") @db.Text
+  name              String             @db.Text
+  signature         String             @default("") @db.LongText
+  facebook          String             @default("") @db.Text
+  status            String             @db.TinyText
+  score             Int                @default(0)
+  penalty           Int                @default(0)
+  pscore            Float              @default(0)
+  cscore            Float              @default(0)
+  rating            Int                @default(1500)
+  solved            Int                @default(0)
+  lastlogin         Int                @default(0)
+  game_time         Int                @default(0)
+  game_wins         Int                @default(0)
+  debug_submissions DebugSubmissions[]
 
   @@index([pscore], map: "pscore")
   @@index([pscore], map: "pscore_2")
+  @@map("teams")
 }
 
 model xo_tables {

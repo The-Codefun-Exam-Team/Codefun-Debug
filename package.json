@@ -13,12 +13,15 @@
     "start": "next start",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
-    "db:pull": "prisma db pull --schema src/features/prisma/schema.prisma"
+    "db:pull": "prisma db pull --schema src/database/prisma/schema.prisma",
+    "db:generate": "prisma generate --schema src/database/prisma/schema.prisma"
+    
   },
   "dependencies": {
     "@headlessui/react": "1.7.16",
     "@hookform/resolvers": "3.2.0",
     "@next/bundle-analyzer": "13.4.16",
+    "@prisma/client": "^5.3.1",
     "@reduxjs/toolkit": "1.9.5",
     "client-only": "0.0.1",
     "cross-env": "7.0.3",
@@ -56,7 +59,7 @@
     "postcss": "8.4.27",
     "prettier": "3.0.1",
     "prettier-plugin-tailwindcss": "0.5.2",
-    "prisma": "^5.2.0",
+    "prisma": "^5.3.1",
     "shell-quote": "1.8.1",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6"
