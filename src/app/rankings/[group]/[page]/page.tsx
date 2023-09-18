@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { getUsers } from "@utils/api";
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 
@@ -7,37 +8,10 @@ import prisma from "@/database/prisma/instance";
 
 import { Group } from "./Group";
 import { RankTable } from "./RankTable";
-import type { GroupsData, RankingsData } from "./types";
+import type { GroupsData } from "./types";
 
 export const metadata: Metadata = {
   title: "Rankings",
-};
-
-const getRankings = async (
-  group: string,
-  page: string,
-  limit: string,
-): Promise<RankingsData | null> => {
-  const bodyData = { group, pageid: page, limit };
-  const requestRanking = await fetch(
-    // TODO: migrate to api v2
-    `https://debug.codefun.vn/api/rankings?${new URLSearchParams(bodyData).toString()}`,
-    {
-      method: "GET",
-    },
-  );
-  if (!requestRanking.ok) {
-    const error = await requestRanking.text();
-    console.error(
-      "Failed to fetch rankings",
-      requestRanking.status,
-      requestRanking.statusText,
-      error,
-    );
-    return null;
-  }
-
-  return (await requestRanking.json()) ?? [];
 };
 
 const getGroups = async (): Promise<GroupsData | null> => {
@@ -50,7 +24,7 @@ const getGroups = async (): Promise<GroupsData | null> => {
         data.reverse();
         return groups;
       },
-      ["groups"],
+      ["getGroups"],
       { revalidate: 30 },
     )();
   } catch (e) {
@@ -65,7 +39,7 @@ const getGroups = async (): Promise<GroupsData | null> => {
 
 const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
   const [rankingData, groupsData] = await Promise.all([
-    getRankings(group.toString(), page.toString(), "50"),
+    getUsers(group.toString(), page.toString(), "50"),
     getGroups(),
   ]);
 

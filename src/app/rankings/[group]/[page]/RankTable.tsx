@@ -48,7 +48,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
                 <div className="break-all text-left">{user.name}</div>
               </td>
               <td>
-                <div className="text-right">{user.points.toFixed(2)}</div>
+                <div className="text-right">{user.score.toFixed(2)}</div>
               </td>
               <td>
                 <div className="text-right">{user.rank}</div>

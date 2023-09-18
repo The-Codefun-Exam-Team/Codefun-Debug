@@ -21,14 +21,17 @@ export interface UserData {
 }
 
 export interface UserRanking {
-  avatar: string;
-  group: number;
-  groupname: string;
   id: number;
   username: string;
   name: string;
+  group: {
+    id: number;
+    name: string;
+  };
+  status: string;
+  score: number;
+  ratio: number;
   rank: number;
-  points: number;
 }
 
 export type ColorScheme = (typeof COLOR_SCHEMES)[number];
