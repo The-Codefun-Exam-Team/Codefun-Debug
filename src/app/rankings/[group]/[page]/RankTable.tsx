@@ -9,7 +9,9 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
     return (
       <div className="h-fit w-full">
         <Heading type="title-large">Noone here!</Heading>
-        <Heading type="title">If you belong to this group, be the first to submit!</Heading>
+        <Heading type="title">
+          Please submit first if you haven&#39;t seen your name on the leaderboard.
+        </Heading>
       </div>
     );
   }

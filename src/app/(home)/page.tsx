@@ -18,7 +18,7 @@ const getTopTenGlobal = async () => {
     },
   });
   if (!res.ok) {
-    console.log("Failed to fetch rankings in homepage.");
+    console.error("Failed to fetch rankings in homepage.");
     return null;
   }
   const data = (await res.json()) as UserRanking[];

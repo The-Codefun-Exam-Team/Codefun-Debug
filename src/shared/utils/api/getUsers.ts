@@ -1,4 +1,5 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { gravatarFromEmail } from "@utils/shared";
 import { unstable_cache } from "next/cache";
 
 import prisma from "@/database/prisma/instance";
@@ -22,7 +23,7 @@ export const getUsers = async (group: string, page: string, limit: string) => {
   const globalQuery = await prisma.$queryRaw`
   WITH score_table AS (SELECT tid, dpid, MAX(score) as max_score FROM debug_submissions GROUP BY tid, dpid),
   rank_table AS (SELECT tid, RANK() OVER (ORDER BY SUM(score_table.max_score) DESC) AS rank from score_table GROUP BY tid)
-  SELECT groups.gid, SUM(score_table.max_score) as score, rank_table.rank, teams.teamname as username, teams.name, groups.groupname, teams.email
+  SELECT groups.gid, SUM(score_table.max_score) as score, rank_table.rank, teams.teamname as username, teams.name, groups.groupname, teams.email, teams.solved, teams.tid
   FROM score_table 
   INNER JOIN teams ON teams.tid = score_table.tid
   INNER JOIN groups ON groups.gid = teams.group
@@ -36,7 +37,7 @@ export const getUsers = async (group: string, page: string, limit: string) => {
   const groupQuery = prisma.$queryRaw`
   WITH score_table AS (SELECT tid, dpid, MAX(score) as max_score FROM debug_submissions GROUP BY tid, dpid),
   rank_table AS (SELECT tid, RANK() OVER (ORDER BY SUM(score_table.max_score) DESC) AS rank from score_table GROUP BY tid)
-  SELECT groups.gid, SUM(score_table.max_score) as score, rank_table.rank, teams.teamname as username, teams.name, groups.groupname, teams.email
+  SELECT groups.gid, SUM(score_table.max_score) as score, rank_table.rank, teams.teamname as username, teams.name, groups.groupname, teams.email, teams.solved
   FROM score_table 
   INNER JOIN teams ON teams.tid = score_table.tid
   INNER JOIN groups ON groups.gid = teams.group
@@ -64,7 +65,8 @@ export const getUsers = async (group: string, page: string, limit: string) => {
           status: user.status,
           score: user.score,
           ratio: user.solved / problemsCount,
-          rank: parseInt(user.rank.toString()),
+          avatar: gravatarFromEmail(user.email),
+          rank: Number(user.rank),
         }));
       },
       [`getUsers-${group}-${page}-${limit}`],

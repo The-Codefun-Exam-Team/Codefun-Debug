@@ -3,4 +3,5 @@ export { clsx } from "./clsx";
 export { createNamespaceComponent } from "./createNamespaceComponent";
 export { getCodefunRole } from "./getCodefunRole";
 export { getCodefunRoleTextClass } from "./getCodefunRoleTextClass";
+export { gravatarFromEmail } from "./gravatarFromEmail";
 export { isColorScheme } from "./isColorScheme";

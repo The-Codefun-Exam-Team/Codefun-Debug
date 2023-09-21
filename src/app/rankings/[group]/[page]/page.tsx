@@ -14,6 +14,37 @@ export const metadata: Metadata = {
   title: "Rankings",
 };
 
+export const generateStaticParams = async () => {
+  const groupCounts = (await prisma.$queryRaw`
+    WITH user_table AS (SELECT tid FROM debug_submissions GROUP BY tid)
+    SELECT count(user_table.tid) as count, groups.gid
+    FROM user_table 
+    INNER JOIN teams ON user_table.tid = teams.tid
+    INNER JOIN groups ON teams.group = groups.gid
+    GROUP BY groups.gid
+  `) as { count: number; gid: number }[];
+
+  const globalCount = await prisma.debugSubmissions.findMany({
+    distinct: ["tid"],
+    select: {
+      tid: true,
+    },
+  });
+
+  groupCounts.push({ count: globalCount.length, gid: 0 });
+
+  const params = groupCounts.flatMap(({ count, gid }) => {
+    const page = Math.ceil((Number(count) + 1) / 50);
+    return Array.from({ length: page }, (_, i) => ({
+      group: gid.toString(),
+      page: (i + 1).toString(),
+    }));
+  });
+  return params;
+};
+
+export const dynamicParams = true;
+
 const getGroups = async (): Promise<GroupsData | null> => {
   try {
     return unstable_cache(

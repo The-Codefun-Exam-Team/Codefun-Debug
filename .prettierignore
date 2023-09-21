@@ -41,3 +41,5 @@ tsconfig.json
 
 # tsconfig (Next.js reformats this file anyway)
 tsconfig.json
+
+md5.js

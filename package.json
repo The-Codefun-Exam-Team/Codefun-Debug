@@ -15,7 +15,6 @@
     "prepare": "husky install",
     "db:pull": "prisma db pull --schema src/database/prisma/schema.prisma",
     "db:generate": "prisma generate --schema src/database/prisma/schema.prisma"
-    
   },
   "dependencies": {
     "@headlessui/react": "1.7.16",
@@ -36,6 +35,7 @@
     "redux": "4.2.1",
     "server-only": "0.0.1",
     "sharp": "0.32.4",
+    "ts-md5": "^1.3.1",
     "zod": "3.22.0"
   },
   "devDependencies": {
