@@ -110,7 +110,7 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
     getUserCount(group),
   ]);
 
-  if (!groupsData || !rankingData || !userCount) {
+  if (!groupsData || !rankingData || userCount === null) {
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>
