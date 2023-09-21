@@ -32,7 +32,7 @@ export const Pagination = ({
           href={`${baseURL}${prev5Page}`}
           className={clsx(
             buttonClassNames,
-            "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
+            prev5Page !== pageInt && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
           )}
           aria-label={`Move to page ${prev5Page}.`}
         >
@@ -42,7 +42,7 @@ export const Pagination = ({
           href={`${baseURL}${prevPage}`}
           className={clsx(
             buttonClassNames,
-            "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
+            prevPage !== pageInt && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
           )}
           aria-label={`Move to page ${prevPage}.`}
         >
@@ -59,7 +59,7 @@ export const Pagination = ({
           href={`${baseURL}${nextPage}`}
           className={clsx(
             buttonClassNames,
-            "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
+            nextPage !== pageInt && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
           )}
           aria-label={`Move to page ${nextPage}.`}
         >
@@ -69,7 +69,7 @@ export const Pagination = ({
           href={`${baseURL}${next5Page}`}
           className={clsx(
             buttonClassNames,
-            "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
+            next5Page !== pageInt && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
           )}
           aria-label={`Move to page ${next5Page}.`}
         >
