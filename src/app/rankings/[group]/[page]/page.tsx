@@ -43,7 +43,7 @@ export const generateStaticParams = async () => {
   return params;
 };
 
-export const dynamicParams = true;
+export const revalidate = 30;
 
 const getGroups = async (): Promise<GroupsData | null> => {
   try {
