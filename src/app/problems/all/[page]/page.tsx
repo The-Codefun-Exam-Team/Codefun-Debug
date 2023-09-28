@@ -27,7 +27,7 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
       </div>
     );
   }
-  if (!problemsList.user) {
+  if (!problemsList.user || !token) {
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>

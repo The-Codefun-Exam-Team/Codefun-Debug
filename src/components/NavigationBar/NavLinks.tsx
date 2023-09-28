@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { setScheme, setUser } from "@redux/slice";
 import { clsx, getCodefunRole, getCodefunRoleTextClass } from "@utils/shared";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
@@ -87,6 +87,7 @@ const DarkModeToggler = () => {
 
 export const UserInfo = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
@@ -101,10 +102,10 @@ export const UserInfo = () => {
       method: "POST",
     });
     if (res.ok) {
+      router.push(`/public/${pathname}`);
       dispatch(
         setUser({
           user: null,
-          // refresh: router.refresh,
         }),
       );
     } else {
@@ -187,7 +188,7 @@ export const UserInfo = () => {
                   </button>
                 ) : (
                   <div>
-                    <BaseNavLink className={menuItemsClassName} href="/login">
+                    <BaseNavLink className={menuItemsClassName} href={`/login?prev=${pathname}`}>
                       Sign in
                     </BaseNavLink>
                   </div>

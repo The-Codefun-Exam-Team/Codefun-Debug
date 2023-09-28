@@ -37,3 +37,7 @@ export const ADDITIONAL_LINKS = [
     title: "About us",
   },
 ] satisfies NavLinkEntry[];
+
+export const WITH_PUBLIC_LINKS = ["/problems"];
+
+export const WITHOUT_PUBLIC_LINKS = ["problems/create"];

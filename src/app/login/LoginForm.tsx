@@ -13,6 +13,7 @@ export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const prevUrl = searchParams?.get("prev");
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
   const {
@@ -40,10 +41,17 @@ export const LoginForm = () => {
       dispatch(
         setUser({
           user: resBody,
-          // refresh: router.refresh,
         }),
       );
-      router.push(searchParams?.get("prev") || "/");
+      if (prevUrl === null) {
+        router.push("/");
+      } else {
+        router.push(
+          prevUrl.startsWith("/public")
+            ? `${prevUrl.slice(prevUrl.indexOf("/", 1))}`
+            : `${prevUrl}`,
+        );
+      }
     } else {
       setServerError(resBody.error);
     }
