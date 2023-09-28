@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Admin {
@@ -206,7 +207,7 @@ model DebugSubmissions {
   drid           Int           @id @default(autoincrement())
   dpid           Int
   rid            Int
-  tid            Int
+  tid            Int           
   language       String        @db.VarChar(8)
   submittime     Int
   result         String        @db.VarChar(8)
@@ -229,8 +230,9 @@ model goose_db_version {
 }
 
 model Groups {
-  gid       Int    @id @default(autoincrement())
-  groupname String @db.TinyText
+  gid       Int     @id @default(autoincrement())
+  groupname String  @db.TinyText
+  teams     Teams[]
 
   @@map("groups")
 }
@@ -326,6 +328,7 @@ model Runs {
   scored         Boolean         @default(false)
   score          Float           @default(0)
   debug_problems DebugProblems[]
+  team           Teams           @relation(fields: [tid], references: [tid])
 
   @@index([pid], map: "pid")
   @@index([pid, tid, score], map: "pid_2")
@@ -346,7 +349,7 @@ model SubsCode {
 model Teams {
   tid               Int                @id @default(autoincrement())
   teamname          String             @unique(map: "teamname") @db.VarChar(32)
-  group             Int
+  gid               Int                @map("group")
   teamname2         String?            @db.TinyText
   pass              String             @db.TinyText
   email             String             @default("") @db.Text
@@ -364,9 +367,12 @@ model Teams {
   game_time         Int                @default(0)
   game_wins         Int                @default(0)
   debug_submissions DebugSubmissions[]
+  group             Groups             @relation(fields: [gid], references: [gid])
+  runs              Runs[]
 
   @@index([pscore], map: "pscore")
   @@index([pscore], map: "pscore_2")
+  @@index([gid])
   @@map("teams")
 }
 

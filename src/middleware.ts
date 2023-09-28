@@ -5,16 +5,15 @@ import { NextResponse } from "next/server";
 export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;
 
-  const unauthenticatedOnlyPrefixes = ["/login"] as const;
-  const authenticatedOnlyPrefixes = ["/problems/create"] as const;
   const adminOnlyPrefixes = ["/problems/create"] as const;
+  const authenticatedOnlyPrefixes = ["/problems"] as const;
+  const unauthenticatedOnlyPrefixes = ["/login", "/public"] as const;
 
-  if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
-    const providedRedirect = searchParams.get("prev");
-    const redirectTo = decodeURIComponent(`%2F${providedRedirect || ""}`);
-
-    if (request.cookies.get("token")) {
-      return NextResponse.redirect(new URL(redirectTo, request.url));
+  if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
+    const token = request.cookies.get("token");
+    const userInfo = await getUserInfo(token?.value);
+    if (!userInfo.ok || userInfo.user.status !== "Admin") {
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
@@ -22,18 +21,26 @@ export const middleware = async (request: NextRequest) => {
     const providedRedirect = searchParams.get("prev");
     const redirectTo = providedRedirect
       ? decodeURIComponent(providedRedirect)
-      : `/login?prev=${encodeURIComponent(pathname)}`;
+      : `/public/${pathname}`;
 
     const token = request.cookies.get("token");
 
     if (!token) {
       return NextResponse.redirect(new URL(redirectTo, request.url));
     }
+  }
 
-    if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
-      const userInfo = await getUserInfo(token.value);
-      if (!userInfo.ok || userInfo.user.status !== "Admin") {
-        return NextResponse.redirect(new URL("/", request.url));
+  if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
+    const providedRedirect = searchParams.get("prev");
+    if (request.cookies.get("token")) {
+      if (pathname.startsWith("/login")) {
+        const redirectTo = decodeURIComponent(`%2F${providedRedirect || ""}`);
+        return NextResponse.redirect(new URL(redirectTo, request.url));
+      }
+      if (pathname.startsWith("/public")) {
+        return NextResponse.redirect(
+          new URL(pathname.slice(pathname.indexOf("/", 1)), request.url),
+        );
       }
     }
   }
@@ -42,5 +49,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/problems/:path*", "/login"],
+  matcher: ["/problems/:path*", "/login", "/public/:path*"],
 };

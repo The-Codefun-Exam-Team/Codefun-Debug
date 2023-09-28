@@ -18,7 +18,7 @@ export const SIGNED_IN_LINKS = [
 
 export const SIGNED_OUT_LINKS = [
   {
-    url: "/problems/all/1",
+    url: "/public/problems/all/1",
     title: "Problems",
   },
   {

@@ -32,6 +32,7 @@ export interface UserRanking {
   score: number;
   ratio: number;
   rank: number;
+  avatar: string;
 }
 
 export type ColorScheme = (typeof COLOR_SCHEMES)[number];

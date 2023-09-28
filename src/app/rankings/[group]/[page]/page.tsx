@@ -110,7 +110,7 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
     getUserCount(group),
   ]);
 
-  if (!groupsData || !rankingData || userCount === null) {
+  if (!groupsData || !rankingData.ok || userCount === null) {
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>
@@ -121,15 +121,15 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
     );
   }
 
-  const lastPage = Math.ceil((userCount + 1) / 50);
+  const lastPage = userCount ? Math.ceil(userCount / 50) : 1;
 
   return (
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
         <Group group={group} groupsData={groupsData} />
         <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
-        <RankTable rankingData={rankingData} page={page} />
-        {rankingData.length > 10 && (
+        <RankTable rankingData={rankingData.data} page={page} />
+        {rankingData.data.length > 10 && (
           <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
         )}
       </div>

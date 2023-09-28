@@ -2,10 +2,8 @@ import { getAllProblem } from "@utils/api";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { ProblemsList } from "@/app/problems/all/[page]/ProblemList";
 import { Box, Heading, Pagination } from "@/components";
-import prisma from "@/database/prisma/instance";
-
-import { ProblemsList } from "./ProblemList";
 
 export const metadata: Metadata = {
   title: "Problems",
@@ -27,7 +25,7 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
       </div>
     );
   }
-  if (!problemsList.user) {
+  if (problemsList.user) {
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>
@@ -38,19 +36,16 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
     );
   }
 
-  const problemCount = await prisma.debugProblems.count();
-  const lastPage = Math.ceil(problemCount / 50).toString();
-
   return (
     <>
       <div className="relative mx-auto flex w-full max-w-4xl flex-col p-4 ">
-        <Pagination page={page} baseURL="/problems/all/" lastPage={lastPage} />
+        <Pagination page={page} baseURL="/problems/all/" lastPage="100" />
         <ProblemsList
           data={{ user: problemsList.user, problemList: problemsList.data }}
           page={page}
         />
         {problemsList.data.length > 0 && (
-          <Pagination page={page} baseURL="/problems/all/" lastPage={lastPage} />
+          <Pagination page={page} baseURL="/problems/all/" lastPage="100" />
         )}
       </div>
     </>

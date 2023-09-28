@@ -1,83 +1,86 @@
+import { Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { gravatarFromEmail } from "@utils/shared";
 import { unstable_cache } from "next/cache";
 
+import type { RankingsData, UserRanking } from "@/app/rankings/[group]/[page]/types";
 import prisma from "@/database/prisma/instance";
 
-interface returnData {
-  tid: number;
-  name: string;
-  username: string;
-  status: string;
-  gid: number;
-  groupname: string;
-  email: string;
-  score: number;
-  solved: number;
-  rank: number;
-}
-
-export const getUsers = async (group: string, page: string, limit: string) => {
+export const getUsers = async (
+  group: string,
+  page: string,
+  limit: string,
+): Promise<{ ok: true; data: RankingsData } | { ok: false; error: string; status: string }> => {
+  // calculate offset
   const offset = (parseInt(page) - 1) * parseInt(limit);
 
-  const globalQuery = await prisma.$queryRaw`
-  WITH score_table AS (SELECT tid, dpid, MAX(score) as max_score FROM debug_submissions GROUP BY tid, dpid),
-  rank_table AS (SELECT tid, RANK() OVER (ORDER BY SUM(score_table.max_score) DESC) AS rank from score_table GROUP BY tid)
-  SELECT groups.gid, SUM(score_table.max_score) as score, rank_table.rank, teams.teamname as username, teams.name, groups.groupname, teams.email, teams.solved, teams.tid
-  FROM score_table 
-  INNER JOIN teams ON teams.tid = score_table.tid
-  INNER JOIN groups ON groups.gid = teams.group
-  INNER JOIN rank_table ON teams.tid = rank_table.tid
+  // Raw SQL to query score and ranking (prisma not supporting nested group by yet)
+  const rankTableQuery = prisma.$queryRaw`
+    WITH score_table AS (SELECT tid, dpid, MAX(score) as max_score FROM debug_submissions GROUP BY tid, dpid)
+    SELECT teams.tid, RANK() OVER (ORDER BY SUM(score_table.max_score) DESC) AS rank, SUM(score_table.max_score) as score 
+    FROM score_table 
+    INNER JOIN teams ON teams.tid = score_table.tid
+    WHERE (CASE WHEN ${parseInt(group)} = 0 THEN 1=1 ELSE teams.group = ${parseInt(group)} END)
+    GROUP BY tid
+    ORDER BY score DESC
+    LIMIT ${parseInt(limit)} OFFSET ${offset}
+  `;
 
-  GROUP BY score_table.tid 
-  ORDER BY score DESC
-  LIMIT ${parseInt(limit)} OFFSET ${offset}
-  ;`;
-
-  const groupQuery = prisma.$queryRaw`
-  WITH score_table AS (SELECT tid, dpid, MAX(score) as max_score FROM debug_submissions GROUP BY tid, dpid),
-  rank_table AS (SELECT tid, RANK() OVER (ORDER BY SUM(score_table.max_score) DESC) AS rank from score_table GROUP BY tid)
-  SELECT groups.gid, SUM(score_table.max_score) as score, rank_table.rank, teams.teamname as username, teams.name, groups.groupname, teams.email, teams.solved
-  FROM score_table 
-  INNER JOIN teams ON teams.tid = score_table.tid
-  INNER JOIN groups ON groups.gid = teams.group
-  INNER JOIN rank_table ON teams.tid = rank_table.tid
-  
-  WHERE groups.gid = ${parseInt(group)}
-  GROUP BY score_table.tid 
-  ORDER BY score DESC
-  LIMIT ${parseInt(limit)} OFFSET ${offset}
-  ;`;
+  // required users infos
+  const requiredFields = Prisma.validator<Prisma.TeamsSelect>()({
+    tid: true,
+    name: true,
+    teamname: true,
+    status: true,
+    group: true,
+    email: true,
+    solved: true,
+  });
 
   try {
-    return unstable_cache(
+    const data = unstable_cache(
       async () => {
-        const problemsCount = await prisma.problems.count();
-        const users = (parseInt(group) > 0 ? await groupQuery : await globalQuery) as returnData[];
-        return users.map((user) => ({
-          id: user.tid,
-          username: user.username,
-          name: user.name,
-          group: {
-            id: user.gid,
-            name: user.groupname,
+        const rank_table = (await rankTableQuery) as { tid: number; rank: number; score: number }[];
+        const usersInfo = await prisma.teams.findMany({
+          where: {
+            tid: {
+              in: rank_table.map((user) => user.tid),
+            },
           },
-          status: user.status,
-          score: user.score,
-          ratio: user.solved / problemsCount,
-          avatar: gravatarFromEmail(user.email),
-          rank: Number(user.rank),
-        }));
+          select: requiredFields,
+        });
+
+        const problemsCount = await prisma.problems.count();
+
+        const users = usersInfo.map((user, index) => {
+          return {
+            id: user.tid,
+            username: user.teamname,
+            name: user.name,
+            group: {
+              id: user.group.gid,
+              name: user.group.groupname,
+            },
+            status: user.status,
+            score: rank_table[index].score,
+            ratio: user.solved / problemsCount,
+            avatar: gravatarFromEmail(user.email),
+            rank: Number(rank_table[index].rank),
+          } satisfies UserRanking;
+        });
+        return users;
       },
       [`getUsers-${group}-${page}-${limit}`],
       { revalidate: 10 },
     )();
+    return { ok: true, data: await data };
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.message);
+      return { ok: false, error: e.message, status: e.code };
     } else {
       console.error(e);
+      return { ok: false, error: "Internal Server Error", status: "500" };
     }
-    return null;
   }
 };
