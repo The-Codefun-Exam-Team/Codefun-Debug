@@ -5,3 +5,4 @@ export { Input } from "./Input";
 export { Modal, type ModalProps } from "./Modal";
 export { NavigationBar } from "./NavigationBar";
 export { Pagination } from "./Pagination";
+export { Score } from "./Score";

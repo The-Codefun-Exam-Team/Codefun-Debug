@@ -1,20 +1,11 @@
+import { getVerdictTextClass } from "@utils/shared";
+
 import { Heading } from "@/components";
 import { RESULTS_DICT } from "@/shared/constants";
 import type { Results } from "@/shared/types";
 
 import { InQueue, RunInfoClient } from "./RunInfoClient";
 import type { RunData, SubmissionsData } from "./types";
-
-const verdictColor = (verdict: Results) => {
-  switch (verdict) {
-    case "AC":
-      return "text-green-600 dark:text-green-500";
-    case "WA":
-      return "text-red-600 dark:text-red-500";
-    default:
-      return "text-blue-600 dark:text-blue-500";
-  }
-};
 
 const TestResult = ({
   verdict,
@@ -30,7 +21,8 @@ const TestResult = ({
   <div className="flex w-full justify-between px-4 py-2 odd:bg-accent-light/5 even:bg-accent-light/20 dark:odd:bg-accent-dark/5 dark:even:bg-accent-dark/20">
     <div>
       <div className="text-lg font-bold">
-        #{count}. Verdict: <span className={verdictColor(verdict)}>{RESULTS_DICT[verdict]}</span>
+        #{count}. Verdict:{" "}
+        <span className={getVerdictTextClass(verdict)}>{RESULTS_DICT[verdict]}</span>
       </div>
       <div>{message}</div>
     </div>

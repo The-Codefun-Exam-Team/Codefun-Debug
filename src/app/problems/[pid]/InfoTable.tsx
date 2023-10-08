@@ -1,4 +1,4 @@
-import { clsx } from "@utils/shared";
+import { clsx, getVerdictTextClass } from "@utils/shared";
 
 import { DecoratedLink } from "@/components";
 import {
@@ -8,27 +8,24 @@ import {
   LanguageIcon,
   SolidDownIcon,
 } from "@/components/icon";
-import type { Results } from "@/shared/types";
+import { type Results, ResultsEnum } from "@/shared/types";
 
 import type { ProblemData } from "./types";
 
 export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => {
-  const verdicts: Record<Results, number> = {
-    AC: 0,
-    WA: 0,
-    TLE: 0,
-    RTE: 0,
-    MLE: 0,
-    SS: 0,
-    CE: 0,
-    Q: 0,
-    R: 0,
-    "...": 0,
-  };
+  const verdicts = Object.keys(ResultsEnum)
+    .filter((v) => isNaN(Number(v)))
+    .map(
+      (verdict) =>
+        ({
+          verdict: verdict,
+          count: 0,
+        }) as { verdict: Results; count: number },
+    );
 
-  for (const test of data.judge.tests) {
-    verdicts[test.verdict] += 1;
-  }
+  data.judge.tests.forEach((test) => {
+    verdicts[ResultsEnum[test.verdict]].count += 1;
+  });
 
   return (
     <>
@@ -100,23 +97,15 @@ export const InfoTable = ({ data, pid }: { data: ProblemData; pid: string }) => 
                   <SolidDownIcon className="relative bottom-[1px] ml-1 inline-block h-5 w-5 fill-slate-700 stroke-slate-700 transition-all duration-300 dark:fill-slate-400 dark:stroke-slate-400" />
                 </label>
                 <div className="invisible max-h-0 overflow-y-hidden transition-all duration-200 ease-in-out peer-checked:visible peer-checked:max-h-40">
-                  <ul className="ml-3 mt-3 list-inside list-disc">
-                    {verdicts.AC > 0 && (
-                      <li className="text-green-600 dark:text-green-500">{verdicts.AC} AC</li>
+                  <ul className="ml-3 mt-1 list-inside list-disc">
+                    {verdicts.map(
+                      ({ verdict, count }) =>
+                        count !== 0 && (
+                          <li key={`verdict-${verdict}`} className={getVerdictTextClass(verdict)}>
+                            {verdict}: {count}
+                          </li>
+                        ),
                     )}
-                    {verdicts.WA > 0 && (
-                      <li className="text-red-600 dark:text-red-500">{verdicts.WA} WA</li>
-                    )}
-                    {verdicts.MLE > 0 && (
-                      <li className="text-gray-600 dark:text-gray-500">{verdicts.MLE} MLE</li>
-                    )}
-                    {verdicts.TLE > 0 && (
-                      <li className="text-yellow-600 dark:text-yellow-500">{verdicts.TLE} TLE</li>
-                    )}
-                    {verdicts.RTE > 0 && (
-                      <li className="text-blue-600 dark:text-blue-500">{verdicts.RTE} RTE</li>
-                    )}
-                    {data.judge.total === 0 && <li className="text-gray-600">CE</li>}
                   </ul>
                 </div>
               </div>

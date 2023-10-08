@@ -1,6 +1,6 @@
 import { clsx } from "@utils/shared";
 
-import { DecoratedLink } from "@/components";
+import { DecoratedLink, Score } from "@/components";
 
 import { CreateProblem } from "./CreateProblem";
 import type { ProblemList, ProblemListWithScore } from "./types";
@@ -56,15 +56,7 @@ export const ProblemsList = ({
                     <div className="text-left">{problem.language}</div>
                   </td>
                   <td>
-                    {problem.score < 100 ? (
-                      <div className="text-right">
-                        {problem.score === -1 ? "Not yet scored" : problem.score.toFixed(2)}
-                      </div>
-                    ) : (
-                      <div className="text-right font-bold text-green-600 dark:text-green-500">
-                        Accepted
-                      </div>
-                    )}
+                    <Score problemInfo={problem} className=""></Score>
                   </td>
                 </tr>
               );

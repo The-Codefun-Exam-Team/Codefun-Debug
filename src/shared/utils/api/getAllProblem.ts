@@ -2,21 +2,35 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache } from "next/cache";
 
 import prisma from "@/database/prisma/instance";
+import type { Languages, Results } from "@/shared/types";
 
 import { getUserInfo } from "./getUserInfo";
 
 interface ProblemInfo {
   code: string;
   name: string;
-  language: string;
+  language: Languages;
 }
 
 export type ProblemList = ProblemInfo[];
 
-interface ProblemInfoWithScore extends ProblemInfo {
+export interface ScoreInfoNotNull {
   score: number;
-  diff: number;
+  diff: number | null;
+  result: Results;
+  drid: number;
 }
+
+export interface ScoreInfoNull {
+  score: 0;
+  diff: null;
+  result: null;
+  drid: null;
+}
+
+export type ScoreInfo = ScoreInfoNotNull | ScoreInfoNull;
+
+export type ProblemInfoWithScore = ProblemInfo & ScoreInfo;
 
 export type ProblemListWithScore = ProblemInfoWithScore[];
 
@@ -29,7 +43,7 @@ export const getAllProblem = async (
   token: string | undefined,
   page: string,
   limit: string,
-  language?: string,
+  language?: Languages,
 ): Promise<returnType> => {
   try {
     const offset = (parseInt(page) - 1) * parseInt(limit);
@@ -57,7 +71,7 @@ export const getAllProblem = async (
       return {
         ok: true,
         user: false,
-        data: problems satisfies ProblemList,
+        data: problems as ProblemList,
       };
     }
     if (problems.length === 0) {
@@ -96,6 +110,8 @@ export const getAllProblem = async (
             dpid: true,
             diff: true,
             score: true,
+            result: true,
+            drid: true,
           },
           orderBy: {
             dpid: "asc",
@@ -106,14 +122,17 @@ export const getAllProblem = async (
           return {
             ...problem,
             score: 0,
-            diff: 100000,
-          };
+            diff: null,
+            result: null,
+            drid: null,
+          } as ProblemInfoWithScore;
         });
         subs_info.forEach((sub) => {
-          problemsWithScore[sub.dpid - 1].score = sub.score;
-          problemsWithScore[sub.dpid - 1].diff = sub.diff ?? 100000;
+          problemsWithScore[sub.dpid - 1] = {
+            ...problemsWithScore[sub.dpid - 1],
+            ...sub,
+          } as ProblemInfoWithScore;
         });
-
         return problemsWithScore;
       },
       [`getAllProblemWithScore-${tid}-${page}-${limit}-${language}`],

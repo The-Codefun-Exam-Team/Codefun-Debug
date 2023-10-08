@@ -200,7 +200,7 @@ export const UserInfo = () => {
             <div
               className={clsx(
                 "right-0 mt-2 w-44 px-4 py-2",
-                "flex h-auto items-center overflow-hidden text-clip rounded-md",
+                "absolute flex h-auto items-center overflow-hidden text-clip rounded-md",
                 "border-red-200 bg-red-100 text-red-800",
               )}
             >
