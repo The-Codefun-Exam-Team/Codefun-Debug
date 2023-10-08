@@ -42,7 +42,7 @@ export const ProblemsList = ({
                   key={`problem-page-${page}-code-${problem.code}`}
                   className={clsx(
                     "h-10 text-center",
-                    "font-semibold text-slate-600 dark:text-slate-400 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
+                    "font-semibold text-slate-600 dark:text-slate-400 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
                   )}
                 >
                   <td>
@@ -56,7 +56,9 @@ export const ProblemsList = ({
                     <div className="text-left">{problem.language}</div>
                   </td>
                   <td>
-                    <Score problemInfo={problem} className=""></Score>
+                    <div className="float-right flex w-fit justify-end">
+                      <Score {...problem} className="text-right" />
+                    </div>
                   </td>
                 </tr>
               );
