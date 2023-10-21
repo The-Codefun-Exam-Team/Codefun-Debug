@@ -38,6 +38,4 @@ export const ADDITIONAL_LINKS = [
   },
 ] satisfies NavLinkEntry[];
 
-export const WITH_PUBLIC_LINKS = ["/problems"];
-
-export const WITHOUT_PUBLIC_LINKS = ["problems/create"];
+export { WITH_PUBLIC_LINKS, WITHOUT_PUBLIC_LINKS } from "@/shared/constants";

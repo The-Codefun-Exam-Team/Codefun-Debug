@@ -3,11 +3,17 @@ import { useAppDispatch } from "@redux/hooks";
 import { setUser } from "@redux/slice";
 import { loginSchema, type LoginSchemaType } from "@schemas/loginSchema";
 import { clsx } from "@utils/shared";
+import { revalidatePath } from "next/cache";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Box, Heading, Input } from "@/components";
+
+const revalidatePaths = () => {
+  revalidatePath("/problems/all/[page]");
+  revalidatePath("/problems/[pid]");
+};
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -38,6 +44,7 @@ export const LoginForm = () => {
     });
     const resBody = await res.json();
     if (res.ok) {
+      revalidatePaths();
       dispatch(
         setUser({
           user: resBody,

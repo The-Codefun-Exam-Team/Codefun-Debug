@@ -10,13 +10,7 @@ export const metadata: Metadata = {
   title: "Problems",
 };
 
-export const generateStaticParams = async () => {
-  const problemCount = await getProblemCount();
-  if (!problemCount.ok) return [];
-  return Array.from({ length: Math.ceil(problemCount.count / 50) }, (_, i) => ({
-    params: { page: (i + 1).toString() },
-  }));
-};
+export const revalidate = 0;
 
 const Page = async ({ params: { page } }: { params: { page: string } }) => {
   const cookieStore = cookies();

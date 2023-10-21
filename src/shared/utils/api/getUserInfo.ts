@@ -8,9 +8,6 @@ export const getUserInfo = async (
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    next: {
-      revalidate: 30,
-    },
   });
   const info = await res.json();
   if (!res.ok) {

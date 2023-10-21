@@ -1,7 +1,9 @@
 "use client";
 import { Transition } from "@headlessui/react";
+import { useInterval } from "@hooks/useInterval";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 
 import { Heading } from "@/components";
 
@@ -68,5 +70,16 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
 };
 
 export const InQueue = () => {
+  const router = useRouter();
+
+  const refresh = () => startTransition(router.refresh);
+
+  const { start, stop } = useInterval(refresh, 5000);
+
+  useEffect(() => {
+    start();
+    return stop;
+  }, [start, stop]);
+
   return <Heading type="title">In queue...</Heading>;
 };
