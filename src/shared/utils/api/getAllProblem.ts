@@ -34,7 +34,7 @@ export type ProblemInfoWithScore = ProblemInfo & ScoreInfo;
 
 export type ProblemListWithScore = ProblemInfoWithScore[];
 
-type returnType =
+type ReturnType =
   | { ok: true; user: false; data: ProblemList }
   | { ok: true; user: true; data: ProblemListWithScore }
   | { ok: false; error: string; status: string };
@@ -44,7 +44,7 @@ export const getAllProblem = async (
   page: string,
   limit: string,
   language?: Languages,
-): Promise<returnType> => {
+): Promise<ReturnType> => {
   try {
     const offset = (parseInt(page) - 1) * parseInt(limit);
     const problems = await unstable_cache(
@@ -67,7 +67,7 @@ export const getAllProblem = async (
     )();
 
     const user = await getUserInfo(token);
-    if (!user.ok) {
+    if (!user.ok || !token) {
       return {
         ok: true,
         user: false,
@@ -78,66 +78,59 @@ export const getAllProblem = async (
       return { ok: true, user: true, data: [] as ProblemListWithScore };
     }
     const tid = user.user.id;
-    const problemsWithScore = await unstable_cache(
-      async () => {
-        const score_table = await prisma.debugSubmissions.groupBy({
-          by: ["dpid"],
-          where: {
-            tid: tid,
-          },
-          _max: {
-            score: true,
-          },
-        });
-
-        const subs_info = await prisma.debugSubmissions.findMany({
-          where: {
-            tid: tid,
-            OR: score_table.map((problem) => {
-              return {
-                AND: [
-                  {
-                    dpid: problem.dpid,
-                  },
-                  {
-                    score: problem._max.score ?? 0,
-                  },
-                ],
-              };
-            }),
-          },
-          select: {
-            dpid: true,
-            diff: true,
-            score: true,
-            result: true,
-            drid: true,
-          },
-          orderBy: {
-            dpid: "asc",
-          },
-        });
-
-        const problemsWithScore = problems.map((problem) => {
-          return {
-            ...problem,
-            score: 0,
-            diff: null,
-            result: null,
-            drid: null,
-          } as ProblemInfoWithScore;
-        });
-        subs_info.forEach((sub) => {
-          problemsWithScore[sub.dpid - 1] = {
-            ...problemsWithScore[sub.dpid - 1],
-            ...sub,
-          } as ProblemInfoWithScore;
-        });
-        return problemsWithScore;
+    const score_table = await prisma.debugSubmissions.groupBy({
+      by: ["dpid"],
+      where: {
+        tid: tid,
       },
-      [`getAllProblemWithScore-${tid}-${page}-${limit}-${language}`],
-      { revalidate: 10 },
-    )();
+      _max: {
+        score: true,
+      },
+    });
+
+    const subs_info = await prisma.debugSubmissions.findMany({
+      where: {
+        tid: tid,
+        OR: score_table.map((problem) => {
+          return {
+            AND: [
+              {
+                dpid: problem.dpid,
+              },
+              {
+                score: problem._max.score ?? 0,
+              },
+            ],
+          };
+        }),
+      },
+      select: {
+        dpid: true,
+        diff: true,
+        score: true,
+        result: true,
+        drid: true,
+      },
+      orderBy: {
+        dpid: "asc",
+      },
+    });
+
+    const problemsWithScore = problems.map((problem) => {
+      return {
+        ...problem,
+        score: 0,
+        diff: null,
+        result: null,
+        drid: null,
+      } as ProblemInfoWithScore;
+    });
+    subs_info.forEach((sub) => {
+      problemsWithScore[sub.dpid - 1] = {
+        ...problemsWithScore[sub.dpid - 1],
+        ...sub,
+      } as ProblemInfoWithScore;
+    });
     return { ok: true, user: true, data: problemsWithScore satisfies ProblemListWithScore };
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {

@@ -1,3 +1,4 @@
+import { getProblemInfo } from "@utils/api";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -41,6 +42,8 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
       </div>
     );
   }
+
+  const problemData = await getProblemInfo(pid, token?.value);
 
   const data = (await res.json()).data as ProblemData;
   return (

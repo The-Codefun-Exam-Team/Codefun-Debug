@@ -12,7 +12,7 @@ export type LinkProps = Omit<ComponentPropsWithoutRef<typeof Link>, "href">;
 
 export const Score = (props: (DivProps & ScoreInfoNull) | (LinkProps & ScoreInfoNotNull)) => {
   if (props.drid === null) {
-    return <div className={props.className}>Not Submitted</div>;
+    return <div className={clsx(props.className, "font-semibold")}>Not Submitted</div>;
   }
 
   return (
@@ -21,8 +21,9 @@ export const Score = (props: (DivProps & ScoreInfoNull) | (LinkProps & ScoreInfo
       href={`/submissions/${props.drid}`}
       className={clsx(
         getVerdictTextClass(props.result),
-        "float-right block font-bold hover:underline",
         props.className,
+        "float-right block hover:underline",
+        props.result === "AC" ? "font-bold" : "font-semibold",
       )}
     >
       {props.result === "AC" ? "Accepted" : props.score.toFixed(2)}

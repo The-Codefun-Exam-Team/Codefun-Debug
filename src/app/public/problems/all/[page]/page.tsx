@@ -21,8 +21,10 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
   const cookieStore = cookies();
   const token = cookieStore.get("token");
 
-  const problemsList = await getAllProblem(token?.value, page, "50");
-  const problemCount = await getProblemCount();
+  const [problemCount, problemsList] = await Promise.all([
+    getProblemCount(),
+    getAllProblem(token?.value, page, "50"),
+  ]);
 
   if (!problemsList.ok || !problemCount.ok) {
     return (

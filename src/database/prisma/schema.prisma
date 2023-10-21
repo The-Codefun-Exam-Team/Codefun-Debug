@@ -190,8 +190,10 @@ model DebugProblems {
   result            String             @db.VarChar(8)
   mindiff           Int                @default(0)
   runs              Runs               @relation(fields: [rid], references: [rid], onUpdate: Restrict, map: "debug_problems_ibfk_1")
+  problem          Problems           @relation(fields: [pid], references: [pid], onUpdate: Restrict, map: "debug_problems_ibfk_2")
   debug_submissions DebugSubmissions[]
 
+  @@index([pid], map: "pid")
   @@index([rid], map: "rid")
   @@map("debug_problems")
 }
@@ -216,7 +218,9 @@ model DebugSubmissions {
   code           String        @db.LongText
   debug_problems DebugProblems @relation(fields: [dpid], references: [dpid], onUpdate: Restrict, map: "debug_submissions_ibfk_1")
   teams          Teams         @relation(fields: [tid], references: [tid], onUpdate: Restrict, map: "debug_submissions_ibfk_2")
+  runs           Runs          @relation(fields: [rid], references: [rid], onUpdate: Restrict, map: "debug_submissions_ibfk_3")
 
+  @@index([rid], map: "rid")
   @@index([dpid], map: "dpid")
   @@index([tid], map: "tid")
   @@map("debug_submissions")
@@ -274,7 +278,7 @@ model password_resets {
   @@index([user], map: "user")
 }
 
-model problems {
+model Problems {
   pid         Int     @id @default(autoincrement())
   sid         Int     @default(1)
   code        String  @unique(map: "code") @db.VarChar(20)
@@ -291,7 +295,9 @@ model problems {
   checkercode String  @db.LongText
   solved      Int     @default(0)
   total       Int     @default(0)
+  debug_problem DebugProblems[]
 
+  @@map("problems")
   @@index([cid], map: "cid")
 }
 
@@ -329,6 +335,8 @@ model Runs {
   score          Float           @default(0)
   debug_problems DebugProblems[]
   team           Teams           @relation(fields: [tid], references: [tid])
+  subs_code      SubsCode        @relation(fields: [rid], references: [rid])
+  debug_submissions DebugSubmissions[]
 
   @@index([pid], map: "pid")
   @@index([pid, tid, score], map: "pid_2")
@@ -342,7 +350,9 @@ model SubsCode {
   rid   Int    @id @default(autoincrement())
   code  String @db.LongText
   error String @default("") @db.Text
+  run   Runs?   
 
+  @@index([rid])
   @@map("subs_code")
 }
 
