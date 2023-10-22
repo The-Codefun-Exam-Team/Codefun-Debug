@@ -2,7 +2,7 @@
 import { useAppDispatch } from "@redux/hooks";
 import { setUser } from "@redux/slice";
 import { loginSchema, type LoginSchemaType } from "@schemas/loginSchema";
-import { clsx, revalidatePaths } from "@utils/shared";
+import { clsx } from "@utils/shared";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -41,6 +41,7 @@ export const LoginForm = () => {
       dispatch(
         setUser({
           user: resBody,
+          refresh: router.refresh,
         }),
       );
       if (prevUrl === null) {
@@ -52,7 +53,6 @@ export const LoginForm = () => {
             : `${prevUrl}`,
         );
       }
-      revalidatePaths();
     } else {
       setServerError(resBody.error);
     }
