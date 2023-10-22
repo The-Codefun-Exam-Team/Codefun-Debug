@@ -14,6 +14,13 @@ export interface DetailedProblemInfo {
     code: string;
     name: string;
   };
+  problem_judge:
+    | {
+        correct: number;
+        total: number;
+        tests: { verdict: Results; runningTime: number; messages: string }[];
+      }
+    | string;
 }
 
 export interface DetailedScoreInfoNotNull {
@@ -21,13 +28,6 @@ export interface DetailedScoreInfoNotNull {
   diff: number | null;
   result: Results;
   drid: number;
-  judge:
-    | {
-        correct: number;
-        total: number;
-        tests: [verdict: Results, runningTime: number, messages: string];
-      }
-    | string;
 }
 
 export interface DetailedScoreInfoNull {
@@ -35,7 +35,6 @@ export interface DetailedScoreInfoNull {
   diff: null;
   result: null;
   drid: null;
-  judge: null;
 }
 
 export type DetailedScoreInfo = DetailedScoreInfoNotNull | DetailedScoreInfoNull;
@@ -103,9 +102,30 @@ export const getProblemInfo = async (
                 name: true,
               },
             },
+            runs: {
+              select: {
+                subs_code: {
+                  select: {
+                    error: true,
+                  },
+                },
+              },
+            },
           },
         });
-        return problemInfo;
+        if (problemInfo === null) {
+          return null;
+        }
+        return {
+          code: problemInfo.code,
+          name: problemInfo.name,
+          language: problemInfo.language,
+          problem: {
+            code: problemInfo.problem.code,
+            name: problemInfo.problem.name,
+          },
+          problem_judge: parseJudge(problemInfo.runs.subs_code.error),
+        } as DetailedProblemInfo;
       },
       [`get-problem-info-${code}`],
       { revalidate: false },
@@ -155,15 +175,6 @@ export const getProblemInfo = async (
         score: true,
         diff: true,
         result: true,
-        runs: {
-          select: {
-            subs_code: {
-              select: {
-                error: true,
-              },
-            },
-          },
-        },
       },
     });
 
@@ -172,11 +183,9 @@ export const getProblemInfo = async (
       score: runInfo[0]?.score ?? 0,
       diff: runInfo[0]?.diff ?? null,
       result: (runInfo[0]?.result as Results) ?? null,
-      judge: parseJudge(runInfo[0]?.runs.subs_code.error ?? null),
       drid: runInfo[0]?.drid ?? null,
     } as DetailedProblemInfoWithScore;
 
-    console.log(problemInfoWithScore.judge);
     return {
       ok: true,
       user: true,

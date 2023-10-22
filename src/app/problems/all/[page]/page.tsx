@@ -20,6 +20,12 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
   ]);
 
   if (!problemsList.ok || !problemCount.ok) {
+    if (!problemsList.ok) {
+      console.error(problemsList.status, problemsList.error);
+    }
+    if (!problemCount.ok) {
+      console.error(problemCount.status, problemCount.error);
+    }
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>
@@ -30,6 +36,7 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
     );
   }
   if (!problemsList.user || !token) {
+    console.error("Wrong authentication behaviour");
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>

@@ -12,21 +12,26 @@ export type LinkProps = Omit<ComponentPropsWithoutRef<typeof Link>, "href">;
 
 export const Score = (props: (DivProps & ScoreInfoNull) | (LinkProps & ScoreInfoNotNull)) => {
   if (props.drid === null) {
-    return <div className={clsx(props.className, "font-semibold")}>Not Submitted</div>;
+    return (
+      <div className={clsx(props.className, "font-semibold", getVerdictTextClass("CE"))}>
+        Not Submitted
+      </div>
+    );
   }
 
   return (
     // TODO: handle when public submission page available
-    <Link
-      href={`/submissions/${props.drid}`}
+    <div
       className={clsx(
         getVerdictTextClass(props.result),
         props.className,
-        "float-right block hover:underline",
+        "hover:underline",
         props.result === "AC" ? "font-bold" : "font-semibold",
       )}
     >
-      {props.result === "AC" ? "Accepted" : props.score.toFixed(2)}
-    </Link>
+      <Link href={`/submissions/${props.drid}`}>
+        {props.result === "AC" ? "Accepted" : props.score.toFixed(5)}
+      </Link>
+    </div>
   );
 };
