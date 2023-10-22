@@ -1,5 +1,6 @@
 "use client";
 import { useAppSelector } from "@redux/hooks";
+import type { DetailedProblemInfo, DetailedProblemInfoWithScore } from "@utils/api/getProblemInfo";
 import { clsx } from "@utils/shared";
 import type monacoEditor from "monaco-editor";
 import { useRouter } from "next/navigation";
@@ -7,9 +8,15 @@ import { useEffect, useRef, useState } from "react";
 
 import atlanticNight from "@/features/monaco-themes/atlantic-night.json";
 
-import type { ProblemData } from "./types";
-
-export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) => {
+export const UserEditor = ({
+  data,
+  pid,
+}: {
+  data:
+    | { user: true; problemData: DetailedProblemInfoWithScore }
+    | { user: false; problemData: DetailedProblemInfo };
+  pid: string;
+}) => {
   // TODO: add options for editor
   const router = useRouter();
   const [submitError, setSubmitError] = useState("");
@@ -63,10 +70,10 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
 
   useEffect(() => {
     if (!renderingEditor && editorRef.current) {
-      editorRef.current.getOriginalEditor()?.setValue(data.codetext);
-      editorRef.current.getModifiedEditor()?.setValue(data.codetext);
+      editorRef.current.getOriginalEditor()?.setValue(data.problemData.codetext);
+      editorRef.current.getModifiedEditor()?.setValue(data.problemData.codetext);
     }
-  }, [renderingEditor, data.codetext]);
+  }, [renderingEditor, data.problemData.codetext]);
 
   const submitCode = async () => {
     if (!editorRef.current) {
@@ -117,21 +124,23 @@ export const UserEditor = ({ data, pid }: { data: ProblemData; pid: string }) =>
         ref={editorDomRef}
       />
       {/* TODO: Add transition (if possible) */}
-      <div className="absolute bottom-3 flex w-full justify-center">
-        {submitError ? (
-          <div className="rounded-md border-2 border-red-200 bg-red-100 px-4 py-1 text-red-800">
-            {submitError}
-          </div>
-        ) : (
-          <button
-            type="submit"
-            onClick={submitCode}
-            className="rounded-md border-2 border-slate-600 bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-500 active:shadow-inner active:shadow-slate-400 dark:border-slate-400 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-600 active:dark:shadow-slate-700"
-          >
-            Submit
-          </button>
-        )}
-      </div>
+      {data.user && (
+        <div className="absolute bottom-3 flex w-full justify-center">
+          {submitError ? (
+            <div className="rounded-md border-2 border-red-200 bg-red-100 px-4 py-1 text-red-800">
+              {submitError}
+            </div>
+          ) : (
+            <button
+              type="submit"
+              onClick={submitCode}
+              className="rounded-md border-2 border-slate-600 bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-500 active:shadow-inner active:shadow-slate-400 dark:border-slate-400 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-600 active:dark:shadow-slate-700"
+            >
+              Submit
+            </button>
+          )}
+        </div>
+      )}
     </section>
   );
 };

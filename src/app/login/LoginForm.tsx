@@ -10,10 +10,7 @@ import { useForm } from "react-hook-form";
 
 import { Box, Heading, Input } from "@/components";
 
-const revalidatePaths = () => {
-  revalidatePath("/problems/all/[page]");
-  revalidatePath("/problems/[pid]");
-};
+import { revalidatePaths } from "./revalidatePaths";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();

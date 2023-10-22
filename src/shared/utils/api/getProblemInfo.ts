@@ -10,6 +10,7 @@ export interface DetailedProblemInfo {
   code: string;
   name: string;
   language: string;
+  codetext: string;
   problem: {
     code: string;
     name: string;
@@ -107,6 +108,7 @@ export const getProblemInfo = async (
                 subs_code: {
                   select: {
                     error: true,
+                    code: true,
                   },
                 },
               },
@@ -120,6 +122,7 @@ export const getProblemInfo = async (
           code: problemInfo.code,
           name: problemInfo.name,
           language: problemInfo.language,
+          codetext: problemInfo.runs.subs_code.code,
           problem: {
             code: problemInfo.problem.code,
             name: problemInfo.problem.name,

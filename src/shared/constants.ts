@@ -32,4 +32,4 @@ export const COLOR_SCHEMES = ["dark", "light"] as const;
 
 export const WITH_PUBLIC_LINKS = ["/problems"];
 
-export const WITHOUT_PUBLIC_LINKS = ["problems/create"];
+export const WITHOUT_PUBLIC_LINKS = ["/problems/create"];

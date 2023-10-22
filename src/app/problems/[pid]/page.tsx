@@ -47,7 +47,7 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
         <InfoTable data={{ user: problemData.user, problemData: problemData.data }} pid={pid} />
       </div>
       <div className="flex h-full w-full md:flex-[2_2_0]">
-        {/* <UserEditor data={problemData.data} pid={pid} /> */}
+        <UserEditor data={{ user: problemData.user, problemData: problemData.data }} pid={pid} />
       </div>
     </div>
   );

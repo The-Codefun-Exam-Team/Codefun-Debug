@@ -74,7 +74,13 @@ export const ProblemsList = ({
                 >
                   <td>
                     <div className="flex w-fit">
-                      <DecoratedLink href={`/problems/${problem.code}`}>
+                      <DecoratedLink
+                        href={
+                          data.user
+                            ? `/problems/${problem.code}`
+                            : `/public/problems/${problem.code}`
+                        }
+                      >
                         {problem.name}
                       </DecoratedLink>
                     </div>

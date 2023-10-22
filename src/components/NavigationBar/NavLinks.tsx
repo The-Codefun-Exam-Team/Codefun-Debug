@@ -9,7 +9,13 @@ import { useEffect, useState } from "react";
 
 import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
 
-import { ADDITIONAL_LINKS, SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
+import {
+  ADDITIONAL_LINKS,
+  SIGNED_IN_LINKS,
+  SIGNED_OUT_LINKS,
+  WITH_PUBLIC_LINKS,
+  WITHOUT_PUBLIC_LINKS,
+} from "./constants";
 import { BaseNavLink, HorizontalNavLink, NAV_BUTTON_CLASS, VerticalNavLink } from "./NavLink";
 
 export interface NavLinksProps {
@@ -102,7 +108,15 @@ export const UserInfo = () => {
       method: "POST",
     });
     if (res.ok) {
-      router.push(`/public/${pathname}`);
+      if (
+        WITH_PUBLIC_LINKS.some((path) => pathname.startsWith(path)) &&
+        !pathname.startsWith("/public") &&
+        !WITHOUT_PUBLIC_LINKS.some((path) => pathname.startsWith(path))
+      ) {
+        router.push(`/public${pathname}`);
+      } else {
+        router.push("/");
+      }
       dispatch(
         setUser({
           user: null,
