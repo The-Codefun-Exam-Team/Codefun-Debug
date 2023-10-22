@@ -7,6 +7,7 @@ import type { Languages, Results } from "@/shared/types";
 import { getUserInfo } from "./getUserInfo";
 
 interface ProblemInfo {
+  dpid: number;
   code: string;
   name: string;
   language: Languages;
@@ -54,6 +55,7 @@ export const getAllProblem = async (
             language: language,
           },
           select: {
+            dpid: true,
             code: true,
             name: true,
             language: true,
@@ -125,11 +127,14 @@ export const getAllProblem = async (
         drid: null,
       } as ProblemInfoWithScore;
     });
+    let index = 0;
     subs_info.forEach((sub) => {
-      problemsWithScore[sub.dpid - 1] = {
-        ...problemsWithScore[sub.dpid - 1],
-        ...sub,
-      } as ProblemInfoWithScore;
+      while (problemsWithScore[index].dpid < sub.dpid) {
+        index++;
+      }
+      if (problemsWithScore[index].dpid === sub.dpid) {
+        problemsWithScore[index] = { ...problemsWithScore[index], ...sub } as ProblemInfoWithScore;
+      }
     });
     return { ok: true, user: true, data: problemsWithScore satisfies ProblemListWithScore };
   } catch (e) {

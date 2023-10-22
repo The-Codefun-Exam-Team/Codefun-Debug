@@ -6,3 +6,4 @@ export { getCodefunRoleTextClass } from "./getCodefunRoleTextClass";
 export { getVerdictTextClass } from "./getVerdictTextClass";
 export { gravatarFromEmail } from "./gravatarFromEmail";
 export { isColorScheme } from "./isColorScheme";
+export { revalidatePaths } from "./revalidatePaths";

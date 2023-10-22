@@ -95,7 +95,7 @@ export const InfoTable = ({
               {data.user ? (
                 <Score {...data.problemData} className="pb-4 pt-5 text-center text-2xl" />
               ) : (
-                <></>
+                <div className="pb-4 pt-5 text-center text-2xl">Login to view score</div>
               )}
             </th>
           </tr>
@@ -119,7 +119,7 @@ export const InfoTable = ({
                   rel="noreferrer noopener"
                   href={`https://codefun.vn/problems/${data.problemData.problem.code}`}
                 >
-                  {data.problemData.code}
+                  {data.problemData.problem.name}
                 </DecoratedLink>
               </div>
               <div>

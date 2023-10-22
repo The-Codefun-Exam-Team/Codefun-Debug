@@ -1,16 +1,12 @@
-import type { ScoreInfoNotNull, ScoreInfoNull } from "@utils/api/getAllProblem";
+import type { ScoreInfo } from "@utils/api/getAllProblem";
 import { clsx, getVerdictTextClass } from "@utils/shared";
 import Link from "next/link";
-import type { ComponentPropsWithoutRef, DetailedHTMLProps, HTMLAttributes } from "react";
 
-export type DivProps = Omit<
-  DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
-  "ref"
->;
+interface ComponentExtraProps {
+  className?: string;
+}
 
-export type LinkProps = Omit<ComponentPropsWithoutRef<typeof Link>, "href">;
-
-export const Score = (props: (DivProps & ScoreInfoNull) | (LinkProps & ScoreInfoNotNull)) => {
+export const Score = (props: ScoreInfo & ComponentExtraProps) => {
   if (props.drid === null) {
     return (
       <div className={clsx(props.className, "font-semibold", getVerdictTextClass("CE"))}>

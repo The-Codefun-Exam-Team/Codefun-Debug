@@ -33,8 +33,9 @@ export const middleware = async (request: NextRequest) => {
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const providedRedirect = searchParams.get("prev");
     if (request.cookies.get("token")) {
+      console.log(1);
       if (pathname.startsWith("/login")) {
-        const redirectTo = decodeURIComponent(`%2F${providedRedirect || ""}`);
+        const redirectTo = providedRedirect ? decodeURIComponent(providedRedirect) : `/`;
         return NextResponse.redirect(new URL(redirectTo, request.url));
       }
       if (pathname.startsWith("/public")) {

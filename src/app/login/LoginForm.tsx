@@ -2,15 +2,12 @@
 import { useAppDispatch } from "@redux/hooks";
 import { setUser } from "@redux/slice";
 import { loginSchema, type LoginSchemaType } from "@schemas/loginSchema";
-import { clsx } from "@utils/shared";
-import { revalidatePath } from "next/cache";
+import { clsx, revalidatePaths } from "@utils/shared";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Box, Heading, Input } from "@/components";
-
-import { revalidatePaths } from "./revalidatePaths";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -41,7 +38,6 @@ export const LoginForm = () => {
     });
     const resBody = await res.json();
     if (res.ok) {
-      revalidatePaths();
       dispatch(
         setUser({
           user: resBody,
@@ -56,6 +52,7 @@ export const LoginForm = () => {
             : `${prevUrl}`,
         );
       }
+      revalidatePaths();
     } else {
       setServerError(resBody.error);
     }
