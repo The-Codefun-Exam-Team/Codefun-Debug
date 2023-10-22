@@ -47,6 +47,41 @@ type ReturnType =
   | { ok: true; user: true; data: DetailedProblemInfoWithScore }
   | { ok: false; error: string; status: string };
 
+const parseJudge = (judge: string | null) => {
+  if (judge === null) {
+    return null;
+  }
+  try {
+    if (judge.split("////").length !== 2) {
+      return judge;
+    }
+    const [scoreString, testsString] = judge.split("////");
+    if (scoreString.split("/").length !== 2) {
+      return judge;
+    }
+    const [correct, total] = scoreString.split("/").map((x) => parseInt(x));
+    const tests = testsString.split("||").map((x) => {
+      if (x.split("|").length !== 3) {
+        return;
+      }
+      const [verdict, runningTime, messages] = x.split("|");
+      return {
+        verdict: verdict as Results,
+        runningTime: parseFloat(runningTime),
+        messages: messages,
+      };
+    });
+    tests.filter((x) => x !== undefined);
+    return {
+      correct,
+      total,
+      tests,
+    };
+  } catch (e) {
+    return judge;
+  }
+};
+
 export const getProblemInfo = async (
   code: string,
   token: string | undefined,
@@ -113,7 +148,7 @@ export const getProblemInfo = async (
         debug_problems: {
           code: code,
         },
-        score: scoreInfo[0]._max.score ?? 0,
+        score: scoreInfo[0]?._max?.score ?? 0,
       },
       select: {
         drid: true,
@@ -134,13 +169,14 @@ export const getProblemInfo = async (
 
     const problemInfoWithScore = {
       ...problemInfo,
-      score: runInfo[0].score,
-      diff: runInfo[0].diff,
-      result: runInfo[0].result as Results,
-      judge: runInfo[0].runs.subs_code.error,
-      drid: runInfo[0].drid,
+      score: runInfo[0]?.score ?? 0,
+      diff: runInfo[0]?.diff ?? null,
+      result: (runInfo[0]?.result as Results) ?? null,
+      judge: parseJudge(runInfo[0]?.runs.subs_code.error ?? null),
+      drid: runInfo[0]?.drid ?? null,
     } as DetailedProblemInfoWithScore;
 
+    console.log(problemInfoWithScore.judge);
     return {
       ok: true,
       user: true,

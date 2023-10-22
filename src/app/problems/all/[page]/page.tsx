@@ -10,8 +10,6 @@ export const metadata: Metadata = {
   title: "Problems",
 };
 
-export const revalidate = 0;
-
 const Page = async ({ params: { page } }: { params: { page: string } }) => {
   const cookieStore = cookies();
   const token = cookieStore.get("token");
