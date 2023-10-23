@@ -335,7 +335,7 @@ model Runs {
   score          Float           @default(0)
   debug_problems DebugProblems[]
   team           Teams           @relation(fields: [tid], references: [tid])
-  subs_code      SubsCode        @relation(fields: [rid], references: [rid])
+  subs_code      SubsCode?
   debug_submissions DebugSubmissions[]
 
   @@index([pid], map: "pid")
@@ -350,7 +350,7 @@ model SubsCode {
   rid   Int    @id @default(autoincrement())
   code  String @db.LongText
   error String @default("") @db.Text
-  run   Runs?   
+  run   Runs   @relation(fields: [rid], references: [rid])
 
   @@index([rid])
   @@map("subs_code")

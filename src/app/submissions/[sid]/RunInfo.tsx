@@ -54,7 +54,7 @@ export const RunInfo = ({
   sid,
   runData,
 }: {
-  sid: number;
+  sid: string;
   runData: RunData;
   submissionData: SubmissionsData;
 }) => {

@@ -1,4 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { parseJudge } from "@utils/shared";
+import type { Judge } from "@utils/shared/parseJudge";
 import { unstable_cache } from "next/cache";
 
 import prisma from "@/database/prisma/instance";
@@ -15,13 +17,7 @@ export interface DetailedProblemInfo {
     code: string;
     name: string;
   };
-  problem_judge:
-    | {
-        correct: number;
-        total: number;
-        tests: { verdict: Results; runningTime: number; messages: string }[];
-      }
-    | string;
+  problem_judge: Judge | string;
 }
 
 export interface DetailedScoreInfoNotNull {
@@ -46,41 +42,6 @@ type ReturnType =
   | { ok: true; user: false; data: DetailedProblemInfo }
   | { ok: true; user: true; data: DetailedProblemInfoWithScore }
   | { ok: false; error: string; status: string };
-
-const parseJudge = (judge: string | null) => {
-  if (judge === null) {
-    return null;
-  }
-  try {
-    if (judge.split("////").length !== 2) {
-      return judge;
-    }
-    const [scoreString, testsString] = judge.split("////");
-    if (scoreString.split("/").length !== 2) {
-      return judge;
-    }
-    const [correct, total] = scoreString.split("/").map((x) => parseInt(x));
-    const tests = testsString.split("||").map((x) => {
-      if (x.split("|").length !== 3) {
-        return;
-      }
-      const [verdict, runningTime, messages] = x.split("|");
-      return {
-        verdict: verdict as Results,
-        runningTime: parseFloat(runningTime),
-        messages: messages,
-      };
-    });
-    tests.filter((x) => x !== undefined);
-    return {
-      correct,
-      total,
-      tests,
-    };
-  } catch (e) {
-    return judge;
-  }
-};
 
 export const getProblemInfo = async (
   code: string,
@@ -118,6 +79,9 @@ export const getProblemInfo = async (
         if (problemInfo === null) {
           return null;
         }
+        if (problemInfo.runs.subs_code === null) {
+          throw new Error(`Debug problem ${code} has no subs_code`);
+        }
         return {
           code: problemInfo.code,
           name: problemInfo.name,
@@ -128,7 +92,7 @@ export const getProblemInfo = async (
             name: problemInfo.problem.name,
           },
           problem_judge: parseJudge(problemInfo.runs.subs_code.error),
-        } as DetailedProblemInfo;
+        } satisfies DetailedProblemInfo;
       },
       [`get-problem-info-${code}`],
       { revalidate: false },
