@@ -1,6 +1,7 @@
+import type { PublicSubmissionInfo } from "@utils/api/getSubmissionInfo";
 import Link from "next/link";
 
-import { DecoratedLink } from "@/components";
+import { DecoratedLink, Score } from "@/components";
 import {
   BookOpenIcon,
   ClockIcon,
@@ -10,37 +11,15 @@ import {
   UserIcon,
 } from "@/components/icon";
 
-import type { RunData, SubmissionsData } from "./types";
-
-export const InfoTable = ({
-  submissionData,
-  runData,
-  sid,
-}: {
-  submissionData: SubmissionsData;
-  runData: RunData;
-  sid: number;
-}) => {
-  const subDate = new Date(runData.submitTime * 1000);
+export const InfoTable = ({ data }: { data: PublicSubmissionInfo }) => {
+  const subDate = new Date(data.submit_time * 1000);
   return (
     <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
       <thead>
         <tr>
-          {submissionData.score < 100 ? (
-            <th
-              className="border-b-[1px] border-slate-500 pb-8 pt-6 text-2xl font-normal text-green-600 dark:border-slate-600 dark:text-green-500"
-              colSpan={2}
-            >
-              Debug score: {submissionData.score}
-            </th>
-          ) : (
-            <th
-              className="border-b-[1px] border-slate-500 pb-8 pt-6 text-2xl font-bold text-green-600 dark:border-slate-600 dark:text-green-500"
-              colSpan={2}
-            >
-              Accepted
-            </th>
-          )}
+          <th>
+            <Score {...data} className="pb-4 pt-5 text-2xl" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -51,30 +30,33 @@ export const InfoTable = ({
           >
             <div>
               <UserIcon className="relative bottom-[3px] inline h-6 w-6" /> Owner:{" "}
-              <Link target="_blank" href={`https://codefun.vn/profile/${runData.owner.id}`}>
-                {runData.owner.name}
+              <Link target="_blank" href={`https://codefun.vn/profile/${data.user.tid}`}>
+                {data.user.name}
               </Link>
             </div>
             <div>
               <BookOpenIcon className="relative bottom-[1px] inline h-6 w-6" /> Problem:{" "}
-              {submissionData.dpcode}
+              <DecoratedLink href={`/problems/${data.debug_problem.code}`}>
+                {data.debug_problem.name}
+              </DecoratedLink>
             </div>
             <div>
-              <LinkIcon className="relative bottom-[3px] inline h-6 w-6" /> Submission ID: {sid}
+              <LinkIcon className="relative bottom-[3px] inline h-6 w-6" /> Submission ID:{" "}
+              {data.drid}
             </div>
             <div>
               <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
               <DecoratedLink
                 target="_blank"
                 rel="noreferrer noopener"
-                href={`https://codefun.vn/problems/${runData.problem.id}`}
+                href={`https://codefun.vn/problems/${data.debug_problem.problem.code}`}
               >
-                {runData.problem.code}
+                {data.debug_problem.problem.name}
               </DecoratedLink>
             </div>
             <div>
               <LanguageIcon className="relative bottom-[3px] inline h-6 w-6" /> Language:{" "}
-              {runData.language}
+              {data.debug_problem.language}
             </div>
             <div>
               <ClockIcon className="relative bottom-[3px] inline h-6 w-6" /> Submit time: {"  "}

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 interface ComponentExtraProps {
   className?: string;
+  disabled?: boolean;
 }
 
 export const Score = (props: ScoreInfo & ComponentExtraProps) => {
@@ -21,7 +22,7 @@ export const Score = (props: ScoreInfo & ComponentExtraProps) => {
       className={clsx(
         getVerdictTextClass(props.result),
         props.className,
-        "hover:underline",
+        !props.disabled && "hover:underline",
         props.result === "AC" ? "font-bold" : "font-semibold",
       )}
     >

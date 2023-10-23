@@ -1,5 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { type Judge, parseJudge } from "@utils/shared/parseJudge";
+import { parseJudge } from "@utils/shared";
+import type { Judge } from "@utils/shared/parseJudge";
 
 import prisma from "@/database/prisma/instance";
 import type { Results } from "@/shared/types";
@@ -11,10 +12,11 @@ import { getUserInfo } from "./getUserInfo";
 export interface PublicSubmissionInfo {
   user: {
     name: string;
+    tid: number;
   };
-  sid: number;
+  drid: number;
   diff: number | null;
-  sumbmitTime: number;
+  submit_time: number;
   debug_problem: DetailedProblemInfo;
   score: number;
   result: Results;
@@ -88,10 +90,11 @@ export const getSubmissionInfo = async (sid: string, token?: string): Promise<Re
     const publicInfo = {
       user: {
         name: submissionInfo.teams.name,
+        tid: submissionInfo.teams.tid,
       },
-      sid: parseInt(sid),
+      drid: parseInt(sid),
       diff: submissionInfo.diff,
-      sumbmitTime: submissionInfo.submittime,
+      submit_time: submissionInfo.submittime,
       debug_problem: problemInfo.data,
       score: submissionInfo.score,
       result: submissionInfo.result as Results,

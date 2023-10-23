@@ -3,7 +3,7 @@ import type { Results } from "@/shared/types";
 export interface Judge {
   correct: number;
   total: number;
-  tests: { verdict: Results; runningTime: number; messages: string }[];
+  tests: { verdict: Results; runningTime: number; message: string }[];
 }
 
 export const parseJudge = (judge: string): Judge | string => {
@@ -20,11 +20,11 @@ export const parseJudge = (judge: string): Judge | string => {
       if (x.split("|").length !== 3) {
         return;
       }
-      const [verdict, runningTime, messages] = x.split("|");
+      const [verdict, runningTime, message] = x.split("|");
       return {
         verdict: verdict as Results,
         runningTime: parseFloat(runningTime),
-        messages: messages,
+        message: message,
       };
     });
     const tests = rawTests.filter((x) => x !== undefined) as Judge["tests"];

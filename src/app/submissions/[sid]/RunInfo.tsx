@@ -1,3 +1,4 @@
+import type { PrivateSubmissionInfo, PublicSubmissionInfo } from "@utils/api/getSubmissionInfo";
 import { getVerdictTextClass } from "@utils/shared";
 
 import { Heading } from "@/components";
@@ -5,7 +6,6 @@ import { RESULTS_DICT } from "@/shared/constants";
 import type { Results } from "@/shared/types";
 
 import { InQueue, RunInfoClient } from "./RunInfoClient";
-import type { RunData, SubmissionsData } from "./types";
 
 const TestResult = ({
   verdict,
@@ -51,22 +51,20 @@ const JudgeError = ({ type, error }: { type: Results; error: string }) => {
 };
 
 export const RunInfo = ({
-  sid,
-  runData,
-}: {
-  sid: string;
-  runData: RunData;
-  submissionData: SubmissionsData;
-}) => {
+  access,
+  data,
+}:
+  | { access: true; data: PrivateSubmissionInfo }
+  | { access: false; data: PublicSubmissionInfo }) => {
   const verdictNode =
-    runData.result === "Q" ? (
+    data.result === "Q" ? (
       <InQueue />
-    ) : typeof runData.judge === "string" ? (
-      <JudgeError type={runData.result} error={runData.judge} />
+    ) : typeof data.submission_judge === "string" ? (
+      <JudgeError type={data.result} error={data.submission_judge} />
     ) : (
-      runData.judge?.tests.map(({ verdict, runningTime, message }, idx) => (
+      data.submission_judge.tests.map(({ verdict, runningTime, message }, idx) => (
         <TestResult
-          key={`runinfo-${sid}-result-number-${idx}`}
+          key={`runinfo-${data.drid}-result-number-${idx}`}
           count={idx + 1}
           verdict={verdict}
           runningTime={runningTime}
@@ -77,7 +75,7 @@ export const RunInfo = ({
 
   return (
     <RunInfoClient
-      code={runData.code ?? "Not allowed to view the code."}
+      code={access ? data.codetext : "Not allowed to view the code."}
       verdictNode={verdictNode}
     />
   );
