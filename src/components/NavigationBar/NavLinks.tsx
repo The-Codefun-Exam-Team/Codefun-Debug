@@ -93,7 +93,7 @@ const DarkModeToggler = () => {
 
 export const UserInfo = () => {
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname() as string;
   const { user, loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");

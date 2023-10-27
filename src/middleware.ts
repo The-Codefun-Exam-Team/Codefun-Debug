@@ -4,9 +4,8 @@ import { NextResponse } from "next/server";
 
 export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;
-
   const adminOnlyPrefixes = ["/problems/create"] as const;
-  const authenticatedOnlyPrefixes = ["/problems"] as const;
+  const authenticatedOnlyPrefixes = ["/problems", "/submissions"] as const;
   const unauthenticatedOnlyPrefixes = ["/login", "/public"] as const;
 
   if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
@@ -21,8 +20,7 @@ export const middleware = async (request: NextRequest) => {
     const providedRedirect = searchParams.get("prev");
     const redirectTo = providedRedirect
       ? decodeURIComponent(providedRedirect)
-      : `/public/${pathname}`;
-
+      : `/public${pathname}`;
     const token = request.cookies.get("token");
 
     if (!token) {
@@ -49,5 +47,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/problems/:path*", "/login", "/public/:path*"],
+  matcher: ["/problems/:path*", "/login", "/public/:path*", "/submissions/:path."],
 };

@@ -41,10 +41,9 @@ export const LoginForm = () => {
       dispatch(
         setUser({
           user: resBody,
-          refresh: router.refresh,
         }),
       );
-      if (prevUrl === null) {
+      if (!prevUrl) {
         router.push("/");
       } else {
         router.push(

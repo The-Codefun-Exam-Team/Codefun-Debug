@@ -8,7 +8,7 @@ export const SIGNED_IN_LINKS = [
   },
   {
     title: "Submissions",
-    url: "/submissions",
+    url: "/submissions/all/1",
   },
   {
     title: "Rankings",
@@ -23,7 +23,7 @@ export const SIGNED_OUT_LINKS = [
   },
   {
     title: "Submissions",
-    url: "/submissions",
+    url: "/submissions/all/1",
   },
   {
     title: "Rankings",

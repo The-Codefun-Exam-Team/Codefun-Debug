@@ -45,7 +45,9 @@ const JudgeError = ({ type, error }: { type: Results; error: string }) => {
   return (
     <>
       <Heading type="title">{judgeErrorMessage}</Heading>
-      <pre className="my-6 break-words border-2 border-slate-600 p-2 text-[.9em]">{error}</pre>
+      <div className="my-6 whitespace-pre-wrap break-words border-2 border-slate-600 p-2 text-[.9em]">
+        {error}
+      </div>
     </>
   );
 };
@@ -75,6 +77,7 @@ export const RunInfo = ({
 
   return (
     <RunInfoClient
+      access={access}
       code={access ? data.codetext : "Not allowed to view the code."}
       verdictNode={verdictNode}
     />

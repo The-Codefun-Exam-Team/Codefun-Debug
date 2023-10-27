@@ -9,7 +9,15 @@ import { Heading } from "@/components";
 
 import { CodeView } from "./CodeView";
 
-export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode: ReactNode }) => {
+export const RunInfoClient = ({
+  code,
+  verdictNode,
+  access,
+}: {
+  code: string;
+  verdictNode: ReactNode;
+  access: boolean;
+}) => {
   const [isTransition, setIsTransition] = useState(false);
   const [buttonWaiting, setButtonWaiting] = useState(false);
   const [view, setView] = useState<"verdict" | "editor">("verdict");
@@ -22,7 +30,7 @@ export const RunInfoClient = ({ code, verdictNode }: { code: string; verdictNode
     <div className="flex h-[70vh] w-full flex-col gap-2 md:h-full">
       <button
         className="rounded-md border-2 border-slate-500 p-2 text-lg font-medium text-slate-700 transition-opacity dark:border-slate-600 dark:text-slate-400"
-        disabled={buttonWaiting}
+        disabled={buttonWaiting || !access}
         onClick={() => {
           if (!buttonWaiting) {
             setButtonWaiting(true);
