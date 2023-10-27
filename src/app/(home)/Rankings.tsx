@@ -15,6 +15,7 @@ export const Rankings = async ({ data }: { data: UserRanking[] }) => (
           <th className="text-left">User</th>
           <th className="text-right">Score</th>
         </tr>
+        
       </thead>
       <tbody className="divide-y-2 divide-gray-200 font-semibold text-gray-600 dark:divide-y-[0.5px] dark:divide-slate-800 dark:text-slate-300">
         {data.map((user) => (
