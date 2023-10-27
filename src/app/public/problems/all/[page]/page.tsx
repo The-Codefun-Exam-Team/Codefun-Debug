@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { ProblemsList } from "@/app/problems/all/[page]/ProblemList";
 import { Box, Heading, Pagination } from "@/components";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Problems",
 };
 
@@ -65,4 +65,5 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
   );
 };
 
+export { metadata };
 export default Page;

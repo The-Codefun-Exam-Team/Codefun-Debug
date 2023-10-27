@@ -8,7 +8,7 @@ import { Box, Heading } from "@/components";
 
 export const revalidate = 10;
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Submissions",
 };
 
@@ -41,4 +41,5 @@ const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
   );
 };
 
+export { metadata };
 export default Page;

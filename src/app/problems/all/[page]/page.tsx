@@ -6,7 +6,7 @@ import { Box, Heading, Pagination } from "@/components";
 
 import { ProblemsList } from "./ProblemList";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Problems",
 };
 
@@ -65,4 +65,5 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
   );
 };
 
+export { metadata };
 export default Page;

@@ -7,7 +7,7 @@ import { Box, Heading } from "@/components";
 import { UserEditor } from "./Editor";
 import { InfoTable } from "./InfoTable";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Problem",
 };
 
@@ -53,4 +53,5 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
   );
 };
 
+export { metadata };
 export default Page;

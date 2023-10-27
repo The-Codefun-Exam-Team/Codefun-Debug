@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 import { LoginForm } from "./LoginForm";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Login",
 };
 
@@ -15,4 +15,5 @@ const Page = () => (
   </Suspense>
 );
 
+export { metadata };
 export default Page;

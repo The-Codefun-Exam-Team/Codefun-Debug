@@ -8,7 +8,7 @@ import { NavigationBar } from "@/components";
 import { ClientLogic } from "./ClientLogic";
 import { ReduxProvider } from "./ReduxProvider";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: {
     template: "%s - Codefun Debug",
     default: "Codefun Debug",
@@ -38,4 +38,5 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
   </html>
 );
 
+export { metadata };
 export default RootLayout;

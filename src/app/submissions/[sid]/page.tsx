@@ -9,7 +9,7 @@ import { RunInfo } from "./RunInfo";
 
 // export const generateStaticParams = () => [];
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Submissions",
 };
 
@@ -42,4 +42,5 @@ const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
   );
 };
 
+export { metadata };
 export default Page;

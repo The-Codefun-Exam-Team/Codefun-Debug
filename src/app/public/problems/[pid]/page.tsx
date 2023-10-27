@@ -6,7 +6,7 @@ import { UserEditor } from "@/app/problems/[pid]/Editor";
 import { InfoTable } from "@/app/problems/[pid]/InfoTable";
 import { Box, Heading } from "@/components";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Problem",
 };
 
@@ -52,4 +52,5 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
   );
 };
 
+export { metadata };
 export default Page;

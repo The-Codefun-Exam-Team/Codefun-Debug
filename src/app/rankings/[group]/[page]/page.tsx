@@ -10,7 +10,7 @@ import { Group } from "./Group";
 import { RankTable } from "./RankTable";
 import type { GroupsData } from "./types";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Rankings",
 };
 
@@ -137,4 +137,5 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
   );
 };
 
+export { metadata };
 export default Page;
