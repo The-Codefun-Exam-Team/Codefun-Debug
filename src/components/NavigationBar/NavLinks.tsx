@@ -2,6 +2,7 @@
 import { Menu, RadioGroup, Transition } from "@headlessui/react";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { setScheme, setUser } from "@redux/slice";
+import { logout } from "@utils/actions";
 import { clsx, getCodefunRole, getCodefunRoleTextClass } from "@utils/shared";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,8 +14,8 @@ import {
   ADDITIONAL_LINKS,
   SIGNED_IN_LINKS,
   SIGNED_OUT_LINKS,
-  WITH_PUBLIC_LINKS,
-  WITHOUT_PUBLIC_LINKS,
+  // WITH_PUBLIC_LINKS,
+  // WITHOUT_PUBLIC_LINKS,
 } from "./constants";
 import { BaseNavLink, HorizontalNavLink, NAV_BUTTON_CLASS, VerticalNavLink } from "./NavLink";
 
@@ -103,27 +104,17 @@ export const UserInfo = () => {
     return () => clearTimeout(removeErrorTimer);
   }, [errorMessage]);
 
-  const logout = async () => {
-    const res = await fetch("/api/temp/auth/logout", {
-      method: "POST",
-    });
+  const _onClick = async () => {
+    const res = await logout();
     if (res.ok) {
-      if (
-        WITH_PUBLIC_LINKS.some((path) => pathname.startsWith(path)) &&
-        !pathname.startsWith("/public") &&
-        !WITHOUT_PUBLIC_LINKS.some((path) => pathname.startsWith(path))
-      ) {
-        router.push(`/public${pathname}`);
-      } else {
-        router.push("/");
-      }
       dispatch(
         setUser({
           user: null,
         }),
       );
+      router.push("/");
     } else {
-      setErrorMessage((await res.json()).error ?? "unknown error logging out");
+      setErrorMessage(res.message);
     }
   };
 
@@ -197,7 +188,7 @@ export const UserInfo = () => {
               ))}
               <Menu.Item>
                 {user ? (
-                  <button className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)} onClick={logout}>
+                  <button className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)} onClick={_onClick}>
                     Sign out
                   </button>
                 ) : (
