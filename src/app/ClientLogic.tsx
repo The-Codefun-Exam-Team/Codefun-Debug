@@ -1,7 +1,7 @@
 "use client";
 import { setLoading, setScheme, setUser } from "@redux/slice";
 import { store } from "@redux/store";
-import type { UserData } from "@schemas/loginSchema";
+import { authenticate } from "@utils/actions";
 import { isColorScheme } from "@utils/shared";
 import { useEffect } from "react";
 
@@ -14,14 +14,13 @@ export const ClientLogic = () => {
       didFetchUser = true;
       // We only want to run this on client.
       store.dispatch(async (dispatch) => {
-        const res = await fetch("/api/temp/auth/authenticate", {
-          method: "GET",
-        });
+        const res = await authenticate();
         if (!res.ok) {
+          dispatch(setLoading(false));
           // TODO: handle fetch error
           return;
         }
-        const user = (await res.json()) as UserData;
+        const user = res.user;
         dispatch(
           setUser({
             user,

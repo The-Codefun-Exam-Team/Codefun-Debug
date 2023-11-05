@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { InfoTable } from "@/app/submissions/[sid]/InfoTable";
-import { RunInfo } from "@/app/submissions/[sid]/RunInfo";
 import { Box, Heading } from "@/components";
+
+import { RunInfo } from "../../../submissions/[sid]/RunInfo";
 
 export const revalidate = 10;
 

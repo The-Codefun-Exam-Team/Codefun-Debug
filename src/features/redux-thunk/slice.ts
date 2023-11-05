@@ -1,17 +1,13 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import type { UserData } from "@schemas/loginSchema";
 
-import type { ColorScheme } from "@/shared/types";
+import type { ColorScheme, UserData } from "@/shared/types";
 
 export interface UserSliceState {
   loading: boolean;
   user: UserData | null;
 }
 
-/**
- * Slice to keep track of the authentication state of user
- */
 export const userSlice = createSlice({
   name: "user" as string,
   initialState: {
