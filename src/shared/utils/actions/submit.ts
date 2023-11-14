@@ -23,150 +23,155 @@ const recalcScore = async (dpid: number) => {
 };
 
 const calcScore = async (drid: number) => {
-  const diffQuery = await prisma.debugSubmissions.findUniqueOrThrow({
-    where: {
-      drid: drid,
-    },
-    select: {
-      diff: true,
-    },
-  });
+  try {
+    const diffQuery = await prisma.debugSubmissions.findUniqueOrThrow({
+      where: {
+        drid: drid,
+      },
+      select: {
+        diff: true,
+      },
+    });
 
-  const diff = diffQuery.diff
-    ? diffQuery.diff
-    : ((
-        await prisma.debugSubmissions.update({
-          where: {
-            drid: drid,
-          },
-          data: {
-            diff: await calcSubmissionDiff(drid),
-          },
-          select: {
-            diff: true,
-          },
-        })
-      ).diff as number);
+    const diff = diffQuery.diff
+      ? diffQuery.diff
+      : ((
+          await prisma.debugSubmissions.update({
+            where: {
+              drid: drid,
+            },
+            data: {
+              diff: await calcSubmissionDiff(drid),
+            },
+            select: {
+              diff: true,
+            },
+          })
+        ).diff as number);
 
-  const mindiff =
-    (
-      await prisma.debugSubmissions
-        .findUnique({
-          where: {
-            drid: drid,
-          },
-        })
-        .debug_problems({
-          select: {
-            mindiff: true,
-          },
-        })
-    )?.mindiff ?? 10000;
-
-  const codefunRunInfoQuery = async (): Promise<{ result: string; score: number }> => {
-    return new Promise((resolve) => {
-      const interval = setInterval(async () => {
-        const codefunRunInfo = await prisma.debugSubmissions
-          .findUniqueOrThrow({
+    const mindiff =
+      (
+        await prisma.debugSubmissions
+          .findUnique({
             where: {
               drid: drid,
             },
           })
-          .debug_problems()
-          .runs({
+          .debug_problems({
             select: {
-              result: true,
-              score: true,
+              mindiff: true,
             },
-          });
-        if (codefunRunInfo.result !== "Q") {
-          clearInterval(interval);
-          resolve(codefunRunInfo);
-        }
-      }, 1000);
-    });
-  };
+          })
+      )?.mindiff ?? 10000;
 
-  const codefunRunInfo = await codefunRunInfoQuery();
+    const codefunRunInfoQuery = async (): Promise<{ result: string; score: number }> => {
+      return new Promise((resolve) => {
+        const interval = setInterval(async () => {
+          const codefunRunInfo = await prisma.debugSubmissions
+            .findUniqueOrThrow({
+              where: {
+                drid: drid,
+              },
+            })
+            .debug_problems()
+            .runs({
+              select: {
+                result: true,
+                score: true,
+              },
+            });
+          if (codefunRunInfo.result !== "Q") {
+            clearInterval(interval);
+            resolve(codefunRunInfo);
+          }
+        }, 1000);
+      });
+    };
 
-  if (codefunRunInfo.result === "AC") {
-    if (diff < mindiff) {
-      prisma.debugSubmissions
-        .update({
-          where: {
-            drid: drid,
-          },
-          data: {
-            debug_problems: {
-              update: {
-                mindiff: diff,
+    const codefunRunInfo = await codefunRunInfoQuery();
+
+    if (codefunRunInfo.result === "AC") {
+      if (diff < mindiff) {
+        prisma.debugSubmissions
+          .update({
+            where: {
+              drid: drid,
+            },
+            data: {
+              debug_problems: {
+                update: {
+                  mindiff: diff,
+                },
               },
             },
-          },
-        })
-        .debug_problems({
-          select: {
-            dpid: true,
-          },
-        })
-        .then(({ dpid }) => {
-          // recalculate all problems' submissions including this one
-          recalcScore(dpid);
-          return;
-        });
+          })
+          .debug_problems({
+            select: {
+              dpid: true,
+            },
+          })
+          .then(({ dpid }) => {
+            // recalculate all problems' submissions including this one
+            recalcScore(dpid);
+            return;
+          });
+      }
     }
-  }
 
-  const debugSubmissionsInfo = await prisma.debugSubmissions
-    .findUniqueOrThrow({
-      where: {
-        drid: drid,
-      },
-    })
-    .runs({
-      select: {
-        result: true,
-        score: true,
-      },
-    });
+    const debugSubmissionsInfo = await prisma.debugSubmissions
+      .findUniqueOrThrow({
+        where: {
+          drid: drid,
+        },
+      })
+      .runs({
+        select: {
+          result: true,
+          score: true,
+        },
+      });
 
-  const initialScore = codefunRunInfo.score;
-  const submissionsScore = debugSubmissionsInfo.score;
-  const increasedScore = Math.max(0, submissionsScore - initialScore);
-  const scorePercentage = increasedScore / (100 - initialScore);
-  // minus 5% score for each addition diff
-  const diffPercentage = diff < mindiff ? 1 : Math.max(0, 1 - ((diff - mindiff) * 5) / 100);
-  const newScore = scorePercentage * diffPercentage * 100;
-  if (Math.abs(newScore - 100) <= 0.00001) {
-    await prisma.debugSubmissions.update({
-      where: {
-        drid: drid,
-      },
-      data: {
-        result: "AC",
-        score: 100,
-      },
-    });
-  } else if (codefunRunInfo.result === "AC") {
-    await prisma.debugSubmissions.update({
-      where: {
-        drid: drid,
-      },
-      data: {
-        result: "SS",
-        score: newScore,
-      },
-    });
-  } else {
-    await prisma.debugSubmissions.update({
-      where: {
-        drid: drid,
-      },
-      data: {
-        result: codefunRunInfo.result,
-        score: newScore,
-      },
-    });
+    const initialScore = codefunRunInfo.score;
+    const submissionsScore = debugSubmissionsInfo.score;
+    const increasedScore = Math.max(0, submissionsScore - initialScore);
+    const scorePercentage = increasedScore / (100 - initialScore);
+    // minus 5% score for each addition diff
+    const diffPercentage = diff < mindiff ? 1 : Math.max(0, 1 - ((diff - mindiff) * 5) / 100);
+    const newScore = scorePercentage * diffPercentage * 100;
+    if (Math.abs(newScore - 100) <= 0.00001) {
+      await prisma.debugSubmissions.update({
+        where: {
+          drid: drid,
+        },
+        data: {
+          result: "AC",
+          score: 100,
+        },
+      });
+    } else if (codefunRunInfo.result === "AC") {
+      await prisma.debugSubmissions.update({
+        where: {
+          drid: drid,
+        },
+        data: {
+          result: "SS",
+          score: newScore,
+        },
+      });
+    } else {
+      await prisma.debugSubmissions.update({
+        where: {
+          drid: drid,
+        },
+        data: {
+          result: codefunRunInfo.result,
+          score: newScore,
+        },
+      });
+    }
+  } catch (e) {
+    console.error(`Error calculating score for submission ${drid}`);
+    console.error(e);
   }
 };
 
