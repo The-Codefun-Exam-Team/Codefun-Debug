@@ -1,5 +1,6 @@
 "use client";
 import { useAppSelector } from "@redux/hooks";
+import { submit } from "@utils/actions";
 import type { DetailedProblemInfo, DetailedProblemInfoWithScore } from "@utils/api/getProblemInfo";
 import { clsx } from "@utils/shared";
 import type monacoEditor from "monaco-editor";
@@ -81,24 +82,14 @@ export const UserEditor = ({
       return;
     }
     const code = editorRef.current.getModifiedEditor().getValue();
-    const res = await fetch("/api/temp/dbg/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        problem: pid,
-        code: code,
-      }),
-    });
+    const res = await submit(pid, code);
     if (!res.ok) {
-      setSubmitError("Error submitting code, please try again after 1'30'.");
+      console.error(res.message);
+      setSubmitError("Error submitting code");
       return;
     }
-    const data = (await res.json()) as {
-      id: string;
-    };
-    router.push(`/submissions/${data.id}`);
+    const drid = res.drid;
+    router.push(`/submissions/${drid}`);
   };
   useEffect(() => {
     const removeErrorTimer = setTimeout(() => setSubmitError(""), 5000);

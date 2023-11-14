@@ -112,7 +112,7 @@ export const UserInfo = () => {
           user: null,
         }),
       );
-      router.push("/");
+      router.push(pathname);
     } else {
       setErrorMessage(res.message);
     }

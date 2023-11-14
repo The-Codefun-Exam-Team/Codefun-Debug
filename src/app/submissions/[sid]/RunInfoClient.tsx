@@ -82,7 +82,7 @@ export const InQueue = () => {
 
   const refresh = () => startTransition(router.refresh);
 
-  const { start, stop } = useInterval(refresh, 5000);
+  const { start, stop } = useInterval(refresh, 2000);
 
   useEffect(() => {
     start();

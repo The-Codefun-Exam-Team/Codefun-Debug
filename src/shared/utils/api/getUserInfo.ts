@@ -1,4 +1,4 @@
-import type { UserData } from "@schemas/loginSchema";
+import type { UserData } from "@/shared/types";
 
 export const getUserInfo = async (
   token: string | undefined,
@@ -8,6 +8,7 @@ export const getUserInfo = async (
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    cache: "no-store",
   });
   const info = await res.json();
   if (!res.ok) {

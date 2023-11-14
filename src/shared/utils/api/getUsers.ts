@@ -41,6 +41,7 @@ export const getUsers = async (
     const data = unstable_cache(
       async () => {
         const rank_table = (await rankTableQuery) as { tid: number; rank: number; score: number }[];
+        rank_table.sort((a, b) => a.tid - b.tid);
         const usersInfo = await prisma.teams.findMany({
           where: {
             tid: {
@@ -49,7 +50,6 @@ export const getUsers = async (
           },
           select: requiredFields,
         });
-
         const problemsCount = await prisma.problems.count();
 
         const users = usersInfo.map((user, index) => {
@@ -68,7 +68,7 @@ export const getUsers = async (
             rank: Number(rank_table[index].rank),
           } satisfies UserRanking;
         });
-        return users;
+        return users.sort((a, b) => a.rank - b.rank);
       },
       [`getUsers-${group}-${page}-${limit}`],
       { revalidate: 10 },

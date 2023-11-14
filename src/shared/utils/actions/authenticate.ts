@@ -10,6 +10,9 @@ export const authenticate = async (): Promise<
 > => {
   try {
     const res = await getUserInfo(cookies().get("token")?.value);
+    if (!res.ok) {
+      cookies().delete("token");
+    }
     return res;
   } catch (e) {
     console.error(e);

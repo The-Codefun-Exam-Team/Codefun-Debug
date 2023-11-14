@@ -78,9 +78,12 @@ export const getSubmissionInfo = async (sid: string, token?: string): Promise<Re
     const problemInfo = await getProblemInfo(submissionInfo.debug_problems.code, token);
 
     if (!problemInfo.ok) {
-      throw new Error(
-        `Fetching problem ${submissionInfo.debug_problems.code} for submission ${sid} failed`,
-      );
+      console.error(problemInfo.error);
+      return {
+        ok: false,
+        error: "Fetching problem failed",
+        status: "500",
+      };
     }
 
     if (submissionInfo.runs.subs_code === null) {

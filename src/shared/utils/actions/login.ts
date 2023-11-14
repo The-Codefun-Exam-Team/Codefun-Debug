@@ -24,7 +24,6 @@ export const login = async (
     });
     if (!validatedBody.success) {
       const errors = validatedBody.error.format();
-      // error handling
       return {
         ...prevState,
         username_messages: errors.username?._errors ?? [],
@@ -43,6 +42,7 @@ export const login = async (
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
+      cache: "no-store",
     });
     const codefunResponse = await requestToCodefun.json();
     if (!requestToCodefun.ok) {

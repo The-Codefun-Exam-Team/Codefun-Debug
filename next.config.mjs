@@ -9,6 +9,11 @@ const withBundleAnalyzer = withBundleAnalyzerInit({
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   reactStrictMode: true,
   swcMinify: true,
   output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
