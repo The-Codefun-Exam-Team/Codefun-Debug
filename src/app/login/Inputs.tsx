@@ -14,7 +14,7 @@ const initialState = {
   user: null,
   username_messages: [],
   password_messages: [],
-  messages: ["hjhkjhkj"],
+  messages: [],
 } as LoginFormState;
 
 export const Inputs = () => {
