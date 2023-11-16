@@ -8,13 +8,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
-import { Input } from "@/components";
+import { ErrorBox, Input } from "@/components";
 
 const initialState = {
   user: null,
   username_messages: [],
   password_messages: [],
-  messages: [],
+  messages: ["hjhkjhkj"],
 } as LoginFormState;
 
 export const Inputs = () => {
@@ -47,6 +47,10 @@ export const Inputs = () => {
       };
     }
   }, [displayState]);
+
+  const clearMessage = () => {
+    setDisplayState({ ...displayState, messages: [] });
+  };
   return (
     <div className="flex w-full flex-col gap-6">
       <div>
@@ -74,14 +78,18 @@ export const Inputs = () => {
           disabled={pending}
         />
       </div>
-      <button
-        type="submit"
-        formAction={formAction}
-        disabled={pending}
-        className="disabled:opacity-7x0 rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity dark:border-[1px] dark:border-slate-400 dark:text-slate-300"
-      >
-        {pending ? "Signing in" : "Sign in"}
-      </button>
+      {displayState.messages.length > 0 ? (
+        <ErrorBox onClick={clearMessage}>{displayState.messages.join("\n")}</ErrorBox>
+      ) : (
+        <button
+          type="submit"
+          formAction={formAction}
+          disabled={pending}
+          className="disabled:opacity-7x0 rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity dark:border-[1px] dark:border-slate-400 dark:text-slate-300"
+        >
+          {pending ? "Signing in" : "Sign in"}
+        </button>
+      )}
     </div>
   );
 };

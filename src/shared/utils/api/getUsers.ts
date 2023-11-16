@@ -16,13 +16,15 @@ export const getUsers = async (
 
   // Raw SQL to query score and ranking (prisma not supporting nested group by yet)
   const rankTableQuery = prisma.$queryRaw`
-    WITH score_table AS (SELECT tid, dpid, MAX(score) as max_score FROM debug_submissions GROUP BY tid, dpid)
-    SELECT teams.tid, RANK() OVER (ORDER BY SUM(score_table.max_score) DESC) AS rank, SUM(score_table.max_score) as score 
+    WITH score_table AS (SELECT tid, dpid, MAX(score) as max_score FROM debug_submissions GROUP BY tid, dpid),
+    rank_table AS (SELECT teams.tid, RANK() OVER (ORDER BY SUM(score_table.max_score) DESC) AS rank, SUM(score_table.max_score) AS score
     FROM score_table 
     INNER JOIN teams ON teams.tid = score_table.tid
-    WHERE (CASE WHEN ${parseInt(group)} = 0 THEN 1=1 ELSE teams.group = ${parseInt(group)} END)
     GROUP BY tid
-    ORDER BY score DESC
+    ORDER BY score DESC)
+    SELECT rank_table.tid, rank_table.rank, rank_table.score, teams.group
+    FROM rank_table INNER JOIN teams ON teams.tid = rank_table.tid
+    WHERE (CASE WHEN ${parseInt(group)} = 0 THEN 1=1 ELSE teams.group = ${parseInt(group)} END)
     LIMIT ${parseInt(limit)} OFFSET ${offset}
   `;
 
