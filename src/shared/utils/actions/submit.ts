@@ -31,21 +31,21 @@ const calcScore = async (drid: number) => {
       },
     });
 
-    const diff = diffQuery.diff
-      ? diffQuery.diff
-      : ((
-          await prisma.debugSubmissions.update({
-            where: {
-              drid: drid,
-            },
-            data: {
-              diff: await calcSubmissionDiff(drid),
-            },
-            select: {
-              diff: true,
-            },
-          })
-        ).diff as number);
+    const diff =
+      diffQuery.diff ??
+      ((
+        await prisma.debugSubmissions.update({
+          where: {
+            drid: drid,
+          },
+          data: {
+            diff: await calcSubmissionDiff(drid),
+          },
+          select: {
+            diff: true,
+          },
+        })
+      ).diff as number);
 
     const mindiff =
       (
@@ -168,8 +168,7 @@ const calcScore = async (drid: number) => {
       });
     }
   } catch (e) {
-    console.error(`Error calculating score for submission ${drid}`);
-    console.error(e);
+    console.error(`Error calculating score for submission ${drid}`, e);
   }
 };
 
@@ -206,6 +205,7 @@ const calcSubmissionDiff = async (drid: number) => {
   }
 
   const editDistance = await calcEditDistance(problemCode, submissionCode);
+
   await prisma.debugSubmissions.update({
     where: {
       drid: drid,
@@ -224,7 +224,14 @@ export const submit = async (
 ): Promise<{ ok: true; drid: number } | { ok: false; status: number; message: string }> => {
   try {
     const token = cookies().get("token");
-    const userRes = await getUserInfo(token?.value);
+    if (!token) {
+      return {
+        ok: false,
+        status: 401,
+        message: "Unauthorized",
+      };
+    }
+    const userRes = await getUserInfo(token.value);
     if (!userRes.ok) {
       return {
         ok: false,
@@ -258,7 +265,7 @@ export const submit = async (
     const submissionToCodefun = await fetch("https://codefun.vn/api/submit", {
       method: "POST",
       headers: {
-        Authorization: "Bearer " + token?.value,
+        Authorization: `Bearer ${token.value}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({

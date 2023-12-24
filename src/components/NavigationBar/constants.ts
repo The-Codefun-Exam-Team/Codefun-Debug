@@ -37,5 +37,3 @@ export const ADDITIONAL_LINKS = [
     title: "About us",
   },
 ] satisfies NavLinkEntry[];
-
-export { WITH_PUBLIC_LINKS, WITHOUT_PUBLIC_LINKS } from "@/shared/constants";

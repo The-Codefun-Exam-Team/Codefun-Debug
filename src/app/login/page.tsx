@@ -1,19 +1,29 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { LoginForm } from "./LoginForm";
+import { Box, Heading } from "@/components";
 
-const metadata: Metadata = {
+import { Inputs } from "./Inputs";
+
+export const metadata: Metadata = {
   title: "Login",
 };
 
-// TODO: migrate to Server Actions when it is supported (/api/auth/signin will no longer be needed).
-// Note: LoginForm is wrapped with Suspense as it uses `useSearchParams()`.
-const Page = () => (
-  <Suspense>
-    <LoginForm />
-  </Suspense>
+export const Page = () => (
+  <div className="flex h-full w-full items-center justify-center self-center">
+    <Box>
+      <form className="flex w-full flex-col">
+        <div className="text-center">
+          <Heading type="title-large">
+            <div className="text-accent-light dark:text-accent-dark">Please login to continue</div>
+          </Heading>
+        </div>
+        <Suspense>
+          <Inputs />
+        </Suspense>
+      </form>
+    </Box>
+  </div>
 );
 
-export { metadata };
 export default Page;

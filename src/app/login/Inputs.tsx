@@ -85,7 +85,7 @@ export const Inputs = () => {
           type="submit"
           formAction={formAction}
           disabled={pending}
-          className="disabled:opacity-7x0 rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity dark:border-[1px] dark:border-slate-400 dark:text-slate-300"
+          className="rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity disabled:opacity-70 dark:border-[1px] dark:border-slate-400 dark:text-slate-300"
         >
           {pending ? "Signing in" : "Sign in"}
         </button>

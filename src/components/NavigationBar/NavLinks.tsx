@@ -98,7 +98,7 @@ export const UserInfo = () => {
     return () => clearTimeout(removeErrorTimer);
   }, [errorMessage]);
 
-  const _onClick = async () => {
+  const logoutClient = async () => {
     const res = await logout();
     if (res.ok) {
       dispatch(
@@ -182,7 +182,10 @@ export const UserInfo = () => {
               ))}
               <Menu.Item>
                 {user ? (
-                  <button className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)} onClick={_onClick}>
+                  <button
+                    className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)}
+                    onClick={logoutClient}
+                  >
                     Sign out
                   </button>
                 ) : (

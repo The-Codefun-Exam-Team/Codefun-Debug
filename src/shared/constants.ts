@@ -29,9 +29,3 @@ export const CODEFUN_ROLES = [
 ] as const;
 
 export const COLOR_SCHEMES = ["dark", "light"] as const;
-
-export const WITH_PUBLIC_LINKS = ["/problems", "/submissions"];
-
-export const WITHOUT_PUBLIC_LINKS = ["/problems/create", "/submissions/all"];
-
-export const MERGED_LINKDS = ["/submissions/all", "/about"];
