@@ -1,11 +1,9 @@
 import prisma from "@database/prisma/instance";
-import { cookies } from "next/headers";
+import { cache } from "react";
 
-import type { Results } from "@/shared/types";
+import type { Results, UserData } from "@/shared/types";
 
-import type { ProblemList } from "./getAllProblem";
 import type { DetailedScoreInfo } from "./getProblemScore";
-import { getUserInfo } from "./getUserInfo";
 
 export type ProblemScoreMap = Record<number, DetailedScoreInfo>;
 
@@ -13,26 +11,8 @@ export type GetAllProblemsScoreResult =
   | { ok: true; data: ProblemScoreMap }
   | { ok: false; status: number; error: string };
 
-export const getAllProblemsScore = async (
-  problems: ProblemList,
-): Promise<GetAllProblemsScoreResult | undefined> => {
-  const cookiesStore = cookies();
-  const token = cookiesStore.get("token");
-
-  if (!token || !token.value) {
-    return undefined;
-  }
-
-  if (problems.length === 0) {
-    return { ok: true, data: {} };
-  }
-
-  const user = await getUserInfo(token.value);
-  if (!user.ok) {
-    return { ok: false, status: user.status, error: user.error };
-  }
-
-  const tid = user.user.id;
+const getAllProblemsScoreBase = async (user: UserData): Promise<GetAllProblemsScoreResult> => {
+  const tid = user.id;
   const scoreTable = await prisma.debugSubmissions.groupBy({
     by: ["dpid"],
     where: {
@@ -89,3 +69,5 @@ export const getAllProblemsScore = async (
 
   return { ok: true, data: result };
 };
+
+export const getAllProblemsScore = cache(getAllProblemsScoreBase);

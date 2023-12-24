@@ -45,7 +45,7 @@ export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; 
               <div className="text-left">{problem.language}</div>
             </td>
             <Suspense>
-              <ProblemScore problemId={problem.code} />
+              <ProblemScore dpid={problem.dpid} />
             </Suspense>
           </tr>
         ))}

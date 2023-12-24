@@ -26,7 +26,7 @@ export const getProblemInfo = async (code: string): Promise<ReturnType> => {
       async () => {
         const problemInfo = await prisma.debugProblems.findUnique({
           where: {
-            code: code,
+            code,
           },
           select: {
             code: true,
