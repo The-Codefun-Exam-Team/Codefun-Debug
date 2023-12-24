@@ -190,7 +190,7 @@ model DebugProblems {
   result            String             @db.VarChar(8)
   mindiff           Int                @default(0)
   runs              Runs               @relation(fields: [rid], references: [rid], onUpdate: Restrict, map: "debug_problems_ibfk_1")
-  problem          Problems           @relation(fields: [pid], references: [pid], onUpdate: Restrict, map: "debug_problems_ibfk_2")
+  problem           Problems           @relation(fields: [pid], references: [pid], onUpdate: Restrict, map: "debug_problems_ibfk_2")
   debug_submissions DebugSubmissions[]
 
   @@index([pid], map: "pid")
@@ -209,7 +209,7 @@ model DebugSubmissions {
   drid           Int           @id @default(autoincrement())
   dpid           Int
   rid            Int
-  tid            Int           
+  tid            Int
   language       String        @db.VarChar(8)
   submittime     Int
   result         String        @db.VarChar(8)
@@ -279,26 +279,26 @@ model password_resets {
 }
 
 model Problems {
-  pid         Int     @id @default(autoincrement())
-  sid         Int     @default(1)
-  code        String  @unique(map: "code") @db.VarChar(20)
-  name        String  @db.TinyText
-  type        String  @db.TinyText
-  scoretype   String  @db.Text
-  cid         Int?
-  status      String? @db.TinyText
-  pgroup      String  @db.TinyText
-  statement   String  @db.LongText
-  timelimit   Float   @db.Float
-  score       Float   @default(0)
-  usechecker  Boolean @default(false)
-  checkercode String  @db.LongText
-  solved      Int     @default(0)
-  total       Int     @default(0)
+  pid           Int             @id @default(autoincrement())
+  sid           Int             @default(1)
+  code          String          @unique(map: "code") @db.VarChar(20)
+  name          String          @db.TinyText
+  type          String          @db.TinyText
+  scoretype     String          @db.Text
+  cid           Int?
+  status        String?         @db.TinyText
+  pgroup        String          @db.TinyText
+  statement     String          @db.LongText
+  timelimit     Float           @db.Float
+  score         Float           @default(0)
+  usechecker    Boolean         @default(false)
+  checkercode   String          @db.LongText
+  solved        Int             @default(0)
+  total         Int             @default(0)
   debug_problem DebugProblems[]
 
-  @@map("problems")
   @@index([cid], map: "cid")
+  @@map("problems")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -323,19 +323,19 @@ model Rooms {
 }
 
 model Runs {
-  rid            Int             @id @default(autoincrement())
-  pid            Int
-  tid            Int
-  language       String          @db.VarChar(8)
-  time           Float           @default(0)
-  result         String          @db.VarChar(3)
-  access         String          @default("private") @db.TinyText
-  submittime     Int
-  scored         Boolean         @default(false)
-  score          Float           @default(0)
-  debug_problems DebugProblems[]
-  team           Teams           @relation(fields: [tid], references: [tid])
-  subs_code      SubsCode        @relation(fields: [rid], references: [rid])
+  rid               Int                @id @default(autoincrement())
+  pid               Int
+  tid               Int
+  language          String             @db.VarChar(8)
+  time              Float              @default(0)
+  result            String             @db.VarChar(3)
+  access            String             @default("private") @db.TinyText
+  submittime        Int
+  scored            Boolean            @default(false)
+  score             Float              @default(0)
+  debug_problems    DebugProblems[]
+  team              Teams              @relation(fields: [tid], references: [tid])
+  subs_code         SubsCode           @relation(fields: [rid], references: [rid])
   debug_submissions DebugSubmissions[]
 
   @@index([pid], map: "pid")

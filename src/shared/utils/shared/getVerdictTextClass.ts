@@ -11,6 +11,6 @@ export const getVerdictTextClass = (verdict: Results) => {
     case "TLE":
       return "text-yellow-600 dark:text-yellow-500";
     default:
-      return "text-slate-600 dark:text-slate-400";
+      return "text-slate-600 dark:text-slate-200";
   }
 };

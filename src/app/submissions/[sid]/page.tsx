@@ -1,6 +1,5 @@
 import { getSubmissionInfo } from "@utils/api";
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 
 import { Box, Heading } from "@/components";
 
@@ -9,22 +8,20 @@ import { RunInfo } from "./RunInfo";
 
 // export const generateStaticParams = () => [];
 
-const metadata: Metadata = {
+export const metadata: Metadata = {
   title: "Submissions",
 };
 
 const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
-  const cookieStore = cookies();
-  const token = cookieStore.get("token");
-
-  const submissionData = await getSubmissionInfo(sid, token?.value);
+  const submissionData = await getSubmissionInfo(sid);
 
   if (!submissionData.ok) {
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>
           <Heading type="display">Failed to fetch submission.</Heading>
-          <Heading type="title">Maybe try refreshing?</Heading>
+          <Heading type="title-large">Error: {submissionData.error}</Heading>
+          <Heading type="title-large">Maybe try refreshing?</Heading>
         </Box>
       </div>
     );
@@ -42,5 +39,4 @@ const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
   );
 };
 
-export { metadata };
 export default Page;

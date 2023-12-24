@@ -1,11 +1,9 @@
 "use server";
-
+import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { getUserInfo } from "@utils/api";
 import { calcEditDistance } from "@utils/shared";
 import { cookies } from "next/headers";
-
-import prisma from "@/database/prisma/instance";
 
 const recalcScore = async (dpid: number) => {
   (

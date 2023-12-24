@@ -1,4 +1,4 @@
-import type { PublicSubmissionInfo } from "@utils/api/getSubmissionInfo";
+import type { SubmissionInfo } from "@utils/api/getSubmissionInfo";
 import Link from "next/link";
 
 import { DecoratedLink, Score } from "@/components";
@@ -11,7 +11,7 @@ import {
   UserIcon,
 } from "@/components/icon";
 
-export const InfoTable = ({ data }: { data: PublicSubmissionInfo }) => {
+export const InfoTable = ({ data }: { data: SubmissionInfo }) => {
   const subDate = new Date(data.submit_time * 1000);
   return (
     <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
@@ -24,10 +24,7 @@ export const InfoTable = ({ data }: { data: PublicSubmissionInfo }) => {
       </thead>
       <tbody>
         <tr>
-          <td
-            className="divide-y-[1px] divide-slate-400 rounded-md border-[1px] border-slate-400 text-left text-lg font-semibold text-slate-700 dark:divide-slate-600 dark:border-slate-600
-            dark:text-slate-400 [&>div]:p-2 [&>div]:text-left"
-          >
+          <td className="divide-y-[1px] divide-slate-400 rounded-md border-[1px] border-slate-400 text-left text-lg font-semibold text-slate-700 dark:divide-slate-600 dark:border-slate-600 dark:text-slate-200 [&>div]:p-2 [&>div]:text-left">
             <div>
               <UserIcon className="relative bottom-[3px] inline h-6 w-6" /> Owner:{" "}
               <Link target="_blank" href={`https://codefun.vn/profile/${data.user.tid}`}>

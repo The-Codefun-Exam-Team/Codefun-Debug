@@ -1,7 +1,8 @@
-import type { DetailedProblemInfo, DetailedProblemInfoWithScore } from "@utils/api/getProblemInfo";
+import type { DetailedProblemInfo } from "@utils/api/getProblemInfo";
 import { clsx, getVerdictTextClass } from "@utils/shared";
+import type { ReactNode } from "react";
 
-import { DecoratedLink, Score } from "@/components";
+import { DecoratedLink } from "@/components";
 import {
   BookOpenIcon,
   CheckIcon,
@@ -78,12 +79,12 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
 };
 
 export const InfoTable = ({
-  data,
+  problemData,
+  score,
   pid,
 }: {
-  data:
-    | { user: true; problemData: DetailedProblemInfoWithScore }
-    | { user: false; problemData: DetailedProblemInfo };
+  problemData: DetailedProblemInfo;
+  score: ReactNode;
   pid: string;
 }) => {
   return (
@@ -91,13 +92,7 @@ export const InfoTable = ({
       <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
         <thead>
           <tr>
-            <th>
-              {data.user ? (
-                <Score {...data.problemData} className="pb-4 pt-5 text-center text-2xl" />
-              ) : (
-                <div className="pb-4 pt-5 text-center text-2xl">Login to view score</div>
-              )}
-            </th>
+            <th>{score}</th>
           </tr>
         </thead>
         <tbody>
@@ -117,16 +112,16 @@ export const InfoTable = ({
                 <DecoratedLink
                   target="_blank"
                   rel="noreferrer noopener"
-                  href={`https://codefun.vn/problems/${data.problemData.problem.code}`}
+                  href={`https://codefun.vn/problems/${problemData.problem.code}`}
                 >
-                  {data.problemData.problem.name}
+                  {problemData.problem.name}
                 </DecoratedLink>
               </div>
               <div>
                 <LanguageIcon className="relative bottom-[3px] inline h-6 w-6" /> Language:{" "}
-                {data.problemData.language}
+                {problemData.language}
               </div>
-              {verdictsList(data.problemData.problem_judge)}
+              {verdictsList(problemData.problem_judge)}
             </td>
           </tr>
         </tbody>

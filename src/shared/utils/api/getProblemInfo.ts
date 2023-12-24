@@ -1,12 +1,8 @@
+import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
 import type { Judge } from "@utils/shared/parseJudge";
 import { unstable_cache } from "next/cache";
-
-import prisma from "@/database/prisma/instance";
-import type { Results } from "@/shared/types";
-
-import { getUserInfo } from "./getUserInfo";
 
 export interface DetailedProblemInfo {
   code: string;
@@ -20,33 +16,11 @@ export interface DetailedProblemInfo {
   problem_judge: Judge | string;
 }
 
-export interface DetailedScoreInfoNotNull {
-  score: number;
-  diff: number | null;
-  result: Results;
-  drid: number;
-}
-
-export interface DetailedScoreInfoNull {
-  score: 0;
-  diff: null;
-  result: null;
-  drid: null;
-}
-
-export type DetailedScoreInfo = DetailedScoreInfoNotNull | DetailedScoreInfoNull;
-
-export type DetailedProblemInfoWithScore = DetailedProblemInfo & DetailedScoreInfo;
-
 type ReturnType =
-  | { ok: true; user: false; data: DetailedProblemInfo }
-  | { ok: true; user: true; data: DetailedProblemInfoWithScore }
+  | { ok: true; data: DetailedProblemInfo }
   | { ok: false; error: string; status: string };
 
-export const getProblemInfo = async (
-  code: string,
-  token: string | undefined,
-): Promise<ReturnType> => {
+export const getProblemInfo = async (code: string): Promise<ReturnType> => {
   try {
     const problemInfo = await unstable_cache(
       async () => {
@@ -94,7 +68,7 @@ export const getProblemInfo = async (
           problem_judge: parseJudge(problemInfo.runs.subs_code.error),
         } satisfies DetailedProblemInfo;
       },
-      [`get-problem-info-${code}`],
+      [`getProblemInfo-${code}`],
       { revalidate: false },
     )();
 
@@ -106,57 +80,9 @@ export const getProblemInfo = async (
       };
     }
 
-    const user = await getUserInfo(token);
-    if (!user.ok) {
-      return {
-        ok: true,
-        user: false,
-        data: problemInfo,
-      };
-    }
-    const tid = user.user.id;
-
-    const scoreInfo = await prisma.debugSubmissions.groupBy({
-      by: ["dpid"],
-      where: {
-        tid: tid,
-        debug_problems: {
-          code: code,
-        },
-      },
-      _max: {
-        score: true,
-      },
-    });
-
-    const runInfo = await prisma.debugSubmissions.findMany({
-      where: {
-        tid: tid,
-        debug_problems: {
-          code: code,
-        },
-        score: scoreInfo[0]?._max?.score ?? 0,
-      },
-      select: {
-        drid: true,
-        score: true,
-        diff: true,
-        result: true,
-      },
-    });
-
-    const problemInfoWithScore = {
-      ...problemInfo,
-      score: runInfo[0]?.score ?? 0,
-      diff: runInfo[0]?.diff ?? null,
-      result: (runInfo[0]?.result as Results) ?? null,
-      drid: runInfo[0]?.drid ?? null,
-    } as DetailedProblemInfoWithScore;
-
     return {
       ok: true,
-      user: true,
-      data: problemInfoWithScore,
+      data: problemInfo,
     };
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {

@@ -5,8 +5,8 @@ import { NextResponse } from "next/server";
 export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;
   const adminOnlyPrefixes = ["/problems/create"] as const;
-  const authenticatedOnlyPrefixes = ["/problems", "/submissions"] as const;
-  const unauthenticatedOnlyPrefixes = ["/login", "/public"] as const;
+  const authenticatedOnlyPrefixes = [] as const;
+  const unauthenticatedOnlyPrefixes = ["/login"] as const;
 
   if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const token = request.cookies.get("token");
@@ -20,7 +20,7 @@ export const middleware = async (request: NextRequest) => {
     const providedRedirect = searchParams.get("prev");
     const redirectTo = providedRedirect
       ? decodeURIComponent(providedRedirect)
-      : `/public${pathname}`;
+      : `/login?prev=${encodeURIComponent(pathname)}`;
     const token = request.cookies.get("token");
 
     if (!token) {
@@ -31,15 +31,8 @@ export const middleware = async (request: NextRequest) => {
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const providedRedirect = searchParams.get("prev");
     if (request.cookies.get("token")) {
-      if (pathname.startsWith("/login")) {
-        const redirectTo = providedRedirect ? decodeURIComponent(providedRedirect) : `/`;
-        return NextResponse.redirect(new URL(redirectTo, request.url));
-      }
-      if (pathname.startsWith("/public")) {
-        return NextResponse.redirect(
-          new URL(pathname.slice(pathname.indexOf("/", 1)), request.url),
-        );
-      }
+      const redirectTo = providedRedirect ? decodeURIComponent(providedRedirect) : "/";
+      return NextResponse.redirect(new URL(redirectTo, request.url));
     }
   }
 
@@ -47,5 +40,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/problems/:path*", "/login", "/public/:path*", "/submissions/:path."],
+  matcher: ["/problems/:path*", "/login", "/submissions/:path."],
 };

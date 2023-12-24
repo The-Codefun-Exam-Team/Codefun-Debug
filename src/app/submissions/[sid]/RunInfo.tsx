@@ -1,11 +1,14 @@
-import type { PrivateSubmissionInfo, PublicSubmissionInfo } from "@utils/api/getSubmissionInfo";
+import type { SubmissionInfo } from "@utils/api/getSubmissionInfo";
 import { getVerdictTextClass } from "@utils/shared";
+import { Suspense } from "react";
 
 import { Heading } from "@/components";
 import { RESULTS_DICT } from "@/shared/constants";
 import type { Results } from "@/shared/types";
 
+import { CodeViewText } from "./CodeViewText";
 import { InQueue, RunInfoClient } from "./RunInfoClient";
+import { RunInfoCode } from "./RunInfoCode";
 
 const TestResult = ({
   verdict,
@@ -52,12 +55,7 @@ const JudgeError = ({ type, error }: { type: Results; error: string }) => {
   );
 };
 
-export const RunInfo = ({
-  access,
-  data,
-}:
-  | { access: true; data: PrivateSubmissionInfo }
-  | { access: false; data: PublicSubmissionInfo }) => {
+export const RunInfo = ({ data, codetext }: { data: SubmissionInfo; codetext: string }) => {
   const verdictNode =
     data.result === "Q" ? (
       <InQueue />
@@ -77,9 +75,12 @@ export const RunInfo = ({
 
   return (
     <RunInfoClient
-      access={access}
-      code={access ? data.codetext : "Not allowed to view the code."}
       verdictNode={verdictNode}
+      codeNode={
+        <Suspense fallback={<CodeViewText text="Loading..." />}>
+          <RunInfoCode code={codetext} submissionUserId={data.user.tid} />
+        </Suspense>
+      }
     />
   );
 };

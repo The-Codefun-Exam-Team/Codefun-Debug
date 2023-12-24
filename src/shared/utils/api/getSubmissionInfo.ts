@@ -1,15 +1,14 @@
+import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
 import type { Judge } from "@utils/shared/parseJudge";
 
-import prisma from "@/database/prisma/instance";
 import type { Results } from "@/shared/types";
 
 import type { DetailedProblemInfo } from "./getProblemInfo";
 import { getProblemInfo } from "./getProblemInfo";
-import { getUserInfo } from "./getUserInfo";
 
-export interface PublicSubmissionInfo {
+export interface SubmissionInfo {
   user: {
     name: string;
     tid: number;
@@ -23,16 +22,11 @@ export interface PublicSubmissionInfo {
   submission_judge: Judge | string;
 }
 
-export interface PrivateSubmissionInfo extends PublicSubmissionInfo {
-  codetext: string;
-}
-
 type ReturnType =
   | { ok: false; error: string; status: string }
-  | { ok: true; access: false; data: PublicSubmissionInfo }
-  | { ok: true; access: true; data: PrivateSubmissionInfo };
+  | { ok: true; data: SubmissionInfo; codetext: string };
 
-export const getSubmissionInfo = async (sid: string, token?: string): Promise<ReturnType> => {
+export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
   try {
     const submissionInfo = await prisma.debugSubmissions.findUnique({
       where: {
@@ -70,18 +64,18 @@ export const getSubmissionInfo = async (sid: string, token?: string): Promise<Re
     if (submissionInfo === null) {
       return {
         ok: false,
-        error: "Submission not found",
+        error: "Submission not found.",
         status: "404",
       };
     }
 
-    const problemInfo = await getProblemInfo(submissionInfo.debug_problems.code, token);
+    const problemInfo = await getProblemInfo(submissionInfo.debug_problems.code);
 
     if (!problemInfo.ok) {
       console.error(problemInfo.error);
       return {
         ok: false,
-        error: "Fetching problem failed",
+        error: "Internal Server Error",
         status: "500",
       };
     }
@@ -102,38 +96,18 @@ export const getSubmissionInfo = async (sid: string, token?: string): Promise<Re
       score: submissionInfo.score,
       result: submissionInfo.result as Results,
       submission_judge: parseJudge(submissionInfo.runs.subs_code.error),
-    } satisfies PublicSubmissionInfo;
-
-    const userInfo = await getUserInfo(token);
-    if (!userInfo.ok) {
-      return {
-        ok: true,
-        access: false,
-        data: publicInfo,
-      };
-    }
-    if (userInfo.user.id !== submissionInfo.teams.tid && userInfo.user.status !== "Admin") {
-      return {
-        ok: true,
-        access: false,
-        data: publicInfo,
-      };
-    }
-
+    } satisfies SubmissionInfo;
     return {
       ok: true,
-      access: true,
-      data: {
-        ...publicInfo,
-        codetext: submissionInfo.runs.subs_code.code,
-      } satisfies PrivateSubmissionInfo,
+      data: publicInfo,
+      codetext: submissionInfo.runs.subs_code.code,
     };
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.code, e.message);
       return {
         ok: false,
-        error: e.message,
+        error: "Internal Server Error",
         status: e.code,
       };
     } else {

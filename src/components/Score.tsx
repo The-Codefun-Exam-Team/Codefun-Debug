@@ -1,4 +1,4 @@
-import type { ScoreInfo } from "@utils/api/getAllProblem";
+import type { DetailedScoreInfo } from "@utils/api";
 import { clsx, getVerdictTextClass } from "@utils/shared";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ interface ComponentExtraProps {
   disabled?: boolean;
 }
 
-export const Score = (props: ScoreInfo & ComponentExtraProps) => {
+export const Score = (props: DetailedScoreInfo & ComponentExtraProps) => {
   if (props.drid === null) {
     return (
       <div className={clsx(props.className, "font-semibold", getVerdictTextClass("CE"))}>
@@ -17,7 +17,6 @@ export const Score = (props: ScoreInfo & ComponentExtraProps) => {
   }
 
   return (
-    // TODO: handle when public submission page available
     <div
       className={clsx(
         getVerdictTextClass(props.result),

@@ -19,7 +19,7 @@
       "@schemas/*": ["./src/shared/schemas/*"],
       "@hooks/*": ["./src/shared/hooks/*"],
       "@utils/*": ["./src/shared/utils/*"],
-      "@database/*": ["./src/database/"],
+      "@database/*": ["./src/database/*"],
       "@/*": ["./src/*"]
     },
     "types": ["react/experimental"],

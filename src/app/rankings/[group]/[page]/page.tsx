@@ -1,10 +1,10 @@
+import prisma from "@database/prisma/instance";
 import { Prisma } from "@prisma/client";
 import { getUsers } from "@utils/api";
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 
 import { Box, Heading, Pagination } from "@/components";
-import prisma from "@/database/prisma/instance";
 
 import { Group } from "./Group";
 import { RankTable } from "./RankTable";

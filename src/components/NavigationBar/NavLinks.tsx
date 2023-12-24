@@ -10,13 +10,7 @@ import { useEffect, useState } from "react";
 
 import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
 
-import {
-  ADDITIONAL_LINKS,
-  SIGNED_IN_LINKS,
-  SIGNED_OUT_LINKS,
-  // WITH_PUBLIC_LINKS,
-  // WITHOUT_PUBLIC_LINKS,
-} from "./constants";
+import { ADDITIONAL_LINKS, SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
 import { BaseNavLink, HorizontalNavLink, NAV_BUTTON_CLASS, VerticalNavLink } from "./NavLink";
 
 export interface NavLinksProps {

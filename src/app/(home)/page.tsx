@@ -7,7 +7,7 @@ import { Box, Heading } from "@/components";
 import { Announcements } from "./Announcements";
 import { Rankings } from "./Rankings";
 
-const metadata: Metadata = {
+export const metadata: Metadata = {
   title: "Home",
 };
 
@@ -40,5 +40,4 @@ const Page = async () => {
   );
 };
 
-export { metadata };
 export default Page;
