@@ -13,8 +13,15 @@ export interface LoginFormState {
   messages: string[];
 }
 
+export const initialState: LoginFormState = {
+  user: null,
+  username_messages: [],
+  password_messages: [],
+  messages: [],
+};
+
 export const login = async (
-  prevState: LoginFormState,
+  _prevState: LoginFormState,
   formData: FormData,
 ): Promise<LoginFormState> => {
   try {
@@ -25,7 +32,7 @@ export const login = async (
     if (!validatedBody.success) {
       const errors = validatedBody.error.format();
       return {
-        ...prevState,
+        ...initialState,
         username_messages: errors.username?._errors ?? [],
         password_messages: errors.password?._errors ?? [],
         messages: errors._errors ?? [],
@@ -47,7 +54,7 @@ export const login = async (
     const codefunResponse = await requestToCodefun.json();
     if (!requestToCodefun.ok) {
       return {
-        ...prevState,
+        ...initialState,
         messages: [codefunResponse.error],
       };
     }
@@ -56,7 +63,7 @@ export const login = async (
     if (!userInfo.ok) {
       console.error("Error fetching user info");
       return {
-        ...prevState,
+        ...initialState,
         messages: [userInfo.error],
       };
     }
@@ -72,16 +79,13 @@ export const login = async (
     });
 
     return {
-      ...prevState,
+      ...initialState,
       user: userInfo.user,
-      messages: [],
-      username_messages: [],
-      password_messages: [],
     };
   } catch (e) {
     console.error(e);
     return {
-      ...prevState,
+      ...initialState,
       messages: ["An internal server error occurred."],
     };
   }

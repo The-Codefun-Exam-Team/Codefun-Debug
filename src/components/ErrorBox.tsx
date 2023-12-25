@@ -11,8 +11,8 @@ export type ErrorBoxProps = Omit<
 export const ErrorBox = ({ onClick, children, ...rest }: ErrorBoxProps) => {
   return (
     <div
-      className="relative w-full rounded-md border-[1px] border-red-500/50 bg-red-200/50
-      px-4 py-2 text-left text-xl text-red-600
+      className="relative w-full rounded-md border-2 border-red-500/80 bg-red-200/50
+      px-4 py-2 text-center text-xl text-red-600
       dark:border-red-300/50 dark:bg-red-600/70 dark:text-red-100
       "
       {...rest}
