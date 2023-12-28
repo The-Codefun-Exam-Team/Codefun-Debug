@@ -3,12 +3,19 @@
 import { useAppDispatch } from "@redux/hooks";
 import { setUser } from "@redux/slice";
 import { login } from "@utils/actions";
-import { initialState } from "@utils/actions/login";
+import type { LoginFormState } from "@utils/actions/login";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
 import { ErrorBox, Input } from "@/components";
+
+const initialState: LoginFormState = {
+  user: null,
+  username_messages: [],
+  password_messages: [],
+  messages: [],
+};
 
 export const Inputs = () => {
   const router = useRouter();
@@ -21,13 +28,13 @@ export const Inputs = () => {
   useEffect(() => {
     if (state.user) {
       const redirectTo = params.get("prev") || "/";
+      dispatch(setUser({ user: state.user }));
       router.push(redirectTo);
     }
-  }, [state.user, router, params]);
+  }, [state.user, router, params, dispatch]);
 
   useEffect(() => {
     setDisplayState(state);
-    dispatch(setUser({ user: state.user }));
   }, [state, dispatch]);
 
   useEffect(() => {
@@ -72,7 +79,7 @@ export const Inputs = () => {
         />
       </div>
       {displayState.messages.length > 0 ? (
-        <ErrorBox onClick={clearMessage}>{displayState.messages.join("\n")}</ErrorBox>
+        <ErrorBox closeFn={clearMessage}>{displayState.messages.join("\n")}</ErrorBox>
       ) : (
         <button
           type="submit"

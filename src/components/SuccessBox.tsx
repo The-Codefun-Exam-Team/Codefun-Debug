@@ -2,17 +2,17 @@ import type { DetailedHTMLProps, HTMLAttributes } from "react";
 
 import { CrossIcon } from "./icon";
 
-export type ErrorBoxProps = Omit<
+export type SuccessBoxProps = Omit<
   DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
   "classname" | "ref"
 > & { closeFn: HTMLAttributes<HTMLButtonElement>["onClick"] };
 
-export const ErrorBox = ({ closeFn, children, ...rest }: ErrorBoxProps) => {
+export const SuccessBox = ({ closeFn, children, ...rest }: SuccessBoxProps) => {
   return (
     <div
-      className="relative w-full rounded-md border-2 border-red-500/80 bg-red-200/50
-      px-4 py-2 text-center text-xl text-red-600
-      dark:border-red-300/50 dark:bg-red-600/70 dark:text-red-100
+      className="relative w-full rounded-md border-2 border-green-500/80 bg-green-200/50
+      px-4 py-2 text-center text-xl text-green-600
+      dark:border-green-300/50 dark:bg-green-600/70 dark:text-green-100
       "
       {...rest}
     >

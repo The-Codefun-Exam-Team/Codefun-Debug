@@ -1,8 +1,9 @@
 import { z } from "zod";
 
 export const createProblemSchema = z.object({
-  name: z.string().optional(),
-  submissionId: z.string(),
+  code: z.string().max(20, "Code must contain at most 20 letters").optional(),
+  name: z.string().max(255, "Name must contain at most 255 letters").optional(),
+  rid: z.number(),
 });
 
 export type CreateProblemSchemaType = z.infer<typeof createProblemSchema>;

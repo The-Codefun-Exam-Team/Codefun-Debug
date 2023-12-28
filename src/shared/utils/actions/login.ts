@@ -13,7 +13,7 @@ export interface LoginFormState {
   messages: string[];
 }
 
-export const initialState: LoginFormState = {
+const initialState: LoginFormState = {
   user: null,
   username_messages: [],
   password_messages: [],
@@ -86,7 +86,7 @@ export const login = async (
     console.error(e);
     return {
       ...initialState,
-      messages: ["An internal server error occurred."],
+      messages: ["An internal server error occurred"],
     };
   }
 };
