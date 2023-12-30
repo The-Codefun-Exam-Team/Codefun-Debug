@@ -135,7 +135,7 @@ export const createProblem = async (
 
       return {
         ...initialState,
-        success_messages: [`Created problem with code ${newCode} named ${name ?? newCode}`],
+        success_messages: [`Created problem code ${newCode}`],
       };
     } else {
       await prisma.debugProblems.create({
@@ -152,7 +152,7 @@ export const createProblem = async (
       });
       return {
         ...initialState,
-        success_messages: [`Created problem with code ${code} named ${name ?? code}`],
+        success_messages: [`Created problem code ${code}`],
       };
     }
   } catch (e) {

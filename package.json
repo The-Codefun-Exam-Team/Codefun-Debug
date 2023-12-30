@@ -13,9 +13,13 @@
     "start": "next start",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
-    "db:pull": "prisma db pull --schema src/database/prisma/schema.prisma",
-    "db:generate": "prisma generate --schema src/database/prisma/schema.prisma",
-    "db:format": "prisma format --schema src/database/prisma/schema.prisma"
+    "db:pull": "prisma db pull",
+    "db:generate": "prisma generate",
+    "db:format": "prisma format",
+    "db:migrate:dev": "prisma migrate dev"
+  },
+  "prisma": {
+    "schema": "src/database/prisma/schema.prisma"
   },
   "dependencies": {
     "@headlessui/react": "1.7.17",

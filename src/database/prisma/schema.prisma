@@ -352,7 +352,6 @@ model SubsCode {
   error String @default("") @db.Text
   run   Runs?
 
-  @@index([rid])
   @@map("subs_code")
 }
 

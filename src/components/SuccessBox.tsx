@@ -10,14 +10,15 @@ export type SuccessBoxProps = Omit<
 export const SuccessBox = ({ closeFn, children, ...rest }: SuccessBoxProps) => {
   return (
     <div
-      className="relative w-full rounded-md border-2 border-green-500/80 bg-green-200/50
-      px-4 py-2 text-center text-xl text-green-600
-      dark:border-green-300/50 dark:bg-green-600/70 dark:text-green-100
+      className="relative flex w-full gap-1 rounded-md border-2
+      border-green-500/80 bg-green-200/50 p-2 pl-3 pr-1 text-center
+      text-xl text-green-600 dark:border-green-300/50
+      dark:bg-green-600/70 dark:text-green-100
       "
       {...rest}
     >
-      {children}
-      <button className="absolute right-0 top-0" onClick={closeFn}>
+      <p className="w-full">{children}</p>
+      <button className="self-start" onClick={closeFn}>
         <CrossIcon className="m-1 h-6 w-6" />
       </button>
     </div>

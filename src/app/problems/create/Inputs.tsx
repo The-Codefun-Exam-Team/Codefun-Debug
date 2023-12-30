@@ -51,7 +51,7 @@ export const Inputs = () => {
             label="Code"
             name="code"
             placeholder="(Optional)"
-            error={true}
+            error={displayState.code_messages.length > 0}
             errorTextId="create-problem-form-code-error-text"
             errorText={displayState.code_messages.join("\n")}
             disabled={pending}
@@ -63,7 +63,7 @@ export const Inputs = () => {
             label="Name"
             name="name"
             placeholder="(Optional)"
-            error={true}
+            error={displayState.name_messages.length > 0}
             errorTextId="create-problem-form-name-error-text"
             errorText={displayState.name_messages.join("\n")}
             disabled={pending}
@@ -76,7 +76,7 @@ export const Inputs = () => {
           label="Submission ID"
           name="rid"
           placeholder="Submission ID"
-          error={true}
+          error={displayState.rid_messages.length > 0}
           errorTextId="create-problem-form-submission-id-error-text"
           errorText={displayState.rid_messages.join("\n")}
           disabled={pending}
