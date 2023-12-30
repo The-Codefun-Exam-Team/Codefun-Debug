@@ -4,7 +4,7 @@ CREATE TABLE `admin` (
     `variable` TINYTEXT NULL,
     `value` LONGTEXT NULL,
 
-    PRIMARY KEY (`id` ASC)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -17,8 +17,8 @@ CREATE TABLE `blog_comments` (
     `content` LONGTEXT NOT NULL,
     `access` TEXT NOT NULL DEFAULT '',
 
-    INDEX `blogid`(`blogid` ASC, `tid` ASC),
-    PRIMARY KEY (`id` ASC)
+    INDEX `blogid`(`blogid`, `tid`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -31,8 +31,8 @@ CREATE TABLE `blogs` (
     `access` TEXT NOT NULL DEFAULT '',
     `official` BOOLEAN NOT NULL DEFAULT false,
 
-    INDEX `tid`(`tid` ASC),
-    PRIMARY KEY (`id` ASC)
+    INDEX `tid`(`tid`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -44,7 +44,7 @@ CREATE TABLE `broadcast` (
     `updatedOn` DATETIME(0) NOT NULL,
     `deleted` INTEGER NOT NULL DEFAULT 0,
 
-    PRIMARY KEY (`id` ASC)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -57,7 +57,7 @@ CREATE TABLE `clar` (
     `access` TINYTEXT NULL,
     `createtime` INTEGER NULL,
 
-    PRIMARY KEY (`time` ASC)
+    PRIMARY KEY (`time`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -70,7 +70,7 @@ CREATE TABLE `contest` (
     `announcement` TEXT NOT NULL,
     `ranktable` TEXT NULL,
 
-    PRIMARY KEY (`id` ASC)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -84,8 +84,8 @@ CREATE TABLE `contest_hacks` (
     `result` TEXT NOT NULL,
     `score` DOUBLE NOT NULL,
 
-    INDEX `tid`(`tid` ASC, `cid` ASC, `pid` ASC),
-    PRIMARY KEY (`hid` ASC)
+    INDEX `tid`(`tid`, `cid`, `pid`),
+    PRIMARY KEY (`hid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -99,10 +99,10 @@ CREATE TABLE `contest_problems_bak` (
     `timelimit` DOUBLE NOT NULL,
     `score` INTEGER NOT NULL,
 
-    INDEX `cid`(`cid` ASC),
-    INDEX `cid_2`(`cid` ASC),
-    UNIQUE INDEX `pid`(`pid` ASC),
-    PRIMARY KEY (`pid` ASC)
+    UNIQUE INDEX `pid`(`pid`),
+    INDEX `cid`(`cid`),
+    INDEX `cid_2`(`cid`),
+    PRIMARY KEY (`pid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -119,9 +119,9 @@ CREATE TABLE `contest_runs` (
     `scored` BOOLEAN NOT NULL DEFAULT false,
     `score` DOUBLE NOT NULL DEFAULT 0,
 
-    INDEX `cid`(`cid` ASC),
-    INDEX `tid`(`tid` ASC, `pid` ASC, `scored` ASC),
-    PRIMARY KEY (`rid` ASC)
+    INDEX `cid`(`cid`),
+    INDEX `tid`(`tid`, `pid`, `scored`),
+    PRIMARY KEY (`rid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -131,8 +131,8 @@ CREATE TABLE `contest_status` (
     `type` INTEGER NOT NULL,
     `rid` INTEGER NOT NULL DEFAULT 0,
 
-    INDEX `tid`(`tid` ASC, `type` ASC),
-    PRIMARY KEY (`id` ASC)
+    INDEX `tid`(`tid`, `type`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -148,8 +148,8 @@ CREATE TABLE `contest_tests` (
     `validator` LONGTEXT NOT NULL,
     `jury_code` LONGTEXT NOT NULL,
 
-    UNIQUE INDEX `pid`(`pid` ASC),
-    PRIMARY KEY (`tid` ASC)
+    UNIQUE INDEX `pid`(`pid`),
+    PRIMARY KEY (`tid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -162,8 +162,8 @@ CREATE TABLE `contest_users` (
     `penalty` INTEGER NOT NULL,
     `scores` TEXT NOT NULL,
 
-    INDEX `cid`(`cid` ASC, `tid` ASC),
-    PRIMARY KEY (`id` ASC)
+    INDEX `cid`(`cid`, `tid`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -177,7 +177,7 @@ CREATE TABLE `contests` (
     `announcement` LONGTEXT NULL,
     `rated` BOOLEAN NOT NULL,
 
-    PRIMARY KEY (`cid` ASC)
+    PRIMARY KEY (`cid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -195,9 +195,9 @@ CREATE TABLE `debug_problems` (
     `result` VARCHAR(8) NOT NULL,
     `mindiff` INTEGER NOT NULL DEFAULT 0,
 
-    UNIQUE INDEX `code`(`code` ASC),
-    INDEX `rid`(`rid` ASC),
-    PRIMARY KEY (`dpid` ASC)
+    UNIQUE INDEX `code`(`code`),
+    INDEX `rid`(`rid`),
+    PRIMARY KEY (`dpid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -205,8 +205,8 @@ CREATE TABLE `debug_queue` (
     `rid` INTEGER NOT NULL,
     `drid` INTEGER NOT NULL,
 
-    UNIQUE INDEX `drid`(`drid` ASC),
-    PRIMARY KEY (`rid` ASC)
+    UNIQUE INDEX `drid`(`drid`),
+    PRIMARY KEY (`rid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -222,9 +222,9 @@ CREATE TABLE `debug_submissions` (
     `diff` INTEGER NULL,
     `code` LONGTEXT NOT NULL,
 
-    INDEX `dpid`(`dpid` ASC),
-    INDEX `tid`(`tid` ASC),
-    PRIMARY KEY (`drid` ASC)
+    INDEX `dpid`(`dpid`),
+    INDEX `tid`(`tid`),
+    PRIMARY KEY (`drid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -234,8 +234,8 @@ CREATE TABLE `goose_db_version` (
     `is_applied` BOOLEAN NOT NULL,
     `tstamp` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
 
-    UNIQUE INDEX `id`(`id` ASC),
-    PRIMARY KEY (`id` ASC)
+    UNIQUE INDEX `id`(`id`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -243,7 +243,7 @@ CREATE TABLE `groups` (
     `gid` INTEGER NOT NULL AUTO_INCREMENT,
     `groupname` TINYTEXT NOT NULL,
 
-    PRIMARY KEY (`gid` ASC)
+    PRIMARY KEY (`gid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -258,7 +258,7 @@ CREATE TABLE `logs` (
     `tid` TEXT NULL,
     `request` TEXT NULL,
 
-    PRIMARY KEY (`time` ASC)
+    PRIMARY KEY (`time`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -270,8 +270,8 @@ CREATE TABLE `messages` (
     `time` INTEGER NOT NULL,
     `isread` BOOLEAN NOT NULL DEFAULT false,
 
-    INDEX `sender`(`sender` ASC, `recipient` ASC, `time` ASC),
-    PRIMARY KEY (`mid` ASC)
+    INDEX `sender`(`sender`, `recipient`, `time`),
+    PRIMARY KEY (`mid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -281,9 +281,9 @@ CREATE TABLE `password_resets` (
     `token` VARCHAR(64) NOT NULL,
     `timeout` DATETIME(0) NOT NULL,
 
-    INDEX `token`(`token` ASC),
-    INDEX `user`(`user` ASC),
-    PRIMARY KEY (`id` ASC)
+    INDEX `token`(`token`),
+    INDEX `user`(`user`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -305,9 +305,9 @@ CREATE TABLE `problems` (
     `solved` INTEGER NOT NULL DEFAULT 0,
     `total` INTEGER NOT NULL DEFAULT 0,
 
-    INDEX `cid`(`cid` ASC),
-    UNIQUE INDEX `code`(`code` ASC),
-    PRIMARY KEY (`pid` ASC)
+    UNIQUE INDEX `code`(`code`),
+    INDEX `cid`(`cid`),
+    PRIMARY KEY (`pid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -317,7 +317,7 @@ CREATE TABLE `room_rankings` (
     `time` INTEGER NOT NULL DEFAULT 0,
     `change` INTEGER NOT NULL DEFAULT 0,
 
-    INDEX `roomid`(`roomid` ASC, `tid` ASC)
+    INDEX `roomid`(`roomid`, `tid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -327,8 +327,8 @@ CREATE TABLE `rooms` (
     `duration` INTEGER NOT NULL,
     `lastrun` INTEGER NOT NULL,
 
-    INDEX `pid`(`pid` ASC),
-    PRIMARY KEY (`id` ASC)
+    INDEX `pid`(`pid`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -344,12 +344,12 @@ CREATE TABLE `runs` (
     `scored` BOOLEAN NOT NULL DEFAULT false,
     `score` DOUBLE NOT NULL DEFAULT 0,
 
-    INDEX `pid`(`pid` ASC),
-    INDEX `pid_2`(`pid` ASC, `tid` ASC, `score` ASC),
-    INDEX `result`(`result` ASC),
-    INDEX `rid`(`rid` ASC),
-    INDEX `tid`(`tid` ASC),
-    PRIMARY KEY (`rid` ASC)
+    INDEX `pid`(`pid`),
+    INDEX `pid_2`(`pid`, `tid`, `score`),
+    INDEX `result`(`result`),
+    INDEX `rid`(`rid`),
+    INDEX `tid`(`tid`),
+    PRIMARY KEY (`rid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -358,7 +358,7 @@ CREATE TABLE `subs_code` (
     `code` LONGTEXT NOT NULL,
     `error` TEXT NOT NULL DEFAULT '',
 
-    PRIMARY KEY (`rid` ASC)
+    PRIMARY KEY (`rid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -383,10 +383,10 @@ CREATE TABLE `teams` (
     `game_time` INTEGER NOT NULL DEFAULT 0,
     `game_wins` INTEGER NOT NULL DEFAULT 0,
 
-    INDEX `pscore`(`pscore` ASC),
-    INDEX `pscore_2`(`pscore` ASC),
-    UNIQUE INDEX `teamname`(`teamname` ASC),
-    PRIMARY KEY (`tid` ASC)
+    UNIQUE INDEX `teamname`(`teamname`),
+    INDEX `pscore`(`pscore`),
+    INDEX `pscore_2`(`pscore`),
+    PRIMARY KEY (`tid`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -397,8 +397,8 @@ CREATE TABLE `xo_tables` (
     `last_move` TEXT NOT NULL,
     `move_log` TEXT NOT NULL,
 
-    INDEX `p1`(`p1` ASC, `p2` ASC),
-    PRIMARY KEY (`id` ASC)
+    INDEX `p1`(`p1`, `p2`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
