@@ -3,6 +3,8 @@
 import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { createProblemSchema } from "@schemas/createProblemSchema";
+import { getUserInfo } from "@utils/api";
+import { cookies } from "next/headers";
 
 export interface CreateProblemFormState {
   code_messages: string[];
@@ -25,6 +27,14 @@ export const createProblem = async (
   formData: FormData,
 ): Promise<CreateProblemFormState> => {
   try {
+    const token = cookies().get("token")?.value;
+    const userInfo = await getUserInfo(token);
+    if (!userInfo.ok || userInfo.user.status !== "Admin") {
+      return {
+        ...initialState,
+        messages: ["You are not authorized to create problems"],
+      };
+    }
     const formRid = formData.get("rid") as unknown;
     if (isNaN(formRid as number)) {
       return {
