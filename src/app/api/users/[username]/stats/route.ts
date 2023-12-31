@@ -7,7 +7,7 @@ export const GET = async (
   { params: { username } }: { params: { username: string } },
 ) => {
   try {
-    const responseData = {};
+    const responseData = {} as Record<string, number>;
     const userStats = await prisma.debugSubmissions.groupBy({
       by: ["dpid"],
       where: {
@@ -35,8 +35,8 @@ export const GET = async (
         dpid: "asc",
       },
     });
-    userStats.forEach(({ _max: { score } }, idx) =>
-      Object.assign(responseData, { [problemsCode[idx].code]: score }),
+    userStats.forEach(
+      ({ _max: { score } }, idx) => (responseData[problemsCode[idx].code] = score ?? 0),
     );
 
     return NextResponse.json({ data: responseData }, { status: 200 });
