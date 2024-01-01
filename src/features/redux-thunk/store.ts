@@ -9,6 +9,13 @@ export const store = configureStore({
     user: userSlice.reducer,
     color: colorSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these field paths in all actions
+        ignoredActionPaths: ["payload.refresh"],
+      },
+    }),
 });
 
 export type AppDispatch = typeof store.dispatch;

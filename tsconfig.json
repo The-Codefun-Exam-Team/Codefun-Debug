@@ -19,14 +19,16 @@
       "@schemas/*": ["./src/shared/schemas/*"],
       "@hooks/*": ["./src/shared/hooks/*"],
       "@utils/*": ["./src/shared/utils/*"],
+      "@database/*": ["./src/database/*"],
       "@/*": ["./src/*"]
     },
+    "types": ["react/experimental"],
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/shared/utils/shared/md5.js"],
   "exclude": ["node_modules"]
 }

@@ -1,8 +1,8 @@
+import { getUsers } from "@utils/api";
 import { clsx } from "@utils/shared";
 import type { Metadata } from "next";
 
 import { Box, Heading } from "@/components";
-import type { UserRanking } from "@/shared/types";
 
 import { Announcements } from "./Announcements";
 import { Rankings } from "./Rankings";
@@ -11,23 +11,9 @@ export const metadata: Metadata = {
   title: "Home",
 };
 
-const getTopTenGlobal = async () => {
-  const res = await fetch("https://debug.codefun.vn/api/rankings?pageid=1&group=0&limit=10", {
-    next: {
-      revalidate: 10,
-    },
-  });
-  if (!res.ok) {
-    console.log("Failed to fetch rankings in homepage.");
-    return null;
-  }
-  const data = (await res.json()) as UserRanking[];
-  return data;
-};
-
 const Page = async () => {
-  const rankingData = (await getTopTenGlobal())?.slice(0, 10);
-  if (!rankingData) {
+  const rankingData = await getUsers("0", "1", "10");
+  if (!rankingData.ok) {
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>
@@ -48,7 +34,7 @@ const Page = async () => {
         <Announcements />
       </div>
       <div className="w-full md:h-full md:flex-[3]">
-        <Rankings data={rankingData} />
+        <Rankings data={rankingData.data} />
       </div>
     </div>
   );

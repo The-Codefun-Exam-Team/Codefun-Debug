@@ -1,20 +1,14 @@
+import type { SubmissionInfo } from "@utils/api/getSubmissionInfo";
+import { getVerdictTextClass } from "@utils/shared";
+import { Suspense } from "react";
+
 import { Heading } from "@/components";
 import { RESULTS_DICT } from "@/shared/constants";
 import type { Results } from "@/shared/types";
 
+import { CodeViewText } from "./CodeViewText";
 import { InQueue, RunInfoClient } from "./RunInfoClient";
-import type { RunData, SubmissionsData } from "./types";
-
-const verdictColor = (verdict: Results) => {
-  switch (verdict) {
-    case "AC":
-      return "text-green-600 dark:text-green-500";
-    case "WA":
-      return "text-red-600 dark:text-red-500";
-    default:
-      return "text-blue-600 dark:text-blue-500";
-  }
-};
+import { RunInfoCode } from "./RunInfoCode";
 
 const TestResult = ({
   verdict,
@@ -30,7 +24,8 @@ const TestResult = ({
   <div className="flex w-full justify-between px-4 py-2 odd:bg-accent-light/5 even:bg-accent-light/20 dark:odd:bg-accent-dark/5 dark:even:bg-accent-dark/20">
     <div>
       <div className="text-lg font-bold">
-        #{count}. Verdict: <span className={verdictColor(verdict)}>{RESULTS_DICT[verdict]}</span>
+        #{count}. Verdict:{" "}
+        <span className={getVerdictTextClass(verdict)}>{RESULTS_DICT[verdict]}</span>
       </div>
       <div>{message}</div>
     </div>
@@ -53,28 +48,23 @@ const JudgeError = ({ type, error }: { type: Results; error: string }) => {
   return (
     <>
       <Heading type="title">{judgeErrorMessage}</Heading>
-      <pre className="my-6 break-words border-2 border-slate-600 p-2 text-[.9em]">{error}</pre>
+      <div className="my-6 whitespace-pre-wrap break-words border-2 border-slate-600 p-2 text-[.9em]">
+        {error}
+      </div>
     </>
   );
 };
 
-export const RunInfo = ({
-  sid,
-  runData,
-}: {
-  sid: number;
-  runData: RunData;
-  submissionData: SubmissionsData;
-}) => {
+export const RunInfo = ({ data, codetext }: { data: SubmissionInfo; codetext: string }) => {
   const verdictNode =
-    runData.result === "Q" ? (
+    data.result === "Q" ? (
       <InQueue />
-    ) : typeof runData.judge === "string" ? (
-      <JudgeError type={runData.result} error={runData.judge} />
+    ) : typeof data.submission_judge === "string" ? (
+      <JudgeError type={data.result} error={data.submission_judge} />
     ) : (
-      runData.judge?.tests.map(({ verdict, runningTime, message }, idx) => (
+      data.submission_judge.tests.map(({ verdict, runningTime, message }, idx) => (
         <TestResult
-          key={`runinfo-${sid}-result-number-${idx}`}
+          key={`runinfo-${data.drid}-result-number-${idx}`}
           count={idx + 1}
           verdict={verdict}
           runningTime={runningTime}
@@ -85,8 +75,12 @@ export const RunInfo = ({
 
   return (
     <RunInfoClient
-      code={runData.code ?? "Not allowed to view the code."}
       verdictNode={verdictNode}
+      codeNode={
+        <Suspense fallback={<CodeViewText text="Loading..." />}>
+          <RunInfoCode code={codetext} submissionUserId={data.user.tid} />
+        </Suspense>
+      }
     />
   );
 };

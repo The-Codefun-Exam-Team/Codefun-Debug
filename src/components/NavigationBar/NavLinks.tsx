@@ -2,9 +2,10 @@
 import { Menu, RadioGroup, Transition } from "@headlessui/react";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { setScheme, setUser } from "@redux/slice";
+import { logout } from "@utils/actions";
 import { clsx, getCodefunRole, getCodefunRoleTextClass } from "@utils/shared";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
@@ -87,6 +88,7 @@ const DarkModeToggler = () => {
 
 export const UserInfo = () => {
   const router = useRouter();
+  const pathname = usePathname() as string;
   const { user, loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [errorMessage, setErrorMessage] = useState("");
@@ -96,19 +98,17 @@ export const UserInfo = () => {
     return () => clearTimeout(removeErrorTimer);
   }, [errorMessage]);
 
-  const logout = async () => {
-    const res = await fetch("/api/temp/auth/logout", {
-      method: "POST",
-    });
+  const logoutClient = async () => {
+    const res = await logout();
     if (res.ok) {
       dispatch(
         setUser({
           user: null,
-          // refresh: router.refresh,
         }),
       );
+      router.push(pathname);
     } else {
-      setErrorMessage((await res.json()).error ?? "unknown error logging out");
+      setErrorMessage(res.message);
     }
   };
 
@@ -182,12 +182,15 @@ export const UserInfo = () => {
               ))}
               <Menu.Item>
                 {user ? (
-                  <button className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)} onClick={logout}>
+                  <button
+                    className={clsx(NAV_BUTTON_CLASS, menuItemsClassName)}
+                    onClick={logoutClient}
+                  >
                     Sign out
                   </button>
                 ) : (
                   <div>
-                    <BaseNavLink className={menuItemsClassName} href="/login">
+                    <BaseNavLink className={menuItemsClassName} href={`/login?prev=${pathname}`}>
                       Sign in
                     </BaseNavLink>
                   </div>
@@ -199,7 +202,7 @@ export const UserInfo = () => {
             <div
               className={clsx(
                 "right-0 mt-2 w-44 px-4 py-2",
-                "flex h-auto items-center overflow-hidden text-clip rounded-md",
+                "absolute flex h-auto items-center overflow-hidden text-clip rounded-md",
                 "border-red-200 bg-red-100 text-red-800",
               )}
             >

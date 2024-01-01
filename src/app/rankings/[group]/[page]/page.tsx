@@ -1,64 +1,116 @@
+import prisma from "@database/prisma/instance";
+import { Prisma } from "@prisma/client";
+import { getUsers } from "@utils/api";
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 
 import { Box, Heading, Pagination } from "@/components";
 
 import { Group } from "./Group";
 import { RankTable } from "./RankTable";
-import type { GroupsData, RankingsData } from "./types";
+import type { GroupsData } from "./types";
 
 export const metadata: Metadata = {
   title: "Rankings",
 };
 
-const getRankings = async (
-  group: string,
-  page: string,
-  limit: string,
-): Promise<RankingsData | null> => {
-  const bodyData = { group, pageid: page, limit };
-  const requestRanking = await fetch(
-    // TODO: migrate to api v2
-    `https://debug.codefun.vn/api/rankings?${new URLSearchParams(bodyData).toString()}`,
-    {
-      method: "GET",
-    },
-  );
-  if (!requestRanking.ok) {
-    const error = await requestRanking.text();
-    console.error(
-      "Failed to fetch rankings",
-      requestRanking.status,
-      requestRanking.statusText,
-      error,
-    );
-    return null;
-  }
+export const generateStaticParams = async () => {
+  const groupCounts = (await prisma.$queryRaw`
+    WITH user_table AS (SELECT tid FROM debug_submissions GROUP BY tid)
+    SELECT count(user_table.tid) as count, groups.gid
+    FROM user_table 
+    INNER JOIN teams ON user_table.tid = teams.tid
+    INNER JOIN groups ON teams.group = groups.gid
+    GROUP BY groups.gid
+  `) as { count: number; gid: number }[];
 
-  return (await requestRanking.json()) ?? [];
+  const globalCount = await prisma.debugSubmissions.findMany({
+    distinct: ["tid"],
+    select: {
+      tid: true,
+    },
+  });
+
+  groupCounts.push({ count: globalCount.length, gid: 0 });
+
+  const params = groupCounts.flatMap(({ count, gid }) => {
+    const page = Math.ceil((Number(count) + 1) / 50);
+    return Array.from({ length: page }, (_, i) => ({
+      group: gid.toString(),
+      page: (i + 1).toString(),
+    }));
+  });
+  return params;
 };
 
+export const revalidate = 30;
+
 const getGroups = async (): Promise<GroupsData | null> => {
-  const requestGroups = await fetch("https://codefun.vn/api/groups", {
-    method: "GET",
-  });
-  if (!requestGroups.ok) {
-    const error = await requestGroups.text();
-    console.error("Failed to fetch groups", requestGroups.status, requestGroups.statusText, error);
+  try {
+    return unstable_cache(
+      async () => {
+        const groups = prisma.groups.findMany();
+        const data = await groups;
+        data.push({ gid: 0, groupname: "Global" });
+        data.reverse();
+        return groups;
+      },
+      ["getGroups"],
+      { revalidate: 30 },
+    )();
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error(e.message);
+    } else {
+      console.error(e);
+    }
     return null;
   }
-  const res: GroupsData = (await requestGroups.json()).data ?? [];
-  res.push({ id: 0, name: "Global" });
-  res.reverse();
-  return res;
+};
+
+const getUserCount = async (group: string) => {
+  const globalCount = prisma.$queryRaw`
+    WITH user_table AS ( SELECT tid FROM debug_submissions GROUP BY tid )
+    SELECT count(user_table.tid) as count
+    FROM user_table INNER JOIN teams ON user_table.tid = teams.tid
+  `;
+
+  const groupCount = prisma.$queryRaw`
+    WITH user_table AS ( SELECT tid FROM debug_submissions GROUP BY tid )
+    SELECT count(user_table.tid) as count
+    FROM user_table INNER JOIN teams ON user_table.tid = teams.tid
+    WHERE teams.group = ${group}
+  `;
+
+  try {
+    return unstable_cache(
+      async () => {
+        const count = (parseInt(group) > 0 ? await groupCount : await globalCount) as {
+          count: number;
+        }[];
+        return Number(count[0].count);
+      },
+      [`getUserCount-${group}`],
+      { revalidate: 30 },
+    )();
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error(e.message);
+    } else {
+      console.error(e);
+    }
+    return null;
+  }
 };
 
 const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
-  const [rankingData, groupsData] = await Promise.all([
-    getRankings(group.toString(), page.toString(), "50"),
+  const [rankingData, groupsData, userCount] = await Promise.all([
+    getUsers(group.toString(), page.toString(), "50"),
     getGroups(),
+    getUserCount(group),
   ]);
 
-  if (!groupsData || !rankingData) {
+  if (!groupsData || !rankingData.ok || userCount === null) {
     return (
       <div className="flex h-full w-full items-center justify-center self-center">
         <Box>
@@ -69,14 +121,16 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
     );
   }
 
+  const lastPage = userCount ? Math.ceil(userCount / 50) : 1;
+
   return (
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
         <Group group={group} groupsData={groupsData} />
-        <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage="100" />
-        <RankTable rankingData={rankingData} page={page} />
-        {rankingData.length > 10 && (
-          <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage="100" />
+        <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
+        <RankTable rankingData={rankingData.data} page={page} />
+        {rankingData.data.length > 10 && (
+          <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
         )}
       </div>
     </>

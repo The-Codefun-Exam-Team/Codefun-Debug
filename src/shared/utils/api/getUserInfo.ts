@@ -1,13 +1,21 @@
-import type { UserData } from "@schemas/loginSchema";
+import type { UserData } from "@/shared/types";
 
 export const getUserInfo = async (
-  token: string,
+  token: string | undefined,
 ): Promise<{ ok: false; error: string; status: number } | { ok: true; user: UserData }> => {
+  if (!token) {
+    return {
+      ok: false,
+      error: "You are not signed in.",
+      status: 401,
+    };
+  }
   const res = await fetch("https://codefun.vn/api/verify", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    cache: "no-store",
   });
   const info = await res.json();
   if (!res.ok) {

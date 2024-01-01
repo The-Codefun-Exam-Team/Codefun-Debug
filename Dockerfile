@@ -10,6 +10,12 @@ COPY package.json pnpm-lock.yaml* ./
 RUN npm i -g pnpm
 RUN pnpm i --frozen-lockfile
 
+# Initialize Prisma
+RUN pnpm prisma generate
+
+# Migrate database changes
+RUN pnpm prisma migrate deploy
+
 WORKDIR /app
 COPY . .
 

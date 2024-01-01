@@ -1,23 +1,18 @@
 import { clsx } from "@utils/shared";
+import { Suspense } from "react";
 
 import { DecoratedLink } from "@/components";
 
 import { CreateProblem } from "./CreateProblem";
-import type { DebugProblemBrief } from "./types";
+import { ProblemScore } from "./ProblemScore";
+import { ProblemScoreTableHead } from "./ProblemScoreTableHead";
+import type { ProblemList } from "./types";
 
-export const ProblemsList = ({
-  isLoggedIn,
-  data,
-  page,
-}: {
-  isLoggedIn: boolean;
-  data: DebugProblemBrief[];
-  page: string;
-}) => (
+export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; page: string }) => (
   <div className="w-full">
     <table className="w-full table-auto">
       <thead>
-        <tr className="border-b-[1px] border-gray-400 text-lg font-bold dark:border-slate-600 md:text-xl [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>th]:p-3">
+        <tr className="border-b-[1px] border-gray-400 text-lg font-bold md:text-xl dark:border-slate-600 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>th]:p-3">
           <th className="flex gap-2 text-left">
             <div className="hidden sm:block">Problems</div>
             <div className="text-ellipsis sm:hidden ">Probs</div>
@@ -27,15 +22,13 @@ export const ProblemsList = ({
             <div className="hidden sm:block">Language</div>
             <div className="text-ellipsis sm:hidden">Lang</div>
           </th>
-          {isLoggedIn && (
-            <th>
-              <div className="text-right">Score</div>
-            </th>
-          )}
+          <Suspense>
+            <ProblemScoreTableHead />
+          </Suspense>
         </tr>
       </thead>
       <tbody className="h-fit divide-y-[1px] divide-gray-400 dark:divide-slate-600">
-        {data.map((problem) => (
+        {problemList.map((problem) => (
           <tr
             key={`problem-page-${page}-code-${problem.code}`}
             className={clsx(
@@ -51,19 +44,9 @@ export const ProblemsList = ({
             <td>
               <div className="text-left">{problem.language}</div>
             </td>
-            {isLoggedIn && (
-              <td>
-                {problem.best_score < 100 ? (
-                  <div className="text-right">
-                    {problem.best_score === -1 ? "Not yet scored" : problem.best_score.toFixed(2)}
-                  </div>
-                ) : (
-                  <div className="text-right font-bold text-green-600 dark:text-green-500">
-                    Accepted
-                  </div>
-                )}
-              </td>
-            )}
+            <Suspense>
+              <ProblemScore dpid={problem.dpid} />
+            </Suspense>
           </tr>
         ))}
       </tbody>

@@ -13,7 +13,12 @@ const nextConfig = {
   swcMinify: true,
   output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   images: {
-    domains: ["www.gravatar.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "www.gravatar.com",
+      },
+    ],
   },
   modularizeImports: {
     "@/components/?(((\\w*)?/?)*)": {
@@ -45,6 +50,9 @@ const nextConfig = {
     config.plugins.push(monacoPlugin);
 
     return config;
+  },
+  experimental: {
+    ppr: true,
   },
 };
 

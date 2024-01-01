@@ -17,13 +17,21 @@ export const Rankings = async ({ data }: { data: UserRanking[] }) => (
         </tr>
       </thead>
       <tbody className="divide-y-2 divide-gray-200 font-semibold text-gray-600 dark:divide-y-[0.5px] dark:divide-slate-800 dark:text-slate-300">
-        {data.map((user) => (
-          <tr key={`ranking-user-${user.id}`} className="[&>td]:p-[14px]">
-            <td className="text-left">{user.rank}</td>
-            <td className="text-left">{user.name}</td>
-            <td className="text-right">{user.points.toFixed(2)}</td>
+        {data.length === 0 ? (
+          <tr>
+            <td className="pt-4">
+              <Heading type="title-large">There&apos;s nothing here.</Heading>
+            </td>
           </tr>
-        ))}
+        ) : (
+          data.map((user) => (
+            <tr key={`ranking-user-${user.id}`} className="[&>td]:p-[14px]">
+              <td className="text-left">{user.rank}</td>
+              <td className="text-left">{user.name}</td>
+              <td className="text-right">{user.score.toFixed(2)}</td>
+            </tr>
+          ))
+        )}
       </tbody>
     </table>
   </div>

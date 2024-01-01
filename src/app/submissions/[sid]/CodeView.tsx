@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 
 import AtlanticNight from "@/features/monaco-themes/atlantic-night.json";
 
+import { CodeViewText } from "./CodeViewText";
+
 export const CodeView = ({ code }: { code: string }) => {
   const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
   const editorDomRef = useRef<HTMLDivElement | null>(null);
@@ -47,6 +49,11 @@ export const CodeView = ({ code }: { code: string }) => {
   }, []);
 
   useEffect(() => {
+    <div className="flex h-full w-full">
+      <div className="grow-1 flex w-full flex-col justify-around rounded-md border-2 border-slate-500 text-2xl text-slate-700 dark:border-slate-600 dark:text-slate-200">
+        <div className="text-center text-3xl">Loading...</div>
+      </div>
+    </div>;
     if (renderingEditor) return;
     if (isDark) {
       monaco.current?.editor.setTheme("dark");
@@ -63,13 +70,7 @@ export const CodeView = ({ code }: { code: string }) => {
 
   return (
     <section className="flex h-full w-full">
-      {renderingEditor && (
-        <div className="flex h-full w-full">
-          <div className="grow-1 flex w-full flex-col justify-around rounded-md border-2 border-slate-500 text-2xl text-slate-700 dark:border-slate-600">
-            <div className="text-center text-3xl">Loading...</div>
-          </div>
-        </div>
-      )}
+      {renderingEditor && <CodeViewText text="Loading..." />}
       <div
         className={clsx(
           "h-full w-full overflow-hidden rounded-md border-2 border-slate-500 dark:border-slate-600",

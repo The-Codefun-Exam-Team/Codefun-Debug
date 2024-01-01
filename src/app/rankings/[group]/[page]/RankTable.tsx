@@ -9,7 +9,9 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
     return (
       <div className="h-fit w-full">
         <Heading type="title-large">Noone here!</Heading>
-        <Heading type="title">If you belong to this group, be the first to submit!</Heading>
+        <Heading type="title">
+          Please submit first if you haven&#39;t seen your name on the leaderboard.
+        </Heading>
       </div>
     );
   }
@@ -48,7 +50,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
                 <div className="break-all text-left">{user.name}</div>
               </td>
               <td>
-                <div className="text-right">{user.points.toFixed(2)}</div>
+                <div className="text-right">{user.score.toFixed(2)}</div>
               </td>
               <td>
                 <div className="text-right">{user.rank}</div>
