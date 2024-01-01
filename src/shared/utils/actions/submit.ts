@@ -1,30 +1,28 @@
 "use server";
 import prisma from "@database/prisma/instance";
+import type { DebugProblems, DebugSubmissions } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { getUserInfo } from "@utils/api";
 import { calcEditDistance } from "@utils/shared";
 import { cookies } from "next/headers";
 
-const recalcScore = async (dpid: number) => {
-  (
-    await prisma.debugSubmissions.findMany({
-      where: {
-        debug_problems: {
-          dpid: dpid,
-        },
-      },
-      select: {
-        drid: true,
-      },
-    })
-  ).forEach(({ drid }) => calcScore(drid));
+const recalcScore = async (dpid: DebugProblems["dpid"]) => {
+  const scores = await prisma.$queryRaw<{ drid: DebugSubmissions["drid"] }[]>`
+    SELECT ds.drid 
+    FROM debug_submissions ds
+    JOIN debug_problems dp ON ds.dpid = dp.dpid
+    WHERE ds.dpid = ${dpid}
+  `;
+  for (const { drid } of scores) {
+    calcScore(drid);
+  }
 };
 
-const calcScore = async (drid: number) => {
+const calcScore = async (drid: DebugSubmissions["drid"]) => {
   try {
     const diffQuery = await prisma.debugSubmissions.findUniqueOrThrow({
       where: {
-        drid: drid,
+        drid,
       },
       select: {
         diff: true,
