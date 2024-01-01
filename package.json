@@ -19,7 +19,7 @@
     "db:migrate:dev": "prisma migrate dev"
   },
   "prisma": {
-    "schema": "src/database/prisma/schema.prisma"
+    "schema": "./src/database/prisma/schema.prisma"
   },
   "dependencies": {
     "@headlessui/react": "1.7.17",
