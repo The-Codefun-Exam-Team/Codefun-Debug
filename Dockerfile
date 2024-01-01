@@ -11,13 +11,8 @@ RUN npm i -g pnpm
 RUN pnpm i --frozen-lockfile
 
 # Initialize Prisma
+COPY src/database/prisma/schema.prisma src/database/prisma/schema.prisma
 RUN pnpm prisma generate
-
-# Migrate database changes
-RUN pnpm prisma migrate deploy
-
-WORKDIR /app
-COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -25,7 +20,10 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED 1
 ENV BUILD_STANDALONE true
 
+# Also copies .env file with format specified in .env.example. Better solutions welcomed.
+COPY . .
 RUN pnpm build
+RUN pnpm prisma migrate deploy
 
 # Stage 2: Production image
 FROM base AS runner
