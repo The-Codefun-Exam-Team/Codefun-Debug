@@ -1,4 +1,5 @@
 import prisma from "@database/prisma/instance";
+import type { DebugSubmissions } from "@prisma/client";
 import { cache } from "react";
 
 import type { Results, UserData } from "@/shared/types";
@@ -11,60 +12,33 @@ export type GetAllProblemsScoreResult =
   | { ok: true; data: ProblemScoreMap }
   | { ok: false; status: number; error: string };
 
+type SqlRawSubInfo = Pick<DebugSubmissions, "dpid" | "diff" | "score" | "result" | "drid">;
+
 const getAllProblemsScoreBase = async (user: UserData): Promise<GetAllProblemsScoreResult> => {
   const tid = user.id;
-  const scoreTable = await prisma.debugSubmissions.groupBy({
-    by: ["dpid"],
-    where: {
-      tid: tid,
-    },
-    _max: {
-      score: true,
-    },
-  });
-  const subsInfo = await prisma.debugSubmissions.findMany({
-    where: {
-      tid: tid,
-      OR: scoreTable.map((problem) => ({
-        AND: [
-          {
-            dpid: problem.dpid,
-          },
-          {
-            score: problem._max.score ?? 0,
-          },
-        ],
-      })),
-    },
-    select: {
-      dpid: true,
-      diff: true,
-      score: true,
-      result: true,
-      drid: true,
-    },
-    orderBy: {
-      dpid: "asc",
-    },
-  });
+
+  const subsInfo = await prisma.$queryRaw<SqlRawSubInfo[]>`
+    WITH score_table AS (
+      SELECT MAX(ds.score) AS score, ds.dpid
+      FROM debug_submissions ds
+      WHERE ds.tid = ${tid}
+      GROUP BY ds.dpid
+    )
+    SELECT ds.dpid, ds.diff, st.score, ds.result, ds.drid
+    FROM score_table st
+    JOIN debug_submissions ds ON ds.score = st.score AND ds.dpid = st.dpid
+    WHERE ds.tid = ${tid}
+    GROUP BY ds.dpid
+  `;
 
   const result: ProblemScoreMap = {};
 
   for (const { dpid, result: subResult, score, ...subInfo } of subsInfo) {
-    if (score === 0) {
-      result[dpid] = {
-        score: 0,
-        result: null,
-        diff: null,
-        drid: null,
-      };
-    } else {
-      result[dpid] = {
-        score,
-        result: subResult as Results,
-        ...subInfo,
-      };
-    }
+    result[dpid] = {
+      score,
+      result: subResult as Results,
+      ...subInfo,
+    };
   }
 
   return { ok: true, data: result };

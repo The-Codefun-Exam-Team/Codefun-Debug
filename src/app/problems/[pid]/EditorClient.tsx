@@ -84,8 +84,7 @@ export const EditorClient = ({ problemData, isLoggedIn, pid }: EditorClientProps
     const code = editorRef.current.getModifiedEditor().getValue();
     const res = await submit(pid, code);
     if (!res.ok) {
-      console.error(res.message);
-      setSubmitError("Error submitting code");
+      setSubmitError(res.message);
       return;
     }
     router.push(`/submissions/${res.drid}`);
@@ -122,7 +121,7 @@ export const EditorClient = ({ problemData, isLoggedIn, pid }: EditorClientProps
             </div>
           ) : (
             <button
-              type="submit"
+              type="button"
               onClick={submitCode}
               className="rounded-md border-2 border-slate-600 bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-500 active:shadow-inner active:shadow-slate-400 dark:border-slate-400 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-600 active:dark:shadow-slate-700"
             >

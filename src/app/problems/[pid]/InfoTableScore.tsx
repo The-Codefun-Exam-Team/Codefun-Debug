@@ -1,4 +1,4 @@
-import { getProblemScore, getUserInfo } from "@utils/api";
+import { getCacheUserInfo, getProblemScore } from "@utils/api";
 import { cookies } from "next/headers";
 
 import { Score } from "@/components";
@@ -9,7 +9,7 @@ export const InfoTableScore = async ({ problemId }: { problemId: string }) => {
   if (!token || !token.value) {
     return <div className="pb-4 pt-5 text-center text-2xl">Login to view score</div>;
   }
-  const userInfo = await getUserInfo(token.value);
+  const userInfo = await getCacheUserInfo(token.value);
   if (!userInfo.ok) {
     return <div className="pb-4 pt-5 text-center text-2xl">{userInfo.error}</div>;
   }
