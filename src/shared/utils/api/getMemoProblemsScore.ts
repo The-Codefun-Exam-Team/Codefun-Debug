@@ -8,13 +8,13 @@ import type { DetailedScoreInfo } from "./getProblemScore";
 
 export type ProblemScoreMap = Record<number, DetailedScoreInfo>;
 
-export type GetAllProblemsScoreResult =
+export type GetProblemsScoreResult =
   | { ok: true; data: ProblemScoreMap }
   | { ok: false; status: number; error: string };
 
 type SqlRawSubInfo = Pick<DebugSubmissions, "dpid" | "diff" | "score" | "result" | "drid">;
 
-const getAllProblemsScoreBase = async (user: UserData): Promise<GetAllProblemsScoreResult> => {
+const getProblemsScore = async (user: UserData): Promise<GetProblemsScoreResult> => {
   const tid = user.id;
 
   const subsInfo = await prisma.$queryRaw<SqlRawSubInfo[]>`
@@ -44,4 +44,4 @@ const getAllProblemsScoreBase = async (user: UserData): Promise<GetAllProblemsSc
   return { ok: true, data: result };
 };
 
-export const getAllProblemsScore = cache(getAllProblemsScoreBase);
+export const getMemoProblemsScore = cache(getProblemsScore);

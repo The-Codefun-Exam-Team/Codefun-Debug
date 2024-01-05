@@ -1,4 +1,4 @@
-import { getAllProblemsScore, getCacheUserInfo } from "@utils/api";
+import { getMemoProblemsScore, getMemoUserInfo } from "@utils/api";
 import { cookies } from "next/headers";
 
 import { Score } from "@/components";
@@ -13,11 +13,11 @@ export const ProblemScore = async ({ dpid }: { dpid: number }) => {
   if (!token || !token.value) {
     return <ProblemScoreText text="Not Available" />;
   }
-  const user = await getCacheUserInfo(token.value);
+  const user = await getMemoUserInfo(token.value);
   if (!user.ok) {
     return <ProblemScoreText text="Not Available" />;
   }
-  const allProblemsScore = await getAllProblemsScore(user.user);
+  const allProblemsScore = await getMemoProblemsScore(user.user);
   if (!allProblemsScore.ok) {
     return <ProblemScoreText text="Not Available" />;
   }

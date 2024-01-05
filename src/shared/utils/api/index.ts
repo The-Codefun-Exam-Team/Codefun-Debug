@@ -1,7 +1,7 @@
 import "server-only";
 export { getAllProblem } from "./getAllProblem";
-export { getAllProblemsScore } from "./getAllProblemsScore";
-export { getCacheUserInfo } from "./getCacheUserInfo";
+export { getMemoProblemsScore } from "./getMemoProblemsScore";
+export { getMemoUserInfo } from "./getMemoUserInfo";
 export { getProblemCount } from "./getProblemCount";
 export { getProblemInfo } from "./getProblemInfo";
 export { type DetailedScoreInfo, getProblemScore } from "./getProblemScore";
