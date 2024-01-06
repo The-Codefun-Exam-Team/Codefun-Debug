@@ -4,8 +4,7 @@ import { Suspense } from "react";
 import { DecoratedLink } from "@/components";
 
 import { CreateProblem } from "./CreateProblem";
-import { ProblemScore } from "./ProblemScore";
-import { ProblemScoreTableHead } from "./ProblemScoreTableHead";
+import { ProblemScore, ProblemScoreText } from "./ProblemScore";
 import type { ProblemList } from "./types";
 
 export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; page: string }) => (
@@ -22,9 +21,9 @@ export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; 
             <div className="hidden sm:block">Language</div>
             <div className="text-ellipsis sm:hidden">Lang</div>
           </th>
-          <Suspense>
-            <ProblemScoreTableHead />
-          </Suspense>
+          <th>
+            <div className="text-right">Score</div>
+          </th>
         </tr>
       </thead>
       <tbody className="h-fit divide-y-[1px] divide-gray-400 dark:divide-slate-600">
@@ -44,9 +43,13 @@ export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; 
             <td>
               <div className="text-left">{problem.language}</div>
             </td>
-            <Suspense>
-              <ProblemScore dpid={problem.dpid} />
-            </Suspense>
+            <td>
+              <div className="float-right flex w-fit justify-end">
+                <Suspense fallback={<ProblemScoreText text="Not Available" />}>
+                  <ProblemScore dpid={problem.dpid} />
+                </Suspense>
+              </div>
+            </td>
           </tr>
         ))}
       </tbody>

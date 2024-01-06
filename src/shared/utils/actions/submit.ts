@@ -1,30 +1,30 @@
 "use server";
 import prisma from "@database/prisma/instance";
+import type { DebugSubmissions } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { getUserInfo } from "@utils/api";
 import { calcEditDistance } from "@utils/shared";
 import { cookies } from "next/headers";
 
-const recalcScore = async (dpid: number) => {
-  (
-    await prisma.debugSubmissions.findMany({
-      where: {
-        debug_problems: {
-          dpid: dpid,
-        },
-      },
-      select: {
-        drid: true,
-      },
-    })
-  ).forEach(({ drid }) => calcScore(drid));
+const recalcScore = async (dpid: DebugSubmissions["dpid"]) => {
+  const scores = await prisma.debugSubmissions.findMany({
+    where: {
+      dpid,
+    },
+    select: {
+      drid: true,
+    },
+  });
+  for (const { drid } of scores) {
+    calcScore(drid);
+  }
 };
 
-const calcScore = async (drid: number) => {
+const calcScore = async (drid: DebugSubmissions["drid"]) => {
   try {
     const diffQuery = await prisma.debugSubmissions.findUniqueOrThrow({
       where: {
-        drid: drid,
+        drid,
       },
       select: {
         diff: true,
@@ -36,7 +36,7 @@ const calcScore = async (drid: number) => {
       ((
         await prisma.debugSubmissions.update({
           where: {
-            drid: drid,
+            drid,
           },
           data: {
             diff: await calcSubmissionDiff(drid),
@@ -52,7 +52,7 @@ const calcScore = async (drid: number) => {
         await prisma.debugSubmissions
           .findUnique({
             where: {
-              drid: drid,
+              drid,
             },
           })
           .debug_problems({
@@ -68,7 +68,7 @@ const calcScore = async (drid: number) => {
           const codefunRunInfo = await prisma.debugSubmissions
             .findUniqueOrThrow({
               where: {
-                drid: drid,
+                drid,
               },
             })
             .debug_problems()
@@ -93,7 +93,7 @@ const calcScore = async (drid: number) => {
         prisma.debugSubmissions
           .update({
             where: {
-              drid: drid,
+              drid,
             },
             data: {
               debug_problems: {
@@ -110,8 +110,7 @@ const calcScore = async (drid: number) => {
           })
           .then(({ dpid }) => {
             // recalculate all problems' submissions including this one
-            recalcScore(dpid);
-            return;
+            void recalcScore(dpid);
           });
       }
     }
@@ -119,7 +118,7 @@ const calcScore = async (drid: number) => {
     const debugSubmissionsInfo = await prisma.debugSubmissions
       .findUniqueOrThrow({
         where: {
-          drid: drid,
+          drid,
         },
       })
       .runs({
@@ -139,7 +138,7 @@ const calcScore = async (drid: number) => {
     if (Math.abs(newScore - 100) <= 0.00001) {
       await prisma.debugSubmissions.update({
         where: {
-          drid: drid,
+          drid,
         },
         data: {
           result: "AC",
@@ -149,7 +148,7 @@ const calcScore = async (drid: number) => {
     } else if (codefunRunInfo.result === "AC") {
       await prisma.debugSubmissions.update({
         where: {
-          drid: drid,
+          drid,
         },
         data: {
           result: "SS",
@@ -159,7 +158,7 @@ const calcScore = async (drid: number) => {
     } else {
       await prisma.debugSubmissions.update({
         where: {
-          drid: drid,
+          drid,
         },
         data: {
           result: codefunRunInfo.result,
@@ -177,7 +176,7 @@ const calcSubmissionDiff = async (drid: number) => {
     await prisma.debugSubmissions
       .findUniqueOrThrow({
         where: {
-          drid: drid,
+          drid,
         },
       })
       .debug_problems()
@@ -193,7 +192,7 @@ const calcSubmissionDiff = async (drid: number) => {
     await prisma.debugSubmissions
       .findUniqueOrThrow({
         where: {
-          drid: drid,
+          drid,
         },
       })
       .runs()
@@ -208,7 +207,7 @@ const calcSubmissionDiff = async (drid: number) => {
 
   await prisma.debugSubmissions.update({
     where: {
-      drid: drid,
+      drid,
     },
     data: {
       diff: editDistance,
@@ -242,7 +241,7 @@ export const submit = async (
     const user = userRes.user;
     const codefunProblem = await prisma.debugProblems.findUnique({
       where: {
-        code: code,
+        code,
       },
       select: {
         dpid: true,
@@ -325,7 +324,7 @@ export const submit = async (
       },
     });
 
-    calcScore(submission.drid);
+    void calcScore(submission.drid);
 
     return {
       ok: true,

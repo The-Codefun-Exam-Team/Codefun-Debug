@@ -35,3 +35,5 @@ export type RequireFields<T, U extends keyof T> = T & Required<Pick<T, U>>;
  * ```
  */
 export type Optional<T, U extends keyof T> = Omit<T, U> & Partial<Pick<T, U>>;
+
+export type Nullable<T extends object> = { [K in keyof T]: T[K] | undefined | null };

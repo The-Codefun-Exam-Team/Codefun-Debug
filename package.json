@@ -7,7 +7,7 @@
     "analyze": "cross-env ANALYZE=true pnpm build",
     "build": "next build",
     "deps": "ncu -u",
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "format": "prettier --write .",
     "lint": "next lint",
     "start": "next start",

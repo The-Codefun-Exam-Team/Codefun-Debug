@@ -1,4 +1,5 @@
 import prisma from "@database/prisma/instance";
+import type { DebugSubmissions } from "@prisma/client";
 
 import type { Results, UserData } from "@/shared/types";
 
@@ -22,49 +23,48 @@ export type GetProblemScoreResult =
   | { ok: true; data: DetailedScoreInfo }
   | { ok: false; error: string; status: number };
 
+type SqlRawRunInfo = Pick<DebugSubmissions, "drid" | "score" | "diff" | "result">;
+
 export const getProblemScore = async (
   problemId: string,
   user: UserData,
 ): Promise<GetProblemScoreResult> => {
   const tid = user.id;
-  const scoreInfo = await prisma.debugSubmissions.groupBy({
-    by: ["dpid"],
-    where: {
-      tid: tid,
-      debug_problems: {
-        code: problemId,
-      },
-    },
-    _max: {
-      score: true,
-    },
-  });
 
-  const runInfo = await prisma.debugSubmissions.findMany({
-    where: {
-      tid: tid,
-      debug_problems: {
-        code: problemId,
-      },
-      score: scoreInfo[0]?._max?.score ?? 0,
-    },
-    select: {
-      drid: true,
-      score: true,
-      diff: true,
-      result: true,
-    },
-  });
+  // benchmark required
+  const runInfos = await prisma.$queryRaw<SqlRawRunInfo[]>`
+    SELECT ds.drid, ds.score, ds.diff, ds.result
+    FROM debug_submissions ds
+    JOIN debug_problems dp ON ds.dpid = dp.dpid
+    WHERE ds.tid = ${tid} AND dp.code = ${problemId} AND ds.score = (
+      SELECT MAX(ds.score) AS score 
+      FROM debug_submissions ds
+      JOIN debug_problems dp ON ds.dpid = dp.dpid
+      WHERE ds.tid = ${tid} AND dp.code = ${problemId}
+    )
+  `;
 
-  const problemInfoWithScore = {
-    score: runInfo[0]?.score ?? 0,
-    diff: runInfo[0]?.diff ?? null,
-    result: (runInfo[0]?.result as Results) ?? null,
-    drid: runInfo[0]?.drid ?? null,
-  } as DetailedScoreInfo;
+  if (runInfos.length === 0) {
+    return {
+      ok: true,
+      data: {
+        score: 0,
+        diff: null,
+        result: null,
+        drid: null,
+      },
+    };
+  }
+
+  const runInfo = runInfos[0];
 
   return {
     ok: true,
-    data: problemInfoWithScore,
+    data: {
+      score: runInfo.score,
+      diff: runInfo.diff,
+      result: runInfo.result as Results,
+      drid: runInfo.drid,
+    },
   };
 };

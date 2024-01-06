@@ -7,39 +7,21 @@ export const GET = async (
   { params: { username } }: { params: { username: string } },
 ) => {
   try {
-    const responseData = {} as Record<string, number>;
-    const userStats = await prisma.debugSubmissions.groupBy({
-      by: ["dpid"],
-      where: {
-        teams: {
-          teamname: username,
-        },
-      },
-      _max: {
-        score: true,
-      },
-      orderBy: {
-        dpid: "asc",
-      },
-    });
-    const problemsCode = await prisma.debugProblems.findMany({
-      where: {
-        dpid: {
-          in: userStats.map(({ dpid }) => dpid),
-        },
-      },
-      select: {
-        code: true,
-      },
-      orderBy: {
-        dpid: "asc",
-      },
-    });
-    userStats.forEach(
-      ({ _max: { score } }, idx) => (responseData[problemsCode[idx].code] = score ?? 0),
-    );
-
-    return NextResponse.json({ data: responseData }, { status: 200 });
+    const resData = {} as Record<string, number>;
+    // benchmark required
+    const stats = await prisma.$queryRaw<{ code: string; score: number }[]>`
+      SELECT MAX(ds.score) AS score, dp.code
+      FROM debug_submissions ds 
+      JOIN teams tm ON ds.tid = tm.tid 
+      JOIN debug_problems dp ON ds.dpid = dp.dpid
+      WHERE tm.teamname = ${username}
+      GROUP BY ds.dpid
+      ORDER BY ds.dpid ASC
+    `;
+    for (const { code, score } of stats) {
+      resData[code] = score;
+    }
+    return NextResponse.json(resData, { status: 200 });
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.code, e.message);

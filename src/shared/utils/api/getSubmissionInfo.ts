@@ -1,7 +1,9 @@
 import prisma from "@database/prisma/instance";
+import type { DebugProblems, DebugSubmissions, SubsCode, Teams } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
 import type { Judge } from "@utils/shared/parseJudge";
+import type { Nullable } from "@utils/types";
 
 import type { Results } from "@/shared/types";
 
@@ -26,42 +28,37 @@ type ReturnType =
   | { ok: false; error: string; status: string }
   | { ok: true; data: SubmissionInfo; codetext: string };
 
+type SqlRawSubInfo = Pick<DebugSubmissions, "score" | "result" | "submittime" | "diff"> &
+  Nullable<
+    Pick<SubsCode, "code" | "error"> &
+      Pick<Teams, "name" | "tid"> & {
+        dp_code: DebugProblems["code"];
+      }
+  >;
+
 export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
   try {
-    const submissionInfo = await prisma.debugSubmissions.findUnique({
-      where: {
-        drid: parseInt(sid),
-      },
-      select: {
-        teams: {
-          select: {
-            name: true,
-            tid: true,
-          },
-        },
-        score: true,
-        result: true,
-        submittime: true,
-        diff: true,
-        debug_problems: {
-          select: {
-            code: true,
-          },
-        },
-        runs: {
-          select: {
-            subs_code: {
-              select: {
-                code: true,
-                error: true,
-              },
-            },
-          },
-        },
-      },
-    });
+    const drid = Number.parseInt(sid);
 
-    if (submissionInfo === null) {
+    if (Number.isNaN(drid)) {
+      return {
+        ok: false,
+        error: "Submission ID is not a number.",
+        status: "400",
+      };
+    }
+
+    const submissionInfos = await prisma.$queryRaw<SqlRawSubInfo[]>`
+      SELECT ds.score, ds.result, ds.submittime, ds.diff, sc.code, sc.error, t.name, t.tid, dp.code AS dp_code
+      FROM debug_submissions ds
+      JOIN teams t ON ds.tid = t.tid
+      JOIN runs r ON ds.rid = r.rid
+      JOIN subs_code sc ON r.rid = sc.rid
+      JOIN debug_problems dp ON ds.dpid = dp.dpid
+      WHERE ds.drid = ${drid}
+    `;
+
+    if (submissionInfos.length === 0) {
       return {
         ok: false,
         error: "Submission not found.",
@@ -69,7 +66,17 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
       };
     }
 
-    const problemInfo = await getProblemInfo(submissionInfo.debug_problems.code);
+    const submissionInfo = submissionInfos[0];
+
+    if (!submissionInfo.dp_code) {
+      return {
+        ok: false,
+        error: "Problem not found.",
+        status: "404",
+      };
+    }
+
+    const problemInfo = await getProblemInfo(submissionInfo.dp_code);
 
     if (!problemInfo.ok) {
       console.error(problemInfo.error);
@@ -80,14 +87,18 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
       };
     }
 
-    if (submissionInfo.runs.subs_code === null) {
+    if (!submissionInfo.code || !submissionInfo.error) {
       throw new Error(`Submission ${sid} has no subs_code`);
+    }
+
+    if (!submissionInfo.name || !submissionInfo.tid) {
+      throw new Error(`Submission ${sid} has no teams.`);
     }
 
     const publicInfo = {
       user: {
-        name: submissionInfo.teams.name,
-        tid: submissionInfo.teams.tid,
+        name: submissionInfo.name,
+        tid: submissionInfo.tid,
       },
       drid: parseInt(sid),
       diff: submissionInfo.diff,
@@ -95,12 +106,13 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
       debug_problem: problemInfo.data,
       score: submissionInfo.score,
       result: submissionInfo.result as Results,
-      submission_judge: parseJudge(submissionInfo.runs.subs_code.error),
+      submission_judge: parseJudge(submissionInfo.error),
     } satisfies SubmissionInfo;
+
     return {
       ok: true,
       data: publicInfo,
-      codetext: submissionInfo.runs.subs_code.code,
+      codetext: submissionInfo.code,
     };
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
