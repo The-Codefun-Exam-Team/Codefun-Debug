@@ -31,6 +31,7 @@ export const getProblemScore = async (
 ): Promise<GetProblemScoreResult> => {
   const tid = user.id;
 
+  // benchmark required
   const runInfos = await prisma.$queryRaw<SqlRawRunInfo[]>`
     SELECT ds.drid, ds.score, ds.diff, ds.result
     FROM debug_submissions ds

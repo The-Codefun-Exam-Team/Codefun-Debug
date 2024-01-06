@@ -8,6 +8,7 @@ export const GET = async (
 ) => {
   try {
     const resData = {} as Record<string, number>;
+    // benchmark required
     const stats = await prisma.$queryRaw<{ code: string; score: number }[]>`
       SELECT MAX(ds.score) AS score, dp.code
       FROM debug_submissions ds 
