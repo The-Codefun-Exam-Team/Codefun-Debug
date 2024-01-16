@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const Page = async ({ params: { page } }: { params: { page: string } }) => {
-  const itemsPerPage = 20;
+  const itemsPerPage = 50;
   const [problemCount, problemsList] = await Promise.all([
     getProblemCount(),
     getAllProblem(page, itemsPerPage.toString()),
@@ -45,7 +45,9 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
             <Heading>There&apos;s nothing here.</Heading>
           </span>
         ) : (
-          <Pagination page={page} baseURL="/problems/all/" lastPage={lastPage} />
+          problemsList.data.length > itemsPerPage / 2 && (
+            <Pagination page={page} baseURL="/problems/all/" lastPage={lastPage} />
+          )
         )}
       </div>
     </>
