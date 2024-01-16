@@ -26,3 +26,7 @@ export const ProblemScore = async ({ dpid }: { dpid: number }) => {
     <>{!problemScore ? <ProblemScoreText text="Not Submitted" /> : <Score {...problemScore} />}</>
   );
 };
+
+export const ProblemScoreSkeleton = async () => {
+  return <div className="h-5 w-20 animate-pulse rounded-md bg-gray-200 dark:bg-slate-600"></div>;
+};
