@@ -3,7 +3,6 @@ import type { DebugProblems, DebugSubmissions, SubsCode, Teams } from "@prisma/c
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
 import type { Judge } from "@utils/shared/parseJudge";
-import type { Nullable } from "@utils/types";
 
 import type { Results } from "@/shared/types";
 
