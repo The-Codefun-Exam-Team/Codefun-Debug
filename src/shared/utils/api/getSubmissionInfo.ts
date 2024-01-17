@@ -29,12 +29,10 @@ type ReturnType =
   | { ok: true; data: SubmissionInfo; codetext: string };
 
 type SqlRawSubInfo = Pick<DebugSubmissions, "score" | "result" | "submittime" | "diff"> &
-  Nullable<
-    Pick<SubsCode, "code" | "error"> &
-      Pick<Teams, "name" | "tid"> & {
-        dp_code: DebugProblems["code"];
-      }
-  >;
+  Pick<SubsCode, "code" | "error"> &
+  Pick<Teams, "name" | "tid"> & {
+    dp_code: DebugProblems["code"];
+  };
 
 export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
   try {
@@ -85,15 +83,6 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
         error: "Internal Server Error",
         status: "500",
       };
-    }
-
-    // BUGGG: Error is generated from codefun which is not available when submited
-    if (!submissionInfo.code) {
-      throw new Error(`Submission ${sid} has no subs_code`);
-    }
-
-    if (!submissionInfo.name || !submissionInfo.tid) {
-      throw new Error(`Submission ${sid} has no teams.`);
     }
 
     const publicInfo = {

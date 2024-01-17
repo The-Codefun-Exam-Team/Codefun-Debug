@@ -182,7 +182,7 @@ const calcSubmissionDiff = async (drid: number) => {
       .debug_problems()
       .runs()
       .subs_code({ select: { code: true } })
-  )?.code.replace(/\s/g, "");
+  ).code.replace(/\s/g, "");
 
   if (problemCode === undefined) {
     throw new Error(`Submission ${drid} has no problem_code`);
@@ -197,7 +197,7 @@ const calcSubmissionDiff = async (drid: number) => {
       })
       .runs()
       .subs_code({ select: { code: true } })
-  )?.code.replace(/\s/g, "");
+  ).code.replace(/\s/g, "");
 
   if (submissionCode === undefined) {
     throw new Error(`Submission ${drid} has no submission_code`);
@@ -287,7 +287,7 @@ export const submit = async (
 
     const submissionId = submissionToCodefunJson.data as number;
 
-    const submissionInfo = await prisma.runs.findUnique({
+    const submissionInfo = await prisma.runs.findUniqueOrThrow({
       where: {
         rid: submissionId,
       },
@@ -303,10 +303,6 @@ export const submit = async (
         },
       },
     });
-
-    if (!submissionInfo?.subs_code) {
-      throw new Error(`Submission ${submissionId} has no subs_code`);
-    }
 
     const submission = await prisma.debugSubmissions.create({
       data: {
