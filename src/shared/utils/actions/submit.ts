@@ -62,33 +62,19 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
           })
       )?.mindiff ?? 10000;
 
-    const codefunRunInfoQuery = async (): Promise<{ result: string; score: number }> => {
-      return new Promise((resolve) => {
-        const interval = setInterval(async () => {
-          const codefunRunInfo = await prisma.debugSubmissions
-            .findUniqueOrThrow({
-              where: {
-                drid,
-              },
-            })
-            .debug_problems()
-            .runs({
-              select: {
-                result: true,
-                score: true,
-              },
-            });
-          if (codefunRunInfo.result !== "Q") {
-            clearInterval(interval);
-            resolve(codefunRunInfo);
-          }
-        }, 1000);
+    const codefunRunInfo = await prisma.debugSubmissions
+      .findUniqueOrThrow({
+        where: {
+          drid,
+        },
+      })
+      .debug_problems()
+      .runs({
+        select: {
+          result: true,
+          score: true,
+        },
       });
-    };
-
-    console.log(`Waiting for submission ${drid} to finish`);
-    const codefunRunInfo = await codefunRunInfoQuery();
-    console.log(`Submission ${drid} finished`);
 
     if (codefunRunInfo.result === "AC") {
       if (diff < mindiff) {
@@ -118,18 +104,30 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
       }
     }
 
-    const debugSubmissionsInfo = await prisma.debugSubmissions
-      .findUniqueOrThrow({
-        where: {
-          drid,
-        },
-      })
-      .runs({
-        select: {
-          result: true,
-          score: true,
-        },
+    const debugSubmissionsQuery = async (): Promise<{ result: string; score: number }> => {
+      return new Promise((resolve) => {
+        const interval = setInterval(async () => {
+          const debugSubmissionsInfo = await prisma.debugSubmissions
+            .findUniqueOrThrow({
+              where: {
+                drid,
+              },
+            })
+            .runs({
+              select: {
+                result: true,
+                score: true,
+              },
+            });
+          if (debugSubmissionsInfo.result !== "Q") {
+            clearInterval(interval);
+            resolve(debugSubmissionsInfo);
+          }
+        }, 1000);
       });
+    };
+
+    const debugSubmissionsInfo = await debugSubmissionsQuery();
 
     const initialScore = codefunRunInfo.score;
     const submissionsScore = debugSubmissionsInfo.score;
