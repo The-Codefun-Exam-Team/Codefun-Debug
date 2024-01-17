@@ -110,6 +110,7 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
           })
           .then(({ dpid }) => {
             // recalculate all problems' submissions including this one
+            console.log(`Recalculating score for all submissions of problem ${dpid}`);
             void recalcScore(dpid);
           });
       }
