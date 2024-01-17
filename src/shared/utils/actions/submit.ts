@@ -138,6 +138,9 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
     // minus 5% score for each addition diff
     const diffPercentage = diff < mindiff ? 1 : Math.max(0, 1 - ((diff - mindiff) * 5) / 100);
     const newScore = scorePercentage * diffPercentage * 100;
+    console.log(diff, mindiff);
+    console.log(initialScore, submissionsScore, increasedScore);
+    console.log(diffPercentage, scorePercentage);
     console.log(`New score for submission ${drid}: ${newScore}`);
     if (Math.abs(newScore - 100) <= 0.00001) {
       await prisma.debugSubmissions.update({
