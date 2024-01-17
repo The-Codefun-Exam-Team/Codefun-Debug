@@ -86,7 +86,9 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
       });
     };
 
+    console.log(`Waiting for submission ${drid} to finish`);
     const codefunRunInfo = await codefunRunInfoQuery();
+    console.log(`Submission ${drid} finished`);
 
     if (codefunRunInfo.result === "AC") {
       if (diff < mindiff) {
