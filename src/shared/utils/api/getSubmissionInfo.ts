@@ -87,7 +87,8 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
       };
     }
 
-    if (!submissionInfo.code || !submissionInfo.error) {
+    // BUGGG: Error is generated from codefun which is not available when submited
+    if (!submissionInfo.code) {
       throw new Error(`Submission ${sid} has no subs_code`);
     }
 
@@ -106,7 +107,7 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
       debug_problem: problemInfo.data,
       score: submissionInfo.score,
       result: submissionInfo.result as Results,
-      submission_judge: parseJudge(submissionInfo.error),
+      submission_judge: parseJudge(submissionInfo.error ?? ""),
     } satisfies SubmissionInfo;
 
     return {
