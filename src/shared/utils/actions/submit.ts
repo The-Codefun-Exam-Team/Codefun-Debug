@@ -62,35 +62,23 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
           })
       )?.mindiff ?? 10000;
 
-    const codefunRunInfoQuery = async (): Promise<{ result: string; score: number }> => {
-      return new Promise((resolve) => {
-        const interval = setInterval(async () => {
-          const codefunRunInfo = await prisma.debugSubmissions
-            .findUniqueOrThrow({
-              where: {
-                drid,
-              },
-            })
-            .debug_problems()
-            .runs({
-              select: {
-                result: true,
-                score: true,
-              },
-            });
-          if (codefunRunInfo.result !== "Q") {
-            clearInterval(interval);
-            resolve(codefunRunInfo);
-          }
-        }, 1000);
+    const codefunRunInfo = await prisma.debugSubmissions
+      .findUniqueOrThrow({
+        where: {
+          drid,
+        },
+      })
+      .debug_problems()
+      .runs({
+        select: {
+          result: true,
+          score: true,
+        },
       });
-    };
-
-    const codefunRunInfo = await codefunRunInfoQuery();
 
     if (codefunRunInfo.result === "AC") {
       if (diff < mindiff) {
-        prisma.debugSubmissions
+        void prisma.debugSubmissions
           .update({
             where: {
               drid,
@@ -115,18 +103,30 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
       }
     }
 
-    const debugSubmissionsInfo = await prisma.debugSubmissions
-      .findUniqueOrThrow({
-        where: {
-          drid,
-        },
-      })
-      .runs({
-        select: {
-          result: true,
-          score: true,
-        },
+    const debugSubmissionsQuery = async (): Promise<{ result: string; score: number }> => {
+      return new Promise((resolve) => {
+        const interval = setInterval(async () => {
+          const debugSubmissionsInfo = await prisma.debugSubmissions
+            .findUniqueOrThrow({
+              where: {
+                drid,
+              },
+            })
+            .runs({
+              select: {
+                result: true,
+                score: true,
+              },
+            });
+          if (debugSubmissionsInfo.result !== "Q") {
+            clearInterval(interval);
+            resolve(debugSubmissionsInfo);
+          }
+        }, 1000);
       });
+    };
+
+    const debugSubmissionsInfo = await debugSubmissionsQuery();
 
     const initialScore = codefunRunInfo.score;
     const submissionsScore = debugSubmissionsInfo.score;
@@ -135,6 +135,7 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
     // minus 5% score for each addition diff
     const diffPercentage = diff < mindiff ? 1 : Math.max(0, 1 - ((diff - mindiff) * 5) / 100);
     const newScore = scorePercentage * diffPercentage * 100;
+
     if (Math.abs(newScore - 100) <= 0.00001) {
       await prisma.debugSubmissions.update({
         where: {
@@ -182,7 +183,7 @@ const calcSubmissionDiff = async (drid: number) => {
       .debug_problems()
       .runs()
       .subs_code({ select: { code: true } })
-  )?.code.replace(/\s/g, "");
+  ).code.replace(/\s/g, "");
 
   if (problemCode === undefined) {
     throw new Error(`Submission ${drid} has no problem_code`);
@@ -197,7 +198,7 @@ const calcSubmissionDiff = async (drid: number) => {
       })
       .runs()
       .subs_code({ select: { code: true } })
-  )?.code.replace(/\s/g, "");
+  ).code.replace(/\s/g, "");
 
   if (submissionCode === undefined) {
     throw new Error(`Submission ${drid} has no submission_code`);
@@ -287,7 +288,7 @@ export const submit = async (
 
     const submissionId = submissionToCodefunJson.data as number;
 
-    const submissionInfo = await prisma.runs.findUnique({
+    const submissionInfo = await prisma.runs.findUniqueOrThrow({
       where: {
         rid: submissionId,
       },
@@ -303,10 +304,6 @@ export const submit = async (
         },
       },
     });
-
-    if (!submissionInfo?.subs_code) {
-      throw new Error(`Submission ${submissionId} has no subs_code`);
-    }
 
     const submission = await prisma.debugSubmissions.create({
       data: {

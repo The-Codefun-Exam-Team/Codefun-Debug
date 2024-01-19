@@ -3,7 +3,6 @@ import type { DebugProblems, DebugSubmissions, SubsCode, Teams } from "@prisma/c
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
 import type { Judge } from "@utils/shared/parseJudge";
-import type { Nullable } from "@utils/types";
 
 import type { Results } from "@/shared/types";
 
@@ -29,12 +28,10 @@ type ReturnType =
   | { ok: true; data: SubmissionInfo; codetext: string };
 
 type SqlRawSubInfo = Pick<DebugSubmissions, "score" | "result" | "submittime" | "diff"> &
-  Nullable<
-    Pick<SubsCode, "code" | "error"> &
-      Pick<Teams, "name" | "tid"> & {
-        dp_code: DebugProblems["code"];
-      }
-  >;
+  Pick<SubsCode, "code" | "error"> &
+  Pick<Teams, "name" | "tid"> & {
+    dp_code: DebugProblems["code"];
+  };
 
 export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
   try {
@@ -87,14 +84,6 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
       };
     }
 
-    if (!submissionInfo.code || !submissionInfo.error) {
-      throw new Error(`Submission ${sid} has no subs_code`);
-    }
-
-    if (!submissionInfo.name || !submissionInfo.tid) {
-      throw new Error(`Submission ${sid} has no teams.`);
-    }
-
     const publicInfo = {
       user: {
         name: submissionInfo.name,
@@ -106,7 +95,7 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
       debug_problem: problemInfo.data,
       score: submissionInfo.score,
       result: submissionInfo.result as Results,
-      submission_judge: parseJudge(submissionInfo.error),
+      submission_judge: parseJudge(submissionInfo.error ?? ""),
     } satisfies SubmissionInfo;
 
     return {
