@@ -72,22 +72,19 @@ export const recalcScore = async (
       const scorePercentage = increasedScore / (100 - problemScore);
       // minus 5% score for each addition diff
       if (result.diff === null || result.diff === 100000) {
-        result.diff =
-          result.diff === null || result.diff === 100000
-            ? (
-                await prisma.debugSubmissions.update({
-                  where: {
-                    drid: result.drid,
-                  },
-                  data: {
-                    diff: await calcSubmissionDiff(result.drid),
-                  },
-                  select: {
-                    diff: true,
-                  },
-                })
-              ).diff
-            : result.diff;
+        result.diff = (
+          await prisma.debugSubmissions.update({
+            where: {
+              drid: result.drid,
+            },
+            data: {
+              diff: await calcSubmissionDiff(result.drid),
+            },
+            select: {
+              diff: true,
+            },
+          })
+        ).diff;
       }
       const typedDiff = result.diff as number;
       const diffPercentage =
