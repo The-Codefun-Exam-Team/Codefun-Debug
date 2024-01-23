@@ -58,6 +58,7 @@ export const recalcScore = async (
       select: {
         drid: true,
         diff: true,
+        result: true,
         runs: {
           select: {
             score: true,
@@ -95,14 +96,17 @@ export const recalcScore = async (
       return {
         drid: result.drid,
         score: newScore,
+        result: result.runs.score === 100 ? "AC" : result.result === "AC" ? "SS" : result.result,
       };
     });
 
     const newData = await Promise.all(newDataPromise);
-    const dataPayload = newData.map((data) => Prisma.sql`(${data.drid}, ${data.score})`);
+    const dataPayload = newData.map(
+      (data) => Prisma.sql`(${data.drid}, ${data.score}, ${data.result})`,
+    );
 
     await prisma.$queryRaw`
-      INSERT IGNORE INTO debug_submissions (drid,score)
+      INSERT IGNORE INTO debug_submissions (drid,score,result)
         VALUES ${Prisma.join(dataPayload)}
       ON DUPLICATE KEY UPDATE
         score = VALUES(score)
@@ -222,7 +226,7 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
     const diffPercentage = diff < mindiff ? 1 : Math.max(0, 1 - ((diff - mindiff) * 5) / 100);
     const newScore = scorePercentage * diffPercentage * 100;
 
-    if (Math.abs(newScore - 100) <= 0.00001) {
+    if (newScore === 100) {
       await prisma.debugSubmissions.update({
         where: {
           drid,
