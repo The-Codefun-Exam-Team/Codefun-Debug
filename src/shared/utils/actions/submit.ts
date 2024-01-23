@@ -1,22 +1,117 @@
 "use server";
 import prisma from "@database/prisma/instance";
-import type { DebugSubmissions } from "@prisma/client";
+import { type DebugProblems, type DebugSubmissions, Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { getUserInfo } from "@utils/api";
 import { calcEditDistance } from "@utils/shared";
 import { cookies } from "next/headers";
 
-const recalcScore = async (dpid: DebugSubmissions["dpid"]) => {
-  const scores = await prisma.debugSubmissions.findMany({
-    where: {
-      dpid,
-    },
-    select: {
-      drid: true,
-    },
-  });
-  for (const { drid } of scores) {
-    calcScore(drid);
+export const recalcScore = async (
+  dpid: DebugSubmissions["dpid"],
+  mindiff?: DebugProblems["mindiff"],
+) => {
+  try {
+    if (mindiff === undefined) {
+      mindiff =
+        (
+          await prisma.debugSubmissions.groupBy({
+            by: ["dpid"],
+            where: {
+              result: "AC",
+            },
+            _min: {
+              diff: true,
+            },
+          })
+        )[0]._min.diff ?? 10000;
+    }
+    const typedMindiff = mindiff as number;
+
+    const problemScore = (
+      await prisma.debugProblems
+        .findUniqueOrThrow({
+          where: {
+            dpid,
+          },
+        })
+        .runs({
+          select: {
+            score: true,
+          },
+        })
+    ).score;
+
+    await prisma.debugProblems.update({
+      where: {
+        dpid,
+      },
+      data: {
+        mindiff,
+      },
+    });
+
+    const results = await prisma.debugSubmissions.findMany({
+      where: {
+        dpid,
+      },
+      select: {
+        drid: true,
+        diff: true,
+        runs: {
+          select: {
+            score: true,
+          },
+        },
+      },
+    });
+
+    const newDataPromise = results.map(async (result) => {
+      const increasedScore = Math.max(0, result.runs.score - problemScore);
+      const scorePercentage = increasedScore / (100 - problemScore);
+      // minus 5% score for each addition diff
+      if (result.diff === null || result.diff === 100000) {
+        result.diff =
+          result.diff === null || result.diff === 100000
+            ? (
+                await prisma.debugSubmissions.update({
+                  where: {
+                    drid: result.drid,
+                  },
+                  data: {
+                    diff: await calcSubmissionDiff(result.drid),
+                  },
+                  select: {
+                    diff: true,
+                  },
+                })
+              ).diff
+            : result.diff;
+      }
+      const typedDiff = result.diff as number;
+      const diffPercentage =
+        typedDiff < typedMindiff ? 1 : Math.max(0, 1 - ((typedDiff - typedMindiff) * 5) / 100);
+      const newScore = scorePercentage * diffPercentage * 100;
+      return {
+        drid: result.drid,
+        score: newScore,
+      };
+    });
+
+    const newData = await Promise.all(newDataPromise);
+    const dataPayload = newData.map((data) => Prisma.sql`(${data.drid}, ${data.score})`);
+
+    await prisma.$queryRaw`
+      INSERT IGNORE INTO debug_submissions (drid,score)
+        VALUES ${Prisma.join(dataPayload)}
+      ON DUPLICATE KEY UPDATE
+        score = VALUES(score)
+    `;
+  } catch (e) {
+    if (e instanceof PrismaClientKnownRequestError) {
+      console.error(e.code, e.message);
+    } else {
+      console.error(e);
+    }
   }
 };
 
@@ -32,20 +127,21 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
     });
 
     const diff =
-      diffQuery.diff ??
-      ((
-        await prisma.debugSubmissions.update({
-          where: {
-            drid,
-          },
-          data: {
-            diff: await calcSubmissionDiff(drid),
-          },
-          select: {
-            diff: true,
-          },
-        })
-      ).diff as number);
+      diffQuery.diff === null || diffQuery.diff === 100000
+        ? ((
+            await prisma.debugSubmissions.update({
+              where: {
+                drid,
+              },
+              data: {
+                diff: await calcSubmissionDiff(drid),
+              },
+              select: {
+                diff: true,
+              },
+            })
+          ).diff as number)
+        : diffQuery.diff;
 
     const mindiff =
       (
@@ -76,30 +172,20 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
         },
       });
 
+    const dpid = (
+      await prisma.debugSubmissions.findFirstOrThrow({
+        where: {
+          drid,
+        },
+        select: {
+          dpid: true,
+        },
+      })
+    ).dpid;
+
     if (codefunRunInfo.result === "AC") {
       if (diff < mindiff) {
-        void prisma.debugSubmissions
-          .update({
-            where: {
-              drid,
-            },
-            data: {
-              debug_problems: {
-                update: {
-                  mindiff: diff,
-                },
-              },
-            },
-          })
-          .debug_problems({
-            select: {
-              dpid: true,
-            },
-          })
-          .then(({ dpid }) => {
-            // recalculate all problems' submissions including this one
-            void recalcScore(dpid);
-          });
+        void recalcScore(dpid, diff);
       }
     }
 

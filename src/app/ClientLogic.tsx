@@ -5,12 +5,15 @@ import { authenticate } from "@utils/actions";
 import { isColorScheme } from "@utils/shared";
 import { useEffect } from "react";
 
+import { recalcScore } from "@/shared/utils/actions/submit";
+
 let didFetchUser = false;
 let didCheckInitialTheme = false;
 
 export const ClientLogic = () => {
   useEffect(() => {
     if (!didFetchUser) {
+      void recalcScore(2);
       didFetchUser = true;
       // We only want to run this on client.
       store.dispatch(async (dispatch) => {
