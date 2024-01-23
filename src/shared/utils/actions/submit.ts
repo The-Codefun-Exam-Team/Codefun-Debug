@@ -17,13 +17,14 @@ export const recalcScore = async (
           await prisma.debugSubmissions.groupBy({
             by: ["dpid"],
             where: {
+              dpid,
               result: "AC",
             },
             _min: {
               diff: true,
             },
           })
-        )[0]._min.diff ?? 10000;
+        )[0]._min.diff ?? 100000;
     }
     const typedMindiff = mindiff as number;
 
