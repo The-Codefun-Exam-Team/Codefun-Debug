@@ -5,6 +5,7 @@ import type { Judge } from "@utils/shared/parseJudge";
 import { unstable_cache } from "next/cache";
 
 export interface DetailedProblemInfo {
+  dpid: number;
   code: string;
   name: string;
   language: string;
@@ -29,6 +30,7 @@ export const getProblemInfo = async (code: string): Promise<ReturnType> => {
             code,
           },
           select: {
+            dpid: true,
             code: true,
             name: true,
             language: true,
@@ -57,6 +59,7 @@ export const getProblemInfo = async (code: string): Promise<ReturnType> => {
           throw new Error(`Debug problem ${code} has no subs_code`);
         }
         return {
+          dpid: problemInfo.dpid,
           code: problemInfo.code,
           name: problemInfo.name,
           language: problemInfo.language,

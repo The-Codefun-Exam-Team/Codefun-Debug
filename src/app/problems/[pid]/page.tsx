@@ -7,6 +7,7 @@ import { Box, Heading } from "@/components";
 import { Editor } from "./Editor";
 import { InfoTable } from "./InfoTable";
 import { InfoTableScore } from "./InfoTableScore";
+import { RecalcScore } from "./RecalcScore";
 
 export const metadata: Metadata = {
   title: "Problem",
@@ -45,6 +46,7 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
           problemData={problemData.data}
           pid={pid}
         />
+        <RecalcScore dpid={problemData.data.dpid} />
       </div>
       <div className="flex h-full w-full md:flex-[2_2_0]">
         <Suspense fallback={<div className="pb-4 pt-5 text-center text-2xl">Loading...</div>}>

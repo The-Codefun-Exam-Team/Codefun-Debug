@@ -93,7 +93,12 @@ export const recalcScore = async (
       return {
         drid: result.drid,
         score: newScore,
-        result: result.runs.score === 100 ? "AC" : result.result === "AC" ? "SS" : result.result,
+        result:
+          Math.abs(result.runs.score - 100) < 1e-5
+            ? "AC"
+            : result.result === "AC"
+              ? "SS"
+              : result.result,
       };
     });
 
@@ -106,7 +111,7 @@ export const recalcScore = async (
       INSERT IGNORE INTO debug_submissions (drid,score,result)
         VALUES ${Prisma.join(dataPayload)}
       ON DUPLICATE KEY UPDATE
-        score = VALUES(score)
+        score = VALUES(score), result = VALUES(result)
     `;
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
@@ -223,7 +228,7 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
     const diffPercentage = diff < mindiff ? 1 : Math.max(0, 1 - ((diff - mindiff) * 5) / 100);
     const newScore = scorePercentage * diffPercentage * 100;
 
-    if (newScore === 100) {
+    if (Math.abs(newScore - 100) < 1e-5) {
       await prisma.debugSubmissions.update({
         where: {
           drid,
