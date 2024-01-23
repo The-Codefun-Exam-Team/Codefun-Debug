@@ -143,20 +143,19 @@ const calcScore = async (drid: DebugSubmissions["drid"]) => {
           ).diff as number)
         : diffQuery.diff;
 
-    const mindiff =
-      (
-        await prisma.debugSubmissions
-          .findUnique({
-            where: {
-              drid,
-            },
-          })
-          .debug_problems({
-            select: {
-              mindiff: true,
-            },
-          })
-      )?.mindiff ?? 10000;
+    const mindiff = (
+      await prisma.debugSubmissions
+        .findUniqueOrThrow({
+          where: {
+            drid,
+          },
+        })
+        .debug_problems({
+          select: {
+            mindiff: true,
+          },
+        })
+    ).mindiff;
 
     const codefunRunInfo = await prisma.debugSubmissions
       .findUniqueOrThrow({
