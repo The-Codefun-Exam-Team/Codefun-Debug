@@ -44,8 +44,6 @@ export const EditorClient = ({ problemData, isLoggedIn, pid }: EditorClientProps
             scrollBeyondLastColumn: 10,
           });
 
-          monaco.current.editor.setTheme("light");
-
           editorRef.current.setModel({
             original: monaco.current.editor.createModel("", "cpp"),
             modified: monaco.current.editor.createModel("", "cpp"),
