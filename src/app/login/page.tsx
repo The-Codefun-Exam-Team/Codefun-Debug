@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { Box, Heading } from "@/components";
 
 import { Inputs } from "./Inputs";
+import { InputsSkeleton } from "./InputsSkeleton";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -18,7 +19,7 @@ const Page = () => (
             <div className="text-accent-light dark:text-accent-dark">Please login to continue</div>
           </Heading>
         </div>
-        <Suspense>
+        <Suspense fallback={<InputsSkeleton />}>
           <Inputs />
         </Suspense>
       </form>
