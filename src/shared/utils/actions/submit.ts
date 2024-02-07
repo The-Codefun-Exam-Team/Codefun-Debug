@@ -332,7 +332,7 @@ export const submit = async (
       };
     }
     const user = userRes.user;
-    const codefunProblem = await prisma.debugProblems.findUnique({
+    const codefunProblem = await prisma.debugProblems.findUniqueOrThrow({
       where: {
         code,
       },
