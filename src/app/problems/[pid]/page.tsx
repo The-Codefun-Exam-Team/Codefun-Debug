@@ -7,6 +7,7 @@ import { Box, Heading } from "@/components";
 import { Editor } from "./Editor";
 import { InfoTable } from "./InfoTable";
 import { InfoTableScore } from "./InfoTableScore";
+import { RecalcScore } from "./RecalcScore";
 
 export const metadata: Metadata = {
   title: "Problem",
@@ -32,13 +33,20 @@ const Page = async ({ params: { pid } }: { params: { pid: string } }) => {
       <div className="h-auto w-full md:flex-[1_1_0]">
         <InfoTable
           score={
-            <Suspense fallback={<div className="pb-4 pt-5 text-center text-2xl">Loading...</div>}>
+            <Suspense
+              fallback={
+                <div className="pb-4 pt-5">
+                  <div className="mx-auto h-8 w-28 animate-pulse rounded-md bg-gray-200 dark:bg-slate-600"></div>
+                </div>
+              }
+            >
               <InfoTableScore problemId={pid} />
             </Suspense>
           }
           problemData={problemData.data}
           pid={pid}
         />
+        <RecalcScore dpid={problemData.data.dpid} />
       </div>
       <div className="flex h-full w-full md:flex-[2_2_0]">
         <Suspense fallback={<div className="pb-4 pt-5 text-center text-2xl">Loading...</div>}>
