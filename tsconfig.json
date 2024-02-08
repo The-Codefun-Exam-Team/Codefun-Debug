@@ -17,7 +17,7 @@
     "paths": {
       "@redux/*": ["./src/features/redux-thunk/*"],
       "@schemas/*": ["./src/shared/schemas/*"],
-      "@hooks/*": ["./src/shared/hooks/*"],
+      "@hooks/*": ["./src/hooks/*"],
       "@utils/*": ["./src/shared/utils/*"],
       "@database/*": ["./src/database/*"],
       "@/*": ["./src/*"]

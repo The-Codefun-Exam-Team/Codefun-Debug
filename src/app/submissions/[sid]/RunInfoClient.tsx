@@ -1,11 +1,11 @@
 "use client";
 import { Transition } from "@headlessui/react";
-import { useInterval } from "@hooks/useInterval";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { startTransition, useEffect, useState } from "react";
 
 import { Heading } from "@/components";
+import { useInterval } from "@/hooks/useInterval";
 
 export const RunInfoClient = ({
   verdictNode,
