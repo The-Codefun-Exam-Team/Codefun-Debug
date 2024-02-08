@@ -1,8 +1,7 @@
 "use client";
 
-import { useAppSelector } from "@redux/hooks";
-
 import { ResetIcon } from "@/components/icon";
+import { useAppSelector } from "@/hooks";
 import { recalcScore } from "@/shared/utils/actions/submit";
 
 export const RecalcScore = ({ dpid }: { dpid: number }) => {

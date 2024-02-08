@@ -1,12 +1,12 @@
 "use client";
 
-import { useAppDispatch } from "@redux/hooks";
 import { createProblem } from "@utils/actions";
 import type { CreateProblemFormState } from "@utils/actions/createProblem";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
 import { ErrorBox, Heading, Input, SuccessBox } from "@/components";
+import { useAppDispatch } from "@/hooks";
 
 const initialState: CreateProblemFormState = {
   code_messages: [],

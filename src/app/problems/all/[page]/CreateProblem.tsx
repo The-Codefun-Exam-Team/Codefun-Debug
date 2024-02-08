@@ -1,8 +1,8 @@
 "use client";
-import { useAppSelector } from "@redux/hooks";
 import Link from "next/link";
 
 import { PlusSignIcon } from "@/components/icon";
+import { useAppSelector } from "@/hooks";
 
 export const CreateProblem = () => {
   const user = useAppSelector((state) => state.user.user);

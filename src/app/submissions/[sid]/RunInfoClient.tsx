@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { startTransition, useEffect, useState } from "react";
 
 import { Heading } from "@/components";
-import { useInterval } from "@/hooks/useInterval";
+import { useInterval } from "@/hooks";
 
 export const RunInfoClient = ({
   verdictNode,
