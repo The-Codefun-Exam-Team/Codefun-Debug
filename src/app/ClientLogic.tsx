@@ -3,7 +3,7 @@ import { authenticate } from "@utils/actions";
 import { isColorScheme } from "@utils/shared";
 import { useEffect } from "react";
 
-import { setLoading, setScheme, setUser, store } from "@/providers/redux";
+import { setLoading, setScheme, setUser, store } from "@/store/redux";
 
 let didFetchUser = false;
 let didCheckInitialTheme = false;

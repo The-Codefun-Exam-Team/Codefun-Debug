@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setScheme, setUser } from "@/providers/redux";
+import { setScheme, setUser } from "@/store/redux";
 
 import { ADDITIONAL_LINKS, SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
 import { BaseNavLink, HorizontalNavLink, NAV_BUTTON_CLASS, VerticalNavLink } from "./NavLink";

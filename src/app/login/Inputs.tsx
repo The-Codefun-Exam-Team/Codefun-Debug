@@ -8,7 +8,7 @@ import { useFormState, useFormStatus } from "react-dom";
 
 import { ErrorBox, Input } from "@/components";
 import { useAppDispatch } from "@/hooks";
-import { setUser } from "@/providers/redux";
+import { setUser } from "@/store/redux";
 
 const initialState: LoginFormState = {
   user: null,
