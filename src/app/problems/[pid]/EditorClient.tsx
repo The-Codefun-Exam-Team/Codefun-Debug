@@ -7,7 +7,7 @@ import type monacoEditor from "monaco-editor";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import atlanticNight from "@/features/monaco-themes/atlantic-night.json";
+import atlanticNight from "@/config/monaco-themes/atlantic-night.json";
 
 export interface EditorClientProps {
   problemData: DetailedProblemInfo;

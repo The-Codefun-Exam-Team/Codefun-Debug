@@ -4,7 +4,7 @@ import { clsx } from "@utils/shared";
 import type monacoEditor from "monaco-editor";
 import { useEffect, useRef, useState } from "react";
 
-import AtlanticNight from "@/features/monaco-themes/atlantic-night.json";
+import AtlanticNight from "@/config/monaco-themes/atlantic-night.json";
 
 import { CodeViewText } from "./CodeViewText";
 
