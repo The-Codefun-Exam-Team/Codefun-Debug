@@ -1,4 +1,4 @@
-import type { UserData } from "@/shared/types";
+import type { UserData } from "@/types";
 
 export const getUserInfo = async (
   token: string | undefined,

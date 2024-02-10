@@ -1,6 +1,4 @@
-import type { Results } from "./types";
-
-export const RESULTS_DICT: Record<Results, string> = {
+export const RESULTS_DICT = {
   AC: "Accepted",
   SS: "Partially Scored",
   WA: "Wrong Answer",
@@ -27,5 +25,7 @@ export const CODEFUN_ROLES = [
   "admin",
   "mod",
 ] as const;
+
+export const LANGUAGES = ["Python2", "Python3", "C++", "Nasm", "Go", "Java", "Pascal"] as const;
 
 export const COLOR_SCHEMES = ["dark", "light"] as const;

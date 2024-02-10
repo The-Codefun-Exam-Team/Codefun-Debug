@@ -2,7 +2,7 @@ import prisma from "@database/prisma/instance";
 import type { DebugSubmissions } from "@prisma/client";
 import { cache } from "react";
 
-import type { Results, UserData } from "@/shared/types";
+import type { Results, UserData } from "@/types";
 
 import type { DetailedScoreInfo } from "./getProblemScore";
 

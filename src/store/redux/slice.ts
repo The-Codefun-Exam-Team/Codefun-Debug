@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { ColorScheme, UserData } from "@/shared/types";
+import type { ColorScheme, UserData } from "@/types";
 
 export interface UserSliceState {
   loading: boolean;

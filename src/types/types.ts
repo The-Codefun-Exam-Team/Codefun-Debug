@@ -1,30 +1,7 @@
-import type { CODEFUN_ROLES, COLOR_SCHEMES } from "./constants";
+import type { CODEFUN_ROLES, COLOR_SCHEMES, LANGUAGES, RESULTS_DICT } from "./constants";
 
-export enum LanguagesEnum {
-  Python2,
-  Python3,
-  "C++",
-  Nasm,
-  Go,
-  Java,
-  Pascal,
-}
-
-export enum ResultsEnum {
-  AC,
-  SS,
-  WA,
-  TLE,
-  RTE,
-  CE,
-  MLE,
-  Q,
-  R,
-  "...",
-}
-
-export type Languages = keyof typeof LanguagesEnum;
-export type Results = keyof typeof ResultsEnum;
+export type Languages = (typeof LANGUAGES)[number];
+export type Results = keyof typeof RESULTS_DICT;
 
 export interface UserData {
   id: number;

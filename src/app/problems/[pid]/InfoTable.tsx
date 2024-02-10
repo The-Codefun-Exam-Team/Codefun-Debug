@@ -10,7 +10,8 @@ import {
   LanguageIcon,
   SolidDownIcon,
 } from "@/components/icon";
-import { type Results, ResultsEnum } from "@/shared/types";
+import type { Results } from "@/types";
+import { RESULTS_DICT } from "@/types";
 
 const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
   if (typeof judge === "string") {
@@ -36,17 +37,16 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
     );
   }
 
-  const verdicts = Object.keys(ResultsEnum)
-    .filter((v) => isNaN(Number(v)))
-    .map(
-      (verdict) =>
-        ({
-          verdict: verdict,
-          count: 0,
-        }) as { verdict: Results; count: number },
-    );
+  const verdictsEntries = Object.entries(RESULTS_DICT);
+  const verdicts = verdictsEntries.map(
+    ([key, _value]) => ({ verdict: key, count: 0 }) as { verdict: Results; count: number },
+  );
+  const verdictsIndex = Object.fromEntries(
+    verdictsEntries.map(([key, _value], index) => [key, index]),
+  );
+  console.log(verdictsIndex);
   judge.tests.forEach((test) => {
-    verdicts[ResultsEnum[test.verdict]].count += 1;
+    verdicts[verdictsIndex[test.verdict]].count += 1;
   });
 
   return (

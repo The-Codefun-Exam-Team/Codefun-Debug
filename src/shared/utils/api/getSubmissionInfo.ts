@@ -4,7 +4,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
 import type { Judge } from "@utils/shared/parseJudge";
 
-import type { Results } from "@/shared/types";
+import type { Results } from "@/types";
 
 import type { DetailedProblemInfo } from "./getProblemInfo";
 import { getProblemInfo } from "./getProblemInfo";

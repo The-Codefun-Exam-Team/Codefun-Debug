@@ -2,7 +2,7 @@ import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache } from "next/cache";
 
-import type { Languages } from "@/shared/types";
+import type { Languages } from "@/types";
 
 export interface ProblemInfo {
   dpid: number;

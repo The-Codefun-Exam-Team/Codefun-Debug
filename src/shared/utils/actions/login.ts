@@ -4,7 +4,7 @@ import { loginSchema } from "@schemas/loginSchema";
 import { getUserInfo } from "@utils/api";
 import { cookies } from "next/headers";
 
-import type { UserData } from "@/shared/types";
+import type { UserData } from "@/types";
 
 export interface LoginFormState {
   user: UserData | null;

@@ -1,7 +1,7 @@
 import prisma from "@database/prisma/instance";
 import type { DebugSubmissions } from "@prisma/client";
 
-import type { Results, UserData } from "@/shared/types";
+import type { Results, UserData } from "@/types";
 
 interface DetailedScoreInfoNotNull {
   score: number;

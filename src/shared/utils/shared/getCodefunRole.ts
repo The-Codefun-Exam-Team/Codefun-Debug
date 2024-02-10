@@ -1,4 +1,4 @@
-import type { CodefunRoles } from "@/shared/types";
+import type { CodefunRoles } from "@/types";
 /**
  * Get Codefun rank from user's ratio
  *

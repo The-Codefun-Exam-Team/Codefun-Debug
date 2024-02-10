@@ -3,7 +3,7 @@
 import { getUserInfo } from "@utils/api";
 import { cookies } from "next/headers";
 
-import type { UserData } from "@/shared/types";
+import type { UserData } from "@/types";
 
 export const authenticate = async (): Promise<
   { ok: true; user: UserData } | { ok: false; status: number; error: string }

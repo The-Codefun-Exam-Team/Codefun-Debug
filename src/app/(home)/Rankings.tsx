@@ -1,5 +1,5 @@
 import { Heading } from "@/components";
-import type { UserRanking } from "@/shared/types";
+import type { UserRanking } from "@/types";
 
 export const Rankings = async ({ data }: { data: UserRanking[] }) => (
   <div className="w-full">
