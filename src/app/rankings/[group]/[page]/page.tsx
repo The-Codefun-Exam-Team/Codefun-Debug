@@ -5,9 +5,9 @@ import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 
 import { Box, Heading, Pagination } from "@/components";
+import { RankTable } from "@/features/rankings";
 
 import { Group } from "./Group";
-import { RankTable } from "./RankTable";
 import type { GroupsData } from "./types";
 
 export const metadata: Metadata = {
@@ -105,7 +105,7 @@ const getUserCount = async (group: string) => {
 
 const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
   const [rankingData, groupsData, userCount] = await Promise.all([
-    getUsers(group.toString(), page.toString(), "50"),
+    getUsers(group, page, "50"),
     getGroups(),
     getUserCount(group),
   ]);
@@ -128,7 +128,7 @@ const Page = async ({ params: { group, page } }: { params: { group: string; page
       <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
         <Group group={group} groupsData={groupsData} />
         <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
-        <RankTable rankingData={rankingData.data} page={page} />
+        <RankTable data={rankingData.data} page={page} />
         {rankingData.data.length > 10 && (
           <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
         )}

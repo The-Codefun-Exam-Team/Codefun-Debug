@@ -3,9 +3,9 @@ import { clsx } from "@utils/shared";
 import type { Metadata } from "next";
 
 import { Box, Heading } from "@/components";
+import { BriefRankTable } from "@/features/rankings";
 
 import { Announcements } from "./Announcements";
-import { Rankings } from "./Rankings";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -34,7 +34,7 @@ const Page = async () => {
         <Announcements />
       </div>
       <div className="w-full md:h-full md:flex-[3]">
-        <Rankings data={rankingData.data} />
+        <BriefRankTable data={rankingData.data} />
       </div>
     </div>
   );

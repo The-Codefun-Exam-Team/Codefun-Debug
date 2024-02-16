@@ -2,10 +2,10 @@ import { clsx } from "@utils/shared";
 
 import { Heading } from "@/components";
 
-import type { RankingsData } from "./types";
+import type { RankingData } from "../types";
 
-export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; page: string }) => {
-  if (rankingData.length === 0) {
+export const RankTable = ({ data, page }: { data: RankingData[]; page: string }) => {
+  if (data.length === 0) {
     return (
       <div className="h-fit w-full">
         <Heading type="title-large">Noone here!</Heading>
@@ -19,7 +19,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
     <div className="w-full">
       <table className="w-full table-auto border-collapse border-spacing-0">
         <thead>
-          <tr className="border-b-[1px] border-gray-400 text-lg font-bold dark:border-slate-600 md:text-xl [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>th]:p-3">
+          <tr className="border-b-[1px] border-gray-400 text-lg font-bold md:text-xl dark:border-slate-600 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>th]:p-3">
             <th>
               <div className="text-left">#</div>
             </th>
@@ -35,7 +35,7 @@ export const RankTable = ({ rankingData, page }: { rankingData: RankingsData; pa
           </tr>
         </thead>
         <tbody className="h-fit divide-y-[1px] divide-gray-400 dark:divide-slate-600">
-          {rankingData.map((user, index) => (
+          {data.map((user, index) => (
             <tr
               key={`ranking-page-${page}-user-${user.id}`}
               className={clsx(

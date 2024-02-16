@@ -1,7 +1,8 @@
 import { Heading } from "@/components";
-import type { UserRanking } from "@/types";
 
-export const Rankings = async ({ data }: { data: UserRanking[] }) => (
+import type { RankingData } from "../types";
+
+export const BriefRankTable = async ({ data }: { data: RankingData[] }) => (
   <div className="w-full">
     <div className="w-full">
       <Heading type="display">

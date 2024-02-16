@@ -44,7 +44,6 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
   const verdictsIndex = Object.fromEntries(
     verdictsEntries.map(([key, _value], index) => [key, index]),
   );
-  console.log(verdictsIndex);
   judge.tests.forEach((test) => {
     verdicts[verdictsIndex[test.verdict]].count += 1;
   });

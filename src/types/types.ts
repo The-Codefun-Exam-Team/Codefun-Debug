@@ -20,21 +20,6 @@ export interface UserData {
   rank: number;
 }
 
-export interface UserRanking {
-  id: number;
-  username: string;
-  name: string;
-  group: {
-    id: number;
-    name: string;
-  };
-  status: string;
-  score: number;
-  ratio: number;
-  rank: number;
-  avatar: string;
-}
-
 export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
 export type CodefunRoles = (typeof CODEFUN_ROLES)[number];
