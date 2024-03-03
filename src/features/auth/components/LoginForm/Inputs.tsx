@@ -8,7 +8,7 @@ import { ErrorBox, Input } from "@/components";
 import { useAppDispatch } from "@/hooks";
 import { setUser } from "@/store/redux";
 
-import { login } from "../../actions/login";
+import { login } from "../../actions";
 import type { LoginFormState } from "../../types";
 
 const initialState: LoginFormState = {

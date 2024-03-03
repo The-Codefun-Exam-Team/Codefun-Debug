@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { getUserInfo } from "../api/getUserInfo";
+import { getUserInfo } from "../api";
 import type { LoginFormState } from "../types";
 
 const loginSchema = z.object({

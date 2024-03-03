@@ -1,9 +1,10 @@
 "use server";
 
-import { getUserInfo } from "@utils/api";
 import { cookies } from "next/headers";
 
 import type { UserData } from "@/types";
+
+import { getUserInfo } from "../api";
 
 export const authenticate = async (): Promise<
   { ok: true; user: UserData } | { ok: false; status: number; error: string }
