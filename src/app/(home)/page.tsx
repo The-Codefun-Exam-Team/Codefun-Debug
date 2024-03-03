@@ -1,8 +1,6 @@
-import { getUsers } from "@utils/api";
 import { clsx } from "@utils/shared";
 import type { Metadata } from "next";
 
-import { Box, Heading } from "@/components";
 import { BriefRankTable } from "@/features/rankings";
 
 import { Announcements } from "./Announcements";
@@ -12,17 +10,7 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
-  const rankingData = await getUsers("0", "1", "10");
-  if (!rankingData.ok) {
-    return (
-      <div className="flex h-full w-full items-center justify-center self-center">
-        <Box>
-          <Heading type="display">Failed to fetch homepage.</Heading>
-          <Heading type="title">Maybe try refreshing?</Heading>
-        </Box>
-      </div>
-    );
-  }
+  void BriefRankTable.preload();
   return (
     <div
       className={clsx(
@@ -34,7 +22,7 @@ const Page = async () => {
         <Announcements />
       </div>
       <div className="w-full md:h-full md:flex-[3]">
-        <BriefRankTable data={rankingData.data} />
+        <BriefRankTable />
       </div>
     </div>
   );

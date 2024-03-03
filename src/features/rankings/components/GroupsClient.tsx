@@ -3,11 +3,10 @@ import { Menu, Transition } from "@headlessui/react";
 import { clsx } from "@utils/shared";
 import Link from "next/link";
 
-import type { GroupsData } from "./types";
+import type { GroupsData } from "../types";
 
-export const Group = ({ group, groupsData }: { group: string; groupsData: GroupsData }) => {
-  const currentGroupName = groupsData.find((element) => element.gid.toString() === group)
-    ?.groupname;
+export const GroupsClient = ({ group, data }: { group: string; data: GroupsData }) => {
+  const currentGroupName = data.find((element) => element.gid.toString() === group)?.groupname;
   return (
     <Menu>
       <Menu.Button
@@ -27,7 +26,7 @@ export const Group = ({ group, groupsData }: { group: string; groupsData: Groups
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute left-0 top-2 z-10 flex h-[60vh] w-full flex-col divide-y-[1px] divide-slate-300 overflow-auto rounded-md border-2 border-slate-700 bg-white dark:divide-slate-800 dark:border-slate-500 dark:bg-slate-900">
-            {groupsData.map(({ gid, groupname }) => (
+            {data.map(({ gid, groupname }) => (
               <Menu.Item
                 key={`rankings-groups-list-group-${gid}`}
                 disabled={groupname === currentGroupName}

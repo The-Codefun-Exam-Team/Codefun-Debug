@@ -1,10 +1,16 @@
 import { clsx } from "@utils/shared";
+import { cache } from "react";
 
 import { Heading } from "@/components";
 
-import type { RankingData } from "../types";
+import { getUsers } from "../query/getUsers";
 
-export const RankTable = ({ data, page }: { data: RankingData[]; page: string }) => {
+const getRankTableData = cache((group: string, page: string) => {
+  return getUsers(group, page, "50");
+});
+
+const RankTable = async ({ group, page }: { group: string; page: string }) => {
+  const data = await getRankTableData(group, page);
   if (data.length === 0) {
     return (
       <div className="h-fit w-full">
@@ -62,3 +68,7 @@ export const RankTable = ({ data, page }: { data: RankingData[]; page: string })
     </div>
   );
 };
+
+RankTable.preload = getRankTableData;
+
+export { RankTable };

@@ -1,4 +1,9 @@
-export interface RankingData {
+import type prisma from "@database/prisma/instance";
+import type { Prisma } from "@prisma/client";
+
+export type GroupsData = Prisma.PromiseReturnType<typeof prisma.groups.findMany>;
+
+export interface RankingsData {
   id: number;
   username: string;
   name: string;

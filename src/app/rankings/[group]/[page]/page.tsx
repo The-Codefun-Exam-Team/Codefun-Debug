@@ -1,14 +1,10 @@
 import prisma from "@database/prisma/instance";
 import { Prisma } from "@prisma/client";
-import { getUsers } from "@utils/api";
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 
-import { Box, Heading, Pagination } from "@/components";
-import { RankTable } from "@/features/rankings";
-
-import { Group } from "./Group";
-import type { GroupsData } from "./types";
+import { Pagination } from "@/components";
+import { Groups, RankTable } from "@/features/rankings";
 
 export const metadata: Metadata = {
   title: "Rankings",
@@ -45,29 +41,6 @@ export const generateStaticParams = async () => {
 
 export const revalidate = 30;
 
-const getGroups = async (): Promise<GroupsData | null> => {
-  try {
-    return unstable_cache(
-      async () => {
-        const groups = prisma.groups.findMany();
-        const data = await groups;
-        data.push({ gid: 0, groupname: "Global" });
-        data.reverse();
-        return groups;
-      },
-      ["getGroups"],
-      { revalidate: 30 },
-    )();
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      console.error(e.message);
-    } else {
-      console.error(e);
-    }
-    return null;
-  }
-};
-
 const getUserCount = async (group: string) => {
   const globalCount = prisma.$queryRaw`
     WITH user_table AS ( SELECT tid FROM debug_submissions GROUP BY tid )
@@ -99,37 +72,25 @@ const getUserCount = async (group: string) => {
     } else {
       console.error(e);
     }
-    return null;
+    throw "Internal Server Error";
   }
 };
 
 const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
-  const [rankingData, groupsData, userCount] = await Promise.all([
-    getUsers(group, page, "50"),
-    getGroups(),
-    getUserCount(group),
-  ]);
+  // Preload data
+  Promise.all([RankTable.preload(group, page), Groups.preload()]);
 
-  if (!groupsData || !rankingData.ok || userCount === null) {
-    return (
-      <div className="flex h-full w-full items-center justify-center self-center">
-        <Box>
-          <Heading type="display">Failed to fetch rankings.</Heading>
-          <Heading type="title">Maybe try refreshing?</Heading>
-        </Box>
-      </div>
-    );
-  }
+  const userCount = await getUserCount(group);
 
   const lastPage = userCount ? Math.ceil(userCount / 50) : 1;
 
   return (
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
-        <Group group={group} groupsData={groupsData} />
+        <Groups group={group} />
         <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
-        <RankTable data={rankingData.data} page={page} />
-        {rankingData.data.length > 10 && (
+        <RankTable group={group} page={page} />
+        {userCount - (parseInt(page) - 1) * 50 > 10 && (
           <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
         )}
       </div>

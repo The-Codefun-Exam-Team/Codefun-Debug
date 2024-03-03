@@ -4,13 +4,13 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { gravatarFromEmail } from "@utils/shared";
 import { unstable_cache } from "next/cache";
 
-import type { RankingsData, UserRanking } from "@/app/rankings/[group]/[page]/types";
+import type { RankingsData } from "../types";
 
 export const getUsers = async (
   group: string,
   page: string,
   limit: string,
-): Promise<{ ok: true; data: RankingsData } | { ok: false; error: string; status: string }> => {
+): Promise<RankingsData[]> => {
   try {
     // calculate offset
     const offset = (parseInt(page) - 1) * parseInt(limit);
@@ -40,7 +40,7 @@ export const getUsers = async (
       solved: true,
     });
 
-    const data = unstable_cache(
+    return unstable_cache(
       async () => {
         const rank_table = (await rankTableQuery) as { tid: number; rank: number; score: number }[];
         rank_table.sort((a, b) => a.tid - b.tid);
@@ -68,21 +68,19 @@ export const getUsers = async (
             ratio: user.solved / problemsCount,
             avatar: gravatarFromEmail(user.email),
             rank: Number(rank_table[index].rank),
-          } satisfies UserRanking;
+          } satisfies RankingsData;
         });
         return users.sort((a, b) => a.rank - b.rank);
       },
       [`getUsers-${group}-${page}-${limit}`],
       { revalidate: 10 },
     )();
-    return { ok: true, data: await data };
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
-      console.error(e.message);
-      return { ok: false, error: e.message, status: e.code };
+      console.error(e.code, e.message);
     } else {
       console.error(e);
-      return { ok: false, error: "Internal Server Error", status: "500" };
     }
+    throw "Internal Server Error";
   }
 };
