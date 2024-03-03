@@ -1,6 +1,7 @@
-import { getUserInfo } from "@utils/api";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+
+import { getUserInfo } from "@/features/auth";
 
 export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;

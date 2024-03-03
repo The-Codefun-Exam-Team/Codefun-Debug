@@ -1,7 +1,5 @@
 "use client";
 
-import { login } from "@utils/actions";
-import type { LoginFormState } from "@utils/actions/login";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
@@ -9,6 +7,9 @@ import { useFormState, useFormStatus } from "react-dom";
 import { ErrorBox, Input } from "@/components";
 import { useAppDispatch } from "@/hooks";
 import { setUser } from "@/store/redux";
+
+import { login } from "../../actions/login";
+import type { LoginFormState } from "../../types";
 
 const initialState: LoginFormState = {
   user: null,

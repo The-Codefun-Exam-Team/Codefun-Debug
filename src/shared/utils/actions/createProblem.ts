@@ -3,8 +3,9 @@
 import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { createProblemSchema } from "@schemas/createProblemSchema";
-import { getUserInfo } from "@utils/api";
 import { cookies } from "next/headers";
+
+import { getUserInfo } from "@/features/auth";
 
 export interface CreateProblemFormState {
   code_messages: string[];

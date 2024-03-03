@@ -1,17 +1,15 @@
 "use server";
 
-import { loginSchema } from "@schemas/loginSchema";
-import { getUserInfo } from "@utils/api";
 import { cookies } from "next/headers";
+import { z } from "zod";
 
-import type { UserData } from "@/types";
+import { getUserInfo } from "../api/getUserInfo";
+import type { LoginFormState } from "../types";
 
-export interface LoginFormState {
-  user: UserData | null;
-  username_messages: string[];
-  password_messages: string[];
-  messages: string[];
-}
+const loginSchema = z.object({
+  username: z.string().max(24),
+  password: z.string().max(64),
+});
 
 const initialState: LoginFormState = {
   user: null,

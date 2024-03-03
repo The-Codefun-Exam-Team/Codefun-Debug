@@ -1,6 +1,7 @@
 import type { SubmissionInfo } from "@utils/api";
-import { getUserInfo } from "@utils/api";
 import { cookies } from "next/headers";
+
+import { getUserInfo } from "@/features/auth";
 
 import { CodeView } from "./CodeView";
 import { CodeViewText } from "./CodeViewText";

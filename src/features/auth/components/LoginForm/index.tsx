@@ -1,0 +1,23 @@
+import { Suspense } from "react";
+
+import { Box, Heading } from "@/components";
+
+import { Inputs } from "./Inputs";
+import { InputsSkeleton } from "./InputsSkeleton";
+
+export const LoginForm = async () => {
+  return (
+    <Box>
+      <form className="flex w-full flex-col">
+        <div className="text-center">
+          <Heading type="title-large">
+            <div className="text-accent-light dark:text-accent-dark">Please login to continue</div>
+          </Heading>
+        </div>
+        <Suspense fallback={<InputsSkeleton />}>
+          <Inputs />
+        </Suspense>
+      </form>
+    </Box>
+  );
+};

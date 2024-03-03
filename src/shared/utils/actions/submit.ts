@@ -2,9 +2,10 @@
 import prisma from "@database/prisma/instance";
 import { type DebugProblems, type DebugSubmissions, Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { getUserInfo } from "@utils/api";
 import { calcEditDistance } from "@utils/shared";
 import { cookies } from "next/headers";
+
+import { getUserInfo } from "@/features/auth";
 
 export const recalcScore = async (
   dpid: DebugSubmissions["dpid"],
