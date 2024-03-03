@@ -3,7 +3,7 @@ import { cache } from "react";
 
 import { Heading } from "@/components";
 
-import { getUsers } from "../query/getUsers";
+import { getUsers } from "../queries";
 
 const getRankTableData = cache((group: string, page: string) => {
   return getUsers(group, page, "50");

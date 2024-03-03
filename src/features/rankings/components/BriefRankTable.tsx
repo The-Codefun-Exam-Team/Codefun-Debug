@@ -2,7 +2,7 @@ import { cache } from "react";
 
 import { Heading } from "@/components";
 
-import { getUsers } from "../query/getUsers";
+import { getUsers } from "../queries";
 
 const getBriefRankTableData = cache(() => {
   return getUsers("0", "1", "10");
