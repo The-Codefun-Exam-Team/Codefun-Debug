@@ -1,2 +1,2 @@
-export * from "./getMemoUserInfo";
-export * from "./getUserInfo";
+export * from "./getMemoUser";
+export * from "./getUser";

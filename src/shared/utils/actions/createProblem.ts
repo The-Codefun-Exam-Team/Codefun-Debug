@@ -5,7 +5,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { createProblemSchema } from "@schemas/createProblemSchema";
 import { cookies } from "next/headers";
 
-import { getUserInfo } from "@/features/auth";
+import { getUser } from "@/features/auth";
 
 export interface CreateProblemFormState {
   code_messages: string[];
@@ -29,7 +29,7 @@ export const createProblem = async (
 ): Promise<CreateProblemFormState> => {
   try {
     const token = cookies().get("token")?.value;
-    const userInfo = await getUserInfo(token);
+    const userInfo = await getUser(token);
     if (!userInfo.ok || userInfo.user.status !== "Admin") {
       return {
         ...initialState,

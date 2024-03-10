@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { getUserInfo } from "../api";
+import { getUser } from "../api";
 import type { LoginFormState } from "../types";
 
 const loginSchema = z.object({
@@ -57,7 +57,7 @@ export const actionLogin = async (
       };
     }
 
-    const userInfo = await getUserInfo(codefunResponse.data);
+    const userInfo = await getUser(codefunResponse.data);
     if (!userInfo.ok) {
       console.error("Error fetching user info");
       return {

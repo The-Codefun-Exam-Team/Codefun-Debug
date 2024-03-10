@@ -2,7 +2,7 @@ import { getProblemScore } from "@utils/api";
 import { cookies } from "next/headers";
 
 import { Score } from "@/components";
-import { getMemoUserInfo } from "@/features/auth";
+import { getMemoUser } from "@/features/auth";
 
 export const InfoTableScore = async ({ problemId }: { problemId: string }) => {
   const cookiesStore = cookies();
@@ -10,7 +10,7 @@ export const InfoTableScore = async ({ problemId }: { problemId: string }) => {
   if (!token || !token.value) {
     return <div className="pb-4 pt-5 text-center text-2xl">Login to view score</div>;
   }
-  const userInfo = await getMemoUserInfo(token.value);
+  const userInfo = await getMemoUser(token.value);
   if (!userInfo.ok) {
     return <div className="pb-4 pt-5 text-center text-2xl">{userInfo.error}</div>;
   }

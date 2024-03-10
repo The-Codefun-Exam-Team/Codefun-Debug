@@ -3,7 +3,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { cookies } from "next/headers";
 
-import { getUserInfo } from "@/features/auth";
+import { getUser } from "@/features/auth";
 
 import { recalcProblemScore } from "../../queries";
 
@@ -16,7 +16,7 @@ export const actionRecalcProblemScore = async (problemId: number): Promise<Retur
     if (!token) {
       return { ok: false, message: "You are not logged in" };
     }
-    const userQuery = await getUserInfo(token.value);
+    const userQuery = await getUser(token.value);
     if (!userQuery.ok) {
       return { ok: false, message: "You are not logged in" };
     }

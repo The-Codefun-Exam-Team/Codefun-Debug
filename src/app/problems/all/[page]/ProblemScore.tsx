@@ -2,7 +2,7 @@ import { getMemoProblemsScore } from "@utils/api";
 import { cookies } from "next/headers";
 
 import { Score } from "@/components";
-import { getMemoUserInfo } from "@/features/auth";
+import { getMemoUser } from "@/features/auth";
 
 export const ProblemScoreText = ({ text }: { text: string }) => (
   <p className="font-semibold text-slate-600 dark:text-slate-200">{text}</p>
@@ -14,7 +14,7 @@ export const ProblemScore = async ({ dpid }: { dpid: number }) => {
   if (!token || !token.value) {
     return <ProblemScoreText text="Not Available" />;
   }
-  const user = await getMemoUserInfo(token.value);
+  const user = await getMemoUser(token.value);
   if (!user.ok) {
     return <ProblemScoreText text="Not Available" />;
   }

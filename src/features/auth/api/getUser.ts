@@ -1,6 +1,6 @@
 import type { UserData } from "@/types";
 
-export const getUserInfo = async (
+export const getUser = async (
   token: string | undefined,
 ): Promise<{ ok: false; error: string; status: number } | { ok: true; user: UserData }> => {
   if (!token) {

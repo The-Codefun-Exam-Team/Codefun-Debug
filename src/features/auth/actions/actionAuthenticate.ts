@@ -4,13 +4,13 @@ import { cookies } from "next/headers";
 
 import type { UserData } from "@/types";
 
-import { getUserInfo } from "../api";
+import { getUser } from "../api";
 
 export const actionAuthenticate = async (): Promise<
   { ok: true; user: UserData } | { ok: false; status: number; error: string }
 > => {
   try {
-    const res = await getUserInfo(cookies().get("token")?.value);
+    const res = await getUser(cookies().get("token")?.value);
     if (!res.ok) {
       cookies().delete("token");
     }

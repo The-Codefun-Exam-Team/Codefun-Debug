@@ -3,7 +3,7 @@ import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { cookies } from "next/headers";
 
-import { getUserInfo } from "@/features/auth";
+import { getUser } from "@/features/auth";
 import { recalcProblemScore } from "@/features/problems";
 import { getSubmissionDiff } from "@/features/submissions";
 
@@ -138,7 +138,7 @@ export const submit = async (
         message: "Unauthorized",
       };
     }
-    const userRes = await getUserInfo(token.value);
+    const userRes = await getUser(token.value);
     if (!userRes.ok) {
       return {
         ok: false,
