@@ -1,6 +1,5 @@
-import type { DetailedProblemInfo } from "@utils/api/getProblemInfo";
 import { clsx, getVerdictTextClass } from "@utils/shared";
-import type { ReactNode } from "react";
+import { Suspense } from "react";
 
 import { DecoratedLink } from "@/components";
 import {
@@ -12,6 +11,9 @@ import {
 } from "@/components/icon";
 import type { Results } from "@/types";
 import { RESULTS_DICT } from "@/types";
+
+import type { DetailedProblemInfo } from "../../../types";
+import { InfoTableScore, InfoTableScoreSkeleton } from "./Score";
 
 const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
   if (typeof judge === "string") {
@@ -79,11 +81,9 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
 
 export const InfoTable = ({
   problemData,
-  score,
   pid,
 }: {
   problemData: DetailedProblemInfo;
-  score: ReactNode;
   pid: string;
 }) => {
   return (
@@ -91,7 +91,11 @@ export const InfoTable = ({
       <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
         <thead>
           <tr>
-            <th>{score}</th>
+            <th>
+              <Suspense fallback={<InfoTableScoreSkeleton />}>
+                <InfoTableScore problemId={pid} />
+              </Suspense>
+            </th>
           </tr>
         </thead>
         <tbody>

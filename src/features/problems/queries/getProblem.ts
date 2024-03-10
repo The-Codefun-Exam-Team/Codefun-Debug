@@ -1,27 +1,15 @@
 import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
-import type { Judge } from "@utils/shared/parseJudge";
 import { unstable_cache } from "next/cache";
 
-export interface DetailedProblemInfo {
-  dpid: number;
-  code: string;
-  name: string;
-  language: string;
-  codetext: string;
-  problem: {
-    code: string;
-    name: string;
-  };
-  problem_judge: Judge | string;
-}
+import type { DetailedProblemInfo } from "../types";
 
 type ReturnType =
   | { ok: true; data: DetailedProblemInfo }
   | { ok: false; error: string; status: string };
 
-export const getProblemInfo = async (code: string): Promise<ReturnType> => {
+export const getProblem = async (code: string): Promise<ReturnType> => {
   try {
     const problemInfo = await unstable_cache(
       async () => {
@@ -71,7 +59,7 @@ export const getProblemInfo = async (code: string): Promise<ReturnType> => {
           problem_judge: parseJudge(problemInfo.runs.subs_code.error),
         } satisfies DetailedProblemInfo;
       },
-      [`getProblemInfo-${code}`],
+      [`getProblem-${code}`],
       { revalidate: false },
     )();
 

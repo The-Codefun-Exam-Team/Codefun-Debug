@@ -20,3 +20,9 @@ export const InfoTableScore = async ({ problemId }: { problemId: string }) => {
   }
   return <Score {...scoreData.data} className="pb-4 pt-5 text-center text-2xl" />;
 };
+
+export const InfoTableScoreSkeleton = () => (
+  <div className="pb-4 pt-5">
+    <div className="mx-auto h-8 w-28 animate-pulse rounded-md bg-gray-200 dark:bg-slate-600"></div>
+  </div>
+);

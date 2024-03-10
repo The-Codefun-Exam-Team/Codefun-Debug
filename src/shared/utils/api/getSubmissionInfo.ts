@@ -4,10 +4,9 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
 import type { Judge } from "@utils/shared/parseJudge";
 
+import type { DetailedProblemInfo } from "@/features/problems";
+import { getProblem } from "@/features/problems";
 import type { Results } from "@/types";
-
-import type { DetailedProblemInfo } from "./getProblemInfo";
-import { getProblemInfo } from "./getProblemInfo";
 
 export interface SubmissionInfo {
   user: {
@@ -73,7 +72,7 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
       };
     }
 
-    const problemInfo = await getProblemInfo(submissionInfo.dp_code);
+    const problemInfo = await getProblem(submissionInfo.dp_code);
 
     if (!problemInfo.ok) {
       console.error(problemInfo.error);
