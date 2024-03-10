@@ -14,7 +14,7 @@ export type GetProblemsScoreResult =
 
 type SqlRawSubInfo = Pick<DebugSubmissions, "dpid" | "diff" | "score" | "result" | "drid">;
 
-const getProblemsScore = async (user: UserData): Promise<GetProblemsScoreResult> => {
+export const getProblemsScore = async (user: UserData): Promise<GetProblemsScoreResult> => {
   const tid = user.id;
 
   const subsInfo = await prisma.$queryRaw<SqlRawSubInfo[]>`
