@@ -2,7 +2,8 @@
 
 import { ResetIcon } from "@/components/icon";
 import { useAppSelector } from "@/hooks";
-import { recalcScore } from "@/shared/utils/actions/submit";
+
+import { actionRecalcProblemScore } from "../actions";
 
 export const RecalcScore = ({ dpid }: { dpid: number }) => {
   const role = useAppSelector((state) => state.user.user?.status);
@@ -13,7 +14,7 @@ export const RecalcScore = ({ dpid }: { dpid: number }) => {
     <form>
       <button
         onClick={() => {
-          void recalcScore(dpid);
+          void actionRecalcProblemScore(dpid);
         }}
         type="reset"
         className="mt-3 rounded-md border-2 border-red-500/80 bg-red-200/50 p-2

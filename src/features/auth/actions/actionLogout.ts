@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-export const logout = async (): Promise<
+export const actionLogout = async (): Promise<
   { ok: true } | { ok: false; status: number; message: string }
 > => {
   try {

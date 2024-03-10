@@ -1,9 +1,8 @@
-import { getProblem } from "@utils/api";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { Box, Heading } from "@/components";
-import { Editor, InfoTable, RecalcScore } from "@/features/problems";
+import { Editor, getProblem, InfoTable, RecalcScore } from "@/features/problems";
 
 export const metadata: Metadata = {
   title: "Problem",

@@ -8,7 +8,7 @@ import { ErrorBox, Input } from "@/components";
 import { useAppDispatch } from "@/hooks";
 import { setUser } from "@/store/redux";
 
-import { login } from "../../actions";
+import { actionLogin } from "../../actions";
 import type { LoginFormState } from "../../types";
 
 const initialState: LoginFormState = {
@@ -23,7 +23,7 @@ export const Inputs = () => {
   const dispatch = useAppDispatch();
   const params = useSearchParams();
   const { pending } = useFormStatus();
-  const [state, formAction] = useFormState(login, initialState);
+  const [state, formAction] = useFormState(actionLogin, initialState);
   const [displayState, setDisplayState] = useState(initialState);
 
   useEffect(() => {

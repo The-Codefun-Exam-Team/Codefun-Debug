@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
-import { logout } from "@/features/auth";
+import { actionLogout } from "@/features/auth";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setScheme, setUser } from "@/store/redux";
 
@@ -99,7 +99,7 @@ export const UserInfo = () => {
   }, [errorMessage]);
 
   const logoutClient = async () => {
-    const res = await logout();
+    const res = await actionLogout();
     if (res.ok) {
       dispatch(
         setUser({

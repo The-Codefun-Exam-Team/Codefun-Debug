@@ -6,7 +6,7 @@ import type { UserData } from "@/types";
 
 import { getUserInfo } from "../api";
 
-export const authenticate = async (): Promise<
+export const actionAuthenticate = async (): Promise<
   { ok: true; user: UserData } | { ok: false; status: number; error: string }
 > => {
   try {

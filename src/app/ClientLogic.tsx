@@ -2,7 +2,7 @@
 import { isColorScheme } from "@utils/shared";
 import { useEffect } from "react";
 
-import { authenticate } from "@/features/auth";
+import { actionAuthenticate } from "@/features/auth";
 import { setLoading, setScheme, setUser, store } from "@/store/redux";
 
 let didFetchUser = false;
@@ -14,7 +14,7 @@ export const ClientLogic = () => {
       didFetchUser = true;
       // We only want to run this on client.
       store.dispatch(async (dispatch) => {
-        const res = await authenticate();
+        const res = await actionAuthenticate();
         if (!res.ok) {
           dispatch(setLoading(false));
           // TODO: handle fetch error

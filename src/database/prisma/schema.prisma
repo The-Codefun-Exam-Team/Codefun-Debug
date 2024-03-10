@@ -214,7 +214,7 @@ model DebugSubmissions {
   submittime     Int
   result         String        @db.VarChar(8)
   score          Float
-  diff           Int?
+  diff           Int           @default(100000)
   code           String        @db.LongText
   debug_problems DebugProblems @relation(fields: [dpid], references: [dpid], onUpdate: Restrict, map: "debug_submissions_ibfk_1")
   teams          Teams         @relation(fields: [tid], references: [tid], onUpdate: Restrict, map: "debug_submissions_ibfk_2")

@@ -18,7 +18,7 @@ const initialState: LoginFormState = {
   messages: [],
 };
 
-export const login = async (
+export const actionLogin = async (
   _prevState: LoginFormState,
   formData: FormData,
 ): Promise<LoginFormState> => {
