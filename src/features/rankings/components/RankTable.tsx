@@ -9,7 +9,7 @@ const getRankTableData = cache((group: string, page: string) => {
   return getUsers(group, page, "50");
 });
 
-const RankTable = async ({ group, page }: { group: string; page: string }) => {
+export const RankTable = async ({ group, page }: { group: string; page: string }) => {
   const data = await getRankTableData(group, page);
   if (data.length === 0) {
     return (
@@ -70,5 +70,3 @@ const RankTable = async ({ group, page }: { group: string; page: string }) => {
 };
 
 RankTable.preload = getRankTableData;
-
-export { RankTable };

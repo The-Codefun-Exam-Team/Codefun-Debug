@@ -12,7 +12,7 @@ import {
 import type { Results } from "@/types";
 import { RESULTS_DICT } from "@/types";
 
-import type { DetailedProblemInfo } from "../../../types";
+import type { DetailedProblemInfo } from "../../types";
 import { InfoTableScore, InfoTableScoreSkeleton } from "./Score";
 
 const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {

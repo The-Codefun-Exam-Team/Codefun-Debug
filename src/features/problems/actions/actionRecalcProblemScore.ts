@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 
 import { getUser } from "@/features/auth";
 
-import { recalcProblemScore } from "../../queries";
+import { recalcProblemScore } from "../queries";
 
 type ReturnType = { ok: true } | { ok: false; message: string };
 
@@ -13,10 +13,7 @@ export const actionRecalcProblemScore = async (problemId: number): Promise<Retur
   try {
     const cookiesStore = cookies();
     const token = cookiesStore.get("token");
-    if (!token) {
-      return { ok: false, message: "You are not logged in" };
-    }
-    const userQuery = await getUser(token.value);
+    const userQuery = await getUser(token?.value);
     if (!userQuery.ok) {
       return { ok: false, message: "You are not logged in" };
     }
