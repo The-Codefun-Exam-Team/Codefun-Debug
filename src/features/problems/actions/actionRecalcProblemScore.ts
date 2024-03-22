@@ -9,7 +9,7 @@ import { recalcProblemScore } from "../queries";
 
 type ReturnType = { ok: true } | { ok: false; message: string };
 
-export const actionRecalcProblemScore = async (problemId: number): Promise<ReturnType> => {
+export const actionRecalcProblemScore = async (code: string): Promise<ReturnType> => {
   try {
     const cookiesStore = cookies();
     const token = cookiesStore.get("token");
@@ -21,7 +21,7 @@ export const actionRecalcProblemScore = async (problemId: number): Promise<Retur
     if (!isAdmin) {
       return { ok: false, message: "You are not an admin" };
     }
-    await recalcProblemScore(problemId);
+    await recalcProblemScore(code);
     return { ok: true };
   } catch (e) {
     console.error(e);

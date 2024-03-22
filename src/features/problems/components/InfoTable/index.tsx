@@ -79,13 +79,7 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
   );
 };
 
-export const InfoTable = ({
-  problemData,
-  pid,
-}: {
-  problemData: DetailedProblemInfo;
-  pid: string;
-}) => {
+export const InfoTable = ({ problemData }: { problemData: DetailedProblemInfo }) => {
   return (
     <>
       <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
@@ -93,7 +87,7 @@ export const InfoTable = ({
           <tr>
             <th>
               <Suspense fallback={<InfoTableScoreSkeleton />}>
-                <InfoTableScore problemId={pid} />
+                <InfoTableScore problemId={problemData.code} />
               </Suspense>
             </th>
           </tr>
@@ -108,7 +102,8 @@ export const InfoTable = ({
               )}
             >
               <div>
-                <BookOpenIcon className="relative bottom-[3px] inline h-6 w-6" /> Problem: {pid}
+                <BookOpenIcon className="relative bottom-[3px] inline h-6 w-6" /> Problem:{" "}
+                {problemData.code}
               </div>
               <div>
                 <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}

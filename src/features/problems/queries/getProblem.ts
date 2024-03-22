@@ -5,20 +5,15 @@ import { unstable_cache } from "next/cache";
 
 import type { DetailedProblemInfo } from "../types";
 
-type ReturnType =
-  | { ok: true; data: DetailedProblemInfo }
-  | { ok: false; error: string; status: string };
-
-export const getProblem = async (code: string): Promise<ReturnType> => {
+export const getProblem = async (code: string) => {
   try {
     const problemInfo = await unstable_cache(
       async () => {
-        const problemInfo = await prisma.debugProblems.findUnique({
+        const problemInfo = await prisma.debugProblems.findUniqueOrThrow({
           where: {
             code,
           },
           select: {
-            dpid: true,
             code: true,
             name: true,
             language: true,
@@ -40,14 +35,8 @@ export const getProblem = async (code: string): Promise<ReturnType> => {
             },
           },
         });
-        if (problemInfo === null) {
-          return null;
-        }
-        if (problemInfo.runs.subs_code === null) {
-          throw new Error(`Debug problem ${code} has no subs_code`);
-        }
+
         return {
-          dpid: problemInfo.dpid,
           code: problemInfo.code,
           name: problemInfo.name,
           language: problemInfo.language,
@@ -63,33 +52,13 @@ export const getProblem = async (code: string): Promise<ReturnType> => {
       { revalidate: false },
     )();
 
-    if (problemInfo === null) {
-      return {
-        ok: false,
-        error: "Problem not found",
-        status: "404",
-      };
-    }
-
-    return {
-      ok: true,
-      data: problemInfo,
-    };
+    return problemInfo;
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.message);
-      return {
-        ok: false,
-        error: e.message,
-        status: e.code,
-      };
     } else {
       console.error(e);
-      return {
-        ok: false,
-        error: "Internal Server Error",
-        status: "500",
-      };
     }
+    throw "Internal Server Error";
   }
 };

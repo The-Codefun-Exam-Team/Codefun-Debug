@@ -1,9 +1,11 @@
 import { cookies } from "next/headers";
 
-import { EditorClient, type EditorClientProps } from "./Client";
+import { getProblem } from "../../queries";
+import { EditorClient } from "./Client";
 
-export const Editor = async (props: Omit<EditorClientProps, "isLoggedIn">) => {
+export const Editor = async ({ code }: { code: string }) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token");
-  return <EditorClient isLoggedIn={!!token} {...props} />;
+  const problemData = await getProblem(code);
+  return <EditorClient isLoggedIn={!!token} code={code} problemData={problemData} />;
 };

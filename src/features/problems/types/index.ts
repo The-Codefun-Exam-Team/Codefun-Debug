@@ -1,7 +1,6 @@
 import type { Judge } from "@utils/shared/parseJudge";
 
 export interface DetailedProblemInfo {
-  dpid: number;
   code: string;
   name: string;
   language: string;

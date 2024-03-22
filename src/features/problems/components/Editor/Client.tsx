@@ -12,13 +12,13 @@ import type { DetailedProblemInfo } from "../../types";
 
 export interface EditorClientProps {
   problemData: DetailedProblemInfo;
-  pid: string;
+  code: string;
   // A simple client check to decide whether to show the UI.
   // This cannot (and must not!) cause authorization issues.
   isLoggedIn: boolean;
 }
 
-export const EditorClient = ({ problemData, isLoggedIn, pid }: EditorClientProps) => {
+export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProps) => {
   // TODO: add options for editor
   const router = useRouter();
   const [submitError, setSubmitError] = useState("");
@@ -80,8 +80,8 @@ export const EditorClient = ({ problemData, isLoggedIn, pid }: EditorClientProps
       setSubmitError("Editor hasn't been loaded.");
       return;
     }
-    const code = editorRef.current.getModifiedEditor().getValue();
-    const res = await submit(pid, code);
+    const codetext = editorRef.current.getModifiedEditor().getValue();
+    const res = await submit(code, codetext);
     if (!res.ok) {
       setSubmitError(res.message);
       return;

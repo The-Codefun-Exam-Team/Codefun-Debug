@@ -78,7 +78,7 @@ const getUserCount = async (group: string) => {
 
 const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
   // Preload data
-  Promise.all([RankTable.preload(group, page), Groups.preload()]);
+  void Promise.all([RankTable.preload(group, page), Groups.preload()]);
 
   const userCount = await getUserCount(group);
 

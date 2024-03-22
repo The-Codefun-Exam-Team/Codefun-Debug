@@ -7,52 +7,36 @@ import { getUser } from "@/features/auth";
 import { recalcProblemScore } from "@/features/problems";
 import { getSubmissionDiff } from "@/features/submissions";
 
-const calcScore = async (drid: number) => {
+const calcSubmissionScore = async (drid: number) => {
   try {
     const diff = await getSubmissionDiff(drid);
 
-    const mindiff = (
-      await prisma.debugSubmissions
-        .findUniqueOrThrow({
-          where: {
-            drid,
-          },
-        })
-        .debug_problems({
+    const debugSubmission = await prisma.debugSubmissions.findUniqueOrThrow({
+      where: {
+        drid,
+      },
+      select: {
+        debug_problems: {
           select: {
             mindiff: true,
+            code: true,
           },
-        })
-    ).mindiff;
+        },
+        runs: {
+          select: {
+            result: true,
+            score: true,
+          },
+        },
+      },
+    });
 
-    const codefunRunInfo = await prisma.debugSubmissions
-      .findUniqueOrThrow({
-        where: {
-          drid,
-        },
-      })
-      .debug_problems()
-      .runs({
-        select: {
-          result: true,
-          score: true,
-        },
-      });
+    const run = debugSubmission.runs;
+    const debugProblem = debugSubmission.debug_problems;
 
-    const dpid = (
-      await prisma.debugSubmissions.findFirstOrThrow({
-        where: {
-          drid,
-        },
-        select: {
-          dpid: true,
-        },
-      })
-    ).dpid;
-
-    if (codefunRunInfo.result === "AC") {
-      if (diff < mindiff) {
-        void recalcProblemScore(dpid, diff);
+    if (run.result === "AC") {
+      if (diff < debugProblem.mindiff) {
+        void recalcProblemScore(debugProblem.code, diff);
       }
     }
 
@@ -81,12 +65,13 @@ const calcScore = async (drid: number) => {
 
     const debugSubmissionsInfo = await debugSubmissionsQuery();
 
-    const initialScore = codefunRunInfo.score;
+    const initialScore = run.score;
     const submissionsScore = debugSubmissionsInfo.score;
     const increasedScore = Math.max(0, submissionsScore - initialScore);
     const scorePercentage = increasedScore / (100 - initialScore);
     // minus 5% score for each addition diff
-    const diffPercentage = diff < mindiff ? 1 : Math.max(0, 1 - ((diff - mindiff) * 5) / 100);
+    const diffPercentage =
+      diff < debugProblem.mindiff ? 1 : Math.max(0, 1 - ((diff - debugProblem.mindiff) * 5) / 100);
     const newScore = scorePercentage * diffPercentage * 100;
 
     if (Math.abs(newScore - 100) < 1e-5) {
@@ -99,7 +84,7 @@ const calcScore = async (drid: number) => {
           score: 100,
         },
       });
-    } else if (codefunRunInfo.result === "AC") {
+    } else if (run.result === "AC") {
       await prisma.debugSubmissions.update({
         where: {
           drid,
@@ -115,13 +100,14 @@ const calcScore = async (drid: number) => {
           drid,
         },
         data: {
-          result: codefunRunInfo.result,
+          result: run.result,
           score: newScore,
         },
       });
     }
   } catch (e) {
     console.error(`Error calculating score for submission ${drid}`, e);
+    throw e;
   }
 };
 
@@ -228,7 +214,7 @@ export const submit = async (
       },
     });
 
-    void calcScore(submission.drid);
+    void calcSubmissionScore(submission.drid);
 
     return {
       ok: true,

@@ -1,11 +1,11 @@
 import prisma from "@database/prisma/instance";
-import { type DebugProblems, type DebugSubmissions, Prisma } from "@prisma/client";
+import { type DebugProblems, Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 import { getSubmissionDiff } from "@/features/submissions";
 
 export const recalcProblemScore = async (
-  dpid: DebugSubmissions["dpid"],
+  code: DebugProblems["code"],
   mindiff?: DebugProblems["mindiff"],
 ) => {
   try {
@@ -15,7 +15,7 @@ export const recalcProblemScore = async (
           await prisma.debugSubmissions.groupBy({
             by: ["dpid"],
             where: {
-              dpid,
+              code,
               result: "AC",
             },
             _min: {
@@ -30,7 +30,7 @@ export const recalcProblemScore = async (
       await prisma.debugProblems
         .findUniqueOrThrow({
           where: {
-            dpid,
+            code,
           },
         })
         .runs({
@@ -42,7 +42,7 @@ export const recalcProblemScore = async (
 
     await prisma.debugProblems.update({
       where: {
-        dpid,
+        code,
       },
       data: {
         mindiff,
@@ -51,7 +51,7 @@ export const recalcProblemScore = async (
 
     const results = await prisma.debugSubmissions.findMany({
       where: {
-        dpid,
+        code,
       },
       select: {
         drid: true,
@@ -69,21 +69,7 @@ export const recalcProblemScore = async (
       const increasedScore = Math.max(0, result.runs.score - problemScore);
       const scorePercentage = increasedScore / (100 - problemScore);
       // minus 5% score for each addition diff
-      if (result.diff === null || result.diff === 100000) {
-        result.diff = (
-          await prisma.debugSubmissions.update({
-            where: {
-              drid: result.drid,
-            },
-            data: {
-              diff: await getSubmissionDiff(result.drid),
-            },
-            select: {
-              diff: true,
-            },
-          })
-        ).diff;
-      }
+      result.diff = await getSubmissionDiff(result.drid, result.diff);
       const typedDiff = result.diff as number;
       const diffPercentage =
         typedDiff < typedMindiff ? 1 : Math.max(0, 1 - ((typedDiff - typedMindiff) * 5) / 100);

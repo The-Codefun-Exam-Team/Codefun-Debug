@@ -5,7 +5,7 @@ import { useAppSelector } from "@/hooks";
 
 import { actionRecalcProblemScore } from "../actions";
 
-export const RecalcScore = ({ dpid }: { dpid: number }) => {
+export const RecalcScore = ({ code }: { code: string }) => {
   const role = useAppSelector((state) => state.user.user?.status);
   if (role !== "Admin") {
     return <></>;
@@ -14,7 +14,7 @@ export const RecalcScore = ({ dpid }: { dpid: number }) => {
     <form>
       <button
         onClick={() => {
-          void actionRecalcProblemScore(dpid);
+          void actionRecalcProblemScore(code);
         }}
         type="reset"
         className="mt-3 rounded-md border-2 border-red-500/80 bg-red-200/50 p-2

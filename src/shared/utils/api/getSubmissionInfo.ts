@@ -74,15 +74,6 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
 
     const problemInfo = await getProblem(submissionInfo.dp_code);
 
-    if (!problemInfo.ok) {
-      console.error(problemInfo.error);
-      return {
-        ok: false,
-        error: "Internal Server Error",
-        status: "500",
-      };
-    }
-
     const publicInfo = {
       user: {
         name: submissionInfo.name,
@@ -91,7 +82,7 @@ export const getSubmissionInfo = async (sid: string): Promise<ReturnType> => {
       drid: parseInt(sid),
       diff: submissionInfo.diff,
       submit_time: submissionInfo.submittime,
-      debug_problem: problemInfo.data,
+      debug_problem: problemInfo,
       score: submissionInfo.score,
       result: submissionInfo.result as Results,
       submission_judge: parseJudge(submissionInfo.error ?? ""),

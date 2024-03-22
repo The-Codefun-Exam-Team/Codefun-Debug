@@ -54,7 +54,11 @@ const setSubmissionDiff = async (drid: number, diff: number) => {
   return updateDiffQuery.diff;
 };
 
-export const getSubmissionDiff = async (drid: number) => {
+export const getSubmissionDiff = async (drid: number, diff?: number) => {
+  // built in checking diff
+  if (diff && diff !== 1e5) {
+    return diff;
+  }
   const getDiffQuery = await prisma.debugSubmissions.findUniqueOrThrow({
     where: {
       drid,
