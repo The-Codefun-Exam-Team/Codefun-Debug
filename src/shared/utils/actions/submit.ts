@@ -36,7 +36,7 @@ const calcSubmissionScore = async (drid: number) => {
 
     if (run.result === "AC") {
       if (diff < debugProblem.mindiff) {
-        void recalcProblemScore(debugProblem.code, diff);
+        void recalcProblemScore(debugProblem.code);
       }
     }
 

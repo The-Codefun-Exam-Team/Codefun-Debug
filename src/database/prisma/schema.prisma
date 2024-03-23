@@ -188,7 +188,7 @@ model DebugProblems {
   language          String             @db.VarChar(8)
   score             Float              @default(0)
   result            String             @db.VarChar(8)
-  mindiff           Int                @default(0)
+  mindiff           Int                @default(100000)
   runs              Runs               @relation(fields: [rid], references: [rid], onUpdate: Restrict, map: "debug_problems_ibfk_1")
   problem           Problems           @relation(fields: [pid], references: [pid], onUpdate: Restrict, map: "debug_problems_ibfk_2")
   debug_submissions DebugSubmissions[]

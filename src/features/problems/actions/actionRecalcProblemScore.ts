@@ -24,10 +24,10 @@ export const actionRecalcProblemScore = async (code: string): Promise<ReturnType
     await recalcProblemScore(code);
     return { ok: true };
   } catch (e) {
-    console.error(e);
     if (e instanceof PrismaClientKnownRequestError) {
-      return { ok: false, message: e.message };
+      console.error(e.code, e.message);
     }
+    console.error(e);
     return { ok: false, message: "An internal server error occurred" };
   }
 };

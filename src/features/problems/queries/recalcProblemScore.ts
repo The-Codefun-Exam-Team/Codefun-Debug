@@ -1,107 +1,79 @@
 import prisma from "@database/prisma/instance";
 import { type DebugProblems, Prisma } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { calcScore, getResult } from "@utils/shared";
 
 import { getSubmissionDiff } from "@/features/submissions";
+import type { Results } from "@/types";
 
-export const recalcProblemScore = async (
-  code: DebugProblems["code"],
-  mindiff?: DebugProblems["mindiff"],
-) => {
-  try {
-    if (mindiff === undefined) {
-      mindiff =
-        (
-          await prisma.debugSubmissions.groupBy({
-            by: ["dpid"],
-            where: {
-              code,
-              result: "AC",
+export const recalcProblemScore = async (code: DebugProblems["code"]) => {
+  const debugProblem = await prisma.debugProblems.findUniqueOrThrow({
+    where: {
+      code,
+    },
+    select: {
+      mindiff: true,
+      score: true,
+      debug_submissions: {
+        select: {
+          drid: true,
+          diff: true,
+          result: true,
+          runs: {
+            select: {
+              score: true,
             },
-            _min: {
-              diff: true,
-            },
-          })
-        )[0]._min.diff ?? 100000;
-    }
-    const typedMindiff = mindiff as number;
-
-    const problemScore = (
-      await prisma.debugProblems
-        .findUniqueOrThrow({
-          where: {
-            code,
-          },
-        })
-        .runs({
-          select: {
-            score: true,
-          },
-        })
-    ).score;
-
-    await prisma.debugProblems.update({
-      where: {
-        code,
-      },
-      data: {
-        mindiff,
-      },
-    });
-
-    const results = await prisma.debugSubmissions.findMany({
-      where: {
-        code,
-      },
-      select: {
-        drid: true,
-        diff: true,
-        result: true,
-        runs: {
-          select: {
-            score: true,
           },
         },
       },
-    });
+    },
+  });
 
-    const newDataPromise = results.map(async (result) => {
-      const increasedScore = Math.max(0, result.runs.score - problemScore);
-      const scorePercentage = increasedScore / (100 - problemScore);
-      // minus 5% score for each addition diff
-      result.diff = await getSubmissionDiff(result.drid, result.diff);
-      const typedDiff = result.diff as number;
-      const diffPercentage =
-        typedDiff < typedMindiff ? 1 : Math.max(0, 1 - ((typedDiff - typedMindiff) * 5) / 100);
-      const newScore = scorePercentage * diffPercentage * 100;
-      return {
-        drid: result.drid,
-        score: newScore,
-        result:
-          Math.abs(result.runs.score - 100) < 1e-5
-            ? "AC"
-            : result.result === "AC"
-              ? "SS"
-              : result.result,
-      };
-    });
+  const submissions = debugProblem.debug_submissions;
+  let newMinDiff = 1e5;
+  submissions.forEach((submission) => {
+    newMinDiff = Math.min(newMinDiff, submission.diff || 1e5);
+  });
 
-    const newData = await Promise.all(newDataPromise);
-    const dataPayload = newData.map(
-      (data) => Prisma.sql`(${data.drid}, ${data.score}, ${data.result})`,
-    );
+  if (debugProblem.mindiff === newMinDiff) return;
 
-    await prisma.$queryRaw`
-      INSERT IGNORE INTO debug_submissions (drid,score,result)
-        VALUES ${Prisma.join(dataPayload)}
-      ON DUPLICATE KEY UPDATE
-        score = VALUES(score), result = VALUES(result)
-    `;
-  } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.error(e.code, e.message);
-    } else {
-      console.error(e);
+  await prisma.debugProblems.update({
+    where: {
+      code,
+    },
+    data: {
+      mindiff: newMinDiff,
+    },
+    select: {},
+  });
+
+  const newDataPromise = submissions.map(async (submission) => {
+    if (submission.diff === 1e5 || !submission.diff) {
+      submission.diff = await getSubmissionDiff(submission.drid);
     }
-  }
+    const dataScore = {
+      problemScore: debugProblem.score,
+      submissionScore: submission.runs.score,
+      minDiff: newMinDiff,
+      submissionDiff: submission.diff,
+    };
+    const newScore = await calcScore(dataScore);
+    const newResult = await getResult(newScore, submission.result as Results);
+    return {
+      drid: submission.drid,
+      score: newScore,
+      result: newResult,
+    };
+  });
+
+  const newData = await Promise.all(newDataPromise);
+  const dataPayload = newData.map(
+    (data) => Prisma.sql`(${data.drid}, ${data.score}, ${data.result})`,
+  );
+
+  await prisma.$queryRaw`
+    INSERT IGNORE INTO debug_submissions (drid,score,result)
+      VALUES ${Prisma.join(dataPayload)}
+    ON DUPLICATE KEY UPDATE
+      score = VALUES(score), result = VALUES(result)
+  `;
 };
