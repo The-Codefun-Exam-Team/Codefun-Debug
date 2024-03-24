@@ -2,7 +2,7 @@ import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache } from "next/cache";
 
-import type { ProblemList } from "@/features/problems/types";
+import type { ProblemList } from "@/features/problems";
 import type { Languages } from "@/types";
 
 type ReturnType = { ok: true; data: ProblemList } | { ok: false; error: string; status: string };

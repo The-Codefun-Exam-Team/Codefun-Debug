@@ -1,6 +1,6 @@
 import type { Judge } from "@utils/shared";
 
-import type { DetailedProblemInfo } from "@/features/problems/types";
+import type { DetailedProblemInfo } from "@/features/problems";
 import type { Results } from "@/types";
 
 export interface SubmissionInfo {

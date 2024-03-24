@@ -9,8 +9,8 @@ import {
   LanguageIcon,
   SolidDownIcon,
 } from "@/components/icon";
+import type { DetailedProblemInfo } from "@/features/problems";
 import { getMemoProblem } from "@/features/problems";
-import type { DetailedProblemInfo } from "@/features/problems/types";
 import type { Results } from "@/types";
 import { RESULTS_DICT } from "@/types";
 

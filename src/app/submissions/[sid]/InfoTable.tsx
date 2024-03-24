@@ -9,7 +9,7 @@ import {
   LinkIcon,
   UserIcon,
 } from "@/components/icon";
-import type { SubmissionInfo } from "@/features/submissions/types";
+import type { SubmissionInfo } from "@/features/submissions";
 
 export const InfoTable = ({ data }: { data: SubmissionInfo }) => {
   const subDate = new Date(data.submit_time * 1000);

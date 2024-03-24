@@ -6,7 +6,7 @@ import { useFormState, useFormStatus } from "react-dom";
 
 import { actionLogin } from "@/actions";
 import { ErrorBox, Input } from "@/components";
-import type { LoginFormState } from "@/features/auth/types";
+import type { LoginFormState } from "@/features/auth";
 import { useAppDispatch } from "@/hooks";
 import { setUser } from "@/store/redux";
 
