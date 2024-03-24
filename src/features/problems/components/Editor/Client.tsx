@@ -1,5 +1,4 @@
 "use client";
-import { submit } from "@utils/actions";
 import { clsx } from "@utils/shared";
 import type monacoEditor from "monaco-editor";
 import { useRouter } from "next/navigation";
@@ -8,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import atlanticNight from "@/config/monaco-themes/atlantic-night.json";
 import { useAppSelector } from "@/hooks";
 
+import { actionSubmit } from "../../actions";
 import type { DetailedProblemInfo } from "../../types";
 
 export interface EditorClientProps {
@@ -81,7 +81,7 @@ export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProp
       return;
     }
     const codetext = editorRef.current.getModifiedEditor().getValue();
-    const res = await submit(code, codetext);
+    const res = await actionSubmit(code, codetext);
     if (!res.ok) {
       setSubmitError(res.message);
       return;

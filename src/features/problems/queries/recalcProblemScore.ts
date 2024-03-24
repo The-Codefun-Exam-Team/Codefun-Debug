@@ -17,10 +17,10 @@ export const recalcProblemScore = async (code: DebugProblems["code"]) => {
         select: {
           drid: true,
           diff: true,
-          result: true,
           runs: {
             select: {
               score: true,
+              result: true,
             },
           },
         },
@@ -43,10 +43,10 @@ export const recalcProblemScore = async (code: DebugProblems["code"]) => {
     data: {
       mindiff: newMinDiff,
     },
-    select: {},
   });
 
   const newDataPromise = submissions.map(async (submission) => {
+    if (submission.runs.result === "Q") return;
     if (submission.diff === 1e5 || !submission.diff) {
       submission.diff = await getSubmissionDiff(submission.drid);
     }
@@ -57,18 +57,20 @@ export const recalcProblemScore = async (code: DebugProblems["code"]) => {
       submissionDiff: submission.diff,
     };
     const newScore = await calcScore(dataScore);
-    const newResult = await getResult(newScore, submission.result as Results);
+    const newResult = await getResult(newScore, submission.runs.result as Results);
     return {
       drid: submission.drid,
       score: newScore,
-      result: newResult,
+      result: newResult as Results,
     };
   });
 
   const newData = await Promise.all(newDataPromise);
-  const dataPayload = newData.map(
-    (data) => Prisma.sql`(${data.drid}, ${data.score}, ${data.result})`,
-  );
+  const data = [] as { drid: number; score: number; result: Results }[];
+  newData.forEach((submission) => {
+    if (submission) data.push(submission);
+  });
+  const dataPayload = data.map((data) => Prisma.sql`(${data.drid}, ${data.score}, ${data.result})`);
 
   await prisma.$queryRaw`
     INSERT IGNORE INTO debug_submissions (drid,score,result)
