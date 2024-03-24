@@ -1,6 +1,7 @@
 import prisma from "@database/prisma/instance";
 
-import { submitCodefunProblem } from "../api";
+import { submitCodefunProblem } from "@/features/submissions";
+
 import { calcSubmissionScore } from "./calcSubmissionScore";
 
 export const submit = async (code: string, codetext: string) => {

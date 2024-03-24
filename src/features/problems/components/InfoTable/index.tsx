@@ -9,11 +9,11 @@ import {
   LanguageIcon,
   SolidDownIcon,
 } from "@/components/icon";
+import { getMemoProblem } from "@/features/problems";
+import type { DetailedProblemInfo } from "@/features/problems/types";
 import type { Results } from "@/types";
 import { RESULTS_DICT } from "@/types";
 
-import { getMemoProblem } from "../../queries";
-import type { DetailedProblemInfo } from "../../types";
 import { InfoTableScore, InfoTableScoreSkeleton } from "./Score";
 
 const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {

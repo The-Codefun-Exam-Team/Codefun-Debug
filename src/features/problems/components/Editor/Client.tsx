@@ -6,9 +6,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { actionSubmit } from "@/actions";
 import atlanticNight from "@/config/monaco-themes/atlantic-night.json";
+import type { DetailedProblemInfo } from "@/features/problems/types";
 import { useAppSelector } from "@/hooks";
-
-import type { DetailedProblemInfo } from "../../types";
 
 export interface EditorClientProps {
   problemData: DetailedProblemInfo;

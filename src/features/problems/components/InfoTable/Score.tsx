@@ -2,8 +2,7 @@ import { cookies } from "next/headers";
 
 import { Score } from "@/components";
 import { getMemoUser } from "@/features/auth";
-
-import { getProblemScore } from "../../queries";
+import { getProblemScore } from "@/features/problems";
 
 export const InfoTableScore = async ({ problemId }: { problemId: string }) => {
   const cookiesStore = cookies();

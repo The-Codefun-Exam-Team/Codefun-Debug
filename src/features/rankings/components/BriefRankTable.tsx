@@ -1,8 +1,7 @@
 import { cache } from "react";
 
 import { Heading } from "@/components";
-
-import { getUsers } from "../queries";
+import { getUsers } from "@/features/rankings";
 
 const getBriefRankTableData = cache(() => {
   return getUsers("0", "1", "10");

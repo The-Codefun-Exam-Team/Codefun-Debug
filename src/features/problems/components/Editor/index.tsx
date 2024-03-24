@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
-import { getMemoProblem } from "../../queries";
+import { getMemoProblem } from "@/features/problems";
+
 import { EditorClient } from "./Client";
 
 export const Editor = async ({ code }: { code: string }) => {

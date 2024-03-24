@@ -1,6 +1,5 @@
 import prisma from "@database/prisma/instance";
 import type { DebugSubmissions } from "@prisma/client";
-import { cache } from "react";
 
 import type { Results, UserData } from "@/types";
 
@@ -43,5 +42,3 @@ export const getProblemsScore = async (user: UserData): Promise<GetProblemsScore
 
   return { ok: true, data: result };
 };
-
-export const getMemoProblemsScore = cache(getProblemsScore);

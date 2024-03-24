@@ -1,4 +1,3 @@
-import type { SubmissionInfo } from "@utils/api/getSubmissionInfo";
 import Link from "next/link";
 
 import { DecoratedLink, Score } from "@/components";
@@ -10,6 +9,7 @@ import {
   LinkIcon,
   UserIcon,
 } from "@/components/icon";
+import type { SubmissionInfo } from "@/features/submissions/types";
 
 export const InfoTable = ({ data }: { data: SubmissionInfo }) => {
   const subDate = new Date(data.submit_time * 1000);

@@ -31,6 +31,11 @@ const nextConfig = {
       preventFullImport: true,
       skipDefaultConversion: true,
     },
+    "@/features/?(((\\w*)?/?)*)": {
+      transform: "@/features/{{ matches.[1] }}/{{member}}",
+      preventFullImport: true,
+      skipDefaultConversion: true,
+    },
   },
   transpilePackages: ["monaco-editor"],
   /**

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Problem",
 };
 
-const Page = async ({ params: { code } }: { params: { code: string } }) => {
+const Page = async ({ params: { pid: code } }: { params: { pid: string } }) => {
   Promise.all([Editor.preload(code), InfoTable.preload(code)]);
 
   return (

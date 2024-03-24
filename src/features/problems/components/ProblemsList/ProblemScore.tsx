@@ -2,8 +2,7 @@ import { cookies } from "next/headers";
 
 import { Score } from "@/components";
 import { getMemoUser } from "@/features/auth";
-
-import { getMemoProblemsScore } from "../../queries";
+import { getMemoProblemsScore } from "@/features/problems";
 
 export const ProblemScoreText = ({ text }: { text: string }) => (
   <p className="font-semibold text-slate-600 dark:text-slate-200">{text}</p>

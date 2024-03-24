@@ -16,7 +16,7 @@ module.exports = {
     "no-restricted-imports": [
       "error",
       {
-        patterns: ["@/providers/*/*", "@/hooks/*", "@/redux/*/*", "@/types/*", "@/features/*/*"],
+        patterns: ["@/providers/*/*", "@/hooks/*", "@/redux/*/*", "@/types/*"],
       },
     ],
     "@typescript-eslint/ban-ts-comment": "off",

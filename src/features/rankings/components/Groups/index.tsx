@@ -1,6 +1,7 @@
 import { cache } from "react";
 
-import { getGroups } from "../../queries/getGroups";
+import { getGroups } from "@/features/rankings";
+
 import { GroupsClient } from "./Client";
 
 const getGroupsData = cache(() => {
