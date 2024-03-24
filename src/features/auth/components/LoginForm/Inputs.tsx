@@ -4,11 +4,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
+import { actionLogin } from "@/actions";
 import { ErrorBox, Input } from "@/components";
 import { useAppDispatch } from "@/hooks";
 import { setUser } from "@/store/redux";
 
-import { actionLogin } from "../../actions";
 import type { LoginFormState } from "../../types";
 
 const initialState: LoginFormState = {

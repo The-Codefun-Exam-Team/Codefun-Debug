@@ -1,10 +1,10 @@
 "use client";
 
-import { createProblem } from "@utils/actions";
-import type { CreateProblemFormState } from "@utils/actions/createProblem";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
+import { actionCreateProblem } from "@/actions";
+import type { CreateProblemFormState } from "@/actions/actionCreateProblem";
 import { ErrorBox, Heading, Input, SuccessBox } from "@/components";
 import { useAppDispatch } from "@/hooks";
 
@@ -19,7 +19,7 @@ const initialState: CreateProblemFormState = {
 export const Inputs = () => {
   const dispatch = useAppDispatch();
   const { pending } = useFormStatus();
-  const [state, formAction] = useFormState(createProblem, initialState);
+  const [state, formAction] = useFormState(actionCreateProblem, initialState);
   const [displayState, setDisplayState] = useState(initialState);
 
   useEffect(() => {

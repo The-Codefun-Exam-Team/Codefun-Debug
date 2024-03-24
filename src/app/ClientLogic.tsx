@@ -2,7 +2,7 @@
 import { isColorScheme } from "@utils/shared";
 import { useEffect } from "react";
 
-import { actionAuthenticate } from "@/features/auth";
+import { actionAuthenticate } from "@/actions";
 import { setLoading, setScheme, setUser, store } from "@/store/redux";
 
 let didFetchUser = false;

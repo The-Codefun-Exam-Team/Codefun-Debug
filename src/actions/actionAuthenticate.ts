@@ -2,9 +2,8 @@
 
 import { cookies } from "next/headers";
 
+import { getUser } from "@/features/auth";
 import type { UserData } from "@/types";
-
-import { getUser } from "../api";
 
 export const actionAuthenticate = async (): Promise<
   { ok: true; user: UserData } | { ok: false; status: number; error: string }

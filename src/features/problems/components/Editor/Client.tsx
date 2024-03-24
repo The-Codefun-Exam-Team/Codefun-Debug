@@ -4,8 +4,8 @@ import type monacoEditor from "monaco-editor";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+import { actionSubmit } from "@/actions";
 import atlanticNight from "@/config/monaco-themes/atlantic-night.json";
-import { actionSubmit } from "@/features/submissions";
 import { useAppSelector } from "@/hooks";
 
 import type { DetailedProblemInfo } from "../../types";

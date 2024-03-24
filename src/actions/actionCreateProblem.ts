@@ -23,7 +23,7 @@ const initialState: CreateProblemFormState = {
   success_messages: [],
 };
 
-export const createProblem = async (
+export const actionCreateProblem = async (
   _prevState: CreateProblemFormState,
   formData: FormData,
 ): Promise<CreateProblemFormState> => {

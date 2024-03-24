@@ -3,8 +3,8 @@
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { getUser, loginCodefun } from "../api";
-import type { LoginFormState } from "../types";
+import type { LoginFormState } from "@/features/auth";
+import { getUser, loginCodefun } from "@/features/auth";
 
 const loginSchema = z.object({
   username: z.string().max(24),
