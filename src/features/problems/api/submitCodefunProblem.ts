@@ -23,8 +23,8 @@ export const submitCodefunProblem = async ({
     }),
   });
   if (!submissionToCodefun.ok) {
-    const error = (await submissionToCodefun.json()) as string;
-    throw new Error(error);
+    const res = await submissionToCodefun.json();
+    throw new Error(res.error);
   }
   const res = await submissionToCodefun.json();
   return res.data;

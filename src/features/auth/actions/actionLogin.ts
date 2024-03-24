@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { getUser } from "../api";
+import { getUser, loginCodefun } from "../api";
 import type { LoginFormState } from "../types";
 
 const loginSchema = z.object({
@@ -37,38 +37,21 @@ export const actionLogin = async (
       };
     }
     const { username, password } = validatedBody.data;
-    const params = new URLSearchParams({
-      username,
-      password,
-    });
-    const requestToCodefun = await fetch("https://codefun.vn/api/auth", {
-      method: "POST",
-      body: params,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      cache: "no-store",
-    });
-    const codefunResponse = await requestToCodefun.json();
-    if (!requestToCodefun.ok) {
-      return {
-        ...initialState,
-        messages: [codefunResponse.error],
-      };
-    }
 
-    const userInfo = await getUser(codefunResponse.data);
-    if (!userInfo.ok) {
+    const token = await loginCodefun(username, password);
+
+    const user = await getUser(token);
+    if (!user.ok) {
       console.error("Error fetching user info");
       return {
         ...initialState,
-        messages: [userInfo.error],
+        messages: [user.error],
       };
     }
 
     cookies().set({
       name: "token",
-      value: codefunResponse.data,
+      value: token,
       maxAge: 60 * 60 * 24,
       sameSite: "strict",
       httpOnly: true,
@@ -78,7 +61,7 @@ export const actionLogin = async (
 
     return {
       ...initialState,
-      user: userInfo.user,
+      user: user.user,
     };
   } catch (e) {
     console.error(e);
