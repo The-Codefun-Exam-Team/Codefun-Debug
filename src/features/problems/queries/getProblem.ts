@@ -2,6 +2,7 @@ import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
 import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
 import type { DetailedProblemInfo } from "../types";
 
@@ -62,3 +63,5 @@ export const getProblem = async (code: string) => {
     throw "Internal Server Error";
   }
 };
+
+export const getMemoProblem = cache(getProblem);

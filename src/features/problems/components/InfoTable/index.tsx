@@ -12,6 +12,7 @@ import {
 import type { Results } from "@/types";
 import { RESULTS_DICT } from "@/types";
 
+import { getMemoProblem } from "../../queries";
 import type { DetailedProblemInfo } from "../../types";
 import { InfoTableScore, InfoTableScoreSkeleton } from "./Score";
 
@@ -79,7 +80,8 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
   );
 };
 
-export const InfoTable = ({ problemData }: { problemData: DetailedProblemInfo }) => {
+export const InfoTable = async ({ code }: { code: string }) => {
+  const problemData = await getMemoProblem(code);
   return (
     <>
       <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
@@ -127,3 +129,5 @@ export const InfoTable = ({ problemData }: { problemData: DetailedProblemInfo })
     </>
   );
 };
+
+InfoTable.preload = getMemoProblem;
