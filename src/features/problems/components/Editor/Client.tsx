@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import atlanticNight from "@/config/monaco-themes/atlantic-night.json";
+import { actionSubmit } from "@/features/submissions";
 import { useAppSelector } from "@/hooks";
 
-import { actionSubmit } from "../../actions";
 import type { DetailedProblemInfo } from "../../types";
 
 export interface EditorClientProps {

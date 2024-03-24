@@ -1,8 +1,7 @@
 import prisma from "@database/prisma/instance";
 
-import { calcSubmissionScore } from "@/features/submissions";
-
-import { submitCodefunProblem } from "../../problems/api";
+import { submitCodefunProblem } from "../api";
+import { calcSubmissionScore } from "./calcSubmissionScore";
 
 export const submit = async (code: string, codetext: string) => {
   const debugProblems = await prisma.debugProblems.findUniqueOrThrow({
