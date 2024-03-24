@@ -1,4 +1,4 @@
-import type { Results } from "@/shared/types";
+import type { Results } from "@/types";
 
 export interface Judge {
   correct: number;

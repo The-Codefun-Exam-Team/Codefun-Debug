@@ -1,7 +1,7 @@
-import { getSubmissionInfo } from "@utils/api";
 import type { Metadata } from "next";
 
 import { Box, Heading } from "@/components";
+import { getSubmission } from "@/features/submissions";
 
 import { InfoTable } from "./InfoTable";
 import { RunInfo } from "./RunInfo";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
-  const submissionData = await getSubmissionInfo(sid);
+  const submissionData = await getSubmission(sid);
 
   if (!submissionData.ok) {
     return (

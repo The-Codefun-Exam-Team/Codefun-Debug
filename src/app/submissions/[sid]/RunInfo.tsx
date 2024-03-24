@@ -3,8 +3,8 @@ import { getVerdictTextClass } from "@utils/shared";
 import { Suspense } from "react";
 
 import { Heading } from "@/components";
-import { RESULTS_DICT } from "@/shared/constants";
-import type { Results } from "@/shared/types";
+import type { Results } from "@/types";
+import { RESULTS_DICT } from "@/types";
 
 import { CodeViewText } from "./CodeViewText";
 import { InQueue, RunInfoClient } from "./RunInfoClient";

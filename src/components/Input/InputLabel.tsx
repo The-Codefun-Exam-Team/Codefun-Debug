@@ -1,5 +1,6 @@
-import type { RequireFields } from "@utils/types";
 import type { ComponentPropsWithoutRef } from "react";
+
+import type { RequireFields } from "@/types";
 
 export type LabelProps = RequireFields<Omit<ComponentPropsWithoutRef<"label">, "ref">, "htmlFor">;
 

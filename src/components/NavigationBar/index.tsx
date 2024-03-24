@@ -12,7 +12,7 @@ export const NavigationBar = () => (
           <Link href="/" className="mx-4 flex items-center text-2xl font-bold lg:text-3xl">
             <div className="hidden sm:inline-block">
               Codefun Debug
-              <div className="ml-1 inline-block align-top text-sm font-extrabold text-accent-light dark:text-accent-dark lg:text-base">
+              <div className="ml-1 inline-block align-top text-sm font-extrabold text-accent-light lg:text-base dark:text-accent-dark">
                 BETA
               </div>
             </div>

@@ -1,9 +1,9 @@
 "use client";
-import { setLoading, setScheme, setUser } from "@redux/slice";
-import { store } from "@redux/store";
-import { authenticate } from "@utils/actions";
 import { isColorScheme } from "@utils/shared";
 import { useEffect } from "react";
+
+import { actionAuthenticate } from "@/actions";
+import { setLoading, setScheme, setUser, store } from "@/store/redux";
 
 let didFetchUser = false;
 let didCheckInitialTheme = false;
@@ -14,7 +14,7 @@ export const ClientLogic = () => {
       didFetchUser = true;
       // We only want to run this on client.
       store.dispatch(async (dispatch) => {
-        const res = await authenticate();
+        const res = await actionAuthenticate();
         if (!res.ok) {
           dispatch(setLoading(false));
           // TODO: handle fetch error

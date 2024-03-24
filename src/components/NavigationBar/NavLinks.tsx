@@ -1,14 +1,14 @@
 "use client";
 import { Menu, RadioGroup, Transition } from "@headlessui/react";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { setScheme, setUser } from "@redux/slice";
-import { logout } from "@utils/actions";
 import { clsx, getCodefunRole, getCodefunRoleTextClass } from "@utils/shared";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { actionLogout } from "@/actions";
 import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setScheme, setUser } from "@/store/redux";
 
 import { ADDITIONAL_LINKS, SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
 import { BaseNavLink, HorizontalNavLink, NAV_BUTTON_CLASS, VerticalNavLink } from "./NavLink";
@@ -99,7 +99,7 @@ export const UserInfo = () => {
   }, [errorMessage]);
 
   const logoutClient = async () => {
-    const res = await logout();
+    const res = await actionLogout();
     if (res.ok) {
       dispatch(
         setUser({

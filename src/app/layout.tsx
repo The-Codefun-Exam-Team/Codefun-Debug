@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { NavigationBar } from "@/components";
+import { ReduxProvider } from "@/providers";
 
 import { ClientLogic } from "./ClientLogic";
-import { ReduxProvider } from "./ReduxProvider";
 
 export const metadata: Metadata = {
   title: {

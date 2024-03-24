@@ -1,5 +1,6 @@
-import type { RequireFields } from "@utils/types";
 import type { DetailedHTMLProps, HTMLAttributes } from "react";
+
+import type { RequireFields } from "@/types";
 
 export type InputErrorTextProps = RequireFields<
   Omit<

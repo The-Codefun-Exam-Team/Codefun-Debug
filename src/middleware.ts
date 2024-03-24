@@ -1,6 +1,7 @@
-import { getUserInfo } from "@utils/api";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+
+import { getUser } from "@/features/auth";
 
 export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;
@@ -10,7 +11,7 @@ export const middleware = async (request: NextRequest) => {
 
   if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const token = request.cookies.get("token");
-    const userInfo = await getUserInfo(token?.value);
+    const userInfo = await getUser(token?.value);
     if (!userInfo.ok || userInfo.user.status !== "Admin") {
       return NextResponse.redirect(new URL("/", request.url));
     }

@@ -1,7 +1,8 @@
 import { clsx, createNamespaceComponent } from "@utils/shared";
-import type { Optional, RequireFields } from "@utils/types";
 import type { ComponentPropsWithoutRef } from "react";
 import { forwardRef } from "react";
+
+import type { Optional, RequireFields } from "@/types";
 
 import { InputErrorText } from "./InputErrorText";
 import type { LabelProps } from "./InputLabel";

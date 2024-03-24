@@ -1,4 +1,4 @@
-import type { Results } from "@/shared/types";
+import type { Results } from "@/types";
 
 export const getVerdictTextClass = (verdict: Results) => {
   switch (verdict) {

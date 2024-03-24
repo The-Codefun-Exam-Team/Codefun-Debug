@@ -1,9 +1,7 @@
-import { getAllProblem, getProblemCount } from "@utils/api";
 import type { Metadata } from "next";
 
 import { Box, Heading, Pagination } from "@/components";
-
-import { ProblemsList } from "./ProblemList";
+import { getAllProblem, getProblemCount, ProblemsList } from "@/features/problems";
 
 export const metadata: Metadata = {
   title: "Problems",

@@ -15,12 +15,34 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@redux/*": ["./src/features/redux-thunk/*"],
       "@schemas/*": ["./src/shared/schemas/*"],
-      "@hooks/*": ["./src/shared/hooks/*"],
       "@utils/*": ["./src/shared/utils/*"],
       "@database/*": ["./src/database/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/features/auth/*":[
+        "./src/features/auth/api/*",
+        "./src/features/auth/components/*",
+        "./src/features/auth/queries/*",
+        "./src/features/auth/types",
+      ],
+      "@/features/problems/*":[
+        "./src/features/problems/api/*",
+        "./src/features/problems/components/*",
+        "./src/features/problems/queries/*",
+        "./src/features/problems/types",
+      ],
+      "@/features/submissions/*":[
+        "./src/features/submissions/api/*",
+        "./src/features/submissions/components/*",
+        "./src/features/submissions/queries/*",
+        "./src/features/submissions/types",
+      ],
+      "@/features/rankings/*":[
+        "./src/features/rankings/api/*",
+        "./src/features/rankings/components/*",
+        "./src/features/rankings/queries/*",
+        "./src/features/rankings/types",
+      ],
     },
     "types": ["react/experimental"],
     "plugins": [
