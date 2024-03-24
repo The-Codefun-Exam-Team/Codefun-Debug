@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
+import type { CreateProblemFormState } from "@/actions";
 import { actionCreateProblem } from "@/actions";
-import type { CreateProblemFormState } from "@/actions/actionCreateProblem";
 import { ErrorBox, Heading, Input, SuccessBox } from "@/components";
 import { useAppDispatch } from "@/hooks";
 

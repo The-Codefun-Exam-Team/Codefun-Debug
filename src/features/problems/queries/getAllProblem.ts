@@ -4,14 +4,7 @@ import { unstable_cache } from "next/cache";
 
 import type { Languages } from "@/types";
 
-export interface ProblemInfo {
-  dpid: number;
-  code: string;
-  name: string;
-  language: Languages;
-}
-
-export type ProblemList = ProblemInfo[];
+import type { ProblemList } from "../types";
 
 type ReturnType = { ok: true; data: ProblemList } | { ok: false; error: string; status: string };
 

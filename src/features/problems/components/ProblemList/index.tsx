@@ -2,10 +2,10 @@ import { clsx } from "@utils/shared";
 import { Suspense } from "react";
 
 import { DecoratedLink } from "@/components";
+import type { ProblemList } from "@/features/problems";
 
-import { CreateProblem } from "./CreateProblem";
+import { CreateProblem } from "../CreateProblem";
 import { ProblemScore, ProblemScoreSkeleton } from "./ProblemScore";
-import type { ProblemList } from "./types";
 
 export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; page: string }) => (
   <div className="w-full">
