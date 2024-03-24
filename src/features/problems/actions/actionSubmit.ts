@@ -3,8 +3,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { cookies } from "next/headers";
 
 import { getUser } from "@/features/auth";
-
-import { submit } from "../queries";
+import { submit } from "@/features/submissions";
 
 export const actionSubmit = async (
   code: string,

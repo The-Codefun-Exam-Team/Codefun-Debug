@@ -2,10 +2,10 @@ import prisma from "@database/prisma/instance";
 import type { DebugSubmissions } from "@prisma/client";
 import { calcScore, getResult } from "@utils/shared";
 
-import { getSubmissionDiff } from "@/features/submissions";
+import { recalcProblemScore } from "@/features/problems";
 import type { Results } from "@/types";
 
-import { recalcProblemScore } from "./recalcProblemScore";
+import { getSubmissionDiff } from "./getSubmissionDiff";
 
 export const calcSubmissionScore = async (drid: DebugSubmissions["drid"]) => {
   const runQuery = async (): Promise<{ result: string; score: number }> => {
