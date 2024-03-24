@@ -9,6 +9,7 @@ export const submit = async (code: string, codetext: string) => {
       code,
     },
     select: {
+      dpid: true,
       language: true,
       problem: {
         select: {
@@ -49,7 +50,7 @@ export const submit = async (code: string, codetext: string) => {
     data: {
       rid,
       tid: team.tid,
-      dpid: codefunProblem.pid,
+      dpid: debugProblems.dpid,
       language: debugProblems.language,
       submittime: codefunSubmission.submittime,
       result: "Q",

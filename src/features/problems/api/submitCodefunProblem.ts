@@ -1,4 +1,3 @@
-import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url";
 import { cookies } from "next/headers";
 
 export const submitCodefunProblem = async ({
@@ -27,6 +26,6 @@ export const submitCodefunProblem = async ({
     const error = (await submissionToCodefun.json()) as string;
     throw new Error(error);
   }
-  const rid = await submissionToCodefun.json();
-  return rid;
+  const res = await submissionToCodefun.json();
+  return res.data;
 };
