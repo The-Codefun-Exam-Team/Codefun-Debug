@@ -4,9 +4,8 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { parseJudge } from "@utils/shared";
 
 import { getProblem } from "@/features/problems";
+import type { SubmissionInfo } from "@/features/submissions";
 import type { Results } from "@/types";
-
-import type { SubmissionInfo } from "../types";
 
 type ReturnType =
   | { ok: false; error: string; status: string }

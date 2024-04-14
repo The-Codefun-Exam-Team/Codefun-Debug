@@ -70,6 +70,7 @@ export const recalcProblemScore = async (code: DebugProblems["code"]) => {
   newData.forEach((submission) => {
     if (submission) data.push(submission);
   });
+  if (!data.length) return;
   const dataPayload = data.map((data) => Prisma.sql`(${data.drid}, ${data.score}, ${data.result})`);
 
   await prisma.$queryRaw`
