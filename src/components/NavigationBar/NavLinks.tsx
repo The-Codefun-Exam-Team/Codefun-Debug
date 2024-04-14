@@ -5,8 +5,8 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { actionLogout } from "@/actions";
 import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
+import { actionLogout } from "@/features/auth";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setScheme, setUser } from "@/store/redux";
 

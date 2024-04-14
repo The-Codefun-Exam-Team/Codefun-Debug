@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
-import type { CreateProblemFormState } from "@/actions";
-import { actionCreateProblem } from "@/actions";
 import { ErrorBox, Heading, Input, SuccessBox } from "@/components";
+import type { CreateProblemFormState } from "@/features/problems";
+import { actionCreateProblem } from "@/features/problems";
 import { useAppDispatch } from "@/hooks";
 
 const initialState: CreateProblemFormState = {

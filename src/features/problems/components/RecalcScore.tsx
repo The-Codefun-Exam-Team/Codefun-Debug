@@ -1,7 +1,7 @@
 "use client";
 
-import { actionRecalcProblemScore } from "@/actions";
 import { ResetIcon } from "@/components/icon";
+import { actionRecalcProblemScore } from "@/features/problems";
 import { useAppSelector } from "@/hooks";
 
 export const RecalcScore = ({ code }: { code: string }) => {

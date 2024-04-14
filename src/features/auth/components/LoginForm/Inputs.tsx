@@ -4,9 +4,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
-import { actionLogin } from "@/actions";
 import { ErrorBox, Input } from "@/components";
 import type { LoginFormState } from "@/features/auth";
+import { actionLogin } from "@/features/auth";
 import { useAppDispatch } from "@/hooks";
 import { setUser } from "@/store/redux";
 
