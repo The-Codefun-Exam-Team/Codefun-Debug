@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 
 import { Box, Heading } from "@/components";
-import { getSubmission } from "@/features/submissions";
-
-import { InfoTable } from "./InfoTable";
-import { RunInfo } from "./RunInfo";
+import { getSubmission, InfoTable, RunInfo } from "@/features/submissions";
 
 // export const generateStaticParams = () => [];
 
