@@ -3,8 +3,8 @@ import { Suspense } from "react";
 
 import { DecoratedLink } from "@/components";
 import type { ProblemList } from "@/features/problems";
+import { CreateProblemButton } from "@/features/problems";
 
-import { CreateProblem } from "../CreateProblem";
 import { ProblemScore, ProblemScoreSkeleton } from "./ProblemScore";
 
 export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; page: string }) => (
@@ -15,7 +15,7 @@ export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; 
           <th className="flex gap-2 text-left">
             <div className="hidden sm:block">Problems</div>
             <div className="text-ellipsis sm:hidden ">Probs</div>
-            <CreateProblem />
+            <CreateProblemButton />
           </th>
           <th className="text-left">
             <div className="hidden sm:block">Language</div>

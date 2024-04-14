@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
-import { Box } from "@/components";
-
-import { Inputs } from "./Inputs";
+import { CreateProblemForm } from "@/features/problems";
 
 export const metadata: Metadata = {
   title: "Create Problem",
@@ -10,11 +8,7 @@ export const metadata: Metadata = {
 
 const Page = () => (
   <div className="flex w-full items-center justify-center self-stretch">
-    <Box>
-      <form className="flex w-full flex-col gap-6 text-slate-700">
-        <Inputs />
-      </form>
-    </Box>
+    <CreateProblemForm />
   </div>
 );
 

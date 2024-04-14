@@ -4,7 +4,7 @@ import Link from "next/link";
 import { PlusSignIcon } from "@/components/icon";
 import { useAppSelector } from "@/hooks";
 
-export const CreateProblem = () => {
+export const CreateProblemButton = () => {
   const user = useAppSelector((state) => state.user.user);
   return user?.status === "Admin" ? (
     <Link href="/problems/create" className="flex items-center">
