@@ -1,10 +1,10 @@
-import { getVerdictTextClass } from "@utils/shared";
 import { Suspense } from "react";
 
 import { Heading } from "@/components";
 import type { SubmissionInfo } from "@/features/submissions";
 import type { Results } from "@/types";
 import { RESULTS_DICT } from "@/types";
+import { getVerdictTextClass } from "@/utils";
 
 import { CodeViewText } from "./CodeViewText";
 import { InQueue, RunInfoClient } from "./RunInfoClient";

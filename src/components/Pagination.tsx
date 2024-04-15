@@ -1,4 +1,3 @@
-import { clsx } from "@utils/shared";
 import Link from "next/link";
 
 import {
@@ -7,6 +6,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@/components/icon";
+import { clsx } from "@/utils";
 
 export const Pagination = ({
   page,

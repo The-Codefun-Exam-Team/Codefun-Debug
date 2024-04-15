@@ -1,6 +1,5 @@
-import { clsx } from "@utils/shared";
-
 import type { CodefunRoles } from "@/types";
+import { clsx } from "@/utils";
 
 /**
  * Get Codefun role text classNames from user's rank

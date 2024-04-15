@@ -1,6 +1,7 @@
-import { clsx } from "@utils/shared";
 import type { DetailedHTMLProps, ElementType, HTMLAttributes } from "react";
 import { forwardRef } from "react";
+
+import { clsx } from "@/utils";
 
 export interface HeadingProps
   extends Omit<

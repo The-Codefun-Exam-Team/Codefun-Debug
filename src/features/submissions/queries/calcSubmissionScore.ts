@@ -1,9 +1,9 @@
 import prisma from "@database/prisma/instance";
 import type { DebugSubmissions } from "@prisma/client";
-import { calcScore, getResult } from "@utils/shared";
 
 import { recalcProblemScore } from "@/features/problems";
 import type { Results } from "@/types";
+import { calcScore, getResult } from "@/utils";
 
 import { getSubmissionDiff } from "./getSubmissionDiff";
 

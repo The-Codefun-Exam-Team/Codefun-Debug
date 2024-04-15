@@ -1,9 +1,9 @@
 "use client";
-import { isColorScheme } from "@utils/shared";
 import { useEffect } from "react";
 
 import { actionAuthenticate } from "@/features/auth";
 import { setLoading, setScheme, setUser, store } from "@/store/redux";
+import { isColorScheme } from "@/utils";
 
 let didFetchUser = false;
 let didCheckInitialTheme = false;

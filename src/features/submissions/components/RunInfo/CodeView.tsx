@@ -1,10 +1,10 @@
 "use client";
-import { clsx } from "@utils/shared";
 import type monacoEditor from "monaco-editor";
 import { useEffect, useRef, useState } from "react";
 
 import AtlanticNight from "@/config/monaco-themes/atlantic-night.json";
 import { useAppSelector } from "@/hooks";
+import { clsx } from "@/utils";
 
 import { CodeViewText } from "./CodeViewText";
 

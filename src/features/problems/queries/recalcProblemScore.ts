@@ -1,9 +1,9 @@
 import prisma from "@database/prisma/instance";
 import { type DebugProblems, Prisma } from "@prisma/client";
-import { calcScore, getResult } from "@utils/shared";
 
 import { getSubmissionDiff } from "@/features/submissions";
 import type { Results } from "@/types";
+import { calcScore, getResult } from "@/utils";
 
 export const recalcProblemScore = async (code: DebugProblems["code"]) => {
   const debugProblem = await prisma.debugProblems.findUniqueOrThrow({

@@ -1,8 +1,8 @@
-import { clsx } from "@utils/shared";
 import { cache } from "react";
 
 import { Heading } from "@/components";
 import { getUsers } from "@/features/rankings";
+import { clsx } from "@/utils";
 
 const getRankTableData = cache((group: string, page: string) => {
   return getUsers(group, page, "50");

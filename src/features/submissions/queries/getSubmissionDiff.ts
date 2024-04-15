@@ -1,5 +1,6 @@
 import prisma from "@database/prisma/instance";
-import { calcEditDistance } from "@utils/shared";
+
+import { calcEditDistance } from "@/utils";
 
 const calcSubmissionDiff = async (drid: number) => {
   const getCodeQuery = await prisma.debugSubmissions.findUniqueOrThrow({

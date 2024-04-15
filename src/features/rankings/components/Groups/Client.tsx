@@ -1,9 +1,9 @@
 "use client";
 import { Menu, Transition } from "@headlessui/react";
-import { clsx } from "@utils/shared";
 import Link from "next/link";
 
 import type { GroupsData } from "@/features/rankings";
+import { clsx } from "@/utils";
 
 export const GroupsClient = ({ group, data }: { group: string; data: GroupsData }) => {
   const currentGroupName = data.find((element) => element.gid.toString() === group)?.groupname;

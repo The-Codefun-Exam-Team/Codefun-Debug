@@ -1,7 +1,7 @@
-import { clsx } from "@utils/shared";
 import type { Metadata } from "next";
 
 import { BriefRankTable } from "@/features/rankings";
+import { clsx } from "@/utils";
 
 import { Announcements } from "./Announcements";
 

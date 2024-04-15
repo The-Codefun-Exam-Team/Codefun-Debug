@@ -1,7 +1,6 @@
 export * from "./calcEditDistance";
 export * from "./calcScore";
-export type { ClassArray, ClassDictionary, ClassValue } from "./clsx";
-export { clsx } from "./clsx";
+export * from "./clsx";
 export * from "./createNamespaceComponent";
 export * from "./getCodefunRole";
 export * from "./getCodefunRoleTextClass";

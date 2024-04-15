@@ -1,6 +1,5 @@
 "use client";
 import { Menu, RadioGroup, Transition } from "@headlessui/react";
-import { clsx, getCodefunRole, getCodefunRoleTextClass } from "@utils/shared";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import { ComputerIcon, MoonIcon, SunIcon, UserIcon } from "@/components/icon";
 import { actionLogout } from "@/features/auth";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setScheme, setUser } from "@/store/redux";
+import { clsx, getCodefunRole, getCodefunRoleTextClass } from "@/utils";
 
 import { ADDITIONAL_LINKS, SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
 import { BaseNavLink, HorizontalNavLink, NAV_BUTTON_CLASS, VerticalNavLink } from "./NavLink";

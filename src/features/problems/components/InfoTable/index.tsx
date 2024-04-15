@@ -1,4 +1,3 @@
-import { clsx, getVerdictTextClass } from "@utils/shared";
 import { Suspense } from "react";
 
 import { DecoratedLink } from "@/components";
@@ -13,6 +12,7 @@ import type { DetailedProblemInfo } from "@/features/problems";
 import { getMemoProblem } from "@/features/problems";
 import type { Results } from "@/types";
 import { RESULTS_DICT } from "@/types";
+import { clsx, getVerdictTextClass } from "@/utils";
 
 import { InfoTableScore, InfoTableScoreSkeleton } from "./Score";
 

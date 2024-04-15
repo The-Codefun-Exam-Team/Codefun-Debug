@@ -1,4 +1,4 @@
-import { clsx } from "@utils/shared";
+import { clsx } from "@/utils";
 
 import { VerticalNavLinks } from "./NavLinks";
 

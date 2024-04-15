@@ -1,10 +1,10 @@
 import prisma from "@database/prisma/instance";
 import { Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { gravatarFromEmail } from "@utils/shared";
 import { unstable_cache } from "next/cache";
 
 import type { RankingsData } from "@/features/rankings";
+import { gravatarFromEmail } from "@/utils";
 
 export const getUsers = async (
   group: string,

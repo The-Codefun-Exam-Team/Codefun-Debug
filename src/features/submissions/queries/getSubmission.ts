@@ -1,11 +1,11 @@
 import prisma from "@database/prisma/instance";
 import type { DebugProblems, DebugSubmissions, SubsCode, Teams } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { parseJudge } from "@utils/shared";
 
 import { getProblem } from "@/features/problems";
 import type { SubmissionInfo } from "@/features/submissions";
 import type { Results } from "@/types";
+import { parseJudge } from "@/utils";
 
 type ReturnType =
   | { ok: false; error: string; status: string }

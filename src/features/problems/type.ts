@@ -1,6 +1,5 @@
-import type { Judge } from "@utils/shared/parseJudge";
-
 import type { Languages } from "@/types";
+import type { Judge } from "@/utils/parseJudge";
 
 export interface ProblemInfo {
   dpid: number;

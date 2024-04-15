@@ -1,9 +1,9 @@
-import { clsx } from "@utils/shared";
 import { Suspense } from "react";
 
 import { DecoratedLink } from "@/components";
 import type { ProblemList } from "@/features/problems";
 import { CreateProblemButton } from "@/features/problems";
+import { clsx } from "@/utils";
 
 import { ProblemScore, ProblemScoreSkeleton } from "./ProblemScore";
 

@@ -1,5 +1,4 @@
 "use client";
-import { clsx } from "@utils/shared";
 import type monacoEditor from "monaco-editor";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -8,6 +7,7 @@ import atlanticNight from "@/config/monaco-themes/atlantic-night.json";
 import type { DetailedProblemInfo } from "@/features/problems";
 import { actionSubmit } from "@/features/submissions";
 import { useAppSelector } from "@/hooks";
+import { clsx } from "@/utils";
 
 export interface EditorClientProps {
   problemData: DetailedProblemInfo;
