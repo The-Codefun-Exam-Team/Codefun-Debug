@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { CONTRIBUTORS_INFO, TEAM } from "@/app/about/constants";
-import type { TeamMembers } from "@/features/about";
+import { CONTRIBUTORS_INFO } from "@/features/about";
+import { TEAM, type TeamMembers } from "@/features/about";
 
 import { PhotosModal } from "./PhotosModal";
 

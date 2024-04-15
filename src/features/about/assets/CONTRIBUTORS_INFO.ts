@@ -1,13 +1,4 @@
-import type { ContributorsEntry, TeamMembers } from "../../features/about/types";
-
-export const TEAM = [
-  "hdp123",
-  "kbnopro",
-  "unknown1508",
-  "minhnhatnoe",
-  "ducanhgh",
-  "natsukagami",
-] as const;
+import type { ContributorsEntry, TeamMembers } from "@/features/about";
 
 export const CONTRIBUTORS_INFO = {
   hdp123: {
@@ -58,5 +49,3 @@ export const CONTRIBUTORS_INFO = {
     image: null,
   },
 } satisfies Record<TeamMembers, ContributorsEntry>;
-
-export const CONTRIBUTORS_LIST = Object.entries(CONTRIBUTORS_INFO);

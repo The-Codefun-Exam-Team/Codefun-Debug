@@ -1,6 +1,5 @@
 import { DecoratedLink, Heading } from "@/components";
-
-import { CONTRIBUTORS_LIST } from "./constants";
+import { CONTRIBUTORS_LIST } from "@/features/about";
 
 const Page = () => (
   <div className="mx-auto flex w-full flex-col gap-2 p-6 lg:max-w-7xl lg:px-8 lg:py-10">

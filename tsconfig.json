@@ -20,7 +20,8 @@
       "@database/*": ["./src/database/*"],
       "@/*": ["./src/*"],
       "@/features/about/*":[
-        "./src/features/about/types/*"
+        "./src/features/about/types/*",
+        "./src/features/about/assets/*"
       ],
       "@/features/auth/*":[
         "./src/features/auth/api/*",
