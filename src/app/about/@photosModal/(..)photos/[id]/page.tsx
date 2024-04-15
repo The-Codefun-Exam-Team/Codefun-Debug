@@ -2,7 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { CONTRIBUTORS_INFO, TEAM } from "@/app/about/constants";
-import type { TeamMembers } from "@/app/about/types";
+import type { TeamMembers } from "@/features/about/types";
 
 import { PhotosModal } from "./PhotosModal";
 

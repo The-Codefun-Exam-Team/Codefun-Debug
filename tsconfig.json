@@ -19,6 +19,9 @@
       "@utils/*": ["./src/shared/utils/*"],
       "@database/*": ["./src/database/*"],
       "@/*": ["./src/*"],
+      "@/features/about/*":[
+        "./src/features/about/utils/*"
+      ],
       "@/features/auth/*":[
         "./src/features/auth/api/*",
         "./src/features/auth/components/*",
