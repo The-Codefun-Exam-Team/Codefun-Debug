@@ -1,4 +1,4 @@
-import type { ContributorsEntry, TeamMembers } from "./types";
+import type { ContributorsEntry, TeamMembers } from "../../features/about/types";
 
 export const TEAM = [
   "hdp123",

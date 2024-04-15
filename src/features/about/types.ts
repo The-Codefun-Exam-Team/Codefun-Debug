@@ -1,6 +1,6 @@
 import type { StaticImageData } from "next/image";
 
-import type { TEAM } from "./constants";
+import type { TEAM } from "../../app/about/constants";
 
 export type TeamMembers = (typeof TEAM)[number];
 

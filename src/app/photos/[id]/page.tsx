@@ -2,8 +2,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { CONTRIBUTORS_INFO, TEAM } from "@/app/about/constants";
-import type { TeamMembers } from "@/app/about/types";
 import { Heading } from "@/components";
+import type { TeamMembers } from "@/features/about";
 
 import NO_IMAGE from "./no-image.png";
 

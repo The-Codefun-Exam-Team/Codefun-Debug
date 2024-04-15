@@ -1,9 +1,7 @@
 import prisma from "@database/prisma/instance";
 import type { DebugSubmissions } from "@prisma/client";
 
-import type { Results, UserData } from "@/types";
-
-import type { DetailedScoreInfo } from "./getProblemScore";
+import type { DetailedScoreInfo, Results, UserData } from "@/types";
 
 export type ProblemScoreMap = Record<number, DetailedScoreInfo>;
 

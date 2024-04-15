@@ -23,3 +23,19 @@ export interface UserData {
 export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
 export type CodefunRoles = (typeof CODEFUN_ROLES)[number];
+
+interface DetailedScoreInfoNotNull {
+  score: number;
+  diff: number | null;
+  result: Results;
+  drid: number;
+}
+
+interface DetailedScoreInfoNull {
+  score: 0;
+  diff: null;
+  result: null;
+  drid: null;
+}
+
+export type DetailedScoreInfo = DetailedScoreInfoNotNull | DetailedScoreInfoNull;
