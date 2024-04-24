@@ -167,7 +167,7 @@ view stats {
 }
 
 view problem_listing {
-  problem_id         Int @unique
+  problem_id         Int        @unique
   problem_code       String     @db.VarChar(32)
   problem_name       String     @db.VarChar(128)
   user_id            Int
@@ -176,7 +176,7 @@ view problem_listing {
   group_id           Int
   group_name         String     @db.VarChar(128)
   user_status        UserStatus
-  email              String?     @db.VarChar(128)
+  email              String?    @db.VarChar(128)
   user_score         Decimal    @db.Decimal(9, 2)
   user_solved        Int
   user_ratio         Decimal    @db.Decimal(9, 2)
@@ -199,7 +199,7 @@ view post_comment_query {
   group_id           Int
   group_name         String     @db.VarChar(128)
   user_status        UserStatus
-  email              String?     @db.VarChar(128)
+  email              String?    @db.VarChar(128)
   user_score         Decimal    @db.Decimal(9, 2)
   user_solved        Int
   user_ratio         Decimal    @db.Decimal(9, 2)
@@ -211,7 +211,7 @@ view post_comment_query {
   comment_updated_at DateTime   @db.Timestamptz(6)
   comment_parent_id  Int
 
-  @@unique([comment_id,comment_post_id])
+  @@unique([comment_id, comment_post_id])
   @@schema("public")
 }
 
@@ -221,7 +221,7 @@ view post_query {
   username           String     @db.VarChar(32)
   display_name       String     @db.VarChar(128)
   group_id           Int
-  group_name         String    @db.VarChar(128)
+  group_name         String     @db.VarChar(128)
   user_status        UserStatus
   email              String     @db.VarChar(128)
   user_score         Decimal    @db.Decimal(9, 2)
@@ -241,8 +241,8 @@ view post_query {
 
 /// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view problem_query {
-  problem_id         Int @unique
-  problem_code       String    @db.VarChar(32)
+  problem_id         Int        @unique
+  problem_code       String     @db.VarChar(32)
   problem_name       String     @db.VarChar(128)
   user_id            Int
   username           String     @db.VarChar(32)
@@ -268,7 +268,7 @@ view problem_query {
 }
 
 view submission_listing {
-  sub_id           Int @unique
+  sub_id           Int              @unique
   problem_id       Int
   problem_code     String           @db.VarChar(32)
   problem_name     String           @db.VarChar(128)
@@ -278,7 +278,7 @@ view submission_listing {
   group_id         Int
   group_name       String           @db.VarChar(128)
   user_status      UserStatus
-  email            String?           @db.VarChar(128)
+  email            String?          @db.VarChar(128)
   user_score       Decimal          @db.Decimal(9, 2)
   user_solved      Int
   user_ratio       Decimal          @db.Decimal(9, 2)
@@ -293,9 +293,8 @@ view submission_listing {
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view submission_query {
-  sub_id           Int @unique
+  sub_id           Int              @unique
   problem_id       Int
   problem_code     String           @db.VarChar(32)
   problem_name     String           @db.VarChar(128)
@@ -323,15 +322,13 @@ view submission_query {
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view group_query {
-  group_id   Int @unique
+  group_id   Int    @unique
   group_name String @db.VarChar(128)
 
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view activities {
   activity_type       String
   activity_created_at DateTime   @db.Timestamptz(6)
@@ -344,7 +341,7 @@ view activities {
   group_id            Int
   group_name          String     @db.VarChar(128)
   user_status         UserStatus
-  email               String?     @db.VarChar(128)
+  email               String?    @db.VarChar(128)
   user_score          Decimal    @db.Decimal(9, 2)
   user_solved         Int
   user_ratio          Decimal    @db.Decimal(9, 2)
@@ -354,52 +351,44 @@ view activities {
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view judge_requests {
-  sub_id          Int?
-  problem_code    String?    @db.VarChar(32)
-  sub_code        String?    @db.VarChar(32000)
-  sub_language    Language?
-  problem_checker String?    @db.VarChar(32000)
-  score_type      ScoreType?
-  time_limit      Decimal?   @db.Decimal(4, 2)
+  sub_id          Int       @unique
+  problem_code    String    @db.VarChar(32)
+  sub_code        String    @db.VarChar(32000)
+  sub_language    Language
+  problem_checker String    @db.VarChar(32000)
+  score_type      ScoreType
+  time_limit      Decimal   @db.Decimal(4, 2)
 
-  @@ignore
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view problem_headers {
-  problem_id   Int?
-  problem_code String? @db.VarChar(32)
-  problem_name String? @db.VarChar(128)
+  problem_id   Int    @unique
+  problem_code String @db.VarChar(32)
+  problem_name String @db.VarChar(128)
 
-  @@ignore
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view solved_submissions {
-  id         Int?
-  problem_id Int?
-  user_id    Int?
+  id         Int @unique
+  problem_id Int
+  user_id    Int
 
-  @@ignore
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view user_stats_query {
-  problem_id       Int?
-  problem_code     String?   @db.VarChar(32)
-  problem_name     String?   @db.VarChar(128)
-  problem_score    Decimal?  @db.Decimal(9, 2)
-  sub_id           Int?
-  sub_user_id      Int?
-  sub_submitted_at DateTime? @db.Timestamptz(6)
-  sub_score        Decimal?  @db.Decimal(9, 2)
+  problem_id       Int
+  problem_code     String   @db.VarChar(32)
+  problem_name     String   @db.VarChar(128)
+  problem_score    Decimal  @db.Decimal(9, 2)
+  sub_id           Int      @unique
+  sub_user_id      Int
+  sub_submitted_at DateTime @db.Timestamptz(6)
+  sub_score        Decimal  @db.Decimal(9, 2)
 
-  @@ignore
   @@schema("public")
 }
 

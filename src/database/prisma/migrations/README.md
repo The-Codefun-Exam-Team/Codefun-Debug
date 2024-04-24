@@ -1,5 +1,4 @@
-Migration guide using Prisma
-===
+# Migration guide using Prisma
 
 **_The workflow to maintain database_**
 
@@ -39,4 +38,4 @@ After some researches, I find several Prisma's limitations as followed:
 
   **PostgreSQL** support [View](https://www.postgresql.org/docs/current/sql-createview.html), which is utilizes by **Codefun** and possibly **Codefun-Debug**.
 
-  Prisma is supporting this feature as a [preview feature](https://www.prisma.io/docs/orm/prisma-schema/data-model/views#use-views-with-prisma-migrate-and-db-push). This means by briefly modifying the schema,
+  **Prisma** is supporting this feature as a [preview feature](https://www.prisma.io/docs/orm/prisma-schema/data-model/views#use-views-with-prisma-migrate-and-db-push). This means by briefly modifying the schema after instropection, we can query directly from vies. However, creating views is not currently supported by, so some additional steps are required to create view.
