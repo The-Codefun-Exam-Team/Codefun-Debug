@@ -49,6 +49,7 @@ const nextConfig = {
       "@/features/submissions",
       "@/utils",
       "@/components",
+
       "@/hooks",
     ],
   },

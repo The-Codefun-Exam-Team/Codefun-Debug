@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
+  previewFeatures = ["multiSchema", "views"]
 }
 
 datasource db {
@@ -39,7 +39,7 @@ model PasswordResets {
 }
 
 model PostComments {
-  id        Int      @id(map: "btree") @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   postId    Int      @map("post_id")
   authorId  Int      @map("author_id")
   parentId  Int?     @map("parent_id")
@@ -139,8 +139,268 @@ model Users {
   groups         Groups           @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([score(sort: Desc), id], map: "users_ranking")
+  @@map("users")
   @@schema("public")
-	@@map("users")
+}
+
+view user_query {
+  user_id      Int        @unique
+  username     String     @db.VarChar(32)
+  display_name String     @db.VarChar(128)
+  group_id     Int
+  group_name   String     @db.VarChar(128)
+  user_status  UserStatus
+  email        String     @db.VarChar(128)
+  user_score   Decimal    @db.Decimal(9, 2)
+  user_solved  Int
+  user_ratio   Decimal    @db.Decimal(9, 2)
+  user_rank    BigInt
+
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view stats {
+  problem_count BigInt @unique
+
+  @@schema("public")
+}
+
+view problem_listing {
+  problem_id         Int @unique
+  problem_code       String     @db.VarChar(32)
+  problem_name       String     @db.VarChar(128)
+  user_id            Int
+  username           String     @db.VarChar(32)
+  display_name       String     @db.VarChar(128)
+  group_id           Int
+  group_name         String     @db.VarChar(128)
+  user_status        UserStatus
+  email              String?     @db.VarChar(128)
+  user_score         Decimal    @db.Decimal(9, 2)
+  user_solved        Int
+  user_ratio         Decimal    @db.Decimal(9, 2)
+  user_rank          BigInt
+  score_type         ScoreType
+  problem_group      String     @db.VarChar(128)
+  problem_time_limit Decimal    @db.Decimal(4, 2)
+  problem_score      Decimal    @db.Decimal(9, 2)
+  problem_checker    String     @db.VarChar(32000)
+  problem_solved     Int
+  problem_total      Int
+
+  @@schema("public")
+}
+
+view post_comment_query {
+  user_id            Int
+  username           String     @db.VarChar(32)
+  display_name       String     @db.VarChar(128)
+  group_id           Int
+  group_name         String     @db.VarChar(128)
+  user_status        UserStatus
+  email              String?     @db.VarChar(128)
+  user_score         Decimal    @db.Decimal(9, 2)
+  user_solved        Int
+  user_ratio         Decimal    @db.Decimal(9, 2)
+  user_rank          BigInt
+  comment_id         Int
+  comment_post_id    Int
+  comment_content    String     @db.VarChar(32000)
+  comment_created_at DateTime   @db.Timestamptz(6)
+  comment_updated_at DateTime   @db.Timestamptz(6)
+  comment_parent_id  Int
+
+  @@unique([comment_id,comment_post_id])
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view post_query {
+  user_id            Int
+  username           String     @db.VarChar(32)
+  display_name       String     @db.VarChar(128)
+  group_id           Int
+  group_name         String    @db.VarChar(128)
+  user_status        UserStatus
+  email              String     @db.VarChar(128)
+  user_score         Decimal    @db.Decimal(9, 2)
+  user_solved        Int
+  user_ratio         Decimal    @db.Decimal(9, 2)
+  user_rank          BigInt
+  post_id            Int        @unique
+  post_title         String     @db.VarChar(128)
+  post_content       String     @db.VarChar(32000)
+  post_is_official   Boolean
+  post_created_at    DateTime   @db.Timestamptz(6)
+  post_updated_at    DateTime   @db.Timestamptz(6)
+  post_comment_count BigInt
+
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view problem_query {
+  problem_id         Int @unique
+  problem_code       String    @db.VarChar(32)
+  problem_name       String     @db.VarChar(128)
+  user_id            Int
+  username           String     @db.VarChar(32)
+  display_name       String     @db.VarChar(128)
+  group_id           Int
+  group_name         String     @db.VarChar(128)
+  user_status        UserStatus
+  email              String     @db.VarChar(128)
+  user_score         Decimal    @db.Decimal(9, 2)
+  user_solved        Int
+  user_ratio         Decimal    @db.Decimal(9, 2)
+  user_rank          BigInt
+  score_type         ScoreType
+  problem_group      String     @db.VarChar(128)
+  problem_time_limit Decimal    @db.Decimal(4, 2)
+  problem_score      Decimal    @db.Decimal(9, 2)
+  problem_checker    String     @db.VarChar(32000)
+  problem_solved     Int
+  problem_total      Int
+  problem_statements String     @db.VarChar(32000)
+
+  @@schema("public")
+}
+
+view submission_listing {
+  sub_id           Int @unique
+  problem_id       Int
+  problem_code     String           @db.VarChar(32)
+  problem_name     String           @db.VarChar(128)
+  user_id          Int
+  username         String           @db.VarChar(32)
+  display_name     String           @db.VarChar(128)
+  group_id         Int
+  group_name       String           @db.VarChar(128)
+  user_status      UserStatus
+  email            String?           @db.VarChar(128)
+  user_score       Decimal          @db.Decimal(9, 2)
+  user_solved      Int
+  user_ratio       Decimal          @db.Decimal(9, 2)
+  user_rank        BigInt
+  sub_language     Language
+  sub_result       SubmissionResult
+  sub_created_at   DateTime         @db.Timestamptz(6)
+  sub_running_time Decimal          @db.Decimal(5, 3)
+  sub_is_best      Boolean
+  sub_score        Decimal          @db.Decimal(9, 2)
+
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view submission_query {
+  sub_id           Int @unique
+  problem_id       Int
+  problem_code     String           @db.VarChar(32)
+  problem_name     String           @db.VarChar(128)
+  user_id          Int
+  username         String           @db.VarChar(32)
+  display_name     String           @db.VarChar(128)
+  group_id         Int
+  group_name       String           @db.VarChar(128)
+  user_status      UserStatus
+  email            String           @db.VarChar(128)
+  user_score       Decimal          @db.Decimal(9, 2)
+  user_solved      Int
+  user_ratio       Decimal          @db.Decimal(9, 2)
+  user_rank        BigInt
+  sub_language     Language
+  sub_result       SubmissionResult
+  sub_created_at   DateTime         @db.Timestamptz(6)
+  sub_running_time Decimal          @db.Decimal(5, 3)
+  sub_is_best      Boolean
+  sub_score        Decimal          @db.Decimal(9, 2)
+  sub_code         String           @db.VarChar(32000)
+  sub_judge        String
+  sub_scored_at    DateTime         @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view group_query {
+  group_id   Int @unique
+  group_name String @db.VarChar(128)
+
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view activities {
+  activity_type       String
+  activity_created_at DateTime   @db.Timestamptz(6)
+  post_id             Int
+  post_title          String     @db.VarChar(128)
+  comment_id          Int?
+  user_id             Int
+  username            String     @db.VarChar(32)
+  display_name        String     @db.VarChar(128)
+  group_id            Int
+  group_name          String     @db.VarChar(128)
+  user_status         UserStatus
+  email               String?     @db.VarChar(128)
+  user_score          Decimal    @db.Decimal(9, 2)
+  user_solved         Int
+  user_ratio          Decimal    @db.Decimal(9, 2)
+  user_rank           BigInt
+
+  @@unique([post_id])
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view judge_requests {
+  sub_id          Int?
+  problem_code    String?    @db.VarChar(32)
+  sub_code        String?    @db.VarChar(32000)
+  sub_language    Language?
+  problem_checker String?    @db.VarChar(32000)
+  score_type      ScoreType?
+  time_limit      Decimal?   @db.Decimal(4, 2)
+
+  @@ignore
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view problem_headers {
+  problem_id   Int?
+  problem_code String? @db.VarChar(32)
+  problem_name String? @db.VarChar(128)
+
+  @@ignore
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view solved_submissions {
+  id         Int?
+  problem_id Int?
+  user_id    Int?
+
+  @@ignore
+  @@schema("public")
+}
+
+/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+view user_stats_query {
+  problem_id       Int?
+  problem_code     String?   @db.VarChar(32)
+  problem_name     String?   @db.VarChar(128)
+  problem_score    Decimal?  @db.Decimal(9, 2)
+  sub_id           Int?
+  sub_user_id      Int?
+  sub_submitted_at DateTime? @db.Timestamptz(6)
+  sub_score        Decimal?  @db.Decimal(9, 2)
+
+  @@ignore
+  @@schema("public")
 }
 
 enum Language {

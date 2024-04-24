@@ -60,7 +60,7 @@ CREATE TABLE "public"."post_comments" (
   "content" VARCHAR(32000) NOT NULL,
   "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "updated_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "btree" PRIMARY KEY ("id")
+  CONSTRAINT "post_comments_pkey" PRIMARY KEY ("id")
 );
 -- CreateTable
 CREATE TABLE "public"."posts" (
