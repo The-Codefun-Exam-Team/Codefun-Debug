@@ -1,20 +1,28 @@
-"use client";
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { PlusSignIcon } from "@/components/icon";
-import { useAppSelector } from "@/hooks";
+import { getMemoUser } from "@/features/auth";
 
-export const CreateProblemButton = () => {
-  const user = useAppSelector((state) => state.user.user);
-  return user?.status === "Admin" ? (
+const CreateProblemButtonBase = async () => {
+  const token = cookies().get("token");
+  const user = await getMemoUser(token?.value);
+  if (!user.ok || !user.user || user.user.status !== "Admin") {
+    return <div className="size-7 border-2 border-transparent" />;
+  }
+  return (
     <Link href="/problems/create" className="flex items-center">
       <PlusSignIcon
-        className="inline h-7 w-7 rounded-md border-2 border-emerald-500 stroke-emerald-500 stroke-[3px] p-[2px] dark:border-green-500 dark:bg-transparent dark:stroke-green-500"
+        className="inline size-7 rounded-md border-2 border-emerald-500 stroke-emerald-500 stroke-[3px] p-[2px] dark:border-green-500 dark:bg-transparent dark:stroke-green-500"
         aria-label="Create problem"
       />
     </Link>
-  ) : (
-    // invisible box to keep the table aligned
-    <div className="h-7 w-7 border-2 border-transparent" />
   );
 };
+
+export const CreateProblemButton = () => (
+  <Suspense fallback={<div className="size-7 border-2 border-transparent" />}>
+    <CreateProblemButtonBase />
+  </Suspense>
+);

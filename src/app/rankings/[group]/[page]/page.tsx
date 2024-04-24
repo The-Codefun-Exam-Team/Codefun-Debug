@@ -72,7 +72,7 @@ const getUserCount = async (group: string) => {
     } else {
       console.error(e);
     }
-    throw "Internal Server Error";
+    throw new Error("Internal Server Error");
   }
 };
 

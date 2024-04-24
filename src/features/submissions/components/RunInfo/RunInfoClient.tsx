@@ -38,7 +38,7 @@ export const RunInfoClient = ({
       </button>
       <Transition
         show={!isTransition && view === "verdict"}
-        className="relative h-full w-full"
+        className="relative size-full"
         afterEnter={() => setButtonWaiting(false)}
         enter="ease-out duration-150"
         enterFrom="opacity-0"
@@ -48,7 +48,7 @@ export const RunInfoClient = ({
         leaveTo="opacity-0"
         afterLeave={toggleView}
       >
-        <div className="absolute left-0 top-0 h-full w-full overflow-y-auto rounded-md">
+        <div className="absolute left-0 top-0 size-full overflow-y-auto rounded-md">
           {verdictNode}
         </div>
       </Transition>
@@ -56,7 +56,7 @@ export const RunInfoClient = ({
         show={!isTransition && view === "editor"}
         unmount={false}
         afterEnter={() => setButtonWaiting(false)}
-        className="relative h-full w-full"
+        className="relative size-full"
         enter="ease-out duration-150"
         enterFrom="opacity-0"
         enterTo="opacity-100"
@@ -65,7 +65,7 @@ export const RunInfoClient = ({
         leaveTo="opacity-0"
         afterLeave={toggleView}
       >
-        <div className="absolute left-0 top-0 h-full w-full rounded-md">{codeNode}</div>
+        <div className="absolute left-0 top-0 size-full rounded-md">{codeNode}</div>
       </Transition>
     </div>
   );

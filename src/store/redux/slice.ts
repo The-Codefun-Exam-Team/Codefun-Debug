@@ -1,37 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { ColorScheme, UserData } from "@/types";
-
-export interface UserSliceState {
-  loading: boolean;
-  user: UserData | null;
-}
-
-export const userSlice = createSlice({
-  name: "user" as string,
-  initialState: {
-    loading: true,
-    user: null,
-  } as UserSliceState,
-  reducers: {
-    setUser(
-      state,
-      action: PayloadAction<{
-        user: UserData | null;
-        refresh?(): void;
-      }>,
-    ) {
-      state.user = action.payload.user;
-      action.payload.refresh?.();
-    },
-    setLoading(state, action: PayloadAction<boolean>) {
-      state.loading = action.payload;
-    },
-  },
-});
-
-export const { setLoading, setUser } = userSlice.actions;
+import type { ColorScheme } from "@/types";
 
 export interface ColorSliceState {
   selectedScheme: ColorScheme;

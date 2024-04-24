@@ -64,7 +64,7 @@ export const Modal = ({ show, closeModal, title, description, children }: ModalP
                     onClick={closeModal}
                     className="rounded-md p-2 transition-colors duration-100 hover:bg-gray-100 dark:hover:bg-slate-800"
                   >
-                    <CrossIcon className="h-6 w-6" />
+                    <CrossIcon className="size-6" />
                     <span className="sr-only">Close modal</span>
                   </button>
                 </div>

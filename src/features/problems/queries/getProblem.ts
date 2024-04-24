@@ -59,6 +59,6 @@ export const getProblem = async (code: string) => {
     } else {
       console.error(e);
     }
-    throw "Internal Server Error";
+    throw new Error("Internal Server Error");
   }
 };

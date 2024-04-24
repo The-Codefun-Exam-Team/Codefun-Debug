@@ -64,8 +64,8 @@ export const getSubmissionDiff = async (drid: number) => {
       diff: true,
     },
   });
-  const hasDiff = getDiffQuery.diff !== null && getDiffQuery.diff !== 100000;
-  if (hasDiff) {
+
+  if (getDiffQuery.diff !== null && getDiffQuery.diff !== 100000) {
     return getDiffQuery.diff;
   }
 

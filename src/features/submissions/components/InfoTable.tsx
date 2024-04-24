@@ -24,25 +24,25 @@ export const InfoTable = ({ data }: { data: SubmissionInfo }) => {
       </thead>
       <tbody>
         <tr>
-          <td className="divide-y-[1px] divide-slate-400 rounded-md border-[1px] border-slate-400 text-left text-lg font-semibold text-slate-700 dark:divide-slate-600 dark:border-slate-600 dark:text-slate-200 [&>div]:p-2 [&>div]:text-left">
+          <td className="divide-y divide-slate-400 rounded-md border border-slate-400 text-left text-lg font-semibold text-slate-700 dark:divide-slate-600 dark:border-slate-600 dark:text-slate-200 [&>div]:p-2 [&>div]:text-left">
             <div>
-              <UserIcon className="relative bottom-[3px] inline h-6 w-6" /> Owner:{" "}
+              <UserIcon className="relative bottom-[3px] inline size-6" /> Owner:{" "}
               <Link target="_blank" href={`https://codefun.vn/profile/${data.user.tid}`}>
                 {data.user.name}
               </Link>
             </div>
             <div>
-              <BookOpenIcon className="relative bottom-[1px] inline h-6 w-6" /> Problem:{" "}
+              <BookOpenIcon className="relative bottom-px inline size-6" /> Problem:{" "}
               <DecoratedLink href={`/problems/${data.debug_problem.code}`}>
                 {data.debug_problem.name}
               </DecoratedLink>
             </div>
             <div>
-              <LinkIcon className="relative bottom-[3px] inline h-6 w-6" /> Submission ID:{" "}
+              <LinkIcon className="relative bottom-[3px] inline size-6" /> Submission ID:{" "}
               {data.drid}
             </div>
             <div>
-              <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
+              <DocumentTextIcon className="relative bottom-[3px] inline size-6" /> Statement:{" "}
               <DecoratedLink
                 target="_blank"
                 rel="noreferrer noopener"
@@ -52,11 +52,11 @@ export const InfoTable = ({ data }: { data: SubmissionInfo }) => {
               </DecoratedLink>
             </div>
             <div>
-              <LanguageIcon className="relative bottom-[3px] inline h-6 w-6" /> Language:{" "}
+              <LanguageIcon className="relative bottom-[3px] inline size-6" /> Language:{" "}
               {data.debug_problem.language}
             </div>
             <div>
-              <ClockIcon className="relative bottom-[3px] inline h-6 w-6" /> Submit time: {"  "}
+              <ClockIcon className="relative bottom-[3px] inline size-6" /> Submit time: {"  "}
               <div className="inline-block">{subDate.toLocaleString("vi-VN")}</div>
             </div>
           </td>

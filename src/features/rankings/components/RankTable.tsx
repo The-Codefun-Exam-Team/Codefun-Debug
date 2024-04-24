@@ -24,7 +24,7 @@ export const RankTable = async ({ group, page }: { group: string; page: string }
     <div className="w-full">
       <table className="w-full table-auto border-collapse border-spacing-0">
         <thead>
-          <tr className="border-b-[1px] border-gray-400 text-lg font-bold md:text-xl dark:border-slate-600 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>th]:p-3">
+          <tr className="border-b border-gray-400 text-lg font-bold dark:border-slate-600 md:text-xl [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>th]:p-3">
             <th>
               <div className="text-left">#</div>
             </th>
@@ -39,7 +39,7 @@ export const RankTable = async ({ group, page }: { group: string; page: string }
             </th>
           </tr>
         </thead>
-        <tbody className="h-fit divide-y-[1px] divide-gray-400 dark:divide-slate-600">
+        <tbody className="h-fit divide-y divide-gray-400 dark:divide-slate-600">
           {data.map((user, index) => (
             <tr
               key={`ranking-page-${page}-user-${user.id}`}

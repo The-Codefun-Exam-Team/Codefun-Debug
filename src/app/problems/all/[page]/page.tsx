@@ -22,7 +22,7 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
       console.error(problemCount.status, problemCount.error);
     }
     return (
-      <div className="flex h-full w-full items-center justify-center self-center">
+      <div className="flex size-full items-center justify-center self-center">
         <Box>
           <Heading type="display">Failed to fetch problems.</Heading>
           <Heading type="title">Maybe try refreshing?</Heading>

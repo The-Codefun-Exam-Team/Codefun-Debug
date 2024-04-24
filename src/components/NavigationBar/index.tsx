@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { DropDownContent, DropDownToggler } from "./DropDown";
-import { HorizontalNavLinks, UserInfo } from "./NavLinks";
+import { HorizontalNavLinks } from "./NavLinks";
+import { UserInfo } from "./UserInfo";
 
 export const NavigationBar = () => (
   <nav className="sticky inset-x-0 top-0 z-40 h-auto max-h-screen justify-between border-b-[0.25px] border-gray-400 bg-white text-gray-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
@@ -12,7 +14,7 @@ export const NavigationBar = () => (
           <Link href="/" className="mx-4 flex items-center text-2xl font-bold lg:text-3xl">
             <div className="hidden sm:inline-block">
               Codefun Debug
-              <div className="ml-1 inline-block align-top text-sm font-extrabold text-accent-light lg:text-base dark:text-accent-dark">
+              <div className="ml-1 inline-block align-top text-sm font-extrabold text-accent-light dark:text-accent-dark lg:text-base">
                 BETA
               </div>
             </div>
@@ -26,7 +28,9 @@ export const NavigationBar = () => (
           <div className="flex h-full grow flex-row-reverse items-center gap-[5px]">
             <div className="text-md relative top-[2px] my-auto flex h-min items-center justify-around gap-2 font-medium">
               <div className="my-auto hidden h-min items-center justify-around md:flex">
-                <HorizontalNavLinks keyPrefix="navbar-link-large" />
+                <Suspense>
+                  <HorizontalNavLinks keyPrefix="navbar-link-large" />
+                </Suspense>
               </div>
               <UserInfo />
             </div>

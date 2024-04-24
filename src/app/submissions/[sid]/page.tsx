@@ -14,7 +14,7 @@ const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
 
   if (!submissionData.ok) {
     return (
-      <div className="flex h-full w-full items-center justify-center self-center">
+      <div className="flex size-full items-center justify-center self-center">
         <Box>
           <Heading type="display">Failed to fetch submission.</Heading>
           <Heading type="title-large">Error: {submissionData.error}</Heading>
@@ -29,7 +29,7 @@ const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
       <div className="h-auto w-full flex-[1_1_0]">
         <InfoTable {...submissionData} />
       </div>
-      <div className="flex h-full w-full flex-[2_2_0] flex-col gap-2">
+      <div className="flex size-full flex-[2_2_0] flex-col gap-2">
         <RunInfo {...submissionData} />
       </div>
     </div>

@@ -28,8 +28,8 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
           )}
           htmlFor="verdict-dropdown"
         >
-          <CheckIcon className="relative bottom-[3px] inline h-6 w-6" /> Verdicts
-          <SolidDownIcon className="relative bottom-[1px] ml-1 inline-block h-5 w-5 fill-slate-700 stroke-slate-700 transition-all duration-300 dark:fill-slate-400 dark:stroke-slate-400" />
+          <CheckIcon className="relative bottom-[3px] inline size-6" /> Verdicts
+          <SolidDownIcon className="relative bottom-px ml-1 inline-block size-5 fill-slate-700 stroke-slate-700 transition-all duration-300 dark:fill-slate-400 dark:stroke-slate-400" />
         </label>
         <div className="invisible max-h-0 overflow-y-hidden transition-all duration-200 ease-in-out peer-checked:visible peer-checked:max-h-40">
           <ul className="ml-3 mt-1 list-inside list-disc">
@@ -61,8 +61,8 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
         )}
         htmlFor="verdict-dropdown"
       >
-        <CheckIcon className="relative bottom-[3px] inline h-6 w-6" /> Verdicts
-        <SolidDownIcon className="relative bottom-[1px] ml-1 inline-block h-5 w-5 fill-slate-700 stroke-slate-700 transition-all duration-300 dark:fill-slate-400 dark:stroke-slate-400" />
+        <CheckIcon className="relative bottom-[3px] inline size-6" /> Verdicts
+        <SolidDownIcon className="relative bottom-px ml-1 inline-block size-5 fill-slate-700 stroke-slate-700 transition-all duration-300 dark:fill-slate-400 dark:stroke-slate-400" />
       </label>
       <div className="invisible max-h-0 overflow-y-hidden transition-all duration-200 ease-in-out peer-checked:visible peer-checked:max-h-40">
         <ul className="ml-3 mt-1 list-inside list-disc">
@@ -99,16 +99,16 @@ export const InfoTable = async ({ code }: { code: string }) => {
             <td
               className={clsx(
                 "rounded-md text-left text-lg font-semibold text-slate-700 dark:text-slate-400",
-                "divide-y-[1px] divide-slate-300 border-[1px] border-slate-300 dark:divide-slate-600 dark:border-slate-600",
+                "divide-y divide-slate-300 border border-slate-300 dark:divide-slate-600 dark:border-slate-600",
                 "[&>div]:p-2",
               )}
             >
               <div>
-                <BookOpenIcon className="relative bottom-[3px] inline h-6 w-6" /> Problem:{" "}
+                <BookOpenIcon className="relative bottom-[3px] inline size-6" /> Problem:{" "}
                 {problemData.code}
               </div>
               <div>
-                <DocumentTextIcon className="relative bottom-[3px] inline h-6 w-6" /> Statement:{" "}
+                <DocumentTextIcon className="relative bottom-[3px] inline size-6" /> Statement:{" "}
                 <DecoratedLink
                   target="_blank"
                   rel="noreferrer noopener"
@@ -118,7 +118,7 @@ export const InfoTable = async ({ code }: { code: string }) => {
                 </DecoratedLink>
               </div>
               <div>
-                <LanguageIcon className="relative bottom-[3px] inline h-6 w-6" /> Language:{" "}
+                <LanguageIcon className="relative bottom-[3px] inline size-6" /> Language:{" "}
                 {problemData.language}
               </div>
               {verdictsList(problemData.problem_judge)}

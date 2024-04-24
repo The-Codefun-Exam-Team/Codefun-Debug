@@ -16,7 +16,7 @@ const Page = async ({ params: { pid: code } }: { params: { pid: string } }) => {
         <InfoTable code={code} />
         <RecalcScore code={code} />
       </div>
-      <div className="flex h-full w-full md:flex-[2_2_0]">
+      <div className="flex size-full md:flex-[2_2_0]">
         <Suspense fallback={<div className="pb-4 pt-5 text-center text-2xl">Loading...</div>}>
           <Editor code={code} />
         </Suspense>
