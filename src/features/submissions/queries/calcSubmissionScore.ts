@@ -50,6 +50,7 @@ export const calcSubmissionScore = async (drid: DebugSubmissions["drid"]) => {
   const run = await runQuery();
 
   const diff = await getSubmissionDiff(drid);
+
   if (run.result === "AC" && diff < debugSubmission.debug_problems.mindiff) {
     void recalcProblemScore(debugSubmission.debug_problems.code);
     return;

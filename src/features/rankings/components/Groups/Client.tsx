@@ -25,7 +25,7 @@ export const GroupsClient = ({ group, data }: { group: string; data: GroupsData 
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 top-2 z-10 flex h-[60vh] w-full flex-col divide-y-[1px] divide-slate-300 overflow-auto rounded-md border-2 border-slate-700 bg-white dark:divide-slate-800 dark:border-slate-500 dark:bg-slate-900">
+          <Menu.Items className="absolute left-0 top-2 z-10 flex h-[60vh] w-full flex-col divide-y divide-slate-300 overflow-auto rounded-md border-2 border-slate-700 bg-white dark:divide-slate-800 dark:border-slate-500 dark:bg-slate-900">
             {data.map(({ gid, groupname }) => (
               <Menu.Item
                 key={`rankings-groups-list-group-${gid}`}

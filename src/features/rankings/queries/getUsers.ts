@@ -81,6 +81,6 @@ export const getUsers = async (
     } else {
       console.error(e);
     }
-    throw "Internal Server Error";
+    throw new Error("Internal Server Error");
   }
 };

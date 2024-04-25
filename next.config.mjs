@@ -40,6 +40,7 @@ const nextConfig = {
     return config;
   },
   experimental: {
+    webpackBuildWorker: true,
     ppr: true,
     optimizePackageImports: [
       "@/features/auth",
@@ -51,6 +52,7 @@ const nextConfig = {
       "@/components",
 
       "@/hooks",
+      "@/components/icon",
     ],
   },
 };

@@ -2,11 +2,10 @@ import type { ThunkAction } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
 import type { UnknownAction } from "redux";
 
-import { colorSlice, userSlice } from "./slice";
+import { colorSlice } from "./slice";
 
 export const store = configureStore({
   reducer: {
-    user: userSlice.reducer,
     color: colorSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>

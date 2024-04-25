@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const Page = () => (
-  <div className="flex h-full w-full items-center justify-center self-center">
+  <div className="flex size-full items-center justify-center self-center">
     <LoginForm />
   </div>
 );

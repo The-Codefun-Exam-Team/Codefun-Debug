@@ -1,5 +1,4 @@
 "use server";
-
 import { cookies } from "next/headers";
 
 import { getUser } from "@/features/auth";

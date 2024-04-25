@@ -19,7 +19,7 @@ export const ErrorBox = ({ closeFn, children, ...rest }: ErrorBoxProps) => {
     >
       <p className="w-full">{children}</p>
       <button className="self-start" onClick={closeFn}>
-        <CrossIcon className="m-1 h-6 w-6" />
+        <CrossIcon className="m-1 size-6" />
       </button>
     </div>
   );

@@ -23,6 +23,6 @@ export const getGroups = async (): Promise<GroupsData> => {
     } else {
       console.error(e);
     }
-    throw "Internal Server Error";
+    throw new Error("Internal Server Error");
   }
 };

@@ -97,7 +97,7 @@ export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProp
     // TODO: support for python problems and more
     <section className="relative h-[60vh] w-full self-stretch md:h-auto">
       {renderingEditor && (
-        <div className="flex h-full w-full rounded-md border-2 border-slate-500 dark:border-slate-600">
+        <div className="flex size-full rounded-md border-2 border-slate-500 dark:border-slate-600">
           <div className="grow-1 w-full self-center text-center text-2xl text-slate-700">
             Loading editor...
           </div>
@@ -105,7 +105,7 @@ export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProp
       )}
       <div
         className={clsx(
-          "h-full w-full overflow-hidden rounded-md border-2 border-slate-500 dark:border-slate-600",
+          "size-full overflow-hidden rounded-md border-2 border-slate-500 dark:border-slate-600",
           renderingEditor && "hidden",
         )}
         ref={editorDomRef}
@@ -121,7 +121,7 @@ export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProp
             <button
               type="button"
               onClick={submitCode}
-              className="rounded-md border-2 border-slate-600 bg-slate-100 px-4 py-[1px] font-semibold text-slate-700 shadow-md shadow-slate-500 active:shadow-inner active:shadow-slate-400 dark:border-slate-400 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-600 active:dark:shadow-slate-700"
+              className="rounded-md border-2 border-slate-600 bg-slate-100 px-4 py-px font-semibold text-slate-700 shadow-md shadow-slate-500 active:shadow-inner active:shadow-slate-400 dark:border-slate-400 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-600 active:dark:shadow-slate-700"
             >
               Submit
             </button>

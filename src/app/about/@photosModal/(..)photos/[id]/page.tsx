@@ -18,7 +18,7 @@ const Page = ({ params: { id } }: { params: { id: TeamMembers } }) => {
   return (
     <PhotosModal title={`${info.name} - ${info.role}`} description={info.roleDescription}>
       {!!info.image && (
-        <div className="relative h-full w-full">
+        <div className="relative size-full">
           <Image src={info.image} alt={`${info.name}'s image`} className="w-full rounded-md" />
         </div>
       )}

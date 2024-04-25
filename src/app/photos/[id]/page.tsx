@@ -21,7 +21,7 @@ const Page = ({ params: { id } }: { params: { id: TeamMembers } }) => {
         <Heading type="title-large">{info.name}</Heading>
         <Heading type="title">{info.roleDescription}</Heading>
       </div>
-      <div className="relative h-full w-full md:h-auto md:w-auto md:flex-[1_1_0] md:self-stretch">
+      <div className="relative size-full md:size-auto md:flex-[1_1_0] md:self-stretch">
         <Image
           src={info.image ?? NO_IMAGE}
           alt={`${info.name}'s image`}

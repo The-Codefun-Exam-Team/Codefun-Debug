@@ -49,7 +49,7 @@ export const CodeView = ({ code }: { code: string }) => {
   }, []);
 
   useEffect(() => {
-    <div className="flex h-full w-full">
+    <div className="flex size-full">
       <div className="grow-1 flex w-full flex-col justify-around rounded-md border-2 border-slate-500 text-2xl text-slate-700 dark:border-slate-600 dark:text-slate-200">
         <div className="text-center text-3xl">Loading...</div>
       </div>
@@ -69,11 +69,11 @@ export const CodeView = ({ code }: { code: string }) => {
   }, [renderingEditor, code]);
 
   return (
-    <section className="flex h-full w-full">
+    <section className="flex size-full">
       {renderingEditor && <CodeViewText text="Loading..." />}
       <div
         className={clsx(
-          "h-full w-full overflow-hidden rounded-md border-2 border-slate-500 dark:border-slate-600",
+          "size-full overflow-hidden rounded-md border-2 border-slate-500 dark:border-slate-600",
           renderingEditor && "hidden",
         )}
         ref={editorDomRef}
