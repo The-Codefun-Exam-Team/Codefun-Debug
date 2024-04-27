@@ -23,6 +23,9 @@ ENV BUILD_STANDALONE true
 # Also copies .env file with format specified in .env.example. Better solutions welcomed.
 COPY . .
 RUN pnpm build
+
+# Baseline the database and deploy migrations
+RUN pnpm prisma migrate resolve --applied 0_init || echo "Database already baselined. Skipping..."
 RUN pnpm prisma migrate deploy
 
 # Stage 2: Production image
