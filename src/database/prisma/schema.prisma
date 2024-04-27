@@ -159,7 +159,6 @@ view user_query {
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view stats {
   problem_count BigInt @unique
 
@@ -215,7 +214,6 @@ view post_comment_query {
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view post_query {
   user_id            Int
   username           String     @db.VarChar(32)
@@ -239,7 +237,6 @@ view post_query {
   @@schema("public")
 }
 
-/// The underlying view does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 view problem_query {
   problem_id         Int        @unique
   problem_code       String     @db.VarChar(32)
@@ -332,7 +329,7 @@ view group_query {
 view activities {
   activity_type       String
   activity_created_at DateTime   @db.Timestamptz(6)
-  post_id             Int
+  post_id             Int        @unique
   post_title          String     @db.VarChar(128)
   comment_id          Int?
   user_id             Int
@@ -347,7 +344,6 @@ view activities {
   user_ratio          Decimal    @db.Decimal(9, 2)
   user_rank           BigInt
 
-  @@unique([post_id])
   @@schema("public")
 }
 
