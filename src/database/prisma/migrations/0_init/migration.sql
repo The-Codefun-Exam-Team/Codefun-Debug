@@ -78,7 +78,7 @@ CREATE TABLE "public"."problems" (
     "score_type" "public"."score_type" NOT NULL,
     "problem_group" VARCHAR(128) NOT NULL,
     "statements" VARCHAR(32000) NOT NULL,
-    "time_limit" DECIMAL(4,2) NOT NULL,
+    "time_limit" DECIMAL(4,2) NOT NULL CHECK("time_limit" > 0),
     "score" DECIMAL(9,2) NOT NULL,
     "checker_source" VARCHAR(32000),
     "solved_count" INTEGER NOT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE "public"."submissions" (
     "language" "public"."language" NOT NULL,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "result" "public"."submission_result" NOT NULL,
-    "running_time" DECIMAL(5,3) NOT NULL DEFAULT 0,
+    "running_time" DECIMAL(5,3) NOT NULL DEFAULT 0 CHECK("running_time" >= 0),
     "score" DECIMAL(9,2) NOT NULL DEFAULT 0,
     "is_best" BOOLEAN NOT NULL,
     "source" VARCHAR(32000) NOT NULL,
@@ -111,8 +111,8 @@ CREATE TABLE "public"."users" (
     "username" VARCHAR(32) NOT NULL,
     "group_id" INTEGER NOT NULL,
     "password" VARCHAR(128) NOT NULL,
-    "email" VARCHAR(128),
-    "display_name" VARCHAR(128) NOT NULL,
+    "email" VARCHAR(128) CHECK (email IS NULL OR length(email::text) > 0),
+    "display_name" VARCHAR(128) NOT NULL CHECK (length(display_name::text) <= 64),
     "user_status" "public"."user_status" NOT NULL DEFAULT 'normal',
     "score" DECIMAL(9,2) NOT NULL DEFAULT 0,
     "solved_count" INTEGER NOT NULL DEFAULT 0,
@@ -185,6 +185,7 @@ ALTER TABLE "public"."submissions" ADD CONSTRAINT "submissions_user_id_fkey" FOR
 -- AddForeignKey
 ALTER TABLE "public"."users" ADD CONSTRAINT "users_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
+-- Unsupported features in Prisma
 -- CreateView
 CREATE VIEW "public"."activities" AS 
   SELECT
@@ -584,3 +585,4 @@ CREATE MATERIALIZED VIEW "public"."user_rankings" AS
 
 -- AddIndex 
 CREATE UNIQUE INDEX "user_rankings_by_id" ON "public"."user_rankings" (id);
+
