@@ -71,7 +71,6 @@ model Posts {
   @@schema("public")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Problems {
   id            Int           @id @default(autoincrement())
   setterId      Int           @map("setter_id")
@@ -93,7 +92,6 @@ model Problems {
   @@schema("public")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Submissions {
   id          Int              @id @default(autoincrement())
   problemId   Int              @map("problem_id")
@@ -118,7 +116,6 @@ model Submissions {
   @@schema("public")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Users {
   id             Int              @id @default(autoincrement())
   username       String           @unique @db.VarChar(32)
