@@ -186,63 +186,6 @@ ALTER TABLE "public"."submissions" ADD CONSTRAINT "submissions_user_id_fkey" FOR
 ALTER TABLE "public"."users" ADD CONSTRAINT "users_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Unsupported features in Prisma
--- CreateView
-CREATE VIEW "public"."activities" AS 
-  SELECT
-    tbl.activity_type,
-    tbl.activity_created_at,
-    tbl.post_id,
-    tbl.post_title,
-    tbl.comment_id,
-    user_query.user_id,
-    user_query.username,
-    user_query.display_name,
-    user_query.group_id,
-    user_query.group_name,
-    user_query.user_status,
-    user_query.email,
-    user_query.user_score,
-    user_query.user_solved,
-    user_query.user_ratio,
-    user_query.user_rank
-  FROM
-    (
-      (
-        SELECT
-          'post' :: text AS activity_type,
-          posts.author_id,
-          posts.updated_at AS activity_created_at,
-          posts.id AS post_id,
-          posts.title AS post_title,
-          NULL :: integer AS comment_id
-        FROM
-          posts
-        ORDER BY
-          posts.updated_at DESC
-      )
-      UNION
-      (
-        SELECT
-          'comment' :: text AS activity_type,
-          post_comments.author_id,
-          post_comments.updated_at AS activity_created_at,
-          posts.id AS post_id,
-          posts.title AS post_title,
-          post_comments.id AS comment_id
-        FROM
-          post_comments,
-          posts
-        WHERE
-          (posts.id = post_comments.post_id)
-        ORDER BY
-          post_comments.updated_at DESC
-      )
-    ) tbl,
-    user_query
-  WHERE
-    (user_query.user_id = tbl.author_id)
-  ORDER BY
-    tbl.activity_created_at DESC;
 
 -- CreateView
 CREATE VIEW "public"."group_query" AS
@@ -251,6 +194,72 @@ CREATE VIEW "public"."group_query" AS
     name AS group_name
   FROM
     groups;
+
+
+-- CreateView
+CREATE VIEW "public"."stats" AS 
+  SELECT
+    count(*) AS problem_count
+  FROM
+    problems;
+
+-- CreateView
+CREATE MATERIALIZED VIEW "public"."user_rankings" AS 
+  WITH computed AS (
+    SELECT
+      (stats.problem_count) :: numeric(9, 2) AS problem_count
+    FROM
+      stats
+    )
+  SELECT
+    id,
+    rank() OVER (
+      ORDER BY
+        score DESC
+    ) AS rank,
+    (
+      (
+        (solved_count) :: numeric(9, 2) / (
+          SELECT
+            computed.problem_count
+          FROM
+            computed
+        )
+      )
+    ) :: numeric(9, 2) AS ratio
+  FROM
+    users
+  WHERE
+    (
+      user_status <> 'banned' :: user_status
+    );
+
+-- AddIndex 
+CREATE UNIQUE INDEX "user_rankings_by_id" ON "public"."user_rankings" (id);
+
+-- CreateView
+CREATE VIEW "public"."user_query" AS 
+  SELECT
+    users.id AS user_id,
+    users.username,
+    users.display_name,
+    g.group_id,
+    g.group_name,
+    users.user_status,
+    users.email,
+    users.score AS user_score,
+    users.solved_count AS user_solved,
+    user_rankings.ratio AS user_ratio,
+    user_rankings.rank AS user_rank
+  FROM
+    users,
+    group_query g,
+    user_rankings
+  WHERE
+    (
+      (g.group_id = users.group_id)
+      AND (user_rankings.id = users.id)
+    );
 
 -- CreateView
 CREATE VIEW "public"."judge_requests" AS 
@@ -274,32 +283,6 @@ CREATE VIEW "public"."judge_requests" AS
         )
       )
     );
-
--- CreateView
-CREATE VIEW "public"."post_comment_query" AS 
-  SELECT
-    user_query.user_id,
-    user_query.username,
-    user_query.display_name,
-    user_query.group_id,
-    user_query.group_name,
-    user_query.user_status,
-    user_query.email,
-    user_query.user_score,
-    user_query.user_solved,
-    user_query.user_ratio,
-    user_query.user_rank,
-    post_comments.id AS comment_id,
-    post_comments.post_id AS comment_post_id,
-    post_comments.content AS comment_content,
-    post_comments.created_at AS comment_created_at,
-    post_comments.updated_at AS comment_updated_at,
-    post_comments.parent_id AS comment_parent_id
-  FROM
-    post_comments,
-    user_query
-  WHERE
-    (user_query.user_id = post_comments.author_id);
 
 -- CreateView
 CREATE VIEW "public"."post_query" AS 
@@ -432,13 +415,6 @@ CREATE VIEW "public"."solved_submissions" AS
     );
 
 -- CreateView
-CREATE VIEW "public"."stats" AS 
-  SELECT
-    count(*) AS problem_count
-  FROM
-    problems;
-
--- CreateView
 CREATE VIEW "public"."submission_listing" AS 
   SELECT
     submissions.id AS sub_id,
@@ -509,30 +485,6 @@ CREATE VIEW "public"."submission_query" AS
     (submission_listing.sub_id = submissions.id);
 
 -- CreateView
-CREATE VIEW "public"."user_query" AS 
-  SELECT
-    users.id AS user_id,
-    users.username,
-    users.display_name,
-    g.group_id,
-    g.group_name,
-    users.user_status,
-    users.email,
-    users.score AS user_score,
-    users.solved_count AS user_solved,
-    user_rankings.ratio AS user_ratio,
-    user_rankings.rank AS user_rank
-  FROM
-    users,
-    group_query g,
-    user_rankings
-  WHERE
-    (
-      (g.group_id = users.group_id)
-      AND (user_rankings.id = users.id)
-    );
-
--- CreateView
 CREATE VIEW "public"."user_stats_query" AS 
   SELECT
     problem_headers.problem_id,
@@ -555,34 +507,85 @@ CREATE VIEW "public"."user_stats_query" AS
     );
 
 -- CreateView
-CREATE MATERIALIZED VIEW "public"."user_rankings" AS 
-  WITH computed AS (
-    SELECT
-      (stats.problem_count) :: numeric(9, 2) AS problem_count
-  FROM
-    stats
-  )
+CREATE VIEW "public"."activities" AS 
   SELECT
-    id,
-    rank() OVER (
-      ORDER BY
-        score DESC
-    ) AS rank,
+    tbl.activity_type,
+    tbl.activity_created_at,
+    tbl.post_id,
+    tbl.post_title,
+    tbl.comment_id,
+    user_query.user_id,
+    user_query.username,
+    user_query.display_name,
+    user_query.group_id,
+    user_query.group_name,
+    user_query.user_status,
+    user_query.email,
+    user_query.user_score,
+    user_query.user_solved,
+    user_query.user_ratio,
+    user_query.user_rank
+  FROM
     (
       (
-        (solved_count) :: numeric(9, 2) / (
-          SELECT
-            computed.problem_count
-          FROM
-            computed
-        )
+        SELECT
+          'post' :: text AS activity_type,
+          posts.author_id,
+          posts.updated_at AS activity_created_at,
+          posts.id AS post_id,
+          posts.title AS post_title,
+          NULL :: integer AS comment_id
+        FROM
+          posts
+        ORDER BY
+          posts.updated_at DESC
       )
-    ) :: numeric(9, 2) AS ratio
-  FROM
-    users
+      UNION
+      (
+        SELECT
+          'comment' :: text AS activity_type,
+          post_comments.author_id,
+          post_comments.updated_at AS activity_created_at,
+          posts.id AS post_id,
+          posts.title AS post_title,
+          post_comments.id AS comment_id
+        FROM
+          post_comments,
+          posts
+        WHERE
+          (posts.id = post_comments.post_id)
+        ORDER BY
+          post_comments.updated_at DESC
+      )
+    ) tbl,
+    user_query
   WHERE
-    (user_status <> 'banned' :: user_status);
+    (user_query.user_id = tbl.author_id)
+  ORDER BY
+    tbl.activity_created_at DESC;
 
--- AddIndex 
-CREATE UNIQUE INDEX "user_rankings_by_id" ON "public"."user_rankings" (id);
-
+-- CreateView
+CREATE VIEW "public"."post_comment_query" AS 
+  SELECT
+    user_query.user_id,
+    user_query.username,
+    user_query.display_name,
+    user_query.group_id,
+    user_query.group_name,
+    user_query.user_status,
+    user_query.email,
+    user_query.user_score,
+    user_query.user_solved,
+    user_query.user_ratio,
+    user_query.user_rank,
+    post_comments.id AS comment_id,
+    post_comments.post_id AS comment_post_id,
+    post_comments.content AS comment_content,
+    post_comments.created_at AS comment_created_at,
+    post_comments.updated_at AS comment_updated_at,
+    post_comments.parent_id AS comment_parent_id
+  FROM
+    post_comments,
+    user_query
+  WHERE
+    (user_query.user_id = post_comments.author_id);
