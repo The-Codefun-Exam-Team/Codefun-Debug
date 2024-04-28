@@ -51,7 +51,7 @@ After some researches, I find several Prisma's limitations as followed:
 
 - **PostgreSQL** supports [Partial Indexes](https://www.postgresql.org/docs/current/indexes-partial.html) for optimizations, which is utilizes by **Codefun**.
 
-- **Prisma** is currently not supporting this feature. In this [feature request](https://github.com/prisma/prisma/issues/6974#issuecomment-1483792245), we learn that Partial indexes will be treated as not existing.
+- **Prisma** is currently not supporting this feature. In this [feature request](https://github.com/prisma/prisma/issues/6974#issuecomment-1483792245), we learn that Partial indexes will be treated as not existing. It's also important to note that the `INCLUDE` keyword isn't fully supported by Prisma, so some modification should be made to ensure the baseline integrity.
 
 **Check constraints**
 

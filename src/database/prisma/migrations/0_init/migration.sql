@@ -138,10 +138,10 @@ CREATE INDEX "posts_updated_at" ON "public"."posts"("updated_at" DESC);
 CREATE UNIQUE INDEX "problems_problem_code_key" ON "public"."problems"("problem_code");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "problems_problem_code_header" ON "public"."problems"("problem_code", "id", "name");
+CREATE UNIQUE INDEX "problems_problem_code_header" ON "public"."problems"("problem_code") INCLUDE ("id", "name");
 
 -- CreateIndex
-CREATE INDEX "submissions_problems_score" ON "public"."submissions"("problem_id", "score", "id", "user_id");
+CREATE INDEX "submissions_problems_score" ON "public"."submissions"("problem_id", "score") INCLUDE ("id", "user_id");
 
 -- CreateIndex
 CREATE INDEX "subs_by_problem" ON "public"."submissions"("problem_id", "id" DESC);
@@ -234,7 +234,7 @@ CREATE MATERIALIZED VIEW "public"."user_rankings" AS
       user_status <> 'banned' :: user_status
     );
 
--- AddIndex 
+-- CreateIndex 
 CREATE UNIQUE INDEX "user_rankings_by_id" ON "public"."user_rankings" (id);
 
 -- CreateView
@@ -596,5 +596,25 @@ CREATE FUNCTION public.refresh_rankings()
   LANGUAGE "sql"
   AS $function$
     REFRESH MATERIALIZED VIEW user_rankings;
-  $function$
+  $function$;
+
+-- CreateRule
+CREATE RULE "user_rankings_update_on_new_user" AS
+  ON INSERT TO users 
+  DO SELECT refresh_rankings() AS refresh_rankings;
+
+-- CreateRule
+CREATE RULE "user_rankings_update_on_score_update" AS
+  ON UPDATE TO users
+  WHERE old.score::numeric <> new.score::numeric OR old.user_status <> new.user_status 
+  DO SELECT refresh_rankings() AS refresh_rankings;
+
+-- CreatePartialIndex
+CREATE INDEX "posts_official" ON "public"."posts"("id" DESC) WHERE ("is_official" = TRUE);
+
+-- CreatePartialIndex
+CREATE UNIQUE INDEX "submissions_is_best_problem_user" ON "public"."submissions"("problem_id", "user_id") WHERE ("is_best" = TRUE);
+
+-- CreatePartialIndex
+CREATE INDEX "submissions_queued" ON "public"."submissions"("id" DESC) INCLUDE("problem_id","source","language") WHERE ("result" = ANY (ARRAY['Q'::submission_result, '...'::submission_result]));
 
