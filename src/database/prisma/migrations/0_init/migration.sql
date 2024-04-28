@@ -589,3 +589,12 @@ CREATE VIEW "public"."post_comment_query" AS
     user_query
   WHERE
     (user_query.user_id = post_comments.author_id);
+
+-- CreateFunction
+CREATE FUNCTION public.refresh_rankings()
+  RETURNS "void"
+  LANGUAGE "sql"
+  AS $function$
+    REFRESH MATERIALIZED VIEW user_rankings;
+  $function$
+
