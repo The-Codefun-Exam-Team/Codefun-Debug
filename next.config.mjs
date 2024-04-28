@@ -50,7 +50,6 @@ const nextConfig = {
       "@/features/submissions",
       "@/utils",
       "@/components",
-
       "@/hooks",
       "@/components/icon",
     ],
