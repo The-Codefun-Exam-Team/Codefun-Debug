@@ -1,4 +1,8 @@
-export const RESULTS_DICT = {
+import { SubmissionResult } from "@prisma/client";
+
+export const RESULTS_DICT = SubmissionResult;
+
+Object.assign(RESULTS_DICT, {
   AC: "Accepted",
   SS: "Partially Scored",
   WA: "Wrong Answer",
@@ -7,9 +11,10 @@ export const RESULTS_DICT = {
   CE: "Compile Error",
   MLE: "Memory Limit Exceeded",
   Q: "In Queue...",
-  R: "To Be Rejudged...",
-  "...": "Scoring...",
-};
+  Scoring: "Scoring...",
+  TO: "Time Out",
+  DQ: "Disqualified",
+});
 
 export const CODEFUN_ROLES = [
   "newbie",

@@ -1,7 +1,8 @@
-import type { CODEFUN_ROLES, COLOR_SCHEMES, LANGUAGES, RESULTS_DICT } from "./constants";
+import type { SubmissionResult, UserStatus } from "@prisma/client";
 
-export type Languages = (typeof LANGUAGES)[number];
-export type Results = keyof typeof RESULTS_DICT;
+import type { CODEFUN_ROLES, COLOR_SCHEMES } from "./constants";
+
+export type { Language, SubmissionResult, UserStatus } from "@prisma/client";
 
 export interface UserData {
   id: number;
@@ -11,7 +12,7 @@ export interface UserData {
     id: number;
     name: string;
   };
-  status: "Admin" | "Banned" | "Normal";
+  status: UserStatus;
   avatar: string;
   score: number;
   solved: number;
@@ -27,7 +28,7 @@ export type CodefunRoles = (typeof CODEFUN_ROLES)[number];
 interface DetailedScoreInfoNotNull {
   score: number;
   diff: number | null;
-  result: Results;
+  result: SubmissionResult;
   drid: number;
 }
 
