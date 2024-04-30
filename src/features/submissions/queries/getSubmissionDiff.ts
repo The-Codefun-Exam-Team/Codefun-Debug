@@ -2,48 +2,44 @@ import prisma from "@database/prisma/instance";
 
 import { calcEditDistance } from "@/utils";
 
-const calcSubmissionDiff = async (drid: number) => {
+const cppFormat = (code: string) => {
+  return code.replace(/\s/g, "");
+};
+
+const calcSubmissionDiff = async (id: number) => {
   const getCodeQuery = await prisma.debugSubmissions.findUniqueOrThrow({
     where: {
-      drid,
+      id,
     },
     select: {
-      runs: {
+      submissions: {
         select: {
-          subs_code: {
-            select: {
-              code: true,
-            },
-          },
+          source: true,
         },
       },
-      debug_problems: {
+      debugProblems: {
         select: {
-          runs: {
+          submissions: {
             select: {
-              subs_code: {
-                select: {
-                  code: true,
-                },
-              },
+              source: true,
             },
           },
         },
       },
     },
   });
-  const problemCode = getCodeQuery.debug_problems.runs.subs_code.code;
-  const formattedProblemCode = problemCode.replace(/\s/g, "");
+  const problemCode = getCodeQuery.debugProblems.submissions.source;
+  const formattedProblemCode = cppFormat(problemCode);
 
-  const submissionCode = getCodeQuery.runs.subs_code.code;
-  const formattedSubmissionCode = submissionCode.replace(/\s/g, "");
+  const submissionCode = getCodeQuery.submissions.source;
+  const formattedSubmissionCode = cppFormat(submissionCode);
   return await calcEditDistance(formattedProblemCode, formattedSubmissionCode);
 };
 
-const setSubmissionDiff = async (drid: number, diff: number) => {
+const setSubmissionDiff = async (id: number, diff: number) => {
   const updateDiffQuery = await prisma.debugSubmissions.update({
     where: {
-      drid,
+      id,
     },
     data: {
       diff,
@@ -55,19 +51,20 @@ const setSubmissionDiff = async (drid: number, diff: number) => {
   return updateDiffQuery.diff;
 };
 
-export const getSubmissionDiff = async (drid: number) => {
+export const getSubmissionDiff = async (id: number) => {
   const getDiffQuery = await prisma.debugSubmissions.findUniqueOrThrow({
     where: {
-      drid,
+      id,
     },
     select: {
       diff: true,
     },
   });
-
-  if (getDiffQuery.diff !== null && getDiffQuery.diff !== 100000) {
+  const isCalculated = getDiffQuery.diff !== 32000;
+  if (isCalculated) {
     return getDiffQuery.diff;
   }
-
-  return await setSubmissionDiff(drid, await calcSubmissionDiff(drid));
+  const diff = await calcSubmissionDiff(id);
+  void setSubmissionDiff(id, diff);
+  return diff;
 };
