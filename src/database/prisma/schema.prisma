@@ -93,20 +93,22 @@ model Problems {
 }
 
 model Submissions {
-  id          Int              @id @default(autoincrement())
-  problemId   Int              @map("problem_id")
-  userId      Int              @map("user_id")
-  language    Language
-  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
-  result      SubmissionResult
-  runningTime Decimal          @default(0) @map("running_time") @db.Decimal(5, 3)
-  score       Decimal          @default(0) @db.Decimal(9, 2)
-  isBest      Boolean          @map("is_best")
-  source      String           @db.VarChar(32000)
-  judgeOutput String?          @map("judge_output")
-  scoredAt    DateTime?        @map("scored_at") @db.Timestamptz(6)
-  problems    Problems         @relation(fields: [problemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  users       Users            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                Int               @id @default(autoincrement())
+  problemId         Int               @map("problem_id")
+  userId            Int               @map("user_id")
+  language          Language
+  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  result            SubmissionResult
+  runningTime       Decimal           @default(0) @map("running_time") @db.Decimal(5, 3)
+  score             Decimal           @default(0) @db.Decimal(9, 2)
+  isBest            Boolean           @map("is_best")
+  source            String            @db.VarChar(32000)
+  judgeOutput       String?           @map("judge_output")
+  scoredAt          DateTime?         @map("scored_at") @db.Timestamptz(6)
+  problems          Problems          @relation(fields: [problemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users             Users             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debug_problems    DebugProblems?
+  debug_submissions DebugSubmissions?
 
   @@index([problemId, score, id, userId], map: "submissions_problems_score")
   @@index([problemId, id(sort: Desc)], map: "subs_by_problem")
@@ -117,27 +119,58 @@ model Submissions {
 }
 
 model Users {
-  id             Int              @id @default(autoincrement())
-  username       String           @unique @db.VarChar(32)
-  groupId        Int              @map("group_id")
-  password       String           @db.VarChar(128)
-  email          String?          @unique @db.VarChar(128)
-  displayName    String           @map("display_name") @db.VarChar(128)
-  userStatus     UserStatus       @default(normal) @map("user_status")
-  score          Decimal          @default(0) @db.Decimal(9, 2)
-  solvedCount    Int              @default(0) @map("solved_count")
-  createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
-  lastLoginAt    DateTime         @default(now()) @map("last_login_at") @db.Timestamptz(6)
-  passwordResets PasswordResets[]
-  postComments   PostComments[]
-  posts          Posts[]
-  problems       Problems[]
-  submissions    Submissions[]
-  groups         Groups           @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                Int                @id @default(autoincrement())
+  username          String             @unique @db.VarChar(32)
+  groupId           Int                @map("group_id")
+  password          String             @db.VarChar(128)
+  email             String?            @unique @db.VarChar(128)
+  displayName       String             @map("display_name") @db.VarChar(128)
+  userStatus        UserStatus         @default(normal) @map("user_status")
+  score             Decimal            @default(0) @db.Decimal(9, 2)
+  solvedCount       Int                @default(0) @map("solved_count")
+  createdAt         DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  lastLoginAt       DateTime           @default(now()) @map("last_login_at") @db.Timestamptz(6)
+  passwordResets    PasswordResets[]
+  postComments      PostComments[]
+  posts             Posts[]
+  problems          Problems[]
+  submissions       Submissions[]
+  groups            Groups             @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debug_submissions DebugSubmissions[]
 
   @@index([score(sort: Desc), id], map: "users_ranking")
   @@map("users")
   @@schema("public")
+}
+
+model DebugProblems {
+  id                 Int                @id @default(autoincrement())
+  subId              Int                @unique @map("sub_id")
+  name               String             @db.VarChar(128)
+  debugProblemCode String             @unique @db.VarChar(32) @map("debug_problem_code")
+  minDiff            Int                @default(32000) @map("min_diff")
+  submissions        Submissions        @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debugSubmissions   DebugSubmissions[]
+
+  @@map("debug_problems")
+  @@schema("suzume")
+}
+
+model DebugSubmissions {
+  id             Int              @id @default(autoincrement())
+  userId         Int              @map("user_id")
+  subId          Int              @unique @map("sub_id")
+  debugProblemId Int              @map("debug_problem_id")
+  diff           Int              @default(32000)
+  score          Int              @default(0)
+  result         SubmissionResult @default(Q)
+  debugProblems  DebugProblems    @relation(fields: [debugProblemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  submissions    Submissions      @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users          Users            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([userId, debugProblemId, score])
+  @@map("debug_submissions")
+  @@schema("suzume")
 }
 
 view UserQuery {
@@ -360,7 +393,7 @@ view JudgeRequests {
   subCode        String     @map("sub_code") @db.VarChar(32000)
   subLanguage    Language   @map("sub_language")
   problemChecker String     @map("problem_checker") @db.VarChar(32000)
-  score_type     ScoreType?
+  scoreType      ScoreType? @map("score_type")
   timeLimit      Decimal    @map("time_limit") @db.Decimal(4, 2)
 
   @@map("judge_requests")
