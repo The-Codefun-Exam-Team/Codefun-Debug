@@ -1,6 +1,6 @@
 # Migration guide using Prisma
 
-**_Documentation for database and custom workflow to maintain database_**
+**_Documentation to maintain PostgreSQL database using Prisma_**
 
 **Author** _@kbnopro_
 
@@ -8,9 +8,9 @@
 
 - [1. Problems](#1-problems)
   - [1.1 Database descriptions](#11-database-descriptions)
-  - [1.2 Missing features from Prisma](#12-missing-features-from-prisma)
+  - [1.2 Unsupported features from Prisma](#12-unsupported-features-from-prisma)
 - [2. Solutions](#2-solutions)
-  - [2.1 Steps to set up](#21-steps-taken-to-setup)
+  - [2.1 Baseline database](#21-baseline-database)
     - [2.1.1 Enable preview features](#211-enable-preview-features)
     - [2.1.2 Introspect database](#212-instropect-database)
     - [2.1.3 Modify prisma schema](#213-modify-prisma-schema)
@@ -21,7 +21,7 @@
     - [2.2.1. Generate diff files for migration](#221-generate-diff-files-for-migration)
     - [2.2.2. Check the **migration.sql** file generated](#222-check-the-migrationsql-file-generated)
     - [2.2.3 Update and ensure Prisma schema integrity](#223-update-and-ensure-prisma-schema-integrity)
-  - [2.3 If changes are made to schema.prisma](#23-if-changes-are-made-to-schemaprisma)
+  - [2.3 If changes are made to the Prisma schema](#23-if-changes-are-made-to-the-prisma-schema)
     - [2.3.1 Make changes to the schema](#231-make-changes-to-the-schema)
     - [2.3.2 Generate SQL to reflect schema changes](#232-generate-sql-to-reflect-schema-changes)
     - [2.3.3 Custom migration](#233-custom-migration)
@@ -39,11 +39,11 @@ As a result, the normal workflow(s) provided by **Prisma** are not suitable for 
 
 ## 1.1 Database descriptions
 
-This is a database for [Codefun Debug](debug.codefun.vn), which is a subdomain of [Codefun.vn](codefun.vn), an online judge developed and maintained by _@natsukagami_. The two websites' databases are hosted together on the same server. However, the **Codefun's** database is maintained by _@natsukagami_, while the **Codefun-Debug's** database is maintained here using **Prisma**.
+This is a database for [Codefun Debug](debug.codefun.vn), which is a subdomain of [Codefun](codefun.vn), an online judge developed and maintained by _@natsukagami_. The two websites' databases are hosted together on the same server. However, the **Codefun's** database is maintained by _@natsukagami_, while the **Codefun-Debug's** database is maintained here using **Prisma**.
 
 The fact that changes would be made both from the database and from **Prisma** itself, some efforts should be made to properly track those changes.
 
-## 1.2 Missing features from Prisma
+## 1.2 Unsupported features from Prisma
 
 After some research, I found several limitations of Prisma as follows:
 
@@ -75,11 +75,11 @@ After some research, I found several limitations of Prisma as follows:
 
 This section includes the initial steps to set up **Prisma** with **PostgreSQL**, as well as solutions to maintain the integrity of the Prisma schema and migrations folder. This **README** serves as documentation and a guide for future maintenance.
 
-## 2.1 Steps taken to set up
+## 2.1 Baseline database
 
 ### 2.1.1 Enable preview features
 
-First, we need to enable preview features in [prisma.schema](/src/database/prisma/schema.prisma#L1) as follows:
+First, we need to enable preview features in the [Prisma schema](/src/database/prisma/schema.prisma#L1) as follows:
 
 ```prisma
 generator client {
@@ -190,7 +190,7 @@ Checking the integrity of migration, schema and database by running
 pnpm prisma migrate dev
 ```
 
-## 2.3 If changes are made to schema.prisma
+## 2.3 If changes are made to the Prisma schema
 
 This is a much more straightforward process, as it's the normal **Prisma** workflow. However, due to the lack of features from **Prisma**, some additional steps are required.
 
