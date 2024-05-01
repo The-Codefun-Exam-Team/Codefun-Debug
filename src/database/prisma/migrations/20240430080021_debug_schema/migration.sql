@@ -16,7 +16,7 @@ CREATE TABLE "suzume"."debug_submissions" (
     "sub_id" INTEGER NOT NULL,
     "debug_problem_id" INTEGER NOT NULL,
     "diff" INTEGER NOT NULL DEFAULT 32000,
-    "score" INTEGER NOT NULL DEFAULT 0,
+    "score" dbl_score NOT NULL DEFAULT 0,
     "result" "public"."submission_result" NOT NULL DEFAULT 'Q',
 
     CONSTRAINT "debug_submissions_pkey" PRIMARY KEY ("id")

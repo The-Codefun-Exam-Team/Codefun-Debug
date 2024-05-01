@@ -144,13 +144,13 @@ model Users {
 }
 
 model DebugProblems {
-  id                 Int                @id @default(autoincrement())
-  subId              Int                @unique @map("sub_id")
-  name               String             @db.VarChar(128)
-  debugProblemCode String             @unique @db.VarChar(32) @map("debug_problem_code")
-  minDiff            Int                @default(32000) @map("min_diff")
-  submissions        Submissions        @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  debugSubmissions   DebugSubmissions[]
+  id               Int                @id @default(autoincrement())
+  subId            Int                @unique @map("sub_id")
+  name             String             @db.VarChar(128)
+  debugProblemCode String             @unique @map("debug_problem_code") @db.VarChar(32)
+  minDiff          Int                @default(32000) @map("min_diff")
+  submissions      Submissions        @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debugSubmissions DebugSubmissions[]
 
   @@map("debug_problems")
   @@schema("suzume")
@@ -162,7 +162,7 @@ model DebugSubmissions {
   subId          Int              @unique @map("sub_id")
   debugProblemId Int              @map("debug_problem_id")
   diff           Int              @default(32000)
-  score          Decimal            @default(0) @db.Decimal(9, 2)
+  score          Decimal          @default(0) @db.Decimal(9, 2)
   result         SubmissionResult @default(Q)
   debugProblems  DebugProblems    @relation(fields: [debugProblemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   submissions    Submissions      @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
