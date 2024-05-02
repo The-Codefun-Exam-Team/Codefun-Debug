@@ -1,5 +1,5 @@
 -- Trigger function for updating debug submissions when min_diff is updated
-CREATE FUNCTION "suzume.""debug_problems_update_min_diff"() RETURNS trigger AS
+CREATE OR REPLACE FUNCTION "suzume"."debug_problems_update_min_diff"() RETURNS trigger AS
   $trigger$
   BEGIN
     UPDATE debug_submissions ds
@@ -22,18 +22,18 @@ CREATE FUNCTION "suzume.""debug_problems_update_min_diff"() RETURNS trigger AS
   END;
   $trigger$ LANGUAGE plpgsql;
 
-CREATE TRIGGER "debug_problems_update_min_diff" 
+CREATE OR REPLACE TRIGGER "debug_problems_update_min_diff" 
   AFTER UPDATE OF min_diff 
   ON debug_problems
   FOR EACH ROW 
-  EXECUTE FUNCTION "debug_problems_update_min_diff"();  
+  EXECUTE FUNCTION "suzume"."debug_problems_update_min_diff"();  
 
 -- Trigger function for updating debug submissions when diff is updated
 CREATE OR REPLACE FUNCTION "suzume"."debug_sub_update_diff"() RETURNS trigger AS
   $trigger$
   DECLARE 
     problem_min_diff integer;
-    sub_score dbl_score;
+    sub_score DECIMAL(9,2);
     sub_result submission_result;
   BEGIN
     SELECT debug_problems.min_diff INTO problem_min_diff FROM debug_problems WHERE NEW.debug_problem_id = debug_problems.id;
@@ -63,6 +63,6 @@ CREATE OR REPLACE TRIGGER "debug_sub_update_diff"
   AFTER UPDATE OF diff 
   ON debug_submissions
   FOR EACH ROW 
-  EXECUTE FUNCTION "debug_sub_update_diff"();  
+  EXECUTE FUNCTION "suzume"."debug_sub_update_diff"();  
 
 

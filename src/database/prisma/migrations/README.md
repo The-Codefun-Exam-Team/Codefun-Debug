@@ -39,7 +39,7 @@ As a result, the normal workflow(s) provided by **Prisma** are not suitable for 
 
 ## 1.1 Database descriptions
 
-This is a database for [Codefun Debug](debug.codefun.vn), which is a subdomain of [Codefun](codefun.vn), an online judge developed and maintained by _@natsukagami_. The two websites' databases are hosted together on the same server. However, the **Codefun's** database is maintained by _@natsukagami_, while the **Codefun-Debug's** database is maintained here using **Prisma**.
+This is a database for [Codefun Debug](debug.codefun.vn), which is a subdomain of [Codefun](codefun.vn), an online judge developed and maintained by _@natsukagami_. The two websites' databases are hosted together on the same server. However, **Codefun's** database is maintained by _@natsukagami_, while **Codefun-Debug's** database is maintained here using **Prisma**.
 
 The fact that changes would be made both from the database and from **Prisma** itself, some efforts should be made to properly track those changes.
 

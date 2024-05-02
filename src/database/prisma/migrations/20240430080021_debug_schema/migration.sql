@@ -16,7 +16,7 @@ CREATE TABLE "suzume"."debug_submissions" (
     "sub_id" INTEGER NOT NULL,
     "debug_problem_id" INTEGER NOT NULL,
     "diff" INTEGER NOT NULL DEFAULT 32000,
-    "score" dbl_score NOT NULL DEFAULT 0,
+    "score" DECIMAL(9,2) NOT NULL DEFAULT 0,
     "result" "public"."submission_result" NOT NULL DEFAULT 'Q',
 
     CONSTRAINT "debug_submissions_pkey" PRIMARY KEY ("id")
@@ -32,7 +32,7 @@ CREATE UNIQUE INDEX "debug_problems_sub_id_key" ON "suzume"."debug_problems"("su
 CREATE UNIQUE INDEX "debug_submissions_sub_id_key" ON "suzume"."debug_submissions"("sub_id" ASC);
 
 -- CreateIndex
-CREATE INDEX "debug_submissions_user_id_debug_problem_id_score_idx" ON "suzume"."debug_submissions"("user_id" ASC, "debug_problem_id" ASC, "score" ASC);
+CREATE INDEX "debug_submissions_user_id_debug_problem_id_score_idx" ON "suzume"."debug_submissions"("user_id" ASC, "debug_problem_id" ASC, "score" DESC);
 
 -- AddForeignKey
 ALTER TABLE "suzume"."debug_problems" ADD CONSTRAINT "debug_problems_sub_id_fkey" FOREIGN KEY ("sub_id") REFERENCES "public"."submissions"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
