@@ -441,6 +441,22 @@ view DebugUserRankings {
   @@schema("suzume")
 }
 
+view DebugUserStat {
+  user_id      Int        @unique
+  username     String     @db.VarChar(32)
+  display_name String     @db.VarChar(128)
+  group_name   String     @db.VarChar(128)
+  group_id     Int
+  user_status  UserStatus
+  score        Decimal    @db.Decimal
+  ratio        Decimal    @db.Decimal(9, 2)
+  rank         BigInt
+  email        String?    @db.VarChar(128)
+
+  @@map("debug_user_stat")
+  @@schema("suzume")
+}
+
 enum Language {
   C__     @map("C++")
   Pascal

@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 
 // export const revalidate = 30;
 
-const getUserCount = async (group: string) => {
+const getUserCount = async (group: number) => {
   try {
     return unstable_cache(
       async () => {
@@ -52,7 +52,7 @@ const getUserCount = async (group: string) => {
             debug_submissions ds
             JOIN users u ON ds.user_id = u.id
           WHERE 
-            CASE WHEN ${group}::numeric <> 0 THEN u.group_id = ${group}::numeric 
+            CASE WHEN ${group}::integer <> 0 THEN u.group_id = ${group}::integer
             ELSE TRUE END)
         `;
         return Number(query[0].count);
@@ -70,20 +70,26 @@ const getUserCount = async (group: string) => {
   }
 };
 
-const Page = async ({ params: { group, page } }: { params: { group: string; page: string } }) => {
+const Page = async ({
+  params: { group: groupId, page },
+}: {
+  params: { group: string; page: string };
+}) => {
   // Preload data
-  void Promise.all([RankTable.preload(group, page), Groups.preload()]);
-  const userCount = await getUserCount(group);
+  const groupIdInt = parseInt(groupId);
+  const pageInt = parseInt(page);
+  void Promise.all([RankTable.preload(groupIdInt, pageInt), Groups.preload()]);
+  const userCount = await getUserCount(groupIdInt);
 
   const lastPage = userCount ? Math.ceil(userCount / 50) : 1;
   return (
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
-        <Groups group={group} />
-        <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
-        <RankTable group={group} page={page} />
-        {userCount - (parseInt(page) - 1) * 50 > 10 && (
-          <Pagination page={page} baseURL={`/rankings/${group}/`} lastPage={lastPage.toString()} />
+        <Groups groupId={groupIdInt} />
+        <Pagination page={pageInt} baseURL={`/rankings/${groupId}/`} lastPage={lastPage} />
+        <RankTable group={groupIdInt} page={pageInt} />
+        {userCount - (pageInt - 1) * 50 > 10 && (
+          <Pagination page={pageInt} baseURL={`/rankings/${groupId}/`} lastPage={lastPage} />
         )}
       </div>
     </>

@@ -13,16 +13,14 @@ export const Pagination = ({
   baseURL,
   lastPage,
 }: {
-  page: string;
+  page: number;
   baseURL: string;
-  lastPage: string;
+  lastPage: number;
 }) => {
-  const lastPageInt = parseInt(lastPage);
-  const pageInt = parseInt(page);
-  const prevPage = Math.max(pageInt - 1, 1);
-  const prev5Page = Math.max(pageInt - 5, 1);
-  const nextPage = Math.min(pageInt + 1, lastPageInt);
-  const next5Page = Math.min(pageInt + 5, lastPageInt);
+  const prevPage = Math.max(page - 1, 1);
+  const prev5Page = Math.max(page - 5, 1);
+  const nextPage = Math.min(page + 1, lastPage);
+  const next5Page = Math.min(page + 5, lastPage);
   const buttonClassNames =
     "p-2 w-fit h-fit text-accent-light dark:text-accent-dark w-8 text-center flex items-center text-xl divide-[1px]";
   return (
@@ -32,7 +30,7 @@ export const Pagination = ({
           href={`${baseURL}${prev5Page}`}
           className={clsx(
             buttonClassNames,
-            prev5Page !== pageInt && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
+            prev5Page !== page && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
           )}
           aria-label={`Move to page ${prev5Page}.`}
         >
@@ -42,7 +40,7 @@ export const Pagination = ({
           href={`${baseURL}${prevPage}`}
           className={clsx(
             buttonClassNames,
-            prevPage !== pageInt && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
+            prevPage !== page && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
           )}
           aria-label={`Move to page ${prevPage}.`}
         >
@@ -59,7 +57,7 @@ export const Pagination = ({
           href={`${baseURL}${nextPage}`}
           className={clsx(
             buttonClassNames,
-            nextPage !== pageInt && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
+            nextPage !== page && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
           )}
           aria-label={`Move to page ${nextPage}.`}
         >
@@ -69,7 +67,7 @@ export const Pagination = ({
           href={`${baseURL}${next5Page}`}
           className={clsx(
             buttonClassNames,
-            next5Page !== pageInt && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
+            next5Page !== page && "hover:bg-accent-light/10 dark:hover:bg-accent-dark/10",
           )}
           aria-label={`Move to page ${next5Page}.`}
         >

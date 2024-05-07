@@ -4,13 +4,12 @@ import { Heading } from "@/components";
 import { getUsers } from "@/features/rankings";
 import { clsx } from "@/utils";
 
-const getRankTableData = cache((group: string, page: string) => {
-  return getUsers(group, page, "50");
+const getRankTableData = cache((groupId: number, page: number) => {
+  return getUsers(groupId, page, 50);
 });
 
-export const RankTable = async ({ group, page }: { group: string; page: string }) => {
+export const RankTable = async ({ group, page }: { group: number; page: number }) => {
   const data = await getRankTableData(group, page);
-  console.log(typeof data[0].score);
   if (data.length === 0) {
     return (
       <div className="h-fit w-full">
@@ -53,7 +52,7 @@ export const RankTable = async ({ group, page }: { group: string; page: string }
                 <div className="text-left">{(+page - 1) * 50 + index + 1}</div>
               </td>
               <td>
-                <div className="break-all text-left">{user.display_name}</div>
+                <div className="break-all text-left">{user.displayName}</div>
               </td>
               <td>
                 <div className="text-right">{user.score}</div>
