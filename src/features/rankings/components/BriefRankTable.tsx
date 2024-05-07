@@ -19,9 +19,9 @@ export const BriefRankTable = async () => {
           </thead>
           <tbody className="divide-y-2 divide-gray-200 font-semibold text-gray-600 dark:divide-y-[0.5px] dark:divide-slate-800 dark:text-slate-300">
             {data.map((user) => (
-              <tr key={`ranking-user-${user.id}`} className="[&>td]:p-[14px]">
+              <tr key={`ranking-user-${user.username}`} className="[&>td]:p-[14px]">
                 <td className="text-left">{user.rank}</td>
-                <td className="text-left">{user.name}</td>
+                <td className="text-left">{user.display_name}</td>
                 <td className="text-right">{user.score.toFixed(2)}</td>
               </tr>
             ))}

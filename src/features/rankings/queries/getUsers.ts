@@ -48,7 +48,7 @@ export const getUsers = async (
         return users.map((user) => {
           return {
             username: user.username,
-            displayname: user.display_name,
+            display_name: user.display_name,
             group_name: user.group_name,
             user_status: user.user_status,
             score: new Decimal(user.score),

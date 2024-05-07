@@ -52,7 +52,7 @@ export const RankTable = async ({ group, page }: { group: string; page: string }
                 <div className="text-left">{(+page - 1) * 50 + index + 1}</div>
               </td>
               <td>
-                <div className="break-all text-left">{user.displayname}</div>
+                <div className="break-all text-left">{user.display_name}</div>
               </td>
               <td>
                 <div className="text-right">{user.score.toFixed(2)}</div>
