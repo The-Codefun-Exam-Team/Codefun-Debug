@@ -1,6 +1,5 @@
 import prisma from "@database/prisma/instance";
-import { Prisma } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { Decimal, PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache } from "next/cache";
 
 import type { RankingsData } from "@/features/rankings";
@@ -12,68 +11,55 @@ export const getUsers = async (
   limit: string,
 ): Promise<RankingsData[]> => {
   try {
-    // calculate offset
-    const offset = (parseInt(page) - 1) * parseInt(limit);
-
-    // Raw SQL to query score and ranking (prisma not supporting nested group by yet)
-    const rankTableQuery = prisma.$queryRaw`
-      WITH score_table AS (SELECT tid, dpid, MAX(score) as max_score FROM debug_submissions GROUP BY tid, dpid),
-      rank_table AS (SELECT teams.tid, RANK() OVER (ORDER BY SUM(score_table.max_score) DESC) AS rank, SUM(score_table.max_score) AS score
-      FROM score_table 
-      INNER JOIN teams ON teams.tid = score_table.tid
-      GROUP BY tid
-      ORDER BY score DESC)
-      SELECT rank_table.tid, rank_table.rank, rank_table.score, teams.group
-      FROM rank_table INNER JOIN teams ON teams.tid = rank_table.tid
-      WHERE (CASE WHEN ${parseInt(group)} = 0 THEN 1=1 ELSE teams.group = ${parseInt(group)} END)
-      LIMIT ${parseInt(limit)} OFFSET ${offset}
-    `;
-
-    // required users infos
-    const requiredFields = Prisma.validator<Prisma.TeamsSelect>()({
-      tid: true,
-      name: true,
-      teamname: true,
-      status: true,
-      group: true,
-      email: true,
-      solved: true,
-    });
-
     return unstable_cache(
       async () => {
-        const rank_table = (await rankTableQuery) as { tid: number; rank: number; score: number }[];
-        rank_table.sort((a, b) => a.tid - b.tid);
-        const usersInfo = await prisma.teams.findMany({
-          where: {
-            tid: {
-              in: rank_table.map((user) => user.tid),
-            },
-          },
-          select: requiredFields,
-        });
-        const problemsCount = await prisma.problems.count();
+        const offset = (parseInt(page) - 1) * parseInt(limit);
+        interface queryData {
+          username: string;
+          display_name: string;
+          group_name: string;
+          user_status: string;
+          score: Decimal;
+          ratio: number;
+          rank: number;
+          email: string;
+        }
+        const users = await prisma.$queryRaw<queryData[]>`
+        SELECT 
+          u.username,
+          u.display_name,
+          g.name AS group_name,
+          u.user_status,
+          dur.score,
+          ur.ratio,
+          dur.rank,
+          u.email
+        FROM 
+          debug_user_rankings dur
+          JOIN users u ON dur.user_id = u.id
+          JOIN user_rankings ur ON dur.user_id = ur.id
+          JOIN groups g ON u.group_id = g.id
+        WHERE 
+          CASE WHEN ${group}::numeric <> 0 THEN g.id = ${group}::numeric ELSE TRUE END
+        ORDER BY dur.rank ASC
+        LIMIT ${limit}::numeric OFFSET ${offset}::numeric;
+      `;
 
-        const users = usersInfo.map((user, index) => {
+        return users.map((user) => {
           return {
-            id: user.tid,
-            username: user.teamname,
-            name: user.name,
-            group: {
-              id: user.group.gid,
-              name: user.group.groupname,
-            },
-            status: user.status,
-            score: rank_table[index].score,
-            ratio: user.solved / problemsCount,
+            username: user.username,
+            displayname: user.display_name,
+            group_name: user.group_name,
+            user_status: user.user_status,
+            score: new Decimal(user.score),
+            ratio: user.ratio,
+            rank: Number(user.rank),
             avatar: gravatarFromEmail(user.email),
-            rank: Number(rank_table[index].rank),
-          } satisfies RankingsData;
+          };
         });
-        return users.sort((a, b) => a.rank - b.rank);
       },
-      [`getUsers-${group}-${page}-${limit}`],
-      { revalidate: 10 },
+      [`get-users-${group}-${page}-${limit}`],
+      { revalidate: 20 },
     )();
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {

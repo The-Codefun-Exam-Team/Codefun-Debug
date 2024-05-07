@@ -432,6 +432,15 @@ view UserStatQuery {
   @@schema("public")
 }
 
+view DebugUserRankings {
+  user_id Int      @unique
+  score   Decimal? @db.Decimal
+  rank    BigInt
+
+  @@map("debug_user_rankings")
+  @@schema("suzume")
+}
+
 enum Language {
   C__     @map("C++")
   Pascal

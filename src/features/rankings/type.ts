@@ -1,18 +1,15 @@
 import type prisma from "@database/prisma/instance";
 import type { Prisma } from "@prisma/client";
+import type { Decimal } from "@prisma/client/runtime/library";
 
 export type GroupsData = Prisma.PromiseReturnType<typeof prisma.groups.findMany>;
 
 export interface RankingsData {
-  id: number;
   username: string;
-  name: string;
-  group: {
-    id: number;
-    name: string;
-  };
-  status: string;
-  score: number;
+  displayname: string;
+  group_name: string;
+  user_status: string;
+  score: Decimal;
   ratio: number;
   rank: number;
   avatar: string;

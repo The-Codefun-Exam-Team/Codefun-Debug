@@ -10,7 +10,7 @@ export const getGroups = async (): Promise<GroupsData> => {
       async () => {
         const groups = prisma.groups.findMany();
         const data = await groups;
-        data.push({ gid: 0, groupname: "Global" });
+        data.push({ id: 0, name: "Global" });
         data.reverse();
         return groups;
       },

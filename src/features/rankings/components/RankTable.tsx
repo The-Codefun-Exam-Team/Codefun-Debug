@@ -42,7 +42,7 @@ export const RankTable = async ({ group, page }: { group: string; page: string }
         <tbody className="h-fit divide-y divide-gray-400 dark:divide-slate-600">
           {data.map((user, index) => (
             <tr
-              key={`ranking-page-${page}-user-${user.id}`}
+              key={`ranking-page-${page}-user-${user.username}`}
               className={clsx(
                 "h-10 text-center",
                 "font-semibold text-slate-600 dark:text-slate-400 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
@@ -52,7 +52,7 @@ export const RankTable = async ({ group, page }: { group: string; page: string }
                 <div className="text-left">{(+page - 1) * 50 + index + 1}</div>
               </td>
               <td>
-                <div className="break-all text-left">{user.name}</div>
+                <div className="break-all text-left">{user.displayname}</div>
               </td>
               <td>
                 <div className="text-right">{user.score.toFixed(2)}</div>
