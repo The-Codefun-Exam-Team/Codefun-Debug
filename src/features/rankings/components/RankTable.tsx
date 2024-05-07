@@ -10,6 +10,7 @@ const getRankTableData = cache((group: string, page: string) => {
 
 export const RankTable = async ({ group, page }: { group: string; page: string }) => {
   const data = await getRankTableData(group, page);
+  console.log(typeof data[0].score);
   if (data.length === 0) {
     return (
       <div className="h-fit w-full">
@@ -55,7 +56,7 @@ export const RankTable = async ({ group, page }: { group: string; page: string }
                 <div className="break-all text-left">{user.display_name}</div>
               </td>
               <td>
-                <div className="text-right">{user.score.toFixed(2)}</div>
+                <div className="text-right">{user.score}</div>
               </td>
               <td>
                 <div className="text-right">{user.rank}</div>

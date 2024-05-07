@@ -1,5 +1,6 @@
 import prisma from "@database/prisma/instance";
-import { Decimal, PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import type { Decimal } from "@prisma/client/runtime/library";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache } from "next/cache";
 
 import type { RankingsData } from "@/features/rankings";
@@ -51,7 +52,7 @@ export const getUsers = async (
             display_name: user.display_name,
             group_name: user.group_name,
             user_status: user.user_status,
-            score: new Decimal(user.score),
+            score: user.score.toFixed(2),
             ratio: user.ratio,
             rank: Number(user.rank),
             avatar: gravatarFromEmail(user.email),

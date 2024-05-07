@@ -22,7 +22,7 @@ export const BriefRankTable = async () => {
               <tr key={`ranking-user-${user.username}`} className="[&>td]:p-[14px]">
                 <td className="text-left">{user.rank}</td>
                 <td className="text-left">{user.display_name}</td>
-                <td className="text-right">{user.score.toFixed(2)}</td>
+                <td className="text-right">{user.score}</td>
               </tr>
             ))}
           </tbody>
