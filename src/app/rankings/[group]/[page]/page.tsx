@@ -10,55 +10,46 @@ export const metadata: Metadata = {
   title: "Rankings",
 };
 
-// export const generateStaticParams = async () => {
-//   const groupCounts = (await prisma.$queryRaw`
-//     WITH user_table AS (SELECT tid FROM debug_submissions GROUP BY tid)
-//     SELECT count(user_table.tid) as count, groups.gid
-//     FROM user_table
-//     INNER JOIN teams ON user_table.tid = teams.tid
-//     INNER JOIN groups ON teams.group = groups.gid
-//     GROUP BY groups.gid
-//   `) as { count: number; gid: number }[];
+export const generateStaticParams = async () => {
+  const query = await prisma.debugUserGroup.groupBy({
+    by: ["group_id"],
+    _count: {
+      user_id: true,
+    },
+  });
 
-//   const globalCount = await prisma.debugSubmissions.findMany({
-//     distinct: ["tid"],
-//     select: {
-//       tid: true,
-//     },
-//   });
+  let globalCount = 0;
+  const groupCounts = query.map(({ group_id: groupId, _count: { user_id: count } }) => {
+    globalCount = globalCount + count;
+    return { count, groupId };
+  });
 
-//   groupCounts.push({ count: globalCount.length, gid: 0 });
+  groupCounts.push({ count: globalCount, groupId: 0 });
 
-//   const params = groupCounts.flatMap(({ count, gid }) => {
-//     const page = Math.ceil((Number(count) + 1) / 50);
-//     return Array.from({ length: page }, (_, i) => ({
-//       group: gid.toString(),
-//       page: (i + 1).toString(),
-//     }));
-//   });
-//   return params;
-// };
+  const params = groupCounts.flatMap(({ count, groupId }) => {
+    const page = Math.ceil((Number(count) + 1) / 50);
+    return Array.from({ length: page }, (_, i) => ({
+      group: groupId.toString(),
+      page: (i + 1).toString(),
+    }));
+  });
+  return params;
+};
 
-// export const revalidate = 30;
+export const revalidate = 30;
 
-const getUserCount = async (group: number) => {
+const getUserCount = async (groupId: number) => {
   try {
     return unstable_cache(
       async () => {
-        const query = await prisma.$queryRaw<{ count: number }[]>`
-          SELECt COUNT(1) FROM (SELECT DISTINCT 
-            ds.user_id
-          FROM 
-            debug_submissions ds
-            JOIN users u ON ds.user_id = u.id
-          WHERE 
-            CASE WHEN ${group}::integer <> 0 THEN u.group_id = ${group}::integer
-            ELSE TRUE END)
-        `;
-        return Number(query[0].count);
+        return await prisma.debugUserGroup.count({
+          where: {
+            group_id: groupId ? groupId : undefined,
+          },
+        });
       },
-      [`getUserCount-${group}`],
-      { revalidate: false },
+      [`getUserCount-${groupId}`],
+      { revalidate: 60 },
     )();
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {

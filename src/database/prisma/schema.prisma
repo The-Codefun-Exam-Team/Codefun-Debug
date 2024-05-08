@@ -457,6 +457,14 @@ view DebugUserStat {
   @@schema("suzume")
 }
 
+view DebugUserGroup {
+  user_id  Int @unique
+  group_id Int
+
+  @@map("debug_user_group")
+  @@schema("suzume")
+}
+
 enum Language {
   C__     @map("C++")
   Pascal

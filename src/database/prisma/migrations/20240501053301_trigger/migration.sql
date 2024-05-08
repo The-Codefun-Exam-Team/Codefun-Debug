@@ -42,6 +42,12 @@ CREATE OR REPLACE FUNCTION "suzume"."debug_sub_before_update_diff"() RETURNS tri
     SELECT submissions.score, submissions.result INTO sub_score, sub_result FROM submissions WHERE NEW.sub_id = submissions.id;
     IF NEW.diff < problem_min_diff AND sub_score = 100::dbl_score THEN
       NEW.is_best := TRUE;
+    UPDATE debug_submissions
+    SET is_best = FALSE
+    WHERE 
+      debug_problem_id = NEW.debug_problem_id
+      AND user_id = NEW.user_id
+      AND is_best = TRUE;
     ELSE
       NEW.score := sub_score * CASE 
         WHEN NEW.diff - problem_min_diff <= 0 THEN 1

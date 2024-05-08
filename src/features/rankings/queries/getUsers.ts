@@ -13,7 +13,6 @@ export const getUsers = async (
   try {
     return unstable_cache(
       async () => {
-        console.log(typeof groupId);
         const offset = (page - 1) * limit;
         const users = await prisma.debugUserStat.findMany({
           select: {
@@ -28,6 +27,9 @@ export const getUsers = async (
           },
           where: {
             group_id: groupId ? groupId : undefined,
+          },
+          orderBy: {
+            score: "desc",
           },
           take: limit,
           skip: offset,
@@ -47,7 +49,7 @@ export const getUsers = async (
         });
       },
       [`get-users-${groupId}-${page}-${limit}`],
-      { revalidate: 10 },
+      { revalidate: 20 },
     )();
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
