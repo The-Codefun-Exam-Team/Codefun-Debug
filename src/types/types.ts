@@ -1,4 +1,5 @@
 import type { SubmissionResult, UserStatus } from "@prisma/client";
+import type { Decimal } from "@prisma/client/runtime/library";
 
 import type { CODEFUN_ROLES, COLOR_SCHEMES } from "./constants";
 
@@ -25,18 +26,11 @@ export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
 export type CodefunRoles = (typeof CODEFUN_ROLES)[number];
 
-interface DetailedScoreInfoNotNull {
-  score: number;
-  diff: number | null;
+interface DetailedScoreNotNull {
+  score: Decimal;
+  diff: number;
   result: SubmissionResult;
-  drid: number;
+  subId: number;
 }
 
-interface DetailedScoreInfoNull {
-  score: 0;
-  diff: null;
-  result: null;
-  drid: null;
-}
-
-export type DetailedScoreInfo = DetailedScoreInfoNotNull | DetailedScoreInfoNull;
+export type DetailedScoreInfo = DetailedScoreNotNull | null;

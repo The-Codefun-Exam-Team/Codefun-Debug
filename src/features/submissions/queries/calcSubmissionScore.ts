@@ -1,7 +1,6 @@
 import prisma from "@database/prisma/instance";
 import type { DebugSubmissions } from "@prisma/client";
 
-import { recalcProblemScore } from "@/features/problems";
 import type { Results } from "@/types";
 import { calcScore, getResult } from "@/utils";
 
@@ -50,11 +49,6 @@ export const calcSubmissionScore = async (drid: DebugSubmissions["drid"]) => {
   const run = await runQuery();
 
   const diff = await getSubmissionDiff(drid);
-
-  if (run.result === "AC" && diff < debugSubmission.debug_problems.mindiff) {
-    void recalcProblemScore(debugSubmission.debug_problems.code);
-    return;
-  }
 
   const scoreData = {
     problemScore: debugSubmission.debug_problems.score,

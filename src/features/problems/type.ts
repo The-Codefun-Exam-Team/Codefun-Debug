@@ -1,20 +1,18 @@
-import type { Languages } from "@/types";
+import type { Language } from "@prisma/client";
+
 import type { Judge } from "@/utils/parseJudge";
 
 export interface ProblemInfo {
-  dpid: number;
-  code: string;
+  id: number;
+  debugProblemCode: string;
   name: string;
-  language: Languages;
+  language: Language;
 }
 
 export type ProblemList = ProblemInfo[];
 
-export interface DetailedProblemInfo {
-  code: string;
-  name: string;
-  language: string;
-  codetext: string;
+export interface DetailedProblemInfo extends ProblemInfo {
+  source: string;
   problem: {
     code: string;
     name: string;

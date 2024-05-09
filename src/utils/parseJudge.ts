@@ -1,9 +1,9 @@
-import type { Results } from "@/types";
+import type { SubmissionResult } from "@prisma/client";
 
 export interface Judge {
   correct: number;
   total: number;
-  tests: { verdict: Results; runningTime: number; message: string }[];
+  tests: { verdict: SubmissionResult; runningTime: number; message: string }[];
 }
 
 export const parseJudge = (judge: string): Judge | string => {
@@ -22,7 +22,7 @@ export const parseJudge = (judge: string): Judge | string => {
       }
       const [verdict, runningTime, message] = x.split("|");
       return {
-        verdict: verdict as Results,
+        verdict: verdict as SubmissionResult,
         runningTime: parseFloat(runningTime),
         message: message,
       };

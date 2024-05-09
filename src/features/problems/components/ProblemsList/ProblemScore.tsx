@@ -8,7 +8,7 @@ export const ProblemScoreText = ({ text }: { text: string }) => (
   <p className="font-semibold text-slate-600 dark:text-slate-200">{text}</p>
 );
 
-export const ProblemScore = async ({ dpid }: { dpid: number }) => {
+export const ProblemScore = async ({ debugProblemId: dpid }: { debugProblemId: number }) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token");
   if (!token || !token.value) {
@@ -19,10 +19,7 @@ export const ProblemScore = async ({ dpid }: { dpid: number }) => {
     return <ProblemScoreText text="Not Available" />;
   }
   const allProblemsScore = await getMemoProblemsScore(user.user);
-  if (!allProblemsScore.ok) {
-    return <ProblemScoreText text="Not Available" />;
-  }
-  const problemScore = allProblemsScore.data[dpid];
+  const problemScore = allProblemsScore[dpid];
   return (
     <>{!problemScore ? <ProblemScoreText text="Not Submitted" /> : <Score {...problemScore} />}</>
   );

@@ -149,7 +149,7 @@ model DebugProblems {
   name             String             @db.VarChar(128)
   debugProblemCode String             @unique @map("debug_problem_code") @db.VarChar(32)
   minDiff          Int                @default(32000) @map("min_diff")
-  submissions      Submissions        @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  submission      Submissions        @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   debugSubmissions DebugSubmissions[]
 
   @@map("debug_problems")
@@ -433,7 +433,7 @@ view UserStatQuery {
 }
 
 view DebugUserRankings {
-  user_id Int      @unique
+  userId Int      @unique @map("user_id")
   score   Decimal? @db.Decimal
   rank    BigInt
 
@@ -442,12 +442,12 @@ view DebugUserRankings {
 }
 
 view DebugUserStat {
-  user_id      Int        @unique
+  userId      Int        @unique @map("user_id")
   username     String     @db.VarChar(32)
-  display_name String     @db.VarChar(128)
-  group_name   String     @db.VarChar(128)
-  group_id     Int
-  user_status  UserStatus
+  displayName String     @db.VarChar(128) @map("display_name")
+  groupName   String     @db.VarChar(128) @map("group_name")
+  groupId     Int @map("group_id")
+  userStatus  UserStatus
   score        Decimal    @db.Decimal
   ratio        Decimal    @db.Decimal(9, 2)
   rank         BigInt
@@ -458,8 +458,8 @@ view DebugUserStat {
 }
 
 view DebugUserGroup {
-  user_id  Int @unique
-  group_id Int
+  userId  Int @unique @map("user_id")
+  groupId Int @map("group_id")
 
   @@map("debug_user_group")
   @@schema("suzume")
