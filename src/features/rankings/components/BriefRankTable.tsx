@@ -2,7 +2,7 @@ import { Heading } from "@/components";
 import { getUsers } from "@/features/rankings";
 
 export const BriefRankTable = async () => {
-  const data = await getUsers("0", "1", "10");
+  const data = await getUsers(0, 1, 10);
   return (
     <div className="w-full [&>:where(h1,h2)]:!text-accent-light dark:[&>:where(h1,h2)]:!text-accent-dark">
       <Heading type="title-large">Top ranking</Heading>
@@ -21,7 +21,7 @@ export const BriefRankTable = async () => {
             {data.map((user) => (
               <tr key={`ranking-user-${user.username}`} className="[&>td]:p-[14px]">
                 <td className="text-left">{user.rank}</td>
-                <td className="text-left">{user.display_name}</td>
+                <td className="text-left">{user.displayName}</td>
                 <td className="text-right">{user.score}</td>
               </tr>
             ))}

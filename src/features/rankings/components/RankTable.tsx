@@ -13,9 +13,9 @@ export const RankTable = async ({ group, page }: { group: number; page: number }
   if (data.length === 0) {
     return (
       <div className="h-fit w-full">
-        <Heading type="title-large">Noone here!</Heading>
+        <Heading type="title-large">No one here!</Heading>
         <Heading type="title">
-          Please submit first if you haven&#39;t seen your name on the leaderboard.
+          Please submit first if you haven&#39;t seen your name on the leader board.
         </Heading>
       </div>
     );

@@ -1,5 +1,5 @@
 -- Create trigger function
-CREATE OR REPLACE FUNCTION "suzume"."debug_problems_update_min_diff"() RETURNS trigger AS
+CREATE OR REPLACE FUNCTION "as"."debug_problems_update_min_diff"() RETURNS trigger AS
   $trigger$
   BEGIN
     UPDATE debug_submissions ds
