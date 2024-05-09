@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import type { UserData } from "@/types";
 
 export const getUser = async (
@@ -30,3 +32,5 @@ export const getUser = async (
     user: info.data,
   };
 };
+
+export const getMemoUser = cache(getUser);
