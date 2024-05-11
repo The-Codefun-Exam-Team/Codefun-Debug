@@ -13,6 +13,12 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "simple-import-sort", "tailwindcss"],
   rules: {
+    "no-restricted-imports": [
+      "error",
+      {
+        patterns: ["@/providers/*/*", "@/hooks/*", "@/redux/*/*", "@/types/*"],
+      },
+    ],
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-var-requires": "off",

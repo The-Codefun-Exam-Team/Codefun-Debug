@@ -15,12 +15,8 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@redux/*": ["./src/features/redux-thunk/*"],
-      "@schemas/*": ["./src/shared/schemas/*"],
-      "@hooks/*": ["./src/shared/hooks/*"],
-      "@utils/*": ["./src/shared/utils/*"],
       "@database/*": ["./src/database/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
     },
     "types": ["react/experimental"],
     "plugins": [
@@ -29,6 +25,6 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/shared/utils/shared/md5.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/utils/md5.js"],
   "exclude": ["node_modules"]
 }

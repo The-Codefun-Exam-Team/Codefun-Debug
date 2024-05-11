@@ -1,4 +1,6 @@
-import { clsx } from "@utils/shared";
+import { Suspense } from "react";
+
+import { clsx } from "@/utils";
 
 import { VerticalNavLinks } from "./NavLinks";
 
@@ -8,13 +10,13 @@ export const DropDownToggler = () => (
     <label
       htmlFor="dropdown-check"
       className={clsx(
-        "relative top-1 float-left h-8 w-8 cursor-pointer leading-[10px] md:hidden",
+        "relative top-1 float-left size-8 cursor-pointer leading-[10px] md:hidden",
         "peer-checked:[&>:nth-child(1)]:translate-y-[10px]",
         "peer-checked:[&>:nth-child(1)]:rotate-45",
         "peer-checked:[&>:nth-child(2)]:w-1",
         "peer-checked:[&>:nth-child(2)]:opacity-0",
         "peer-checked:[&>:nth-child(3)]:translate-y-[-10px]",
-        "peer-checked:[&>:nth-child(3)]:rotate-[-45deg]",
+        "peer-checked:[&>:nth-child(3)]:-rotate-45",
       )}
     >
       <span className="inline-block h-[4px] w-full origin-center rounded-md bg-slate-800 align-middle transition-all duration-300 ease-out-back dark:bg-slate-200" />
@@ -35,7 +37,9 @@ export const DropDownContent = () => {
           "max-h-0 overflow-hidden peer-checked:max-h-[163px]",
         )}
       >
-        <VerticalNavLinks keyPrefix="navbar-dropdown" />
+        <Suspense>
+          <VerticalNavLinks keyPrefix="navbar-dropdown" />
+        </Suspense>
       </div>
     </>
   );

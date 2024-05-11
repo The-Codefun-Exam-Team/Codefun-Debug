@@ -1,7 +1,8 @@
-import { clsx, createNamespaceComponent } from "@utils/shared";
-import type { Optional, RequireFields } from "@utils/types";
 import type { ComponentPropsWithoutRef } from "react";
 import { forwardRef } from "react";
+
+import type { Optional, RequireFields } from "@/types";
+import { clsx, createNamespaceComponent } from "@/utils";
 
 import { InputErrorText } from "./InputErrorText";
 import type { LabelProps } from "./InputLabel";
@@ -38,7 +39,7 @@ const _Input = forwardRef<HTMLInputElement, InputProps>(
         id={id}
         className={clsx(
           "w-full rounded-md border-2 border-slate-600 p-2.5 text-lg text-black transition-opacity focus:outline-none disabled:opacity-70 dark:[color-scheme:dark] ",
-          "placeholder:text-slate-400 dark:border-[1px] dark:border-slate-500 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-600",
+          "placeholder:text-slate-400 dark:border dark:border-slate-500 dark:bg-slate-800/50 dark:text-white dark:placeholder:text-slate-600",
         )}
         aria-invalid={error}
         aria-describedby={errorTextId}

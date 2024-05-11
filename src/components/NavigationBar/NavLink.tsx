@@ -1,8 +1,10 @@
-import { clsx } from "@utils/shared";
+"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentPropsWithoutRef } from "react";
 import { useMemo } from "react";
+
+import { clsx } from "@/utils";
 
 // default classnames for nav links
 export const NAV_BUTTON_CLASS =

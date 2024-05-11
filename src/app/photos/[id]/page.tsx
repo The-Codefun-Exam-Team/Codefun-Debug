@@ -1,9 +1,8 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { CONTRIBUTORS_INFO, TEAM } from "@/app/about/constants";
-import type { TeamMembers } from "@/app/about/types";
 import { Heading } from "@/components";
+import { CONTRIBUTORS_INFO, TEAM, type TeamMembers } from "@/features/about";
 
 import NO_IMAGE from "./no-image.png";
 
@@ -22,7 +21,7 @@ const Page = ({ params: { id } }: { params: { id: TeamMembers } }) => {
         <Heading type="title-large">{info.name}</Heading>
         <Heading type="title">{info.roleDescription}</Heading>
       </div>
-      <div className="relative h-full w-full md:h-auto md:w-auto md:flex-[1_1_0] md:self-stretch">
+      <div className="relative size-full md:size-auto md:flex-[1_1_0] md:self-stretch">
         <Image
           src={info.image ?? NO_IMAGE}
           alt={`${info.name}'s image`}

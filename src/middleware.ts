@@ -1,6 +1,7 @@
-import { getUserInfo } from "@utils/api";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+
+import { getUser } from "@/features/auth";
 
 export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;
@@ -10,7 +11,7 @@ export const middleware = async (request: NextRequest) => {
 
   if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const token = request.cookies.get("token");
-    const userInfo = await getUserInfo(token?.value);
+    const userInfo = await getUser(token?.value);
     if (!userInfo.ok || userInfo.user.status !== "Admin") {
       return NextResponse.redirect(new URL("/", request.url));
     }
@@ -25,14 +26,22 @@ export const middleware = async (request: NextRequest) => {
 
     if (!token) {
       return NextResponse.redirect(new URL(redirectTo, request.url));
+    } else {
+      const response = NextResponse.next();
+      response.headers.set("X-Redirect-To", redirectTo);
+      return response;
     }
   }
 
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const providedRedirect = searchParams.get("prev");
+    const redirectTo = providedRedirect ? decodeURIComponent(providedRedirect) : "/";
     if (request.cookies.get("token")) {
-      const redirectTo = providedRedirect ? decodeURIComponent(providedRedirect) : "/";
       return NextResponse.redirect(new URL(redirectTo, request.url));
+    } else {
+      const response = NextResponse.next();
+      response.headers.set("X-Redirect-To", redirectTo);
+      return response;
     }
   }
 

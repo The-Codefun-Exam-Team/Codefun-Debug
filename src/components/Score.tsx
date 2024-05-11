@@ -1,6 +1,7 @@
-import type { DetailedScoreInfo } from "@utils/api";
-import { clsx, getVerdictTextClass } from "@utils/shared";
 import Link from "next/link";
+
+import type { DetailedScoreInfo } from "@/types";
+import { clsx, getVerdictTextClass } from "@/utils";
 
 interface ComponentExtraProps {
   className?: string;

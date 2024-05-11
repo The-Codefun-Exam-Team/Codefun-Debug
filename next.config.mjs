@@ -20,18 +20,6 @@ const nextConfig = {
       },
     ],
   },
-  modularizeImports: {
-    "@/components/?(((\\w*)?/?)*)": {
-      transform: "@/components/{{ matches.[1] }}/{{member}}",
-      preventFullImport: true,
-      skipDefaultConversion: true,
-    },
-    "@utils/?(((\\w*)?/?)*)": {
-      transform: "@utils/{{ matches.[1] }}/{{member}}",
-      preventFullImport: true,
-      skipDefaultConversion: true,
-    },
-  },
   transpilePackages: ["monaco-editor"],
   /**
    * @param {import("webpack").Configuration} config
@@ -52,7 +40,19 @@ const nextConfig = {
     return config;
   },
   experimental: {
+    webpackBuildWorker: true,
     ppr: true,
+    optimizePackageImports: [
+      "@/features/auth",
+      "@/features/about",
+      "@/features/rankings",
+      "@/features/problems",
+      "@/features/submissions",
+      "@/utils",
+      "@/components",
+      "@/hooks",
+      "@/components/icon",
+    ],
   },
 };
 

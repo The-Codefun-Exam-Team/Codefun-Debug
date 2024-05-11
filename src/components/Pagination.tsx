@@ -1,4 +1,3 @@
-import { clsx } from "@utils/shared";
 import Link from "next/link";
 
 import {
@@ -7,6 +6,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@/components/icon";
+import { clsx } from "@/utils";
 
 export const Pagination = ({
   page,
@@ -36,7 +36,7 @@ export const Pagination = ({
           )}
           aria-label={`Move to page ${prev5Page}.`}
         >
-          <ChevronDoubleLeftIcon className="h-7 w-7 stroke-accent-light dark:stroke-accent-dark" />
+          <ChevronDoubleLeftIcon className="size-7 stroke-accent-light dark:stroke-accent-dark" />
         </Link>
         <Link
           href={`${baseURL}${prevPage}`}
@@ -46,7 +46,7 @@ export const Pagination = ({
           )}
           aria-label={`Move to page ${prevPage}.`}
         >
-          <ChevronLeftIcon className="h-7 w-7 stroke-accent-light dark:stroke-accent-dark" />
+          <ChevronLeftIcon className="size-7 stroke-accent-light dark:stroke-accent-dark" />
         </Link>
       </div>
 
@@ -63,7 +63,7 @@ export const Pagination = ({
           )}
           aria-label={`Move to page ${nextPage}.`}
         >
-          <ChevronRightIcon className="h-7 w-7 stroke-accent-light dark:stroke-accent-dark" />
+          <ChevronRightIcon className="size-7 stroke-accent-light dark:stroke-accent-dark" />
         </Link>
         <Link
           href={`${baseURL}${next5Page}`}
@@ -73,7 +73,7 @@ export const Pagination = ({
           )}
           aria-label={`Move to page ${next5Page}.`}
         >
-          <ChevronDoubleRightIcon className="h-7 w-7 stroke-accent-light dark:stroke-accent-dark" />
+          <ChevronDoubleRightIcon className="size-7 stroke-accent-light dark:stroke-accent-dark" />
         </Link>
       </div>
     </div>

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { CONTRIBUTORS_INFO, TEAM } from "@/app/about/constants";
-import type { TeamMembers } from "@/app/about/types";
+import { CONTRIBUTORS_INFO } from "@/features/about";
+import { TEAM, type TeamMembers } from "@/features/about";
 
 import { PhotosModal } from "./PhotosModal";
 
@@ -18,7 +18,7 @@ const Page = ({ params: { id } }: { params: { id: TeamMembers } }) => {
   return (
     <PhotosModal title={`${info.name} - ${info.role}`} description={info.roleDescription}>
       {!!info.image && (
-        <div className="relative h-full w-full">
+        <div className="relative size-full">
           <Image src={info.image} alt={`${info.name}'s image`} className="w-full rounded-md" />
         </div>
       )}

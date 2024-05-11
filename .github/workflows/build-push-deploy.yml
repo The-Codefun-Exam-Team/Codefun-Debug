@@ -21,7 +21,15 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
+      - name: Find Dockerfile
+        id: dockerfile
+        run: |
+          if [ -f "Dockerfile" ]; then
+            echo "grace_exit=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "grace_exit=true" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
       - name: Set up environment
         run: |
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} > .env
