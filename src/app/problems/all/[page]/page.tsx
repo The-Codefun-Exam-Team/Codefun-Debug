@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { Box, Heading, Pagination } from "@/components";
+import { Heading, Pagination } from "@/components";
 import { getProblemCount, getProblems, ProblemsList } from "@/features/problems";
 
 export const metadata: Metadata = {

@@ -35,6 +35,9 @@ CREATE UNIQUE INDEX "debug_submissions_sub_id_key" ON "suzume"."debug_submission
 -- CreateIndex
 CREATE UNIQUE INDEX "debug_submissions_is_best_key" ON "suzume"."debug_submissions"("user_id", "debug_problem_id") INCLUDE(score) WHERE ("is_best" = TRUE);
 
+-- CreateIndex
+CREATE INDEX "debug_submissions_user_id_idx" ON "suzume"."debug_submissions"("user_id") ; 
+
 -- AddForeignKey
 ALTER TABLE "suzume"."debug_problems" ADD CONSTRAINT "debug_problems_sub_id_fkey" FOREIGN KEY ("sub_id") REFERENCES "public"."submissions"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 

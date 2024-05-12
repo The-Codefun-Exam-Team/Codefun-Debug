@@ -6,6 +6,7 @@ import type { DetailedScoreInfo, UserData } from "@/types";
 export type ProblemScoreMap = Record<number, DetailedScoreInfo>;
 
 export const getProblemsScore = async (user: UserData) => {
+  console.log("getProblemsScore");
   const query = await prisma.debugSubmissions.findMany({
     where: {
       userId: user.id,

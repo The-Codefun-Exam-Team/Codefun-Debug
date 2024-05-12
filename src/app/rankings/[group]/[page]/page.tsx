@@ -12,14 +12,14 @@ export const metadata: Metadata = {
 
 export const generateStaticParams = async () => {
   const query = await prisma.debugUserGroup.groupBy({
-    by: ["group_id"],
+    by: ["groupId"],
     _count: {
-      user_id: true,
+      userId: true,
     },
   });
 
   let globalCount = 0;
-  const groupCounts = query.map(({ group_id: groupId, _count: { user_id: count } }) => {
+  const groupCounts = query.map(({ groupId: groupId, _count: { userId: count } }) => {
     globalCount = globalCount + count;
     return { count, groupId };
   });
@@ -44,7 +44,7 @@ const getUserCount = async (groupId: number) => {
       async () => {
         return await prisma.debugUserGroup.count({
           where: {
-            group_id: groupId ? groupId : undefined,
+            groupId: groupId ? groupId : undefined,
           },
         });
       },
