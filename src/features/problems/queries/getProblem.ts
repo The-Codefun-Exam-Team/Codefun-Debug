@@ -6,54 +6,52 @@ import { cache } from "react";
 import type { DetailedProblemInfo } from "@/features/problems";
 import { parseJudge } from "@/utils";
 
-export const getProblem = async (code: string) => {
+export const getProblem = async (code: string): Promise<DetailedProblemInfo> => {
   try {
-    const problemInfo = await unstable_cache(
+    return await unstable_cache(
       async () => {
-        const problemInfo = await prisma.debugProblems.findUniqueOrThrow({
+        const query = await prisma.debugProblems.findUniqueOrThrow({
           where: {
-            code,
+            debugProblemCode: code,
           },
           select: {
-            code: true,
+            id: true,
+            debugProblemCode: true,
             name: true,
-            language: true,
-            problem: {
+            submission: {
               select: {
-                code: true,
-                name: true,
-              },
-            },
-            runs: {
-              select: {
-                subs_code: {
+                language: true,
+                source: true,
+                problem: {
                   select: {
-                    error: true,
-                    code: true,
+                    problemCode: true,
+                    name: true,
                   },
                 },
+                judgeOutput: true,
               },
             },
           },
         });
-
         return {
-          code: problemInfo.code,
-          name: problemInfo.name,
-          language: problemInfo.language,
-          codetext: problemInfo.runs.subs_code.code,
-          problem: {
-            code: problemInfo.problem.code,
-            name: problemInfo.problem.name,
+          id: query.id,
+          debugProblemCode: query.debugProblemCode,
+          name: query.name,
+          language: query.submission.language,
+          source: query.submission.source,
+          statement: {
+            code: query.submission.problem.problemCode,
+            name: query.submission.problem.name,
           },
-          problem_judge: parseJudge(problemInfo.runs.subs_code.error),
-        } satisfies DetailedProblemInfo;
+          problemJudge: parseJudge(
+            query.submission.judgeOutput ??
+              "Submission in queue when added, please report to teacher.",
+          ),
+        };
       },
       [`getProblem-${code}`],
       { revalidate: false },
     )();
-
-    return problemInfo;
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.message);

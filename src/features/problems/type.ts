@@ -13,9 +13,9 @@ export type ProblemList = ProblemInfo[];
 
 export interface DetailedProblemInfo extends ProblemInfo {
   source: string;
-  problem: {
+  statement: {
     code: string;
     name: string;
   };
-  problem_judge: Judge | string;
+  problemJudge: Judge | string;
 }

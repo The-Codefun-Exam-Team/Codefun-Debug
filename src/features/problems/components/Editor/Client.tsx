@@ -69,10 +69,10 @@ export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProp
 
   useEffect(() => {
     if (!renderingEditor && editorRef.current) {
-      editorRef.current.getOriginalEditor()?.setValue(problemData.codetext);
-      editorRef.current.getModifiedEditor()?.setValue(problemData.codetext);
+      editorRef.current.getOriginalEditor()?.setValue(problemData.source);
+      editorRef.current.getModifiedEditor()?.setValue(problemData.source);
     }
-  }, [renderingEditor, problemData.codetext]);
+  }, [renderingEditor, problemData.source]);
 
   const submitCode = async () => {
     if (!editorRef.current) {

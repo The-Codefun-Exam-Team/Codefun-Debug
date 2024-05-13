@@ -9,7 +9,7 @@ interface ComponentExtraProps {
 }
 
 export const Score = (props: DetailedScoreInfo & ComponentExtraProps) => {
-  if (props.drid === null) {
+  if (props.dsubId === null) {
     return (
       <div className={clsx(props.className, "font-semibold", getVerdictTextClass("CE"))}>
         Not Submitted
@@ -26,7 +26,7 @@ export const Score = (props: DetailedScoreInfo & ComponentExtraProps) => {
         props.result === "AC" ? "font-bold" : "font-semibold",
       )}
     >
-      <Link href={`/submissions/${props.drid}`}>
+      <Link href={`/submissions/${props.dsubId}`}>
         {props.result === "AC" ? "Accepted" : props.score.toFixed(5)}
       </Link>
     </div>

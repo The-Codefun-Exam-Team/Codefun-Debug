@@ -17,16 +17,16 @@ export const getUsers = async (
         const users = await prisma.debugUserStat.findMany({
           select: {
             username: true,
-            display_name: true,
-            group_name: true,
-            user_status: true,
+            displayName: true,
+            groupName: true,
+            userStatus: true,
             score: true,
             ratio: true,
             rank: true,
             email: true,
           },
           where: {
-            group_id: groupId ? groupId : undefined,
+            groupId: groupId ? groupId : undefined,
           },
           orderBy: {
             score: "desc",
@@ -38,9 +38,9 @@ export const getUsers = async (
         return users.map((user) => {
           return {
             username: user.username,
-            displayName: user.display_name,
-            groupName: user.group_name,
-            userStatus: user.user_status,
+            displayName: user.displayName,
+            groupName: user.groupName,
+            userStatus: user.userStatus,
             score: user.score.toFixed(2),
             ratio: user.ratio.toNumber(),
             rank: Number(user.rank),

@@ -8,15 +8,15 @@ import {
   LanguageIcon,
   SolidDownIcon,
 } from "@/components/icon";
-import type { DetailedProblemInfo } from "@/features/problems";
 import { getMemoProblem } from "@/features/problems";
-import type { Results } from "@/types";
+import type { SubmissionResult } from "@/types";
 import { RESULTS_DICT } from "@/types";
+import type { Judge } from "@/utils";
 import { clsx, getVerdictTextClass } from "@/utils";
 
 import { InfoTableScore, InfoTableScoreSkeleton } from "./Score";
 
-const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
+const verdictsList = (judge: Judge | string) => {
   if (typeof judge === "string") {
     return (
       <div>
@@ -42,7 +42,7 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
 
   const verdictsEntries = Object.entries(RESULTS_DICT);
   const verdicts = verdictsEntries.map(
-    ([key, _value]) => ({ verdict: key, count: 0 }) as { verdict: Results; count: number },
+    ([key, _value]) => ({ verdict: key, count: 0 }) as { verdict: SubmissionResult; count: number },
   );
   const verdictsIndex = Object.fromEntries(
     verdictsEntries.map(([key, _value], index) => [key, index]),
@@ -81,7 +81,7 @@ const verdictsList = (judge: DetailedProblemInfo["problem_judge"]) => {
 };
 
 export const InfoTable = async ({ code }: { code: string }) => {
-  const problemData = await getMemoProblem(code);
+  const query = await getMemoProblem(code);
   return (
     <>
       <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
@@ -89,7 +89,7 @@ export const InfoTable = async ({ code }: { code: string }) => {
           <tr>
             <th>
               <Suspense fallback={<InfoTableScoreSkeleton />}>
-                <InfoTableScore problemId={problemData.code} />
+                <InfoTableScore problemId={query.id} />
               </Suspense>
             </th>
           </tr>
@@ -105,23 +105,23 @@ export const InfoTable = async ({ code }: { code: string }) => {
             >
               <div>
                 <BookOpenIcon className="relative bottom-[3px] inline size-6" /> Problem:{" "}
-                {problemData.code}
+                {query.debugProblemCode}
               </div>
               <div>
                 <DocumentTextIcon className="relative bottom-[3px] inline size-6" /> Statement:{" "}
                 <DecoratedLink
                   target="_blank"
                   rel="noreferrer noopener"
-                  href={`https://codefun.vn/problems/${problemData.problem.code}`}
+                  href={`https://codefun.vn/problems/${query.debugProblemCode}`}
                 >
-                  {problemData.problem.name}
+                  {query.name}
                 </DecoratedLink>
               </div>
               <div>
                 <LanguageIcon className="relative bottom-[3px] inline size-6" /> Language:{" "}
-                {problemData.language}
+                {query.language}
               </div>
-              {verdictsList(problemData.problem_judge)}
+              {verdictsList(query.problemJudge)}
             </td>
           </tr>
         </tbody>

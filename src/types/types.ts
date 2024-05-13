@@ -30,7 +30,7 @@ interface DetailedScoreNotNull {
   score: Decimal;
   diff: number;
   result: SubmissionResult;
-  subId: number;
+  dsubId: number;
 }
 
 export type DetailedScoreInfo = DetailedScoreNotNull | null;

@@ -29,7 +29,7 @@ export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; 
       <tbody className="h-fit divide-y divide-gray-400 dark:divide-slate-600">
         {problemList.map((problem) => (
           <tr
-            key={`problem-page-${page}-code-${problem.debugProblemCode}`}
+            key={`problem-page-${page}-code-${problem.id}`}
             className={clsx(
               "h-10 text-center",
               "font-semibold text-slate-600 dark:text-slate-400 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
@@ -50,7 +50,7 @@ export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; 
             <td>
               <div className="float-right flex w-fit justify-end">
                 <Suspense fallback={<ProblemScoreSkeleton />}>
-                  <ProblemScore debugProblemId={problem.id} />
+                  <ProblemScore id={problem.id} />
                 </Suspense>
               </div>
             </td>
