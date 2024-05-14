@@ -1,4 +1,5 @@
 import prisma from "@database/prisma/instance";
+import { Language } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache } from "next/cache";
 
@@ -28,7 +29,7 @@ export const getProblems = async (page: number, limit: number): Promise<ProblemL
             id: problem.id,
             debugProblemCode: problem.debugProblemCode,
             name: problem.name,
-            language: problem.submission.language,
+            language: Language[problem.submission.language],
           };
         });
       },

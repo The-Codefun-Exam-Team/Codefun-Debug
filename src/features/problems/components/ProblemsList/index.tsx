@@ -43,9 +43,7 @@ export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; 
               </div>
             </td>
             <td>
-              <div className="text-left">
-                {problem.language == "C__" ? "C++" : problem.language}
-              </div>
+              <div className="text-left">{problem.language}</div>
             </td>
             <td>
               <div className="float-right flex w-fit justify-end">

@@ -4,6 +4,7 @@ import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
 import type { DetailedProblemInfo } from "@/features/problems";
+import { LANGUAGES_DICT } from "@/types";
 import { parseJudge } from "@/utils";
 
 export const getProblem = async (code: string): Promise<DetailedProblemInfo> => {
@@ -37,7 +38,7 @@ export const getProblem = async (code: string): Promise<DetailedProblemInfo> => 
           id: query.id,
           debugProblemCode: query.debugProblemCode,
           name: query.name,
-          language: query.submission.language,
+          language: LANGUAGES_DICT[query.submission.language],
           source: query.submission.source,
           statement: {
             code: query.submission.problem.problemCode,

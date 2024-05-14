@@ -1,4 +1,4 @@
-import { SubmissionResult } from "@prisma/client";
+import { Language, SubmissionResult } from "@prisma/client";
 
 export const RESULTS_DICT = SubmissionResult;
 
@@ -16,6 +16,11 @@ Object.assign(RESULTS_DICT, {
   DQ: "Disqualified",
 });
 
+export const LANGUAGES_DICT = Language;
+Object.assign(LANGUAGES_DICT, {
+  C__: "C++",
+});
+
 export const CODEFUN_ROLES = [
   "newbie",
   "beginner",
@@ -30,7 +35,5 @@ export const CODEFUN_ROLES = [
   "admin",
   "mod",
 ] as const;
-
-export const LANGUAGES = ["Python2", "Python3", "C++", "Nasm", "Go", "Java", "Pascal"] as const;
 
 export const COLOR_SCHEMES = ["dark", "light"] as const;

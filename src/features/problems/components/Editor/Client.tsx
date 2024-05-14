@@ -79,8 +79,8 @@ export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProp
       setSubmitError("Editor hasn't been loaded.");
       return;
     }
-    const codetext = editorRef.current.getModifiedEditor().getValue();
-    const res = await actionSubmit(code, codetext);
+    const source = editorRef.current.getModifiedEditor().getValue();
+    const res = await actionSubmit(code, source);
     if (!res.ok) {
       setSubmitError(res.message);
       return;
