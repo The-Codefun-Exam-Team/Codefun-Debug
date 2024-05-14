@@ -1,67 +1,40 @@
 import prisma from "@database/prisma/instance";
+import { cookies } from "next/headers";
 
-import { submitCodefunProblem } from "@/features/submissions";
+import { getMemoUser } from "@/features/auth";
+import { getMemoProblem } from "@/features/problems";
+import { setSubmissionDiff, submitCodefunProblem } from "@/features/submissions";
+import { calcEditDistance } from "@/utils";
 
-import { calcSubmissionScore } from "./calcSubmissionScore";
-
-export const submit = async (code: string, codetext: string) => {
-  const debugProblems = await prisma.debugProblems.findUniqueOrThrow({
-    where: {
-      code,
-    },
-    select: {
-      dpid: true,
-      language: true,
-      problem: {
-        select: {
-          pid: true,
-        },
-      },
-    },
+export const submit = async (debugProblemCode: string, source: string) => {
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token");
+  const debugProblem = await getMemoProblem(debugProblemCode);
+  const user = await getMemoUser(token?.value);
+  if (!user.ok) {
+    throw new Error("You are not logged in");
+  }
+  const {
+    language,
+    statement: { code: problemCode },
+  } = debugProblem;
+  const submissionId = await submitCodefunProblem({
+    code: problemCode,
+    source,
+    language,
   });
-  const codefunProblem = debugProblems.problem;
-  const rid = await submitCodefunProblem({
-    pid: codefunProblem.pid,
-    codetext: codetext,
-    language: debugProblems.language,
-  });
-
-  const codefunSubmission = await prisma.runs.findUniqueOrThrow({
-    where: {
-      rid,
-    },
-    select: {
-      submittime: true,
-      result: true,
-      score: true,
-      subs_code: {
-        select: {
-          code: true,
-        },
-      },
-      team: {
-        select: {
-          tid: true,
-        },
-      },
-    },
-  });
-  const team = codefunSubmission.team;
-  const submission = await prisma.debugSubmissions.create({
+  const debugSubmission = await prisma.debugSubmissions.create({
     data: {
-      rid,
-      tid: team.tid,
-      dpid: debugProblems.dpid,
-      language: debugProblems.language,
-      submittime: codefunSubmission.submittime,
-      result: "Q",
-      score: 0,
-      code: codetext,
+      subId: submissionId,
+      userId: user.user.id,
+      debugProblemId: debugProblem.id,
     },
     select: {
-      drid: true,
+      id: true,
     },
   });
-  void calcSubmissionScore(submission.drid);
-  return submission.drid;
+
+  void setSubmissionDiff(debugSubmission.id, await calcEditDistance(debugProblem.source, source));
+
+  return debugSubmission.id;
 };

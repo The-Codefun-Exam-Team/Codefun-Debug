@@ -1,4 +1,4 @@
 export * from "./calcSubmissionScore";
 export * from "./getSubmission";
-export * from "./getSubmissionDiff";
+export * from "./setSubmissionDiff";
 export * from "./submit";
