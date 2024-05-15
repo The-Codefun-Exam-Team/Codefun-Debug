@@ -466,6 +466,32 @@ view DebugUserGroup {
   @@schema("suzume")
 }
 
+view DebugSubmissionQuery {
+  id                   Int              @unique
+  submitTime           DateTime         @map("submit_time") @db.Timestamptz(6)
+  runtime              Decimal          @db.Decimal(5, 3)
+  source               String           @db.VarChar(32000)
+  username             String           @db.VarChar(32)
+  userDisplayName      String           @map("user_display_name") @db.VarChar(128)
+  userGroupName        String           @map("user_group_name") @db.VarChar(128)
+  userStatus           UserStatus       @map("user_status")
+  userScore            Decimal?         @map("user_score") @db.Decimal
+  userRank             BigInt?          @map("user_rank")
+  userRatio            Decimal?         @map("user_ratio") @db.Decimal(9, 2)
+  userEmail            String?          @map("user_email") @db.VarChar(128)
+  debugProblemCode     String           @map("debug_problem_code") @db.VarChar(32)
+  debugProblemJudge    String           @map("debug_problem_judge")
+  debugProblemSource   String           @map("debug_problem_source") @db.VarChar(32000)
+  debugProblemLanguage Language         @map("debug_problem_language")
+  debugSubmissionJudge String           @map("debug_submission_judge")
+  score                Decimal          @db.Decimal(9, 2)
+  result               SubmissionResult
+  diff                 Int
+
+  @@map("debug_submission_query")
+  @@schema("suzume")
+}
+
 enum Language {
   C__     @map("C++")
   Pascal

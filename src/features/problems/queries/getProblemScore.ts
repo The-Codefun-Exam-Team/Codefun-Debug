@@ -24,7 +24,7 @@ export const getProblemScore = async (
       score: query.score,
       diff: query.diff,
       result: query.result,
-      dsubId: query.id,
+      debugSubmissionId: query.id,
     };
   }
   return null;

@@ -112,9 +112,9 @@ export const InfoTable = async ({ code }: { code: string }) => {
                 <DecoratedLink
                   target="_blank"
                   rel="noreferrer noopener"
-                  href={`https://codefun.vn/problems/${query.debugProblemCode}`}
+                  href={`https://codefun.vn/problems/${query.statement.code}`}
                 >
-                  {query.name}
+                  {query.statement.name}
                 </DecoratedLink>
               </div>
               <div>

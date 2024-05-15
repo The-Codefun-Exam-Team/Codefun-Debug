@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import { Heading } from "@/components";
 import type { DetailedSubmissionsInfo } from "@/features/submissions";
-import type { Results } from "@/types";
+import type { SubmissionResult } from "@/types";
 import { RESULTS_DICT } from "@/types";
 import { getVerdictTextClass } from "@/utils";
 
@@ -16,7 +16,7 @@ const TestResult = ({
   message,
   count,
 }: {
-  verdict: Results;
+  verdict: SubmissionResult;
   runningTime: number;
   message: string;
   count: number;
@@ -35,7 +35,7 @@ const TestResult = ({
   </div>
 );
 
-const JudgeError = ({ type, error }: { type: Results; error: string }) => {
+const JudgeError = ({ type, error }: { type: SubmissionResult; error: string }) => {
   let judgeErrorMessage: string;
   switch (type) {
     case "CE":
@@ -55,22 +55,16 @@ const JudgeError = ({ type, error }: { type: Results; error: string }) => {
   );
 };
 
-export const RunInfo = ({
-  data,
-  codetext,
-}: {
-  data: DetailedSubmissionsInfo;
-  codetext: string;
-}) => {
+export const RunInfo = ({ data }: { data: DetailedSubmissionsInfo }) => {
   const verdictNode =
-    data.result === "Q" ? (
+    data.scoreInfo.result === "Q" ? (
       <InQueue />
-    ) : typeof data.submission_judge === "string" ? (
-      <JudgeError type={data.result} error={data.submission_judge} />
+    ) : typeof data.judge === "string" ? (
+      <JudgeError type={data.scoreInfo.result} error={data.judge} />
     ) : (
-      data.submission_judge.tests.map(({ verdict, runningTime, message }, idx) => (
+      data.judge.tests.map(({ verdict, runningTime, message }, idx) => (
         <TestResult
-          key={`runinfo-${data.drid}-result-number-${idx}`}
+          key={`runinfo-${data.id}-result-number-${idx}`}
           count={idx + 1}
           verdict={verdict}
           runningTime={runningTime}
@@ -84,7 +78,7 @@ export const RunInfo = ({
       verdictNode={verdictNode}
       codeNode={
         <Suspense fallback={<CodeViewText text="Loading..." />}>
-          <RunInfoCode code={codetext} submissionUserId={data.user.tid} />
+          <RunInfoCode source={data.source} username={data.user.username} />
         </Suspense>
       }
     />

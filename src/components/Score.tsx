@@ -17,8 +17,7 @@ export const Score = (props: ScoreDisplayInfo & ComponentExtraProps) => {
     );
   }
 
-  const isDisabled = props.disabled || props.score === null;
-
+  const isDisabled = props.disabled || !props.debugSubmissionId;
   return (
     <div
       className={clsx(

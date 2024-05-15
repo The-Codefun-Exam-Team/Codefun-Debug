@@ -1,40 +1,34 @@
 import prisma from "@database/prisma/instance";
-import type { DebugProblems, DebugSubmissions } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-import { getProblem } from "@/features/problems";
 import type { DetailedSubmissionsInfo } from "@/features/submissions";
+import { LANGUAGES_DICT, type UserDisplayInfo } from "@/types";
 import { parseJudge } from "@/utils";
 
 export const getSubmission = async (id: number): Promise<DetailedSubmissionsInfo> => {
-  const query = await prisma.debugSubmissions.findUniqueOrThrow({
+  const query = await prisma.debugSubmissionQuery.findUniqueOrThrow({
     where: {
       id,
     },
     select: {
       id: true,
-      result: true,
       score: true,
       diff: true,
-      user: {},
-      submission: {
-        select: {
-          runningTime: true,
-          createdAt: true,
-          judgeOutput: true,
-          language: true,
-        },
-      },
-      debugProblem: {
-        select: {
-          debugProblemCode: true,
-          submission: {
-            select: {
-              judgeOutput: true,
-            },
-          },
-        },
-      },
+      result: true,
+      submitTime: true,
+      runtime: true,
+      source: true,
+      debugProblemCode: true,
+      debugProblemJudge: true,
+      debugProblemLanguage: true,
+      debugProblemSource: true,
+      debugSubmissionJudge: true,
+      username: true,
+      userDisplayName: true,
+      userGroupName: true,
+      userStatus: true,
+      userScore: true,
+      userRatio: true,
+      userRank: true,
     },
   });
   return {
@@ -44,14 +38,24 @@ export const getSubmission = async (id: number): Promise<DetailedSubmissionsInfo
       diff: query.diff,
       result: query.result,
     },
-    submitTime: query.submission.createdAt.getTime(),
-    runtime: query.submission.runningTime,
+    submitTime: query.submitTime,
+    runtime: query.runtime,
+    source: query.source,
     debugProblem: {
-      debugProblemCode: query.debugProblem.debugProblemCode,
-      judge: parseJudge(query.debugProblem.submission.judgeOutput),
+      debugProblemCode: query.debugProblemCode,
+      judge: parseJudge(query.debugProblemJudge),
+      language: LANGUAGES_DICT[query.debugProblemLanguage],
+      source: query.debugProblemSource,
     },
-    language: query.submission.language,
-    judge: parseJudge(query.submission.judgeOutput),
-    user: {},
+    judge: parseJudge(query.debugSubmissionJudge),
+    user: {
+      username: query.username,
+      displayName: query.userDisplayName,
+      groupName: query.userGroupName,
+      status: query.userStatus,
+      score: query.userScore?.toFixed(2) ?? null,
+      ratio: query.userRatio?.toNumber() ?? null,
+      rank: Number(query.userRank),
+    } as UserDisplayInfo,
   };
 };

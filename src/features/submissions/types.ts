@@ -9,7 +9,7 @@ export interface SubmissionInfo {
   debugProblem: {
     debugProblemCode: string;
   };
-  submitTime: number;
+  submitTime: Date;
   runtime: Decimal;
   scoreInfo: Omit<ScoreDisplayInfoNotNull, "debugSubmissionId">;
 }
@@ -18,7 +18,9 @@ export interface DetailedSubmissionsInfo extends SubmissionInfo {
   debugProblem: {
     debugProblemCode: string;
     judge: Judge | string;
+    language: string;
+    source: string;
   };
-  language: string;
   judge: Judge | string;
+  source: string;
 }
