@@ -14,13 +14,11 @@ FROM
     (
       (
         debug_user_rankings dur
-        JOIN users u ON ((dur.user_id = u.id))
+        LEFT JOIN users u ON ((dur.user_id = u.id))
       )
-      JOIN user_rankings ur ON ((dur.user_id = ur.id))
+      LEFT JOIN user_rankings ur ON ((dur.user_id = ur.id))
     )
-    JOIN groups g ON ((u.group_id = g.id))
+    LEFT JOIN groups g ON ((u.group_id = g.id))
   )
-WHERE
-  (u.user_status <> 'banned' :: user_status)
 ORDER BY
   dur.rank;

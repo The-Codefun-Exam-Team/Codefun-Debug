@@ -6,7 +6,10 @@ export interface Judge {
   tests: { verdict: SubmissionResult; runningTime: number; message: string }[];
 }
 
-export const parseJudge = (judge: string): Judge | string => {
+export const parseJudge = (judge: string | null): Judge | string => {
+  if (!judge) {
+    return "No judge output";
+  }
   try {
     if (judge.split("////").length !== 2) {
       return judge;

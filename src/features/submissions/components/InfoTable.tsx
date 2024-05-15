@@ -9,9 +9,9 @@ import {
   LinkIcon,
   UserIcon,
 } from "@/components/icon";
-import type { SubmissionInfo } from "@/features/submissions";
+import type { DetailedSubmissionsInfo } from "@/features/submissions";
 
-export const InfoTable = ({ data }: { data: SubmissionInfo }) => {
+export const InfoTable = ({ data }: { data: DetailedSubmissionsInfo }) => {
   const subDate = new Date(data.submit_time * 1000);
   return (
     <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">

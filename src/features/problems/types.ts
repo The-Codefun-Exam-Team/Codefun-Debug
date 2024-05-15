@@ -17,5 +17,5 @@ export interface DetailedProblemInfo extends ProblemInfo {
     code: string;
     name: string;
   };
-  problemJudge: Judge | string;
+  judge: Judge | string;
 }

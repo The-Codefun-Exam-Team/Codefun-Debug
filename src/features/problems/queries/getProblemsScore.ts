@@ -1,11 +1,11 @@
 import prisma from "@database/prisma/instance";
 import { cache } from "react";
 
-import type { DetailedScoreInfo, UserData } from "@/types";
+import type { ScoreDisplayInfo, UserInfo } from "@/types";
 
-export type ProblemScoreMap = Record<number, DetailedScoreInfo>;
+export type ProblemScoreMap = Record<number, ScoreDisplayInfo>;
 
-export const getProblemsScore = async (user: UserData) => {
+export const getProblemsScore = async (user: UserInfo) => {
   const query = await prisma.debugSubmissions.findMany({
     where: {
       userId: user.id,
@@ -16,7 +16,7 @@ export const getProblemsScore = async (user: UserData) => {
       score: true,
       diff: true,
       result: true,
-      debugProblems: {
+      debugProblem: {
         select: {
           id: true,
           debugProblemCode: true,
@@ -25,8 +25,8 @@ export const getProblemsScore = async (user: UserData) => {
     },
   });
   const result: ProblemScoreMap = {};
-  for (const { debugProblems, id, ...dsubInfo } of query) {
-    result[debugProblems.id] = { dsubId: id, ...dsubInfo };
+  for (const { debugProblem, id, ...dsubInfo } of query) {
+    result[debugProblem.id] = { debugSubmissionId: id, ...dsubInfo };
   }
   return result;
 };

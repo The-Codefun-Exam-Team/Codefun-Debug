@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { DetailedScoreInfo } from "@/types";
+import type { ScoreDisplayInfo } from "@/types";
 import { clsx, getVerdictTextClass } from "@/utils";
 
 interface ComponentExtraProps {
@@ -8,8 +8,8 @@ interface ComponentExtraProps {
   disabled?: boolean;
 }
 
-export const Score = (props: DetailedScoreInfo & ComponentExtraProps) => {
-  if (props.dsubId === null) {
+export const Score = (props: ScoreDisplayInfo & ComponentExtraProps) => {
+  if (props.score === null) {
     return (
       <div className={clsx(props.className, "font-semibold", getVerdictTextClass("CE"))}>
         Not Submitted
@@ -17,17 +17,19 @@ export const Score = (props: DetailedScoreInfo & ComponentExtraProps) => {
     );
   }
 
+  const isDisabled = props.disabled || props.score === null;
+
   return (
     <div
       className={clsx(
         getVerdictTextClass(props.result),
         props.className,
-        !props.disabled && "hover:underline",
+        !isDisabled && "hover:underline",
         props.result === "AC" ? "font-bold" : "font-semibold",
       )}
     >
-      <Link href={`/submissions/${props.dsubId}`}>
-        {props.result === "AC" ? "Accepted" : props.score.toFixed(5)}
+      <Link href={isDisabled ? {} : `/submissions/${props.debugSubmissionId}`}>
+        {props.result === "AC" ? "Accepted" : props.score.toFixed(2)}
       </Link>
     </div>
   );

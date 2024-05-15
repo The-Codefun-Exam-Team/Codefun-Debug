@@ -85,7 +85,7 @@ export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProp
       setSubmitError(res.message);
       return;
     }
-    router.push(`/submissions/${res.drid}`);
+    router.push(`/submissions/${res.id}`);
   };
   useEffect(() => {
     const removeErrorTimer = setTimeout(() => setSubmitError(""), 5000);

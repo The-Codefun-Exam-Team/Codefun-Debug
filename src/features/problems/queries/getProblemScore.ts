@@ -1,11 +1,11 @@
 import prisma from "@database/prisma/instance";
 
-import type { DetailedScoreInfo } from "@/types";
+import type { ScoreDisplayInfo } from "@/types";
 
 export const getProblemScore = async (
   debugProblemId: number,
   userId: number,
-): Promise<DetailedScoreInfo> => {
+): Promise<ScoreDisplayInfo> => {
   const query = await prisma.debugSubmissions.findFirst({
     where: {
       userId,

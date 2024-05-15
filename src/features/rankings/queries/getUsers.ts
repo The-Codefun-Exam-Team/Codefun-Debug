@@ -3,13 +3,14 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache } from "next/cache";
 
 import type { RankingsData } from "@/features/rankings";
+import type { UserDisplayInfo } from "@/types";
 import { gravatarFromEmail } from "@/utils";
 
 export const getUsers = async (
   groupId: number,
   page: number,
   limit: number,
-): Promise<RankingsData[]> => {
+): Promise<RankingsData> => {
   try {
     return unstable_cache(
       async () => {
@@ -40,12 +41,12 @@ export const getUsers = async (
             username: user.username,
             displayName: user.displayName,
             groupName: user.groupName,
-            userStatus: user.userStatus,
-            score: user.score.toFixed(2),
-            ratio: user.ratio.toNumber(),
+            status: user.userStatus,
+            score: user.score?.toFixed(2) ?? null,
+            ratio: user.ratio?.toNumber() ?? null,
             rank: Number(user.rank),
             avatar: gravatarFromEmail(user.email),
-          };
+          } as UserDisplayInfo;
         });
       },
       [`get-users-${groupId}-${page}-${limit}`],

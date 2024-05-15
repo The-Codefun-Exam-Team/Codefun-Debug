@@ -121,7 +121,7 @@ export const InfoTable = async ({ code }: { code: string }) => {
                 <LanguageIcon className="relative bottom-[3px] inline size-6" /> Language:{" "}
                 {query.language}
               </div>
-              {verdictsList(query.problemJudge)}
+              {verdictsList(query.judge)}
             </td>
           </tr>
         </tbody>

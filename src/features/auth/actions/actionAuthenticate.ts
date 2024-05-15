@@ -2,10 +2,10 @@
 import { cookies } from "next/headers";
 
 import { getUser } from "@/features/auth";
-import type { UserData } from "@/types";
+import type { UserInfo } from "@/types";
 
 export const actionAuthenticate = async (): Promise<
-  { ok: true; user: UserData } | { ok: false; status: number; error: string }
+  { ok: true; user: UserInfo } | { ok: false; status: number; error: string }
 > => {
   try {
     const res = await getUser(cookies().get("token")?.value);

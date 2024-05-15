@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
 import { Heading } from "@/components";
-import type { SubmissionInfo } from "@/features/submissions";
+import type { DetailedSubmissionsInfo } from "@/features/submissions";
 import type { Results } from "@/types";
 import { RESULTS_DICT } from "@/types";
 import { getVerdictTextClass } from "@/utils";
@@ -55,7 +55,13 @@ const JudgeError = ({ type, error }: { type: Results; error: string }) => {
   );
 };
 
-export const RunInfo = ({ data, codetext }: { data: SubmissionInfo; codetext: string }) => {
+export const RunInfo = ({
+  data,
+  codetext,
+}: {
+  data: DetailedSubmissionsInfo;
+  codetext: string;
+}) => {
   const verdictNode =
     data.result === "Q" ? (
       <InQueue />

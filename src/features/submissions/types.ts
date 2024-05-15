@@ -1,17 +1,24 @@
-import type { DetailedProblemInfo } from "@/features/problems";
-import type { Results } from "@/types";
+import type { Decimal } from "@prisma/client/runtime/library";
+
+import type { ScoreDisplayInfoNotNull, UserDisplayInfo } from "@/types";
 import type { Judge } from "@/utils";
 
 export interface SubmissionInfo {
-  user: {
-    name: string;
-    tid: number;
+  id: number;
+  user: UserDisplayInfo;
+  debugProblem: {
+    debugProblemCode: string;
   };
-  drid: number;
-  diff: number | null;
-  submit_time: number;
-  debug_problem: DetailedProblemInfo;
-  score: number;
-  result: Results;
-  submission_judge: Judge | string;
+  submitTime: number;
+  runtime: Decimal;
+  scoreInfo: Omit<ScoreDisplayInfoNotNull, "debugSubmissionId">;
+}
+
+export interface DetailedSubmissionsInfo extends SubmissionInfo {
+  debugProblem: {
+    debugProblemCode: string;
+    judge: Judge | string;
+  };
+  language: string;
+  judge: Judge | string;
 }

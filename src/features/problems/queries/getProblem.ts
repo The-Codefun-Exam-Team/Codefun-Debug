@@ -44,10 +44,7 @@ export const getProblem = async (code: string): Promise<DetailedProblemInfo> => 
             code: query.submission.problem.problemCode,
             name: query.submission.problem.name,
           },
-          problemJudge: parseJudge(
-            query.submission.judgeOutput ??
-              "Submission in queue when added, please report to teacher.",
-          ),
+          judge: parseJudge(query.submission.judgeOutput),
         };
       },
       [`getProblem-${code}`],

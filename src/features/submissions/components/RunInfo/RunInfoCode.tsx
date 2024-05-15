@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 import { getUser } from "@/features/auth";
-import type { SubmissionInfo } from "@/features/submissions";
+import type { DetailedSubmissionsInfo } from "@/features/submissions";
 
 import { CodeView } from "./CodeView";
 import { CodeViewText } from "./CodeViewText";
@@ -11,7 +11,7 @@ export const RunInfoCode = async ({
   submissionUserId,
 }: {
   code: string;
-  submissionUserId: SubmissionInfo["user"]["tid"];
+  submissionUserId: DetailedSubmissionsInfo["user"]["tid"];
 }) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token");
