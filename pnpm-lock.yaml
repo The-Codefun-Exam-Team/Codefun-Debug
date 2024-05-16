@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@headlessui/react':
     specifier: 1.7.19
-    version: 1.7.19(react-dom@19.0.0-canary-db913d8e17-20240422)(react@19.0.0-canary-db913d8e17-20240422)
+    version: 1.7.19(react-dom@18.3.1)(react@18.3.1)
   '@hookform/resolvers':
     specifier: 3.3.4
     version: 3.3.4(react-hook-form@7.51.3)
@@ -19,7 +19,7 @@ dependencies:
     version: 5.13.0(prisma@5.13.0)
   '@reduxjs/toolkit':
     specifier: 2.2.3
-    version: 2.2.3(react-redux@9.1.1)(react@19.0.0-canary-db913d8e17-20240422)
+    version: 2.2.3(react-redux@9.1.1)(react@18.3.1)
   client-only:
     specifier: 0.0.1
     version: 0.0.1
@@ -34,22 +34,22 @@ dependencies:
     version: 7.1.0(monaco-editor@0.48.0)(webpack@5.89.0)
   next:
     specifier: 14.3.0-canary.21
-    version: 14.3.0-canary.21(react-dom@19.0.0-canary-db913d8e17-20240422)(react@19.0.0-canary-db913d8e17-20240422)
+    version: 14.3.0-canary.21(react-dom@18.3.1)(react@18.3.1)
   next-redux-wrapper:
     specifier: 8.1.0
-    version: 8.1.0(next@14.3.0-canary.21)(react-redux@9.1.1)(react@19.0.0-canary-db913d8e17-20240422)
+    version: 8.1.0(next@14.3.0-canary.21)(react-redux@9.1.1)(react@18.3.1)
   react:
-    specifier: 19.0.0-canary-db913d8e17-20240422
-    version: 19.0.0-canary-db913d8e17-20240422
+    specifier: 18.3.1
+    version: 18.3.1
   react-dom:
-    specifier: 19.0.0-canary-db913d8e17-20240422
-    version: 19.0.0-canary-db913d8e17-20240422(react@19.0.0-canary-db913d8e17-20240422)
+    specifier: 18.3.1
+    version: 18.3.1(react@18.3.1)
   react-hook-form:
     specifier: 7.51.3
-    version: 7.51.3(react@19.0.0-canary-db913d8e17-20240422)
+    version: 7.51.3(react@18.3.1)
   react-redux:
     specifier: 9.1.1
-    version: 9.1.1(@types/react@18.2.79)(react@19.0.0-canary-db913d8e17-20240422)(redux@5.0.1)
+    version: 9.1.1(@types/react@18.2.79)(react@18.3.1)(redux@5.0.1)
   redux:
     specifier: 5.0.1
     version: 5.0.1
@@ -216,17 +216,17 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@headlessui/react@1.7.19(react-dom@19.0.0-canary-db913d8e17-20240422)(react@19.0.0-canary-db913d8e17-20240422):
+  /@headlessui/react@1.7.19(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-Ll+8q3OlMJfJbAKM/+/Y2q6PPYbryqNTXDbryx7SXLIDamkF6iQFbriYHga0dY44PvDhvvBWCx1Xj4U5+G4hOw==}
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16 || ^17 || ^18
       react-dom: ^16 || ^17 || ^18
     dependencies:
-      '@tanstack/react-virtual': 3.4.0(react-dom@19.0.0-canary-db913d8e17-20240422)(react@19.0.0-canary-db913d8e17-20240422)
+      '@tanstack/react-virtual': 3.4.0(react-dom@18.3.1)(react@18.3.1)
       client-only: 0.0.1
-      react: 19.0.0-canary-db913d8e17-20240422
-      react-dom: 19.0.0-canary-db913d8e17-20240422(react@19.0.0-canary-db913d8e17-20240422)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /@hookform/resolvers@3.3.4(react-hook-form@7.51.3):
@@ -234,7 +234,7 @@ packages:
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
-      react-hook-form: 7.51.3(react@19.0.0-canary-db913d8e17-20240422)
+      react-hook-form: 7.51.3(react@18.3.1)
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
@@ -739,7 +739,7 @@ packages:
     dependencies:
       '@prisma/debug': 5.13.0
 
-  /@reduxjs/toolkit@2.2.3(react-redux@9.1.1)(react@19.0.0-canary-db913d8e17-20240422):
+  /@reduxjs/toolkit@2.2.3(react-redux@9.1.1)(react@18.3.1):
     resolution: {integrity: sha512-76dll9EnJXg4EVcI5YNxZA/9hSAmZsFqzMmNRHvIlzw2WS/twfcVX3ysYrWGJMClwEmChQFC4yRq74tn6fdzRA==}
     peerDependencies:
       react: ^16.9.0 || ^17.0.0 || ^18
@@ -751,8 +751,8 @@ packages:
         optional: true
     dependencies:
       immer: 10.0.3
-      react: 19.0.0-canary-db913d8e17-20240422
-      react-redux: 9.1.1(@types/react@18.2.79)(react@19.0.0-canary-db913d8e17-20240422)(redux@5.0.1)
+      react: 18.3.1
+      react-redux: 9.1.1(@types/react@18.2.79)(react@18.3.1)(redux@5.0.1)
       redux: 5.0.1
       redux-thunk: 3.1.0(redux@5.0.1)
       reselect: 5.0.1
@@ -825,15 +825,15 @@ packages:
       tailwindcss: 3.4.3
     dev: true
 
-  /@tanstack/react-virtual@3.4.0(react-dom@19.0.0-canary-db913d8e17-20240422)(react@19.0.0-canary-db913d8e17-20240422):
+  /@tanstack/react-virtual@3.4.0(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-GZN4xn/Tg5w7gvYeVcMVCeL4pEyUhvg+Cp6KX2Z01C4FRNxIWMgIQ9ibgMarNQfo+gt0PVLcEER4A9sNv/jlow==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       '@tanstack/virtual-core': 3.4.0
-      react: 19.0.0-canary-db913d8e17-20240422
-      react-dom: 19.0.0-canary-db913d8e17-20240422(react@19.0.0-canary-db913d8e17-20240422)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /@tanstack/virtual-core@3.4.0:
@@ -3320,7 +3320,6 @@ packages:
 
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
-    dev: true
 
   /js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
@@ -3520,7 +3519,6 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
-    dev: true
 
   /lowercase-keys@3.0.0:
     resolution: {integrity: sha512-ozCC6gdQ+glXOQsveKD0YsDy8DSQFjDTz4zyzEHNV5+JP5D62LmfDZ6o1cycFx9ouG940M5dE8C8CTewdj2YWQ==}
@@ -3769,19 +3767,19 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: false
 
-  /next-redux-wrapper@8.1.0(next@14.3.0-canary.21)(react-redux@9.1.1)(react@19.0.0-canary-db913d8e17-20240422):
+  /next-redux-wrapper@8.1.0(next@14.3.0-canary.21)(react-redux@9.1.1)(react@18.3.1):
     resolution: {integrity: sha512-2hIau0hcI6uQszOtrvAFqgc0NkZegKYhBB7ZAKiG3jk7zfuQb4E7OV9jfxViqqojh3SEHdnFfPkN9KErttUKuw==}
     peerDependencies:
       next: '>=9'
       react: '*'
       react-redux: '*'
     dependencies:
-      next: 14.3.0-canary.21(react-dom@19.0.0-canary-db913d8e17-20240422)(react@19.0.0-canary-db913d8e17-20240422)
-      react: 19.0.0-canary-db913d8e17-20240422
-      react-redux: 9.1.1(@types/react@18.2.79)(react@19.0.0-canary-db913d8e17-20240422)(redux@5.0.1)
+      next: 14.3.0-canary.21(react-dom@18.3.1)(react@18.3.1)
+      react: 18.3.1
+      react-redux: 9.1.1(@types/react@18.2.79)(react@18.3.1)(redux@5.0.1)
     dev: false
 
-  /next@14.3.0-canary.21(react-dom@19.0.0-canary-db913d8e17-20240422)(react@19.0.0-canary-db913d8e17-20240422):
+  /next@14.3.0-canary.21(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-rNZNoXMgLdgJI0Eikwp+4DG8hdeVBozYbw7FbUWKhfP/Prmb1cZPyzfvd/MTq+PFv140SJtY2wZtotihBgr+Jg==}
     engines: {node: '>=18.17.0'}
     hasBin: true
@@ -3805,9 +3803,9 @@ packages:
       caniuse-lite: 1.0.30001612
       graceful-fs: 4.2.11
       postcss: 8.4.31
-      react: 19.0.0-canary-db913d8e17-20240422
-      react-dom: 19.0.0-canary-db913d8e17-20240422(react@19.0.0-canary-db913d8e17-20240422)
-      styled-jsx: 5.1.1(react@19.0.0-canary-db913d8e17-20240422)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      styled-jsx: 5.1.1(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.3.0-canary.21
       '@next/swc-darwin-x64': 14.3.0-canary.21
@@ -4501,29 +4499,30 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
-  /react-dom@19.0.0-canary-db913d8e17-20240422(react@19.0.0-canary-db913d8e17-20240422):
-    resolution: {integrity: sha512-+LmfcPoEv38BcToZ76NWbPgyAqFzZb9ONYVn1F7p6cZmtJerNjmwTBOGZ06h/tugQwg0+dU2igpS3veF5l9E3g==}
+  /react-dom@18.3.1(react@18.3.1):
+    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
-      react: 19.0.0-canary-db913d8e17-20240422
+      react: ^18.3.1
     dependencies:
-      react: 19.0.0-canary-db913d8e17-20240422
-      scheduler: 0.25.0-canary-db913d8e17-20240422
+      loose-envify: 1.4.0
+      react: 18.3.1
+      scheduler: 0.23.2
     dev: false
 
-  /react-hook-form@7.51.3(react@19.0.0-canary-db913d8e17-20240422):
+  /react-hook-form@7.51.3(react@18.3.1):
     resolution: {integrity: sha512-cvJ/wbHdhYx8aviSWh28w9ImjmVsb5Y05n1+FW786vEZQJV5STNM0pW6ujS+oiBecb0ARBxJFyAnXj9+GHXACQ==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
     dependencies:
-      react: 19.0.0-canary-db913d8e17-20240422
+      react: 18.3.1
     dev: false
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: true
 
-  /react-redux@9.1.1(@types/react@18.2.79)(react@19.0.0-canary-db913d8e17-20240422)(redux@5.0.1):
+  /react-redux@9.1.1(@types/react@18.2.79)(react@18.3.1)(redux@5.0.1):
     resolution: {integrity: sha512-5ynfGDzxxsoV73+4czQM56qF43vsmgJsO22rmAvU5tZT2z5Xow/A2uhhxwXuGTxgdReF3zcp7A80gma2onRs1A==}
     peerDependencies:
       '@types/react': ^18.2.25
@@ -4540,14 +4539,16 @@ packages:
     dependencies:
       '@types/react': 18.2.79
       '@types/use-sync-external-store': 0.0.3
-      react: 19.0.0-canary-db913d8e17-20240422
+      react: 18.3.1
       redux: 5.0.1
-      use-sync-external-store: 1.2.0(react@19.0.0-canary-db913d8e17-20240422)
+      use-sync-external-store: 1.2.0(react@18.3.1)
     dev: false
 
-  /react@19.0.0-canary-db913d8e17-20240422:
-    resolution: {integrity: sha512-6D1y1MWw586E1LRbKTZWTGUk8ONtdwu1zPN7EGMiJb0XDcXrLDjvA9dCmXWyRfivV6z+PRJh9YpS3DZjpq24Bg==}
+  /react@18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
     engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
     dev: false
 
   /read-cache@1.0.0:
@@ -4763,8 +4764,10 @@ packages:
     dev: true
     optional: true
 
-  /scheduler@0.25.0-canary-db913d8e17-20240422:
-    resolution: {integrity: sha512-UOxM9t/xYfVfbM4zT4QmAMSBqP9/D9pUGPkrB4F0q3vTkIAGfTEE9qvRpAetAD+3zU0s9Ow30fG57VgvscNZYw==}
+  /scheduler@0.23.2:
+    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
+    dependencies:
+      loose-envify: 1.4.0
     dev: false
 
   /schema-utils@3.3.0:
@@ -5150,7 +5153,7 @@ packages:
     engines: {node: '>=14.16'}
     dev: true
 
-  /styled-jsx@5.1.1(react@19.0.0-canary-db913d8e17-20240422):
+  /styled-jsx@5.1.1(react@18.3.1):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -5164,7 +5167,7 @@ packages:
         optional: true
     dependencies:
       client-only: 0.0.1
-      react: 19.0.0-canary-db913d8e17-20240422
+      react: 18.3.1
     dev: false
 
   /sucrase@3.34.0:
@@ -5503,12 +5506,12 @@ packages:
     dependencies:
       punycode: 2.3.0
 
-  /use-sync-external-store@1.2.0(react@19.0.0-canary-db913d8e17-20240422):
+  /use-sync-external-store@1.2.0(react@18.3.1):
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      react: 19.0.0-canary-db913d8e17-20240422
+      react: 18.3.1
     dev: false
 
   /util-deprecate@1.0.2:
