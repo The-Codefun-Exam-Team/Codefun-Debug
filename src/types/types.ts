@@ -1,4 +1,4 @@
-import type { SubmissionResult, UserStatus } from "@prisma/client";
+import type { SubmissionResult } from "@prisma/client";
 import type { Decimal } from "@prisma/client/runtime/library";
 
 import type { CODEFUN_ROLES, COLOR_SCHEMES } from "./constants";
@@ -13,7 +13,7 @@ export interface UserInfo {
     id: number;
     name: string;
   };
-  status: UserStatus;
+  status: string;
   avatar: string;
   score: number;
   solved: number;

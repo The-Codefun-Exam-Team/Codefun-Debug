@@ -9,11 +9,11 @@ import { actionCreateProblem } from "@/features/problems";
 import { useAppDispatch } from "@/hooks";
 
 const initialState: CreateProblemFormState = {
-  code_messages: [],
-  name_messages: [],
-  rid_messages: [],
-  messages: [],
-  success_messages: [],
+  codeMessages: [],
+  nameMessages: [],
+  submissionIdMessages: [],
+  errorMessages: [],
+  successMessages: [],
 };
 
 export const Inputs = () => {
@@ -41,7 +41,9 @@ export const Inputs = () => {
     <>
       <div className="text-center">
         <Heading type="title-large">
-          <div className="text-accent-light dark:text-accent-dark ">Create problem</div>
+          <div className="text-accent-light dark:text-accent-dark ">
+            Create problem
+          </div>
         </Heading>
       </div>
       <div className="flex gap-4">
@@ -51,9 +53,12 @@ export const Inputs = () => {
             label="Code"
             name="code"
             placeholder="(Optional)"
-            error={displayState.code_messages.length > 0}
+            error={
+              !!displayState.codeMessages?.length &&
+              displayState.codeMessages.length > 0
+            }
             errorTextId="create-problem-form-code-error-text"
-            errorText={displayState.code_messages.join("\n")}
+            errorText={displayState.codeMessages?.join(", ")}
             disabled={pending}
           />
         </div>
@@ -63,9 +68,12 @@ export const Inputs = () => {
             label="Name"
             name="name"
             placeholder="(Optional)"
-            error={displayState.name_messages.length > 0}
+            error={
+              !!displayState.nameMessages?.length &&
+              displayState.nameMessages.length > 0
+            }
             errorTextId="create-problem-form-name-error-text"
-            errorText={displayState.name_messages.join("\n")}
+            errorText={displayState.nameMessages?.join(", ")}
             disabled={pending}
           />
         </div>
@@ -74,30 +82,34 @@ export const Inputs = () => {
         <Input
           id="create-problem-form-submission-id-input"
           label="Submission ID"
-          name="rid"
+          name="submissionId"
           placeholder="Submission ID"
-          error={displayState.rid_messages.length > 0}
+          error={
+            !!displayState.submissionIdMessages?.length &&
+            displayState.submissionIdMessages.length > 0
+          }
           errorTextId="create-problem-form-submission-id-error-text"
-          errorText={displayState.rid_messages.join("\n")}
+          errorText={displayState.submissionIdMessages?.join(", ")}
           disabled={pending}
         />
       </div>
 
-      {displayState.messages.length > 0 ? (
+      {!!displayState.errorMessages && displayState.errorMessages.length > 0 ? (
         <ErrorBox
           closeFn={() => {
-            setDisplayState({ ...displayState, messages: [] });
+            setDisplayState({ ...displayState, errorMessages: [] });
           }}
         >
-          {displayState.messages.join("\n")}
+          {displayState.errorMessages.join(", ")}
         </ErrorBox>
-      ) : displayState.success_messages.length > 0 ? (
+      ) : displayState.successMessages &&
+        displayState.successMessages.length > 0 ? (
         <SuccessBox
           closeFn={() => {
-            setDisplayState({ ...displayState, success_messages: [] });
+            setDisplayState({ ...displayState, successMessages: [] });
           }}
         >
-          {displayState.success_messages.join("\n")}
+          {displayState.successMessages.join(", ")}
         </SuccessBox>
       ) : (
         <button
