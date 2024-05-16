@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getUser } from "@/features/auth";
+import { getUser } from "@/features/auth/api/getUser";
 
 export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;
@@ -35,7 +35,9 @@ export const middleware = async (request: NextRequest) => {
 
   if (unauthenticatedOnlyPrefixes.some((path) => pathname.startsWith(path))) {
     const providedRedirect = searchParams.get("prev");
-    const redirectTo = providedRedirect ? decodeURIComponent(providedRedirect) : "/";
+    const redirectTo = providedRedirect
+      ? decodeURIComponent(providedRedirect)
+      : "/";
     if (request.cookies.get("token")) {
       return NextResponse.redirect(new URL(redirectTo, request.url));
     } else {

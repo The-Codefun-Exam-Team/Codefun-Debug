@@ -1,6 +1,6 @@
-import type { Results } from "@/types";
+import type { SubmissionResult } from "@/types";
 
-export const getVerdictTextClass = (verdict: Results) => {
+export const getVerdictTextClass = (verdict: SubmissionResult) => {
   switch (verdict) {
     case "AC":
       return "text-green-600 dark:text-green-500";
