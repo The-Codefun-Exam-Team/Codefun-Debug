@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Support multiple package managers
 COPY package.json pnpm-lock.yaml* ./
-RUN npm i -g pnpm
+RUN npm i -g pnpm@8.3.0
 RUN pnpm i --frozen-lockfile
 
 # Initialize Prisma
