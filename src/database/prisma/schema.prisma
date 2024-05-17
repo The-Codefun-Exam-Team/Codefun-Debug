@@ -4,10 +4,10 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DB_POOLER")
+  provider  = "postgresql"
+  url       = env("DB_POOLER")
   directUrl = env("DB_DIRECT")
-  schemas  = ["public", "suzume"]
+  schemas   = ["public", "suzume"]
 }
 
 model GooseDbVersion {
