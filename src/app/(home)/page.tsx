@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
-import { BriefRankTable } from "@/features/rankings";
+import { BriefRankTable, BriefRankTableSkeleton } from "@/features/rankings";
 import { clsx } from "@/utils";
 
 import { Announcements } from "./Announcements";
@@ -8,6 +9,8 @@ import { Announcements } from "./Announcements";
 export const metadata: Metadata = {
   title: "Home",
 };
+
+export const revalidate = 30;
 
 const Page = () => (
   <div
@@ -20,7 +23,10 @@ const Page = () => (
       <Announcements />
     </div>
     <div className="w-full md:h-full md:flex-[3]">
-      <BriefRankTable />
+      {/* TODO: Resolve layout shifting */}
+      <Suspense fallback={<BriefRankTableSkeleton />}>
+        <BriefRankTable />
+      </Suspense>
     </div>
   </div>
 );
