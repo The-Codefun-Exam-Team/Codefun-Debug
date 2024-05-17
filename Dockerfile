@@ -23,11 +23,12 @@ ENV BUILD_STANDALONE true
 # Also copies .env file with format specified in .env.example. Better solutions welcomed.
 COPY . .
 RUN pnpm build
-RUN pnpm prisma migrate deploy
 
 # Stage 2: Production image
 FROM base AS runner
 WORKDIR /app
+
+RUN npm i -g prisma@5.7.1
 
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
@@ -44,10 +45,12 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+COPY scripts/start_server.sh scripts/start_server.sh
+
 USER nextjs
 
 EXPOSE 80
 
 ENV PORT 80
 
-CMD ["node", "server.js"]
+ENTRYPOINT [ "scripts/start_server.sh" ]
