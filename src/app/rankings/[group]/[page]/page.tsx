@@ -10,31 +10,31 @@ export const metadata: Metadata = {
   title: "Rankings",
 };
 
-export const generateStaticParams = async () => {
-  const query = await prisma.debugUserGroup.groupBy({
-    by: ["groupId"],
-    _count: {
-      userId: true,
-    },
-  });
+// export const generateStaticParams = async () => {
+//   const query = await prisma.debugUserGroup.groupBy({
+//     by: ["groupId"],
+//     _count: {
+//       userId: true,
+//     },
+//   });
 
-  let globalCount = 0;
-  const groupCounts = query.map(({ groupId: groupId, _count: { userId: count } }) => {
-    globalCount = globalCount + count;
-    return { count, groupId };
-  });
+//   let globalCount = 0;
+//   const groupCounts = query.map(({ groupId: groupId, _count: { userId: count } }) => {
+//     globalCount = globalCount + count;
+//     return { count, groupId };
+//   });
 
-  groupCounts.push({ count: globalCount, groupId: 0 });
+//   groupCounts.push({ count: globalCount, groupId: 0 });
 
-  const params = groupCounts.flatMap(({ count, groupId }) => {
-    const page = Math.ceil((Number(count) + 1) / 50);
-    return Array.from({ length: page }, (_, i) => ({
-      group: groupId.toString(),
-      page: (i + 1).toString(),
-    }));
-  });
-  return params;
-};
+//   const params = groupCounts.flatMap(({ count, groupId }) => {
+//     const page = Math.ceil((Number(count) + 1) / 50);
+//     return Array.from({ length: page }, (_, i) => ({
+//       group: groupId.toString(),
+//       page: (i + 1).toString(),
+//     }));
+//   });
+//   return params;
+// };
 
 export const revalidate = 30;
 
@@ -77,10 +77,18 @@ const Page = async ({
     <>
       <div className="relative mx-auto mb-12 flex w-full max-w-5xl flex-col p-4 md:p-10">
         <Groups groupId={groupIdInt} />
-        <Pagination page={pageInt} baseURL={`/rankings/${groupId}/`} lastPage={lastPage} />
+        <Pagination
+          page={pageInt}
+          baseURL={`/rankings/${groupId}/`}
+          lastPage={lastPage}
+        />
         <RankTable group={groupIdInt} page={pageInt} />
         {userCount - (pageInt - 1) * 50 > 10 && (
-          <Pagination page={pageInt} baseURL={`/rankings/${groupId}/`} lastPage={lastPage} />
+          <Pagination
+            page={pageInt}
+            baseURL={`/rankings/${groupId}/`}
+            lastPage={lastPage}
+          />
         )}
       </div>
     </>
