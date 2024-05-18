@@ -24,13 +24,11 @@ ENV BUILD_STANDALONE true
 COPY . .
 RUN pnpm build
 
-# Baseline the database and deploy migrations
-RUN pnpm prisma migrate resolve --applied 0_init || echo "Database already baselined. Skipping..."
-RUN pnpm prisma migrate deploy
-
 # Stage 2: Production image
 FROM base AS runner
 WORKDIR /app
+
+RUN npm i -g prisma
 
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
@@ -47,10 +45,12 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+COPY scripts ./scripts
+
 USER nextjs
 
 EXPOSE 80
 
 ENV PORT 80
 
-CMD ["node", "server.js"]
+ENTRYPOINT ["scripts/start_server.sh"]
