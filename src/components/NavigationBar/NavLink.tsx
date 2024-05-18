@@ -23,9 +23,15 @@ type NavLinkProps = BaseNavLinkProps;
 const useIsPathActive = (url: string) => {
   const pathname = usePathname();
   const result = useMemo(() => {
-    const pathnameFirstSegment = pathname.slice(0, pathname.indexOf("/", 1));
+    const pathnameFirstSegment = (pathname + "/").slice(
+      0,
+      pathname.indexOf("/", 1),
+    );
     console.log(pathnameFirstSegment);
-    return pathnameFirstSegment !== "/" && url.startsWith(pathnameFirstSegment);
+    return (
+      ["", "/"].every((start) => pathnameFirstSegment !== start) &&
+      url.startsWith(pathnameFirstSegment)
+    );
   }, [pathname, url]);
   return result;
 };
