@@ -24,7 +24,8 @@ const useIsPathActive = (url: string) => {
   const pathname = usePathname();
   const result = useMemo(() => {
     const pathnameFirstSegment = pathname.slice(0, pathname.indexOf("/", 1));
-    return pathnameFirstSegment === "" && url.startsWith(pathnameFirstSegment);
+    console.log(pathnameFirstSegment);
+    return pathnameFirstSegment !== "/" && url.startsWith(pathnameFirstSegment);
   }, [pathname, url]);
   return result;
 };
