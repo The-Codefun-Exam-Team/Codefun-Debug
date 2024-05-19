@@ -1,4 +1,5 @@
 import prisma from "@database/prisma/instance";
+import { unstable_noStore } from "next/cache";
 import { cache } from "react";
 
 import type { ScoreDisplayInfo, UserInfo } from "@/types";
@@ -6,6 +7,8 @@ import type { ScoreDisplayInfo, UserInfo } from "@/types";
 export type ProblemScoreMap = Record<number, ScoreDisplayInfo>;
 
 export const getProblemsScore = async (user: UserInfo) => {
+  unstable_noStore();
+
   const query = await prisma.debugSubmissions.findMany({
     where: {
       userId: user.id,

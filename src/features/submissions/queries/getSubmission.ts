@@ -1,10 +1,15 @@
 import prisma from "@database/prisma/instance";
+import { unstable_noStore } from "next/cache";
 
 import type { DetailedSubmissionsInfo } from "@/features/submissions";
 import { LANGUAGES_DICT, type UserDisplayInfo } from "@/types";
 import { parseJudge } from "@/utils";
 
-export const getSubmission = async (id: number): Promise<DetailedSubmissionsInfo> => {
+export const getSubmission = async (
+  id: number,
+): Promise<DetailedSubmissionsInfo> => {
+  unstable_noStore();
+
   const query = await prisma.debugSubmissionQuery.findUniqueOrThrow({
     where: {
       id,

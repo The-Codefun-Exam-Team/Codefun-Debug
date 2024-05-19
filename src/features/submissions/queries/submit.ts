@@ -1,12 +1,18 @@
 import prisma from "@database/prisma/instance";
+import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 
 import { getMemoUser } from "@/features/auth";
 import { getMemoProblem } from "@/features/problems";
-import { setSubmissionDiff, submitCodefunProblem } from "@/features/submissions";
+import {
+  setSubmissionDiff,
+  submitCodefunProblem,
+} from "@/features/submissions";
 import { calcEditDistance } from "@/utils";
 
 export const submit = async (debugProblemCode: string, source: string) => {
+  unstable_noStore();
+
   const cookiesStore = cookies();
   const token = cookiesStore.get("token");
   const debugProblem = await getMemoProblem(debugProblemCode);
@@ -34,7 +40,10 @@ export const submit = async (debugProblemCode: string, source: string) => {
     },
   });
 
-  void setSubmissionDiff(debugSubmission.id, await calcEditDistance(debugProblem.source, source));
+  void setSubmissionDiff(
+    debugSubmission.id,
+    await calcEditDistance(debugProblem.source, source),
+  );
 
   return debugSubmission.id;
 };

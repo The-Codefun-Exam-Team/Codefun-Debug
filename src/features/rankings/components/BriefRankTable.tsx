@@ -1,12 +1,8 @@
 import { Heading } from "@/components";
 import { getUsers } from "@/features/rankings";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 30;
-
 export const BriefRankTable = async () => {
   const data = await getUsers(0, 1, 10);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   return (
     <div className="w-full [&>:where(h1,h2)]:!text-accent-light dark:[&>:where(h1,h2)]:!text-accent-dark">
       <Heading type="title-large">Top ranking</Heading>

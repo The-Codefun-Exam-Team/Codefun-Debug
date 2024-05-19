@@ -1,13 +1,16 @@
 import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, unstable_noStore } from "next/cache";
 import { cache } from "react";
 
 import type { DetailedProblemInfo } from "@/features/problems";
 import { LANGUAGES_DICT } from "@/types";
 import { parseJudge } from "@/utils";
 
-export const getProblem = async (code: string): Promise<DetailedProblemInfo> => {
+export const getProblem = async (
+  code: string,
+): Promise<DetailedProblemInfo> => {
+  unstable_noStore();
   try {
     return await unstable_cache(
       async () => {

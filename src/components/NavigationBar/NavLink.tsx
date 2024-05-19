@@ -27,7 +27,6 @@ const useIsPathActive = (url: string) => {
       0,
       pathname.indexOf("/", 1),
     );
-    console.log(pathnameFirstSegment);
     return (
       ["", "/"].every((start) => pathnameFirstSegment !== start) &&
       url.startsWith(pathnameFirstSegment)
