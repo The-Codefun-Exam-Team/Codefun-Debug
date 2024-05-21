@@ -74,7 +74,7 @@ jobs:
         run: echo "Grace? ${{ needs.push_to_registry.outputs.grace_exit }}"
 
       - name: Connect and pull
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
           username: ${{ secrets.SSH_USER }}
           host: ${{ secrets.SSH_HOST }}
