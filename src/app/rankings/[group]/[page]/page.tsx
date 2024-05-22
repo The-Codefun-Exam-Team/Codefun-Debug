@@ -58,6 +58,7 @@ const getUserCount = async (groupId: number) => {
       console.error(e);
     }
     throw new Error("Internal Server Error");
+    throw new Error("Internal Server Error");
   }
 };
 
