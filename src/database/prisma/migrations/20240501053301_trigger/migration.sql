@@ -41,7 +41,7 @@ CREATE OR REPLACE FUNCTION "suzume"."debug_sub_before_update_diff"() RETURNS tri
   DECLARE 
     problem_min_diff integer;
     sub_score DECIMAL(9,2);
-    sub_result submission_result;
+    sub_result public.submission_result;
     dps_score DECIMAL(9,2);
   BEGIN
     SELECT
@@ -52,7 +52,7 @@ CREATE OR REPLACE FUNCTION "suzume"."debug_sub_before_update_diff"() RETURNS tri
       dps_score
     FROM 
       debug_problems
-      JOIN submissions ON debug_problems.sub_id = submissions.id
+      JOIN public.submissions ON debug_problems.sub_id = submissions.id
     WHERE 
       NEW.debug_problem_id = debug_problems.id;
 
@@ -63,7 +63,7 @@ CREATE OR REPLACE FUNCTION "suzume"."debug_sub_before_update_diff"() RETURNS tri
       sub_score, 
       sub_result 
     FROM 
-      submissions 
+      public.submissions 
     WHERE 
       NEW.sub_id = submissions.id;
 
@@ -103,7 +103,7 @@ CREATE OR REPLACE FUNCTION "suzume"."debug_sub_after_update_diff"() RETURNS trig
     max_score DECIMAL(9,2);
   BEGIN
     SELECT debug_problems.min_diff INTO problem_min_diff FROM debug_problems WHERE NEW.debug_problem_id = debug_problems.id;
-    SELECT submissions.score INTO sub_score FROM submissions WHERE NEW.sub_id = submissions.id;
+    SELECT submissions.score INTO sub_score FROM public.submissions WHERE NEW.sub_id = submissions.id;
     IF NEW.diff < problem_min_diff AND sub_score = 100::dbl_score THEN
       UPDATE debug_submissions ds
       SET
@@ -172,7 +172,7 @@ CREATE OR REPLACE FUNCTION "suzume"."submissions_update_score"() RETURNS trigger
 -- Create trigger
 CREATE OR REPLACE TRIGGER "submissions_update_score_suzume"
   AFTER UPDATE OF score, result
-  ON submissions
+  ON public.submissions
   FOR EACH ROW
   EXECUTE FUNCTION "suzume"."submissions_update_score"();
 
