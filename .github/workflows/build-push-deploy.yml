@@ -66,4 +66,4 @@ jobs:
     needs: push_to_registry
     steps:
       - name: Connect and pull
-        run: echo "${{ secrets.SSH_KEY }}" > ~/ssh_key && chmod 400 ~/ssh_key && ${{ secrets.SSH_DEPLOY_COMMAND }} > /dev/null 2>&1
+        run: echo "${{ secrets.SSH_KEY }}" > ~/ssh_key && chmod 400 ~/ssh_key && ${{ secrets.SSH_DEPLOY_COMMAND }}
