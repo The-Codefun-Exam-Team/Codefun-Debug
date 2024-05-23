@@ -34,6 +34,11 @@ RUN npm i -g prisma
 # Create appropriate user
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+
+# Create a directory for the PostgreSQL UNIX socket
+RUN mkdir /run/postgresql && chown nextjs:nodejs /run/postgresql
+
+# Switch to the nextjs user
 USER nextjs
 
 ENV NODE_ENV production
@@ -56,5 +61,8 @@ EXPOSE 80
 ENV PORT 80
 
 COPY --chown=nextjs:nodejs scripts/start_server.sh .
+
+# Create a directory for the PostgreSQL UNIX socket
+
 
 ENTRYPOINT [ "./start_server.sh" ]
