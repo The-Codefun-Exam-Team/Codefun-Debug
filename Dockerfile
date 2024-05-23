@@ -29,7 +29,7 @@ FROM base AS runner
 WORKDIR /app
 
 # Install prisma
-RUN npm i -g @prisma/migrate
+RUN npm i -g prisma
 
 # Create appropriate user
 RUN addgroup --system --gid 1001 nodejs
