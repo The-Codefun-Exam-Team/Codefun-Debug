@@ -29,16 +29,11 @@ FROM base AS runner
 WORKDIR /app
 
 # Install prisma
-RUN npm i -g prisma
+RUN npm i -g @prisma/migrate
 
 # Create appropriate user
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-
-# Create a directory for the PostgreSQL UNIX socket
-RUN mkdir /run/postgresql && chown nextjs:nodejs /run/postgresql
-
-# Switch to the nextjs user
 USER nextjs
 
 ENV NODE_ENV production
