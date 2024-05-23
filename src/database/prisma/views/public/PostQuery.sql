@@ -20,12 +20,12 @@ SELECT
     SELECT
       count(*) AS count
     FROM
-      post_comments
+      public.post_comments
     WHERE
       (post_comments.post_id = posts.id)
   ) AS post_comment_count
 FROM
-  posts,
-  user_query
+  public.posts,
+  public.user_query
 WHERE
   (user_query.user_id = posts.author_id);

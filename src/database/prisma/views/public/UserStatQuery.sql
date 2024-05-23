@@ -8,9 +8,9 @@ SELECT
   submissions.created_at AS sub_submitted_at,
   submissions.score AS sub_score
 FROM
-  submissions,
-  problems,
-  problem_headers
+  public.submissions,
+  public.problems,
+  public.problem_headers
 WHERE
   (
     (submissions.is_best = TRUE)

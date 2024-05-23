@@ -11,9 +11,9 @@ SELECT
   user_rankings.ratio AS user_ratio,
   user_rankings.rank AS user_rank
 FROM
-  users,
-  group_query g,
-  user_rankings
+  public.users,
+  public.group_query g,
+  public.user_rankings
 WHERE
   (
     (g.group_id = users.group_id)

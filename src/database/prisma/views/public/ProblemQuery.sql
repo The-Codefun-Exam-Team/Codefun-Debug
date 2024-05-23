@@ -22,8 +22,8 @@ SELECT
   problem_listing.problem_total,
   problems.statements AS problem_statements
 FROM
-  problems,
-  problem_listing
+  public.problems,
+  public.problem_listing
 WHERE
   (
     (problems.problem_code) :: text = (problem_listing.problem_code) :: text

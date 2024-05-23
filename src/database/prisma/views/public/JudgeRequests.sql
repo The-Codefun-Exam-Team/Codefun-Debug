@@ -7,14 +7,14 @@ SELECT
   problems.score_type,
   problems.time_limit
 FROM
-  submissions,
-  problems
+  public.submissions,
+  public.problems
 WHERE
   (
     (submissions.problem_id = problems.id)
     AND (
       submissions.result = ANY (
-        ARRAY ['Q'::submission_result, '...'::submission_result]
+        ARRAY ['Q'::public.submission_result, '...'::public.submission_result]
       )
     )
   );

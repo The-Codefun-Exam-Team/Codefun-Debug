@@ -25,13 +25,13 @@ FROM
       (
         (
           debug_submissions ds
-          JOIN submissions s ON ((ds.sub_id = s.id))
+          JOIN public.submissions s ON ((ds.sub_id = s.id))
         )
         JOIN debug_user_stat dus ON ((s.user_id = dus.user_id))
       )
       JOIN debug_problems dp ON ((ds.debug_problem_id = dp.id))
     )
-    JOIN submissions dps ON ((dp.sub_id = dps.id))
+    JOIN public.submissions dps ON ((dp.sub_id = dps.id))
   )
 ORDER BY
   s.created_at DESC;

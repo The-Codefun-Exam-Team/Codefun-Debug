@@ -3,4 +3,4 @@ SELECT
   problem_code,
   name AS problem_name
 FROM
-  problems;
+  public.problems;

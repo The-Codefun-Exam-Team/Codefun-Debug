@@ -24,7 +24,7 @@ SELECT
   submissions.judge_output AS sub_judge,
   submissions.scored_at AS sub_scored_at
 FROM
-  submission_listing,
-  submissions
+  public.submission_listing,
+  public.submissions
 WHERE
   (submission_listing.sub_id = submissions.id);

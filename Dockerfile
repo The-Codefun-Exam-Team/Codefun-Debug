@@ -33,28 +33,28 @@ RUN npm i -g prisma
 
 # Create appropriate user
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-USER nextjs
+RUN adduser --system --uid 1001 suzume
+USER suzume
 
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 # Copy migration folder
-COPY --chown=nextjs:nodejs src/database/prisma src/database/prisma
+COPY --chown=suzume:nodejs src/database/prisma src/database/prisma
 
 # Uncomment the following line should the `public/` folder be re-added.
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=suzume:nodejs /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=suzume:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=suzume:nodejs /app/.next/static ./.next/static
 
 EXPOSE 80
 
 ENV PORT 80
 
-COPY --chown=nextjs:nodejs scripts/start_server.sh .
+COPY --chown=suzume:nodejs scripts/start_server.sh .
 
 ENTRYPOINT [ "./start_server.sh" ]

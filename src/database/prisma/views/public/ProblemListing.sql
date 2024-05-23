@@ -21,9 +21,9 @@ SELECT
   problems.solved_count AS problem_solved,
   problems.total_attempts AS problem_total
 FROM
-  problems,
-  user_query,
-  problem_headers
+  public.problems,
+  public.user_query,
+  public.problem_headers
 WHERE
   (
     (problems.setter_id = user_query.user_id)

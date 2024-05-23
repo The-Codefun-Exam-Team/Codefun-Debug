@@ -17,7 +17,7 @@ SELECT
   post_comments.updated_at AS comment_updated_at,
   post_comments.parent_id AS comment_parent_id
 FROM
-  post_comments,
-  user_query
+  public.post_comments,
+  public.user_query
 WHERE
   (user_query.user_id = post_comments.author_id);
