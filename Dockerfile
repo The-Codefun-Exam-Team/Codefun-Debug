@@ -52,7 +52,4 @@ ENV PORT 80
 
 COPY scripts/start_server.sh .
 
-# Create a directory for the PostgreSQL UNIX socket
-
-
 ENTRYPOINT [ "./start_server.sh" ]
