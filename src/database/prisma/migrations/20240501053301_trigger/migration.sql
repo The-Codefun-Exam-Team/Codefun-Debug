@@ -160,11 +160,11 @@ CREATE OR REPLACE TRIGGER "debug_sub_after_update_diff"
   EXECUTE FUNCTION "suzume"."debug_sub_after_update_diff"();
 
 -- Create trigger function
-CREATE OR REPLACE FUNCTION "suzume"."submissions_update_score"() RETURNS trigger AS
+CREATE OR REPLACE FUNCTION "suzume"."submissions_update_score"() RETURNS trigger SECURITY DEFINER AS
   $trigger$
   BEGIN
     -- Implementation trick to trigger calculation of score and result
-    UPDATE suzume.debug_submissions SET diff = diff WHERE sub_id = NEW.id;
+    UPDATE debug_submissions SET diff = diff WHERE sub_id = NEW.id;
     RETURN NEW;
   END;
   $trigger$ LANGUAGE plpgsql;
