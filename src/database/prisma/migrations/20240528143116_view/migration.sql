@@ -1,3 +1,55 @@
+-- Create view 
+CREATE OR REPLACE VIEW "suzume"."debug_user_rankings" AS
+SELECT
+  ds.user_id,
+  sum((ds.score) :: numeric) AS score,
+  CASE
+    WHEN (u.user_status = 'banned' :: public.user_status) THEN NULL :: bigint
+    ELSE rank() OVER (
+      ORDER BY
+        (sum((ds.score) :: numeric)) DESC
+    )
+  END AS rank
+FROM
+  (
+    debug_submissions ds
+    JOIN public.users u ON ((ds.user_id = u.id))
+  )
+WHERE
+  (ds.is_best = TRUE)
+GROUP BY
+  ds.user_id,
+  u.user_status
+ORDER BY
+  (sum((ds.score) :: numeric)) DESC;
+
+-- Create view
+CREATE OR REPLACE VIEW "suzume"."debug_user_stat" AS
+SELECT
+  u.id AS user_id,
+  u.username,
+  u.display_name,
+  g.name AS group_name,
+  g.id AS group_id,
+  u.user_status,
+  dur.score,
+  ur.ratio,
+  dur.rank,
+  u.email
+FROM
+  (
+    (
+      (
+        debug_user_rankings dur
+        LEFT JOIN public.users u ON ((dur.user_id = u.id))
+      )
+      LEFT JOIN public.user_rankings ur ON ((dur.user_id = ur.id))
+    )
+    LEFT JOIN public.groups g ON ((u.group_id = g.id))
+  )
+ORDER BY
+  dur.rank;
+
 -- Create view
 CREATE OR REPLACE VIEW "suzume"."debug_submission_query" AS
 SELECT
@@ -53,55 +105,3 @@ FROM
   )
 WHERE
   (u.user_status <> 'banned' :: public.user_status);
-
--- Create view 
-CREATE OR REPLACE VIEW "suzume"."debug_user_rankings" AS
-SELECT
-  ds.user_id,
-  sum((ds.score) :: numeric) AS score,
-  CASE
-    WHEN (u.user_status = 'banned' :: public.user_status) THEN NULL :: bigint
-    ELSE rank() OVER (
-      ORDER BY
-        (sum((ds.score) :: numeric)) DESC
-    )
-  END AS rank
-FROM
-  (
-    debug_submissions ds
-    JOIN public.users u ON ((ds.user_id = u.id))
-  )
-WHERE
-  (ds.is_best = TRUE)
-GROUP BY
-  ds.user_id,
-  u.user_status
-ORDER BY
-  (sum((ds.score) :: numeric)) DESC;
-
--- Create view
-CREATE OR REPLACE VIEW "suzume"."debug_user_stat" AS
-SELECT
-  u.id AS user_id,
-  u.username,
-  u.display_name,
-  g.name AS group_name,
-  g.id AS group_id,
-  u.user_status,
-  dur.score,
-  ur.ratio,
-  dur.rank,
-  u.email
-FROM
-  (
-    (
-      (
-        debug_user_rankings dur
-        LEFT JOIN public.users u ON ((dur.user_id = u.id))
-      )
-      LEFT JOIN public.user_rankings ur ON ((dur.user_id = ur.id))
-    )
-    LEFT JOIN public.groups g ON ((u.group_id = g.id))
-  )
-ORDER BY
-  dur.rank;
