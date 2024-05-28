@@ -4,10 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DB_POOLER")
-  directUrl = env("DB_DIRECT")
-  schemas   = ["public", "suzume"]
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "suzume"]
 }
 
 model GooseDbVersion {
@@ -120,23 +119,23 @@ model Submissions {
 }
 
 model Users {
-  id                Int                @id @default(autoincrement())
-  username          String             @unique @db.VarChar(32)
-  groupId           Int                @map("group_id")
-  password          String             @db.VarChar(128)
-  email             String?            @unique @db.VarChar(128)
-  displayName       String             @map("display_name") @db.VarChar(128)
-  userStatus        UserStatus         @default(normal) @map("user_status")
-  score             Decimal            @default(0) @db.Decimal(9, 2)
-  solvedCount       Int                @default(0) @map("solved_count")
-  createdAt         DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
-  lastLoginAt       DateTime           @default(now()) @map("last_login_at") @db.Timestamptz(6)
-  passwordResets    PasswordResets[]
-  postComments      PostComments[]
-  posts             Posts[]
-  problems          Problems[]
-  submissions       Submissions[]
-  groups            Groups             @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id               Int                @id @default(autoincrement())
+  username         String             @unique @db.VarChar(32)
+  groupId          Int                @map("group_id")
+  password         String             @db.VarChar(128)
+  email            String?            @unique @db.VarChar(128)
+  displayName      String             @map("display_name") @db.VarChar(128)
+  userStatus       UserStatus         @default(normal) @map("user_status")
+  score            Decimal            @default(0) @db.Decimal(9, 2)
+  solvedCount      Int                @default(0) @map("solved_count")
+  createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  lastLoginAt      DateTime           @default(now()) @map("last_login_at") @db.Timestamptz(6)
+  passwordResets   PasswordResets[]
+  postComments     PostComments[]
+  posts            Posts[]
+  problems         Problems[]
+  submissions      Submissions[]
+  groups           Groups             @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   debugSubmissions DebugSubmissions[]
 
   @@index([score(sort: Desc), id], map: "users_ranking")
