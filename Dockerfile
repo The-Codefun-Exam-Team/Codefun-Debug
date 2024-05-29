@@ -33,7 +33,7 @@ ENV NODE_ENV production
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 # Copy migration folder
-COPY src/database/prisma src/database/prisma
+COPY src/database/prisma/ prisma/
 
 # Uncomment the following line should the `public/` folder be re-added.
 COPY --from=builder /app/public ./public
