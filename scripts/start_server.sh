@@ -2,7 +2,7 @@
 
 set -e
 
-# Baseline the database and deploy migrations
+# Deploy migrations
 npx --yes prisma migrate deploy
 
 # Run the server
