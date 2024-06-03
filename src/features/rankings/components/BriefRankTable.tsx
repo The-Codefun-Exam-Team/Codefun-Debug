@@ -1,15 +1,15 @@
-import { Heading } from "@/components";
+import { H2, H3 } from "@/components";
 import { getUsers } from "@/features/rankings";
 
 export const BriefRankTable = async () => {
   const data = await getUsers(0, 1, 10);
   return (
     <div className="w-full [&>:where(h1,h2)]:!text-accent-light dark:[&>:where(h1,h2)]:!text-accent-dark">
-      <Heading type="title-large">Top ranking</Heading>
+      <H2>Top ranking</H2>
       {data.length === 0 ? (
-        <Heading type="title">There&apos;s nothing here.</Heading>
+        <H3>There&apos;s nothing here.</H3>
       ) : (
-        <table className="mt-4 w-full table-auto bg-white px-2 dark:bg-slate-900">
+        <table className="w-full table-auto bg-white px-2 dark:bg-slate-900">
           <thead>
             <tr className="border-b-2 border-slate-200 text-slate-800 dark:border-b-[0.5px] dark:border-slate-700 dark:text-slate-100 [&>th]:p-[14px] [&>th]:text-xl [&>th]:font-bold">
               <th className="text-left">#</th>
@@ -38,7 +38,7 @@ export const BriefRankTable = async () => {
 export const BriefRankTableSkeleton = async () => {
   return (
     <div className="w-full">
-      <Heading type="title-large">Top ranking</Heading>
+      <H3>Top ranking</H3>
       <table className="mt-4 w-full table-auto bg-white px-2 dark:bg-slate-900">
         <thead>
           <tr className="border-b-2 border-slate-200 text-slate-800 dark:border-b-[0.5px] dark:border-slate-700 dark:text-slate-100 [&>th]:p-[14px] [&>th]:text-xl [&>th]:font-bold">

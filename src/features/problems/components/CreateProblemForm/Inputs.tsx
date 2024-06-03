@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
-import { ErrorBox, Heading, Input, SuccessBox } from "@/components";
+import { ErrorBox, H2, Input, SuccessBox } from "@/components";
 import type { CreateProblemFormState } from "@/features/problems";
 import { actionCreateProblem } from "@/features/problems";
 import { useAppDispatch } from "@/hooks";
@@ -40,11 +40,11 @@ export const Inputs = () => {
   return (
     <>
       <div className="text-center">
-        <Heading type="title-large">
+        <H2>
           <div className="text-accent-light dark:text-accent-dark ">
             Create problem
           </div>
-        </Heading>
+        </H2>
       </div>
       <div className="flex gap-4">
         <div>

@@ -1,6 +1,6 @@
 import { cache } from "react";
 
-import { Heading } from "@/components";
+import { H2, H3 } from "@/components";
 import { getUsers } from "@/features/rankings";
 import { clsx } from "@/utils";
 
@@ -8,15 +8,22 @@ const getRankTableData = cache((groupId: number, page: number) => {
   return getUsers(groupId, page, 50);
 });
 
-export const RankTable = async ({ group, page }: { group: number; page: number }) => {
+export const RankTable = async ({
+  group,
+  page,
+}: {
+  group: number;
+  page: number;
+}) => {
   const data = await getRankTableData(group, page);
   if (data.length === 0) {
     return (
       <div className="h-fit w-full">
-        <Heading type="title-large">No one here!</Heading>
-        <Heading type="title">
-          Please submit first if you haven&#39;t seen your name on the leader board.
-        </Heading>
+        <H2>No one here!</H2>
+        <H3>
+          Please submit first if you haven&#39;t seen your name on the leader
+          board.
+        </H3>
       </div>
     );
   }

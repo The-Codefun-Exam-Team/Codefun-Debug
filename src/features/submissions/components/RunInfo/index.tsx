@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { Heading } from "@/components";
+import { H3 } from "@/components";
 import type { DetailedSubmissionsInfo } from "@/features/submissions";
 import type { SubmissionResult } from "@/types";
 import { RESULTS_DICT } from "@/types";
@@ -25,7 +25,9 @@ const TestResult = ({
     <div>
       <div className="text-lg font-bold">
         #{count}. Verdict:{" "}
-        <span className={getVerdictTextClass(verdict)}>{RESULTS_DICT[verdict]}</span>
+        <span className={getVerdictTextClass(verdict)}>
+          {RESULTS_DICT[verdict]}
+        </span>
       </div>
       <div>{message}</div>
     </div>
@@ -35,7 +37,13 @@ const TestResult = ({
   </div>
 );
 
-const JudgeError = ({ type, error }: { type: SubmissionResult; error: string }) => {
+const JudgeError = ({
+  type,
+  error,
+}: {
+  type: SubmissionResult;
+  error: string;
+}) => {
   let judgeErrorMessage: string;
   switch (type) {
     case "CE":
@@ -47,7 +55,7 @@ const JudgeError = ({ type, error }: { type: SubmissionResult; error: string }) 
   }
   return (
     <>
-      <Heading type="title">{judgeErrorMessage}</Heading>
+      <H3>{judgeErrorMessage}</H3>
       <div className="my-6 whitespace-pre-wrap break-words border-2 border-slate-600 p-2 text-[.9em]">
         {error}
       </div>
@@ -70,7 +78,7 @@ export const RunInfo = ({ data }: { data: DetailedSubmissionsInfo }) => {
           runningTime={runningTime}
           message={message}
         />
-      )) ?? <Heading type="title">Unknown verdict, try refreshing.</Heading>
+      )) ?? <H3>Unknown verdict, try refreshing.</H3>
     );
 
   return (

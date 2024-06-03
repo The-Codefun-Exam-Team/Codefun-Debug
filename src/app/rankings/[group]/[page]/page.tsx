@@ -10,32 +10,6 @@ export const metadata: Metadata = {
   title: "Rankings",
 };
 
-// export const generateStaticParams = async () => {
-//   const query = await prisma.debugUserGroup.groupBy({
-//     by: ["groupId"],
-//     _count: {
-//       userId: true,
-//     },
-//   });
-
-//   let globalCount = 0;
-//   const groupCounts = query.map(({ groupId: groupId, _count: { userId: count } }) => {
-//     globalCount = globalCount + count;
-//     return { count, groupId };
-//   });
-
-//   groupCounts.push({ count: globalCount, groupId: 0 });
-
-//   const params = groupCounts.flatMap(({ count, groupId }) => {
-//     const page = Math.ceil((Number(count) + 1) / 50);
-//     return Array.from({ length: page }, (_, i) => ({
-//       group: groupId.toString(),
-//       page: (i + 1).toString(),
-//     }));
-//   });
-//   return params;
-// };
-
 export const revalidate = 30;
 
 const getUserCount = async (groupId: number) => {
@@ -58,7 +32,6 @@ const getUserCount = async (groupId: number) => {
       console.error(e);
     }
     throw new Error("Internal Server Error");
-    throw new Error("Internal Server Error");
   }
 };
 
@@ -67,6 +40,10 @@ const Page = async ({
 }: {
   params: { group: string; page: string };
 }) => {
+  if (isNaN(parseInt(groupId)) || isNaN(parseInt(page))) {
+    throw new Error("Invalid group or page");
+  }
+
   // Preload data
   const groupIdInt = parseInt(groupId);
   const pageInt = parseInt(page);

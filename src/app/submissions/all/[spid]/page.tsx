@@ -1,11 +1,11 @@
-import { Heading } from "@/components";
+import { H1 } from "@/components";
 
 export const generateStaticParams = () => [];
 
 const Page = () => {
   return (
     <div className="flex w-full items-center justify-center self-stretch">
-      <Heading type="display">Work-in-progress!</Heading>
+      <H1>Work-in-progress!</H1>
     </div>
   );
 };
