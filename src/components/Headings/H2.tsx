@@ -3,7 +3,7 @@ import type { HeadingProps } from "./types";
 export const H2 = ({ ref, children, ...rest }: HeadingProps) => {
   return (
     <h2
-      className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0"
+      className="text-xl font-bold leading-7 md:text-2xl md:tracking-tight"
       ref={ref}
       {...rest}
     >
