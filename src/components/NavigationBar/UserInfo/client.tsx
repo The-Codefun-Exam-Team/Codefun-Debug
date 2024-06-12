@@ -19,7 +19,11 @@ export interface UserInfoClientProps {
   userInfoNode: ReactNode;
 }
 
-export const UserInfoClient = ({ role, isLoggedIn, userInfoNode }: UserInfoClientProps) => {
+export const UserInfoClient = ({
+  role,
+  isLoggedIn,
+  userInfoNode,
+}: UserInfoClientProps) => {
   const pathname = usePathname();
   const [logoutData, logout] = useFormState(actionLogout, { ok: true });
   const roleColor = getCodefunRoleTextClass(role);
@@ -65,13 +69,19 @@ export const UserInfoClient = ({ role, isLoggedIn, userInfoNode }: UserInfoClien
           <Menu.Item>
             {isLoggedIn ? (
               <form action={logout}>
-                <button type="submit" className={clsx(NAV_BUTTON_CLASS, MENU_ITEMS_CLASS)}>
+                <button
+                  type="submit"
+                  className={clsx(NAV_BUTTON_CLASS, MENU_ITEMS_CLASS)}
+                >
                   Sign out
                 </button>
               </form>
             ) : (
               <div>
-                <BaseNavLink className={MENU_ITEMS_CLASS} href={`/login?prev=${pathname}`}>
+                <BaseNavLink
+                  className={MENU_ITEMS_CLASS}
+                  href={`/login?prev=${pathname}`}
+                >
                   Sign in
                 </BaseNavLink>
               </div>

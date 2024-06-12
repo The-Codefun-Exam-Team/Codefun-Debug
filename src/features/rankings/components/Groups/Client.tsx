@@ -5,7 +5,13 @@ import Link from "next/link";
 import type { GroupsData } from "@/features/rankings";
 import { clsx } from "@/utils";
 
-export const GroupsClient = ({ groupId, data }: { groupId: number; data: GroupsData }) => {
+export const GroupsClient = ({
+  groupId,
+  data,
+}: {
+  groupId: number;
+  data: GroupsData;
+}) => {
   const currentGroupName = data.find((element) => element.id === groupId)?.name;
   return (
     <Menu>

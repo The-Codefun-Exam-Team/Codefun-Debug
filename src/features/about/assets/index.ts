@@ -21,7 +21,8 @@ export const CONTRIBUTORS_INFO = {
     name: "Tran Gia Huy",
     githubUsername: "Unknown15082",
     role: "Backend Developer and Database Admistrator",
-    roleDescription: "Implements the API's functions; designs and maintains the database.",
+    roleDescription:
+      "Implements the API's functions; designs and maintains the database.",
     image: null,
   },
   kbnopro: {

@@ -8,7 +8,8 @@ import { PhotosModal } from "./PhotosModal";
 
 export const dynamicParams = false;
 
-export const generateStaticParams = () => TEAM.map((member) => ({ id: member }));
+export const generateStaticParams = () =>
+  TEAM.map((member) => ({ id: member }));
 
 const Page = ({ params: { id } }: { params: { id: TeamMembers } }) => {
   const info = CONTRIBUTORS_INFO[id];
@@ -16,10 +17,17 @@ const Page = ({ params: { id } }: { params: { id: TeamMembers } }) => {
     notFound();
   }
   return (
-    <PhotosModal title={`${info.name} - ${info.role}`} description={info.roleDescription}>
+    <PhotosModal
+      title={`${info.name} - ${info.role}`}
+      description={info.roleDescription}
+    >
       {!!info.image && (
         <div className="relative size-full">
-          <Image src={info.image} alt={`${info.name}'s image`} className="w-full rounded-md" />
+          <Image
+            src={info.image}
+            alt={`${info.name}'s image`}
+            className="w-full rounded-md"
+          />
         </div>
       )}
     </PhotosModal>

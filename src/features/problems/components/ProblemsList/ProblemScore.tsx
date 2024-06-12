@@ -21,10 +21,18 @@ export const ProblemScore = async ({ id }: { id: number }) => {
   const allProblemsScore = await getMemoProblemsScore(user.user);
   const problemScore = allProblemsScore[id];
   return (
-    <>{!problemScore ? <ProblemScoreText text="Not Submitted" /> : <Score {...problemScore} />}</>
+    <>
+      {!problemScore ? (
+        <ProblemScoreText text="Not Submitted" />
+      ) : (
+        <Score {...problemScore} />
+      )}
+    </>
   );
 };
 
 export const ProblemScoreSkeleton = async () => {
-  return <div className="h-5 w-20 animate-pulse rounded-md bg-gray-200 dark:bg-slate-600"></div>;
+  return (
+    <div className="h-5 w-20 animate-pulse rounded-md bg-gray-200 dark:bg-slate-600"></div>
+  );
 };

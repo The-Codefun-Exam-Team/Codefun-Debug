@@ -12,7 +12,8 @@ export interface NavLinksProps {
 export const HorizontalNavLinks = async ({ keyPrefix }: NavLinksProps) => {
   const token = cookies().get("token");
   const userInfo = await getMemoUser(token?.value);
-  const links = userInfo.ok && userInfo.user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
+  const links =
+    userInfo.ok && userInfo.user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
   return (
     <>
       {links.map(({ url, title }) => (
@@ -27,7 +28,8 @@ export const HorizontalNavLinks = async ({ keyPrefix }: NavLinksProps) => {
 export const VerticalNavLinks = async ({ keyPrefix }: NavLinksProps) => {
   const token = cookies().get("token");
   const userInfo = await getMemoUser(token?.value);
-  const links = userInfo.ok && userInfo.user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
+  const links =
+    userInfo.ok && userInfo.user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
   return (
     <>
       {links.map(({ url, title }) => (

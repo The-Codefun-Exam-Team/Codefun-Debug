@@ -65,6 +65,7 @@ const plugins = [withBundleAnalyzer];
  *     { defaultConfig }: { defaultConfig: import("next").NextConfig },
  * ) => import("next").NextConfig}
  */
-const nextComposePlugins = () => plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
+const nextComposePlugins = () =>
+  plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
 
 export default nextComposePlugins;

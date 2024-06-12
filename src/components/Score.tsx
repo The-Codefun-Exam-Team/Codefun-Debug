@@ -11,7 +11,13 @@ interface ComponentExtraProps {
 export const Score = (props: ScoreDisplayInfo & ComponentExtraProps) => {
   if (props.score === null) {
     return (
-      <div className={clsx(props.className, "font-semibold", getVerdictTextClass("CE"))}>
+      <div
+        className={clsx(
+          props.className,
+          "font-semibold",
+          getVerdictTextClass("CE"),
+        )}
+      >
         Not Submitted
       </div>
     );

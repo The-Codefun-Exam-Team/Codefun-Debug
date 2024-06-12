@@ -9,7 +9,9 @@ import { clsx } from "@/utils";
 import { CodeViewText } from "./CodeViewText";
 
 export const CodeView = ({ source }: { source: string }) => {
-  const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
+  const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(
+    null,
+  );
   const editorDomRef = useRef<HTMLDivElement | null>(null);
   const [renderingEditor, setRenderingEditor] = useState(true);
   const monaco = useRef<typeof monacoEditor | null>(null);
@@ -28,16 +30,21 @@ export const CodeView = ({ source }: { source: string }) => {
         if (editorDomRef.current) {
           editorRef.current?.dispose();
 
-          editorRef.current = monaco.current.editor.create(editorDomRef.current, {
-            automaticLayout: true,
-            scrollBeyondLastColumn: 10,
-            readOnly: true,
-            domReadOnly: true,
-          });
+          editorRef.current = monaco.current.editor.create(
+            editorDomRef.current,
+            {
+              automaticLayout: true,
+              scrollBeyondLastColumn: 10,
+              readOnly: true,
+              domReadOnly: true,
+            },
+          );
 
           monaco.current?.editor.setTheme("light");
 
-          editorRef.current.setModel(monaco.current.editor.createModel("", "cpp"));
+          editorRef.current.setModel(
+            monaco.current.editor.createModel("", "cpp"),
+          );
         }
         setRenderingEditor(false);
       }

@@ -7,7 +7,13 @@ import { clsx } from "@/utils";
 
 import { ProblemScore, ProblemScoreSkeleton } from "./ProblemScore";
 
-export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; page: string }) => (
+export const ProblemsList = ({
+  problemList,
+  page,
+}: {
+  problemList: ProblemList;
+  page: string;
+}) => (
   <div className="w-full">
     <table className="w-full table-fixed">
       <thead>

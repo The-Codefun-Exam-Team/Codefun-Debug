@@ -47,7 +47,12 @@ const UserInfoBase = async () => {
 export const UserInfo = () => (
   <Suspense
     fallback={
-      <div className={clsx(NAV_BUTTON_CLASS, "border-b-[1.6px] border-transparent")}>
+      <div
+        className={clsx(
+          NAV_BUTTON_CLASS,
+          "border-b-[1.6px] border-transparent",
+        )}
+      >
         Loading...
       </div>
     }
