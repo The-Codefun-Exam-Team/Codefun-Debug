@@ -61,6 +61,6 @@ type FunctionReturnTypeNonVoid<T> =
       status: number;
     };
 
-export type FunctionReturnType<T> = T extends void
+export type FunctionReturnType<T = void> = T extends void
   ? FunctionReturnTypeVoid
   : FunctionReturnTypeNonVoid<T>;

@@ -1,9 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
 
-export const actionLogout = async (): Promise<
-  { ok: true } | { ok: false; status: number; message: string }
-> => {
+import type { FunctionReturnType } from "@/types";
+
+export const actionLogout = async (): Promise<FunctionReturnType> => {
   try {
     cookies().delete("token");
     return {
@@ -13,8 +13,8 @@ export const actionLogout = async (): Promise<
     console.error(e);
     return {
       ok: false,
+      error: "An internal server error occurred. Please try again later.",
       status: 500,
-      message: "An internal server error occurred.",
     };
   }
 };
