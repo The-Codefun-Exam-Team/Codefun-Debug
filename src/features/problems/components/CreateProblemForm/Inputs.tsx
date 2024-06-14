@@ -53,10 +53,7 @@ export const Inputs = () => {
             label="Code"
             name="code"
             placeholder="(Optional)"
-            error={
-              !!displayState.codeMessages?.length &&
-              displayState.codeMessages.length > 0
-            }
+            error={displayState.codeMessages !== undefined}
             errorTextId="create-problem-form-code-error-text"
             errorText={displayState.codeMessages?.join(", ")}
             disabled={pending}
@@ -68,10 +65,7 @@ export const Inputs = () => {
             label="Name"
             name="name"
             placeholder="(Optional)"
-            error={
-              !!displayState.nameMessages?.length &&
-              displayState.nameMessages.length > 0
-            }
+            error={displayState.nameMessages !== undefined}
             errorTextId="create-problem-form-name-error-text"
             errorText={displayState.nameMessages?.join(", ")}
             disabled={pending}
@@ -84,10 +78,7 @@ export const Inputs = () => {
           label="Submission ID"
           name="submissionId"
           placeholder="Submission ID"
-          error={
-            !!displayState.submissionIdMessages?.length &&
-            displayState.submissionIdMessages.length > 0
-          }
+          error={displayState.submissionIdMessages !== undefined}
           errorTextId="create-problem-form-submission-id-error-text"
           errorText={displayState.submissionIdMessages?.join(", ")}
           disabled={pending}

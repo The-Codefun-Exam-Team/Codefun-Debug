@@ -7,12 +7,7 @@ import type { LoginFormState } from "@/features/auth";
 import { actionLogin } from "@/features/auth";
 import { useAppDispatch } from "@/hooks";
 
-const initialState: LoginFormState = {
-  user: null,
-  username_messages: [],
-  password_messages: [],
-  messages: [],
-};
+const initialState: LoginFormState = {};
 
 export const Inputs = () => {
   const dispatch = useAppDispatch();
@@ -36,7 +31,7 @@ export const Inputs = () => {
   }, [displayState]);
 
   const clearMessage = () => {
-    setDisplayState({ ...displayState, messages: [] });
+    setDisplayState({ ...displayState, messages: undefined });
   };
   return (
     <form action={formAction} className="flex w-full flex-col">
@@ -53,8 +48,8 @@ export const Inputs = () => {
             label="Username"
             placeholder="Username"
             errorTextId="login-form-username-error-text"
-            error={displayState.username_messages.length > 0}
-            errorText={displayState.username_messages.join("\n")}
+            error={displayState.username_messages !== undefined}
+            errorText={displayState.username_messages?.join("\n")}
             disabled={pending}
           />
         </div>
@@ -66,14 +61,14 @@ export const Inputs = () => {
             label="Password"
             placeholder="Password"
             errorTextId="login-form-password-error-text"
-            error={displayState.password_messages.length > 0}
-            errorText={displayState.password_messages.join("\n")}
+            error={displayState.password_messages !== undefined}
+            errorText={displayState.password_messages?.join("\n")}
             disabled={pending}
           />
         </div>
-        {displayState.messages.length > 0 ? (
+        {displayState.messages !== undefined ? (
           <ErrorBox closeFn={clearMessage}>
-            {displayState.messages.join("\n")}
+            {displayState.messages?.join("\n")}
           </ErrorBox>
         ) : (
           <button
