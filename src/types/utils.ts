@@ -40,8 +40,27 @@ export type Nullable<T extends object> = {
   [K in keyof T]: T[K] | undefined | null;
 };
 
-export type FunctionReturnType<T = void> =
-  | { ok: false; error: string; status: number }
-  | T extends void
-  ? { ok: true }
-  : { ok: true; data: T };
+type FunctionReturnTypeVoid =
+  | {
+      ok: true;
+    }
+  | {
+      ok: false;
+      error: string;
+      status: number;
+    };
+
+type FunctionReturnTypeNonVoid<T> =
+  | {
+      ok: true;
+      data: T;
+    }
+  | {
+      ok: false;
+      error: string;
+      status: number;
+    };
+
+export type FunctionReturnType<T> = T extends void
+  ? FunctionReturnTypeVoid
+  : FunctionReturnTypeNonVoid<T>;

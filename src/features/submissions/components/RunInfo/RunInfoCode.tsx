@@ -1,6 +1,4 @@
-import { cookies } from "next/headers";
-
-import { getUser } from "@/features/auth";
+import { verifyCodefun } from "@/features/auth";
 
 import { CodeView } from "./CodeView";
 import { CodeViewText } from "./CodeViewText";
@@ -12,12 +10,10 @@ export const RunInfoCode = async ({
   source: string;
   username: string;
 }) => {
-  const cookiesStore = cookies();
-  const token = cookiesStore.get("token");
-  const userInfo = await getUser(token?.value);
+  const userInfo = await verifyCodefun();
   if (
     !userInfo.ok ||
-    (userInfo.user.username !== username && userInfo.user.status !== "admin")
+    (userInfo.data.username !== username && userInfo.data.status !== "admin")
   ) {
     return <CodeViewText text="You are not allowed to view the code." />;
   }

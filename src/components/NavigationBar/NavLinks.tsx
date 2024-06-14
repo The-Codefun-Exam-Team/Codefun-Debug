@@ -1,6 +1,4 @@
-import { cookies } from "next/headers";
-
-import { getMemoUser } from "@/features/auth";
+import { verifyCodefun } from "@/features/auth";
 
 import { SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
 import { HorizontalNavLink, VerticalNavLink } from "./NavLink";
@@ -10,10 +8,9 @@ export interface NavLinksProps {
 }
 
 export const HorizontalNavLinks = async ({ keyPrefix }: NavLinksProps) => {
-  const token = cookies().get("token");
-  const userInfo = await getMemoUser(token?.value);
+  const userInfo = await verifyCodefun();
   const links =
-    userInfo.ok && userInfo.user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
+    userInfo.ok && userInfo.data ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
   return (
     <>
       {links.map(({ url, title }) => (
@@ -26,10 +23,9 @@ export const HorizontalNavLinks = async ({ keyPrefix }: NavLinksProps) => {
 };
 
 export const VerticalNavLinks = async ({ keyPrefix }: NavLinksProps) => {
-  const token = cookies().get("token");
-  const userInfo = await getMemoUser(token?.value);
+  const userInfo = await verifyCodefun();
   const links =
-    userInfo.ok && userInfo.user ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
+    userInfo.ok && userInfo.data ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
   return (
     <>
       {links.map(({ url, title }) => (

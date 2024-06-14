@@ -1,8 +1,7 @@
 "use server";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { cookies } from "next/headers";
 
-import { getUser } from "@/features/auth";
+import { verifyCodefun } from "@/features/auth";
 import { submit } from "@/features/submissions";
 
 export const actionSubmit = async (
@@ -10,9 +9,7 @@ export const actionSubmit = async (
   codetext: string,
 ): Promise<{ ok: true; id: number } | { ok: false; message: string }> => {
   try {
-    const cookiesStore = cookies();
-    const token = cookiesStore.get("token");
-    const userQuery = await getUser(token?.value);
+    const userQuery = await verifyCodefun();
     if (!userQuery.ok) {
       return { ok: false, message: "You are not logged in" };
     }

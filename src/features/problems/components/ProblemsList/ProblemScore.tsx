@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 import { Score } from "@/components";
-import { getMemoUser } from "@/features/auth";
+import { verifyCodefun } from "@/features/auth";
 import { getMemoProblemsScore } from "@/features/problems";
 
 export const ProblemScoreText = ({ text }: { text: string }) => (
@@ -14,11 +14,11 @@ export const ProblemScore = async ({ id }: { id: number }) => {
   if (!token || !token.value) {
     return <ProblemScoreText text="Not Available" />;
   }
-  const user = await getMemoUser(token.value);
+  const user = await verifyCodefun(token.value);
   if (!user.ok) {
     return <ProblemScoreText text="Not Available" />;
   }
-  const allProblemsScore = await getMemoProblemsScore(user.user);
+  const allProblemsScore = await getMemoProblemsScore(user.data);
   const problemScore = allProblemsScore[id];
   return (
     <>

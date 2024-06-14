@@ -3,7 +3,7 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { getUser, loginCodefun } from "../api";
+import { loginCodefun, verifyCodefun } from "../api";
 import type { LoginFormState } from "../types";
 
 const loginSchema = z.object({
@@ -56,7 +56,7 @@ export const actionLogin = async (
     };
   }
 
-  const user = await getUser(token);
+  const user = await verifyCodefun(token);
 
   if (!user.ok) {
     console.error("Error fetching user info");

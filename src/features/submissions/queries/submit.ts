@@ -2,7 +2,7 @@ import prisma from "@database/prisma/instance";
 import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 
-import { getMemoUser } from "@/features/auth";
+import { verifyCodefun } from "@/features/auth";
 import { getMemoProblem } from "@/features/problems";
 import {
   setSubmissionDiff,
@@ -16,7 +16,7 @@ export const submit = async (debugProblemCode: string, source: string) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token");
   const debugProblem = await getMemoProblem(debugProblemCode);
-  const user = await getMemoUser(token?.value);
+  const user = await verifyCodefun(token?.value);
   if (!user.ok) {
     throw new Error("You are not logged in");
   }

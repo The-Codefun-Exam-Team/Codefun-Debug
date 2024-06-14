@@ -1,20 +1,17 @@
-import { cookies } from "next/headers";
 import Image from "next/image";
 import { Suspense } from "react";
 
 import { UserIcon } from "@/components/icon";
-import { getMemoUser } from "@/features/auth";
+import { verifyCodefun } from "@/features/auth";
 import { clsx, getCodefunRole } from "@/utils";
 
 import { NAV_BUTTON_CLASS } from "../NavLink";
 import { UserInfoClient } from "./client";
 
 const UserInfoBase = async () => {
-  const token = cookies().get("token");
+  const userInfo = await verifyCodefun();
 
-  const userInfo = await getMemoUser(token?.value);
-
-  const user = userInfo.ok ? userInfo.user : undefined;
+  const user = userInfo.ok ? userInfo.data : undefined;
   const role = user ? getCodefunRole(user.ratio, user.status) : "newbie";
 
   return (
