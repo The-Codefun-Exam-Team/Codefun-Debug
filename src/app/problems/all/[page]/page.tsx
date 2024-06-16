@@ -14,10 +14,14 @@ export const metadata: Metadata = {
 const Page = async ({ params: { page } }: { params: { page: string } }) => {
   const itemsPerPage = 50;
   const pageInt = parseInt(page);
-  const [problemCount, problemsList] = await Promise.all([
+  const [problemCountQuery, problemsList] = await Promise.all([
     getProblemCount(),
     getProblems(pageInt, itemsPerPage),
   ]);
+  if (!problemCountQuery.ok) {
+    throw new Error(problemCountQuery.message);
+  }
+  const problemCount = problemCountQuery.data;
 
   const lastPage = Math.ceil(problemCount / itemsPerPage);
 

@@ -1,23 +1,25 @@
 import prisma from "@database/prisma/instance";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unstable_cache, unstable_noStore } from "next/cache";
+import { unstable_cache } from "next/cache";
 
-export const getProblemCount = async () => {
-  unstable_noStore();
+import type { FunctionReturnType } from "@/types";
+import { handleCatch } from "@/utils";
+
+export const getProblemCount = async (): Promise<
+  FunctionReturnType<number>
+> => {
   try {
-    return await unstable_cache(
+    const data = await unstable_cache(
       async () => {
         return await prisma.debugProblems.count();
       },
       ["getProblemCount"],
       { revalidate: 30 },
     )();
+    return {
+      ok: true,
+      data: data,
+    };
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.error(e);
-    } else {
-      console.error(e);
-    }
-    throw new Error("Error fetching problem count");
+    return handleCatch(e);
   }
 };
