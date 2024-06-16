@@ -5,34 +5,35 @@ import { useFormState, useFormStatus } from "react-dom";
 import { ErrorBox, H2, Input } from "@/components";
 import type { LoginFormState } from "@/features/auth";
 import { actionLogin } from "@/features/auth";
-import { useAppDispatch } from "@/hooks";
 
-const initialState: LoginFormState = {};
+const initialState: LoginFormState = {
+  ok: true,
+};
 
 export const Inputs = () => {
-  const dispatch = useAppDispatch();
   const { pending } = useFormStatus();
   const [state, formAction] = useFormState(actionLogin, initialState);
-  const [displayState, setDisplayState] = useState(initialState);
+  const [shouldDisplayMessage, setShouldDisplayMessage] = useState(false);
 
   useEffect(() => {
-    setDisplayState(state);
-  }, [state, dispatch]);
-
-  useEffect(() => {
-    if (displayState !== initialState) {
-      const timeout = setTimeout(() => {
-        setDisplayState(initialState);
+    if (shouldDisplayMessage) {
+      const timer = setTimeout(() => {
+        setShouldDisplayMessage(false);
       }, 5000);
-      return () => {
-        clearTimeout(timeout);
-      };
+      return () => clearTimeout(timer);
     }
-  }, [displayState]);
+  }, [shouldDisplayMessage]);
+
+  useEffect(() => {
+    if (!state.ok && !!state.message) {
+      setShouldDisplayMessage(true);
+    }
+  }, [state]);
 
   const clearMessage = () => {
-    setDisplayState({ ...displayState, messages: undefined });
+    setShouldDisplayMessage(false);
   };
+
   return (
     <form action={formAction} className="flex w-full flex-col">
       <div className="text-center">
@@ -48,8 +49,8 @@ export const Inputs = () => {
             label="Username"
             placeholder="Username"
             errorTextId="login-form-username-error-text"
-            error={displayState.username_messages !== undefined}
-            errorText={displayState.username_messages?.join("\n")}
+            error={!state.ok && !!state.username_message}
+            errorText={!state.ok ? state.username_message : ""}
             disabled={pending}
           />
         </div>
@@ -61,15 +62,13 @@ export const Inputs = () => {
             label="Password"
             placeholder="Password"
             errorTextId="login-form-password-error-text"
-            error={displayState.password_messages !== undefined}
-            errorText={displayState.password_messages?.join("\n")}
+            error={!state.ok && !!state.password_message}
+            errorText={!state.ok ? state.password_message : ""}
             disabled={pending}
           />
         </div>
-        {displayState.messages !== undefined ? (
-          <ErrorBox closeFn={clearMessage}>
-            {displayState.messages?.join("\n")}
-          </ErrorBox>
+        {!state.ok && !!state.message && shouldDisplayMessage ? (
+          <ErrorBox closeFn={clearMessage}>{state.message}</ErrorBox>
         ) : (
           <button
             type="submit"

@@ -1,4 +1,5 @@
 import type { FunctionReturnType } from "@/types";
+import { handleCatch } from "@/utils/handleCatch";
 
 export const loginCodefun = async (
   username: string,
@@ -16,7 +17,7 @@ export const loginCodefun = async (
       const error = (await requestToCodefun.json()).error as string;
       return {
         ok: false,
-        error: error,
+        message: error,
         status: requestToCodefun.status,
       };
     }
@@ -26,10 +27,6 @@ export const loginCodefun = async (
       data: token,
     };
   } catch (e) {
-    return {
-      ok: false,
-      error: "An internal server error occurred. Please try again later.",
-      status: 500,
-    };
+    return handleCatch(e);
   }
 };

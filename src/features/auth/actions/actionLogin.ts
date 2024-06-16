@@ -3,6 +3,8 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { handleCatch } from "@/utils/handleCatch";
+
 import { loginCodefun, verifyCodefun } from "../api";
 import type { LoginFormState } from "../types";
 
@@ -23,17 +25,22 @@ export const actionLogin = async (
     if (!validatedBody.success) {
       const errors = validatedBody.error.format();
       return {
-        username_messages: errors.username?._errors,
-        password_messages: errors.password?._errors,
+        ok: false,
+        message: "",
+        username_message: errors.username?._errors[0],
+        password_message: errors.password?._errors[0],
+        status: 401,
       };
     }
     const { username, password } = validatedBody.data;
 
     const loginCodefunRequest = await loginCodefun(username, password);
     if (!loginCodefunRequest.ok) {
-      const error = loginCodefunRequest.error;
+      const error = loginCodefunRequest.message;
       return {
-        messages: [error],
+        ok: false,
+        message: error,
+        status: loginCodefunRequest.status,
       };
     }
 
@@ -44,12 +51,12 @@ export const actionLogin = async (
     if (!user.ok) {
       console.error(
         "Unexpected error verifying user when logging in: ",
-        user.error,
+        user.message,
       );
       return {
-        messages: [
-          "An internal server error occurred. Please try again later.",
-        ],
+        ok: false,
+        message: "An internal server error occurred. Please try again later.",
+        status: 500,
       };
     }
 
@@ -63,10 +70,7 @@ export const actionLogin = async (
       path: "/",
     });
   } catch (e) {
-    console.error("Unexpected error logging in: ", e);
-    return {
-      messages: ["An internal server error occurred. Please try again later."],
-    };
+    return handleCatch(e);
   }
   const redirectTo = headers().get("X-Redirect-To") ?? "/";
   redirect(redirectTo);

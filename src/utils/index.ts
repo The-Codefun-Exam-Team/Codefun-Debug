@@ -7,5 +7,6 @@ export * from "./getCodefunRoleTextClass";
 export * from "./getResult";
 export * from "./getVerdictTextClass";
 export * from "./gravatarFromEmail";
+export * from "./handleCatch";
 export * from "./isColorScheme";
 export * from "./parseJudge";

@@ -13,7 +13,7 @@ const verifyCodefunNoMemo = async (
     if (!token) {
       return {
         ok: false,
-        error: "Unauthorized. Please login first.",
+        message: "Unauthorized. Please login first.",
         status: 401,
       };
     }
@@ -27,7 +27,7 @@ const verifyCodefunNoMemo = async (
       const error = (await res.json()).error;
       return {
         ok: false,
-        error: error,
+        message: error,
         status: res.status,
       };
     }
@@ -37,12 +37,21 @@ const verifyCodefunNoMemo = async (
       data: user,
     };
   } catch (e) {
-    console.error(e);
-    return {
-      ok: false,
-      error: "An internal error occurred. Please try again later.",
-      status: 500,
-    };
+    // manually handle catch for compatibility with middleware
+    console.error("Unexpected error: ", e);
+    if (e instanceof Error) {
+      return {
+        ok: false,
+        message: e.message,
+        status: 500,
+      };
+    } else {
+      return {
+        ok: false,
+        message: "An internal server error occurred. Please try again later.",
+        status: 500,
+      };
+    }
   }
 };
 

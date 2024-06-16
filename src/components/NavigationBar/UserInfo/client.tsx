@@ -118,7 +118,7 @@ export const UserInfoClient = ({
             "border-red-200 bg-red-100 text-red-800",
           )}
         >
-          {logoutData.error}
+          {logoutData.message}
         </div>
       )}
     </Menu>

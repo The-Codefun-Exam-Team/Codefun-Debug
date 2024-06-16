@@ -1,18 +1,17 @@
 import prisma from "@database/prisma/instance";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unstable_cache, unstable_noStore } from "next/cache";
+import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
 import type { DetailedProblemInfo } from "@/features/problems";
+import type { FunctionReturnType } from "@/types";
 import { LANGUAGES_DICT } from "@/types";
-import { parseJudge } from "@/utils";
+import { handleCatch, parseJudge } from "@/utils";
 
-export const getProblem = async (
+const getProblemNoMemo = async (
   code: string,
-): Promise<DetailedProblemInfo> => {
-  unstable_noStore();
+): Promise<FunctionReturnType<DetailedProblemInfo>> => {
   try {
-    return await unstable_cache(
+    const data = await unstable_cache(
       async () => {
         const query = await prisma.debugProblems.findUniqueOrThrow({
           where: {
@@ -53,14 +52,13 @@ export const getProblem = async (
       [`getProblem-${code}`],
       { revalidate: false },
     )();
+    return {
+      ok: true,
+      data: data,
+    };
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.error(e.message);
-    } else {
-      console.error(e);
-    }
-    throw new Error("Internal Server Error");
+    return handleCatch(e);
   }
 };
 
-export const getMemoProblem = cache(getProblem);
+export const getProblem = cache<typeof getProblemNoMemo>(getProblemNoMemo);
