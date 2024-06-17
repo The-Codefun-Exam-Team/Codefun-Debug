@@ -1,17 +1,17 @@
 import prisma from "@database/prisma/instance";
 import { Language } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unstable_cache, unstable_noStore } from "next/cache";
+import { unstable_cache } from "next/cache";
 
 import type { ProblemList } from "@/features/problems";
+import type { FunctionReturnType } from "@/types";
+import { handleCatch } from "@/utils";
 
 export const getProblems = async (
   page: number,
   limit: number,
-): Promise<ProblemList> => {
-  unstable_noStore();
+): Promise<FunctionReturnType<ProblemList>> => {
   try {
-    const problems = await unstable_cache(
+    const data = await unstable_cache(
       async () => {
         const offset = (page - 1) * limit;
         const query = await prisma.debugProblems.findMany({
@@ -40,13 +40,11 @@ export const getProblems = async (
       [`getAllProblem-${page}-${limit}`],
       { revalidate: 30 },
     )();
-    return problems;
+    return {
+      ok: true,
+      data: data,
+    };
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.error(e.message);
-    } else {
-      console.error(e);
-    }
-    throw new Error("Error fetching problems list");
+    return handleCatch(e);
   }
 };

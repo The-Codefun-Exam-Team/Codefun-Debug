@@ -14,14 +14,18 @@ export const metadata: Metadata = {
 const Page = async ({ params: { page } }: { params: { page: string } }) => {
   const itemsPerPage = 50;
   const pageInt = parseInt(page);
-  const [problemCountQuery, problemsList] = await Promise.all([
+  const [problemCountQuery, problemListQuery] = await Promise.all([
     getProblemCount(),
     getProblems(pageInt, itemsPerPage),
   ]);
-  if (!problemCountQuery.ok) {
-    throw new Error(problemCountQuery.message);
+  if (!problemCountQuery.ok || !problemListQuery.ok) {
+    throw new Error("Cannot fetch problem data.");
   }
-  const problemCount = problemCountQuery.data;
+
+  const [problemCount, problemList] = [
+    problemCountQuery.data,
+    problemListQuery.data,
+  ];
 
   const lastPage = Math.ceil(problemCount / itemsPerPage);
 
@@ -33,13 +37,13 @@ const Page = async ({ params: { page } }: { params: { page: string } }) => {
           baseURL="/problems/all/"
           lastPage={lastPage}
         />
-        <ProblemsList problemList={problemsList} page={page} />
-        {problemsList.length === 0 ? (
+        <ProblemsList problemList={problemList} page={page} />
+        {problemList.length === 0 ? (
           <span className="mt-4">
             <H3>There&apos;s nothing here.</H3>
           </span>
         ) : (
-          problemsList.length > itemsPerPage / 2 && (
+          problemList.length > itemsPerPage / 2 && (
             <Pagination
               page={pageInt}
               baseURL="/problems/all/"
