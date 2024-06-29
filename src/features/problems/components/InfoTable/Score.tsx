@@ -17,10 +17,12 @@ export const InfoTableScore = async ({ problemId }: { problemId: number }) => {
     return <div className="pb-4 pt-5 text-center text-2xl"></div>;
   }
   const scoreData = await getProblemScore(problemId, userInfo.data.id);
-  if (!scoreData) {
+  if (!scoreData.ok) {
     return <div className="pb-4 pt-5 text-center text-2xl">Not Submitted</div>;
   }
-  return <Score {...scoreData} className="pb-4 pt-5 text-center text-2xl" />;
+  return (
+    <Score data={scoreData.data} className="pb-4 pt-5 text-center text-2xl" />
+  );
 };
 
 export const InfoTableScoreSkeleton = () => (

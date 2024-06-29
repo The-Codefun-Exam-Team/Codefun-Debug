@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { Score } from "@/components";
 import { verifyCodefun } from "@/features/auth";
-import { getMemoProblemsScore } from "@/features/problems";
+import { getProblemsScore } from "@/features/problems";
 
 export const ProblemScoreText = ({ text }: { text: string }) => (
   <p className="font-semibold text-slate-600 dark:text-slate-200">{text}</p>
@@ -18,14 +18,17 @@ export const ProblemScore = async ({ id }: { id: number }) => {
   if (!user.ok) {
     return <ProblemScoreText text="Not Available" />;
   }
-  const allProblemsScore = await getMemoProblemsScore(user.data);
-  const problemScore = allProblemsScore[id];
+  const allProblemsScore = await getProblemsScore();
+  if (!allProblemsScore.ok) {
+    return <ProblemScoreText text="Not Available" />;
+  }
+  const problemScore = allProblemsScore.data[id];
   return (
     <>
       {!problemScore ? (
         <ProblemScoreText text="Not Submitted" />
       ) : (
-        <Score {...problemScore} />
+        <Score data={problemScore} />
       )}
     </>
   );

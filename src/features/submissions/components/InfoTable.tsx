@@ -16,7 +16,7 @@ export const InfoTable = ({ data }: { data: DetailedSubmissionsInfo }) => {
       <thead>
         <tr>
           <th>
-            <Score {...data.scoreInfo} className="pb-4 pt-5 text-2xl" />
+            <Score data={data.scoreInfo} className="pb-4 pt-5 text-2xl" />
           </th>
         </tr>
       </thead>
