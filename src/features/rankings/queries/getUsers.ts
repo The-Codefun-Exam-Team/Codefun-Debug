@@ -38,6 +38,25 @@ export const getUsers = async (
         });
 
         return users.map((user) => {
+          if (user.userStatus === "banned") {
+            return {
+              username: user.username,
+              displayName: user.displayName,
+              groupName: user.groupName,
+              status: "banned",
+              avatar: gravatarFromEmail(user.email),
+              ratio: null,
+              score: null,
+              rank: null,
+            } satisfies UserDisplayInfo;
+          }
+          if (
+            user.score === null ||
+            user.ratio === null ||
+            user.rank === null
+          ) {
+            throw new Error("Internal Server Error");
+          }
           return {
             username: user.username,
             displayName: user.displayName,
@@ -47,7 +66,7 @@ export const getUsers = async (
             ratio: user.ratio?.toNumber() ?? null,
             rank: Number(user.rank),
             avatar: gravatarFromEmail(user.email),
-          } as UserDisplayInfo;
+          } satisfies UserDisplayInfo;
         });
       },
       [`get-users-${groupId}-${page}-${limit}`],

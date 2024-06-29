@@ -58,6 +58,7 @@ const validateInput = async ({
     submissionId,
   });
   if (!validatedBody.success) {
+    // TODO: Consider using validatedBody.error.flatten().fieldErrors
     const errors = validatedBody.error.format();
     return {
       ok: false,
@@ -98,8 +99,7 @@ export const actionCreateProblem = async (
   try {
     const token = cookies().get("token");
     const user = await getUser(token?.value);
-    const isAdmin = user.ok && user.user.status === "Admin";
-    if (!isAdmin) {
+    if (user.ok && user.user.status === "Admin") {
       return {
         errorMessages: ["You are not authorized to create problems"],
       };

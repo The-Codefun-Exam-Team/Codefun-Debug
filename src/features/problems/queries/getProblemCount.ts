@@ -1,9 +1,8 @@
 import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unstable_cache, unstable_noStore } from "next/cache";
+import { unstable_cache } from "next/cache";
 
 export const getProblemCount = async () => {
-  unstable_noStore();
   try {
     return await unstable_cache(
       async () => {
