@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Support multiple package managers
 COPY package.json pnpm-lock.yaml* ./
-RUN npm i -g pnpm@8.3.0
+RUN corepack enable pnpm 
 RUN pnpm i --frozen-lockfile
 
 # Initialize Prisma
@@ -18,7 +18,7 @@ RUN pnpm prisma generate
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
-ENV BUILD_STANDALONE true
+ENV BUILD_STANDALONE=true
 
 # Also copies .env file with format specified in .env.example. Better solutions welcomed.
 COPY . .
@@ -28,7 +28,7 @@ RUN pnpm build
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -45,7 +45,7 @@ COPY --from=builder /app/.next/static ./.next/static
 
 EXPOSE 80
 
-ENV PORT 80
+ENV PORT=80
 
 COPY scripts/start_server.sh .
 
