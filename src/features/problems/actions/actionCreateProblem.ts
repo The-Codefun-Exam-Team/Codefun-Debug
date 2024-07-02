@@ -79,16 +79,13 @@ const validateInput = async ({
 const getSuggestedCode = async () => {
   const prefixPattern = "D";
   const numberPattern = "[0-9]+";
-  const suffixPattern = "";
-  const codePattern = `${prefixPattern}${numberPattern}${suffixPattern}`;
 
-  const maxCodeQuery = await prisma.$queryRaw<{ max_code: string }[]>`
-    SELECT MAX(debug_problem_code) as max_code FROM debug_problems 
-    WHERE debug_problem_code SIMILAR TO ${codePattern}`;
-  const maxCode = maxCodeQuery[0]["max_code"] ?? "0";
+  const maxCodeQuery = await prisma.debugProblemsMaxCode.findFirstOrThrow();
+  const maxCode = maxCodeQuery.maxCode;
   const codeNumber = maxCode.match(numberPattern) ?? ["0"];
   const newNumber = parseInt(codeNumber[0], 10) + 1;
   const newCode = `${prefixPattern}${newNumber.toString().padStart(3, "0")}`;
+  console.log(newCode);
   return newCode;
 };
 
@@ -99,7 +96,7 @@ export const actionCreateProblem = async (
   try {
     const token = cookies().get("token");
     const user = await getUser(token?.value);
-    if (user.ok && user.user.status === "Admin") {
+    if (!user.ok || user.user.status !== "Admin") {
       return {
         errorMessages: ["You are not authorized to create problems"],
       };

@@ -5,9 +5,9 @@ FROM
   (
     (
       debug_submissions ds
-      JOIN public.users u ON ((ds.user_id = u.id))
+      JOIN users u ON ((ds.user_id = u.id))
     )
-    JOIN public.groups g ON ((u.group_id = g.id))
+    JOIN groups g ON ((u.group_id = g.id))
   )
 WHERE
-  (u.user_status <> 'banned' :: public.user_status);
+  (u.user_status <> 'banned' :: user_status);

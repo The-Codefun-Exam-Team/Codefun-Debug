@@ -23,12 +23,12 @@ SELECT
 FROM
   (
     (
-      public.submissions
-      JOIN public.problem_headers ON (
+      submissions
+      JOIN problem_headers ON (
         (
           submissions.problem_id = problem_headers.problem_id
         )
       )
     )
-    JOIN public.user_query ON ((submissions.user_id = user_query.user_id))
+    JOIN user_query ON ((submissions.user_id = user_query.user_id))
   );
