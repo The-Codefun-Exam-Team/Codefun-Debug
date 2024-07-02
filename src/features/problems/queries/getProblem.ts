@@ -1,58 +1,58 @@
 import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, unstable_noStore } from "next/cache";
+import { cache } from "react";
 
 import type { DetailedProblemInfo } from "@/features/problems";
+import { LANGUAGES_DICT } from "@/types";
 import { parseJudge } from "@/utils";
 
-export const getProblem = async (code: string) => {
+export const getProblem = async (
+  code: string,
+): Promise<DetailedProblemInfo> => {
+  unstable_noStore();
   try {
-    const problemInfo = await unstable_cache(
+    return await unstable_cache(
       async () => {
-        const problemInfo = await prisma.debugProblems.findUniqueOrThrow({
+        const query = await prisma.debugProblems.findUniqueOrThrow({
           where: {
-            code,
+            debugProblemCode: code,
           },
           select: {
-            code: true,
+            id: true,
+            debugProblemCode: true,
             name: true,
-            language: true,
-            problem: {
+            submission: {
               select: {
-                code: true,
-                name: true,
-              },
-            },
-            runs: {
-              select: {
-                subs_code: {
+                language: true,
+                source: true,
+                problem: {
                   select: {
-                    error: true,
-                    code: true,
+                    problemCode: true,
+                    name: true,
                   },
                 },
+                judgeOutput: true,
               },
             },
           },
         });
-
         return {
-          code: problemInfo.code,
-          name: problemInfo.name,
-          language: problemInfo.language,
-          codetext: problemInfo.runs.subs_code.code,
-          problem: {
-            code: problemInfo.problem.code,
-            name: problemInfo.problem.name,
+          id: query.id,
+          debugProblemCode: query.debugProblemCode,
+          name: query.name,
+          language: LANGUAGES_DICT[query.submission.language],
+          source: query.submission.source,
+          statement: {
+            code: query.submission.problem.problemCode,
+            name: query.submission.problem.name,
           },
-          problem_judge: parseJudge(problemInfo.runs.subs_code.error),
-        } satisfies DetailedProblemInfo;
+          judge: parseJudge(query.submission.judgeOutput),
+        };
       },
       [`getProblem-${code}`],
       { revalidate: false },
     )();
-
-    return problemInfo;
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.message);
@@ -62,3 +62,5 @@ export const getProblem = async (code: string) => {
     throw new Error("Internal Server Error");
   }
 };
+
+export const getMemoProblem = cache(getProblem);

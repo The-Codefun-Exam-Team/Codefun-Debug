@@ -1,22 +1,29 @@
 import { cache } from "react";
 
-import { Heading } from "@/components";
+import { H2, H3 } from "@/components";
 import { getUsers } from "@/features/rankings";
 import { clsx } from "@/utils";
 
-const getRankTableData = cache((group: string, page: string) => {
-  return getUsers(group, page, "50");
+const getRankTableData = cache((groupId: number, page: number) => {
+  return getUsers(groupId, page, 50);
 });
 
-export const RankTable = async ({ group, page }: { group: string; page: string }) => {
+export const RankTable = async ({
+  group,
+  page,
+}: {
+  group: number;
+  page: number;
+}) => {
   const data = await getRankTableData(group, page);
   if (data.length === 0) {
     return (
       <div className="h-fit w-full">
-        <Heading type="title-large">Noone here!</Heading>
-        <Heading type="title">
-          Please submit first if you haven&#39;t seen your name on the leaderboard.
-        </Heading>
+        <H2>No one here!</H2>
+        <H3>
+          Please submit first if you haven&#39;t seen your name on the leader
+          board.
+        </H3>
       </div>
     );
   }
@@ -42,7 +49,7 @@ export const RankTable = async ({ group, page }: { group: string; page: string }
         <tbody className="h-fit divide-y divide-gray-400 dark:divide-slate-600">
           {data.map((user, index) => (
             <tr
-              key={`ranking-page-${page}-user-${user.id}`}
+              key={`ranking-page-${page}-user-${user.username}`}
               className={clsx(
                 "h-10 text-center",
                 "font-semibold text-slate-600 dark:text-slate-400 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
@@ -52,10 +59,10 @@ export const RankTable = async ({ group, page }: { group: string; page: string }
                 <div className="text-left">{(+page - 1) * 50 + index + 1}</div>
               </td>
               <td>
-                <div className="break-all text-left">{user.name}</div>
+                <div className="break-all text-left">{user.displayName}</div>
               </td>
               <td>
-                <div className="text-right">{user.score.toFixed(2)}</div>
+                <div className="text-right">{user.score}</div>
               </td>
               <td>
                 <div className="text-right">{user.rank}</div>

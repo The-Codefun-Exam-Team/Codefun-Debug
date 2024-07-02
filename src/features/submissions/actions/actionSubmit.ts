@@ -8,7 +8,7 @@ import { submit } from "@/features/submissions";
 export const actionSubmit = async (
   code: string,
   codetext: string,
-): Promise<{ ok: true; drid: number } | { ok: false; message: string }> => {
+): Promise<{ ok: true; id: number } | { ok: false; message: string }> => {
   try {
     const cookiesStore = cookies();
     const token = cookiesStore.get("token");
@@ -16,8 +16,8 @@ export const actionSubmit = async (
     if (!userQuery.ok) {
       return { ok: false, message: "You are not logged in" };
     }
-    const drid = await submit(code, codetext);
-    return { ok: true, drid };
+    const id = await submit(code, codetext);
+    return { ok: true, id };
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.code, e.message);

@@ -8,7 +8,7 @@ import { clsx } from "@/utils";
 
 import { CodeViewText } from "./CodeViewText";
 
-export const CodeView = ({ code }: { code: string }) => {
+export const CodeView = ({ source }: { source: string }) => {
   const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
   const editorDomRef = useRef<HTMLDivElement | null>(null);
   const [renderingEditor, setRenderingEditor] = useState(true);
@@ -64,9 +64,9 @@ export const CodeView = ({ code }: { code: string }) => {
 
   useEffect(() => {
     if (!renderingEditor && editorRef.current) {
-      editorRef.current.getModel()?.setValue(code);
+      editorRef.current.getModel()?.setValue(source);
     }
-  }, [renderingEditor, code]);
+  }, [renderingEditor, source]);
 
   return (
     <section className="flex size-full">

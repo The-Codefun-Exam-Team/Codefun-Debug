@@ -1,6 +1,6 @@
-import type { Results } from "@/types";
+import type { SubmissionResult } from "@/types";
 
-export const getResult = async (score: number, result: Results) => {
+export const getResult = async (score: number, submissionResult: SubmissionResult) => {
   if (score === 100) return "AC";
-  return result === "AC" ? "SS" : result;
+  return submissionResult === "AC" ? "SS" : submissionResult;
 };

@@ -1,54 +1,34 @@
 import prisma from "@database/prisma/instance";
-import type { DebugSubmissions } from "@prisma/client";
+import { unstable_noStore } from "next/cache";
 
-import type { DetailedScoreInfo, Results, UserData } from "@/types";
-
-export type GetProblemScoreResult =
-  | { ok: true; data: DetailedScoreInfo }
-  | { ok: false; error: string; status: number };
-
-type SqlRawRunInfo = Pick<DebugSubmissions, "drid" | "score" | "diff" | "result">;
+import type { ScoreDisplayInfo } from "@/types";
 
 export const getProblemScore = async (
-  problemId: string,
-  user: UserData,
-): Promise<GetProblemScoreResult> => {
-  const tid = user.id;
+  debugProblemId: number,
+  userId: number,
+): Promise<ScoreDisplayInfo> => {
+  unstable_noStore();
 
-  // benchmark required
-  const runInfos = await prisma.$queryRaw<SqlRawRunInfo[]>`
-    SELECT ds.drid, ds.score, ds.diff, ds.result
-    FROM debug_submissions ds
-    JOIN debug_problems dp ON ds.dpid = dp.dpid
-    WHERE ds.tid = ${tid} AND dp.code = ${problemId} AND ds.score = (
-      SELECT MAX(ds.score) AS score 
-      FROM debug_submissions ds
-      JOIN debug_problems dp ON ds.dpid = dp.dpid
-      WHERE ds.tid = ${tid} AND dp.code = ${problemId}
-    )
-  `;
-
-  if (runInfos.length === 0) {
+  const query = await prisma.debugSubmissions.findFirst({
+    where: {
+      userId,
+      debugProblemId,
+      is_best: true,
+    },
+    select: {
+      id: true,
+      score: true,
+      diff: true,
+      result: true,
+    },
+  });
+  if (query) {
     return {
-      ok: true,
-      data: {
-        score: 0,
-        diff: null,
-        result: null,
-        drid: null,
-      },
+      score: query.score,
+      diff: query.diff,
+      result: query.result,
+      debugSubmissionId: query.id,
     };
   }
-
-  const runInfo = runInfos[0];
-
-  return {
-    ok: true,
-    data: {
-      score: runInfo.score,
-      diff: runInfo.diff,
-      result: runInfo.result as Results,
-      drid: runInfo.drid,
-    },
-  };
+  return null;
 };

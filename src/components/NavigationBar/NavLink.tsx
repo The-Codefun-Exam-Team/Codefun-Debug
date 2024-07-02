@@ -23,8 +23,14 @@ type NavLinkProps = BaseNavLinkProps;
 const useIsPathActive = (url: string) => {
   const pathname = usePathname();
   const result = useMemo(() => {
-    const pathnameFirstSegment = pathname.slice(0, pathname.indexOf("/", 1));
-    return !!pathnameFirstSegment && url.startsWith(pathnameFirstSegment);
+    const pathnameFirstSegment = (pathname + "/").slice(
+      0,
+      pathname.indexOf("/", 1),
+    );
+    return (
+      ["", "/"].every((start) => pathnameFirstSegment !== start) &&
+      url.startsWith(pathnameFirstSegment)
+    );
   }, [pathname, url]);
   return result;
 };
@@ -44,7 +50,9 @@ export const VerticalNavLink = ({ href, ...rest }: NavLinkProps) => {
           )}
         />
         <div
-          className={clsx("h-0 rounded-md border-t-[3px] border-gray-200 dark:border-slate-600/50")}
+          className={clsx(
+            "h-0 rounded-md border-t-[3px] border-gray-200 dark:border-slate-600/50",
+          )}
         />
       </div>
     </div>

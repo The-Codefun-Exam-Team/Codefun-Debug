@@ -1,6 +1,9 @@
 import { Md5 } from "ts-md5";
 
-export const gravatarFromEmail = (gmail: string) => {
+export const gravatarFromEmail = (gmail: string | null) => {
+  if (!gmail) {
+    return "https://s3.amazonaws.com/wll-community-production/images/no-avatar.png";
+  }
   const md5 = new Md5();
   md5.appendStr(gmail);
   const hash = md5.end();
