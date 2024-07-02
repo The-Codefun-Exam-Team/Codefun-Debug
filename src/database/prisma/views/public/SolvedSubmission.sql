@@ -3,8 +3,8 @@ SELECT
   submissions.problem_id,
   submissions.user_id
 FROM
-  public.submissions,
-  public.problems
+  submissions,
+  problems
 WHERE
   (
     (submissions.problem_id = problems.id)

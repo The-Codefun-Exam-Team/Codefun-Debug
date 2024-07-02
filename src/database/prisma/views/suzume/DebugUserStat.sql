@@ -14,11 +14,11 @@ FROM
     (
       (
         debug_user_rankings dur
-        LEFT JOIN public.users u ON ((dur.user_id = u.id))
+        LEFT JOIN users u ON ((dur.user_id = u.id))
       )
-      LEFT JOIN public.user_rankings ur ON ((dur.user_id = ur.id))
+      LEFT JOIN user_rankings ur ON ((dur.user_id = ur.id))
     )
-    LEFT JOIN public.groups g ON ((u.group_id = g.id))
+    LEFT JOIN groups g ON ((u.group_id = g.id))
   )
 ORDER BY
   dur.rank;

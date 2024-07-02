@@ -26,7 +26,7 @@ FROM
         posts.title AS post_title,
         NULL :: integer AS comment_id
       FROM
-        public.posts
+        posts
       ORDER BY
         posts.updated_at DESC
     )
@@ -40,15 +40,15 @@ FROM
         posts.title AS post_title,
         post_comments.id AS comment_id
       FROM
-        public.post_comments,
-        public.posts
+        post_comments,
+        posts
       WHERE
         (posts.id = post_comments.post_id)
       ORDER BY
         post_comments.updated_at DESC
     )
   ) tbl,
-  public.user_query
+  user_query
 WHERE
   (user_query.user_id = tbl.author_id)
 ORDER BY

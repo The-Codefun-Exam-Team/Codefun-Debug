@@ -492,6 +492,13 @@ view DebugSubmissionQuery {
   @@schema("suzume")
 }
 
+view DebugProblemsMaxCode {
+  maxCode String @unique @map("max_code")
+
+  @@map("debug_problems_max_code")
+  @@schema("suzume")
+}
+
 enum Language {
   C__     @map("C++")
   Pascal

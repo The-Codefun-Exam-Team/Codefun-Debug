@@ -1,6 +1,6 @@
 import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unstable_cache, unstable_noStore } from "next/cache";
+import { unstable_cache } from "next/cache";
 
 import type { RankingsData } from "@/features/rankings";
 import type { UserDisplayInfo } from "@/types";
@@ -11,7 +11,6 @@ export const getUsers = async (
   page: number,
   limit: number,
 ): Promise<RankingsData> => {
-  unstable_noStore();
   try {
     return unstable_cache(
       async () => {
@@ -38,6 +37,25 @@ export const getUsers = async (
         });
 
         return users.map((user) => {
+          if (user.userStatus === "banned") {
+            return {
+              username: user.username,
+              displayName: user.displayName,
+              groupName: user.groupName,
+              status: "banned",
+              avatar: gravatarFromEmail(user.email),
+              ratio: null,
+              score: null,
+              rank: null,
+            } satisfies UserDisplayInfo;
+          }
+          if (
+            user.score === null ||
+            user.ratio === null ||
+            user.rank === null
+          ) {
+            throw new Error("Internal Server Error");
+          }
           return {
             username: user.username,
             displayName: user.displayName,
@@ -47,7 +65,7 @@ export const getUsers = async (
             ratio: user.ratio?.toNumber() ?? null,
             rank: Number(user.rank),
             avatar: gravatarFromEmail(user.email),
-          } as UserDisplayInfo;
+          } satisfies UserDisplayInfo;
         });
       },
       [`get-users-${groupId}-${page}-${limit}`],
