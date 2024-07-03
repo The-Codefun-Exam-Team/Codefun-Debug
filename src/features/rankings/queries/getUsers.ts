@@ -1,6 +1,6 @@
 import prisma from "@database/prisma/instance";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, unstable_noStore } from "next/cache";
 
 import type { RankingsData } from "@/features/rankings";
 import type { UserDisplayInfo } from "@/types";
@@ -12,6 +12,7 @@ export const getUsers = async (
   limit: number,
 ): Promise<RankingsData> => {
   try {
+    unstable_noStore();
     return unstable_cache(
       async () => {
         const offset = (page - 1) * limit;
