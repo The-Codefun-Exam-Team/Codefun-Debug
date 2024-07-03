@@ -11,8 +11,8 @@ export const getUsers = async (
   page: number,
   limit: number,
 ): Promise<RankingsData> => {
+  unstable_noStore();
   try {
-    unstable_noStore();
     return unstable_cache(
       async () => {
         const offset = (page - 1) * limit;
