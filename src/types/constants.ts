@@ -1,8 +1,7 @@
-import { Language, SubmissionResult } from "@prisma/client";
+import type { SubmissionResult } from "@prisma/client";
+import { Language } from "@prisma/client";
 
-export const RESULTS_DICT = SubmissionResult;
-
-Object.assign(RESULTS_DICT, {
+export const RESULTS_DICT = {
   AC: "Accepted",
   SS: "Partially Scored",
   WA: "Wrong Answer",
@@ -14,12 +13,12 @@ Object.assign(RESULTS_DICT, {
   Scoring: "Scoring...",
   TO: "Time Out",
   DQ: "Disqualified",
-});
+} satisfies { [T in SubmissionResult]: string };
 
-export const LANGUAGES_DICT = Language;
-Object.assign(LANGUAGES_DICT, {
-  C__: "C++",
-});
+export const LANGUAGES_DICT = {
+  ...Language,
+  ...{ C__: "C++" },
+} satisfies { [T in Language]: string };
 
 export const CODEFUN_ROLES = [
   "newbie",

@@ -1,5 +1,4 @@
 import prisma from "@database/prisma/instance";
-import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 
 import { getMemoUser } from "@/features/auth";
@@ -11,8 +10,6 @@ import {
 import { calcEditDistance } from "@/utils";
 
 export const submit = async (debugProblemCode: string, source: string) => {
-  unstable_noStore();
-
   const cookiesStore = cookies();
   const token = cookiesStore.get("token");
   const debugProblem = await getMemoProblem(debugProblemCode);
