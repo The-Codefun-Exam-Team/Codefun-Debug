@@ -1,9 +1,9 @@
 import prisma from "@database/prisma/instance";
-import { Language } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache, unstable_noStore } from "next/cache";
 
 import type { ProblemList } from "@/features/problems";
+import { LANGUAGES_DICT } from "@/types";
 
 export const getProblems = async (
   page: number,
@@ -33,7 +33,7 @@ export const getProblems = async (
             id: problem.id,
             debugProblemCode: problem.debugProblemCode,
             name: problem.name,
-            language: Language[problem.submission.language],
+            language: LANGUAGES_DICT[problem.submission.language],
           };
         });
       },

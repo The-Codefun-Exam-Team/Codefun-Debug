@@ -6,16 +6,12 @@ import { useMemo } from "react";
 
 import { clsx } from "@/utils";
 
-// default classnames for nav links
-export const NAV_BUTTON_CLASS =
-  "px-3 py-2 transition-colors duration-100 items-center font-semibold flex cursor-pointer";
-
 type BaseNavLinkProps = Omit<ComponentPropsWithoutRef<typeof Link>, "href"> & {
   href: `/${string}`;
 };
 
 export const BaseNavLink = ({ href, className, ...rest }: BaseNavLinkProps) => (
-  <Link href={href} className={clsx(NAV_BUTTON_CLASS, className)} {...rest} />
+  <Link href={href} className={clsx("nav-button", className)} {...rest} />
 );
 
 type NavLinkProps = BaseNavLinkProps;

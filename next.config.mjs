@@ -10,7 +10,6 @@ const withBundleAnalyzer = withBundleAnalyzerInit({
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   images: {
     remotePatterns: [
@@ -65,6 +64,7 @@ const plugins = [withBundleAnalyzer];
  *     { defaultConfig }: { defaultConfig: import("next").NextConfig },
  * ) => import("next").NextConfig}
  */
-const nextComposePlugins = () => plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
+const nextComposePlugins = () =>
+  plugins.reduce((acc, plugin) => plugin(acc), nextConfig);
 
 export default nextComposePlugins;

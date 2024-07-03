@@ -17,7 +17,7 @@ export const RESULTS_DICT = {
 
 export const LANGUAGES_DICT = {
   ...Language,
-  ...{ C__: "C++" },
+  C__: "C++" as const,
 } satisfies { [T in Language]: string };
 
 export const CODEFUN_ROLES = [

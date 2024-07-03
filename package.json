@@ -12,7 +12,7 @@
     "lint": "next lint",
     "start": "next start",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky install",
+    "prepare": "husky",
     "db:pull": "prisma db pull",
     "db:generate": "prisma generate",
     "db:format": "prisma format",
@@ -31,10 +31,10 @@
     "cross-env": "7.0.3",
     "monaco-editor": "0.48.0",
     "monaco-editor-webpack-plugin": "7.1.0",
-    "next": "14.3.0-canary.21",
+    "next": "15.0.0-canary.53",
     "next-redux-wrapper": "8.1.0",
-    "react": "19.0.0-rc-915b914b3a-20240515",
-    "react-dom": "19.0.0-rc-915b914b3a-20240515",
+    "react": "19.0.0-rc-9c6806964f-20240703",
+    "react-dom": "19.0.0-rc-9c6806964f-20240703",
     "react-hook-form": "7.51.3",
     "react-redux": "9.1.1",
     "redux": "5.0.1",
@@ -69,5 +69,5 @@
     "tailwindcss": "3.4.3",
     "typescript": "5.4.5"
   },
-  "packageManager": "pnpm@9.4.0+sha256.b6fd0bfda555e7e584ad7e56b30c68b01d5a04f9ee93989f4b93ca8473c49c74"
+  "packageManager": "pnpm@9.4.0"
 }

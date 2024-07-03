@@ -1,15 +1,14 @@
 "use client";
 import { Menu, Transition } from "@headlessui/react";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
-import { useFormState } from "react-dom";
+import { type ReactNode, useActionState } from "react";
 
 import { actionLogout } from "@/features/auth";
 import type { CodefunRoles } from "@/types";
 import { clsx, getCodefunRoleTextClass } from "@/utils";
 
 import { ADDITIONAL_LINKS } from "../constants";
-import { BaseNavLink, NAV_BUTTON_CLASS } from "../NavLink";
+import { BaseNavLink } from "../NavLink";
 import { MENU_ITEMS_CLASS } from "./constants";
 import { DarkModeToggler } from "./DarkModeToggler";
 
@@ -19,9 +18,13 @@ export interface UserInfoClientProps {
   userInfoNode: ReactNode;
 }
 
-export const UserInfoClient = ({ role, isLoggedIn, userInfoNode }: UserInfoClientProps) => {
+export const UserInfoClient = ({
+  role,
+  isLoggedIn,
+  userInfoNode,
+}: UserInfoClientProps) => {
   const pathname = usePathname();
-  const [logoutData, logout] = useFormState(actionLogout, { ok: true });
+  const [logoutData, logout] = useActionState(actionLogout, { ok: true });
   const roleColor = getCodefunRoleTextClass(role);
   return (
     <Menu as="div" className="relative">
@@ -65,13 +68,19 @@ export const UserInfoClient = ({ role, isLoggedIn, userInfoNode }: UserInfoClien
           <Menu.Item>
             {isLoggedIn ? (
               <form action={logout}>
-                <button type="submit" className={clsx(NAV_BUTTON_CLASS, MENU_ITEMS_CLASS)}>
+                <button
+                  type="submit"
+                  className={clsx("nav-button", MENU_ITEMS_CLASS)}
+                >
                   Sign out
                 </button>
               </form>
             ) : (
               <div>
-                <BaseNavLink className={MENU_ITEMS_CLASS} href={`/login?prev=${pathname}`}>
+                <BaseNavLink
+                  className={MENU_ITEMS_CLASS}
+                  href={`/login?prev=${pathname}`}
+                >
                   Sign in
                 </BaseNavLink>
               </div>

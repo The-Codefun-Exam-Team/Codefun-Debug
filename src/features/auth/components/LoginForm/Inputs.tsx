@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect, useState } from "react";
 
 import { ErrorBox, H2, Input } from "@/components";
 import type { LoginFormState } from "@/features/auth";
@@ -16,8 +15,10 @@ const initialState: LoginFormState = {
 
 export const Inputs = () => {
   const dispatch = useAppDispatch();
-  const { pending } = useFormStatus();
-  const [state, formAction] = useFormState(actionLogin, initialState);
+  const [state, formAction, pending] = useActionState(
+    actionLogin,
+    initialState,
+  );
   const [displayState, setDisplayState] = useState(initialState);
 
   useEffect(() => {

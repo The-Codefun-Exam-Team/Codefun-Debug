@@ -1,9 +1,12 @@
-import type { SubmissionResult } from "@prisma/client";
+import type {
+  Language as LanguageBase,
+  SubmissionResult,
+} from "@prisma/client";
 import type { Decimal } from "@prisma/client/runtime/library";
 
-import type { CODEFUN_ROLES, COLOR_SCHEMES } from "./constants";
+import type { CODEFUN_ROLES, COLOR_SCHEMES, LANGUAGES_DICT } from "./constants";
 
-export type { Language, SubmissionResult, UserStatus } from "@prisma/client";
+export type { SubmissionResult, UserStatus } from "@prisma/client";
 
 export interface UserInfo {
   id: number;
@@ -58,3 +61,5 @@ export interface ScoreDisplayInfoNotNull {
 }
 
 export type ScoreDisplayInfo = ScoreDisplayInfoNotNull | null;
+
+export type Language = (typeof LANGUAGES_DICT)[LanguageBase];
