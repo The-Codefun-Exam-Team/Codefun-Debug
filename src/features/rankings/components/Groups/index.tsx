@@ -8,9 +8,9 @@ const getGroupsData = cache(() => {
   return getGroups();
 });
 
-export const Groups = async ({ group }: { group: string }) => {
+export const Groups = async ({ groupId }: { groupId: number }) => {
   const data = await getGroupsData();
-  return <GroupsClient group={group} data={data} />;
+  return <GroupsClient groupId={groupId} data={data} />;
 };
 
 Groups.preload = getGroupsData;

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
-import { ErrorBox, Heading, Input } from "@/components";
+import { ErrorBox, H2, Input } from "@/components";
 import type { LoginFormState } from "@/features/auth";
 import { actionLogin } from "@/features/auth";
 import { useAppDispatch } from "@/hooks";
@@ -41,9 +41,9 @@ export const Inputs = () => {
   return (
     <form action={formAction} className="flex w-full flex-col">
       <div className="text-center">
-        <Heading type="title-large">
-          <div className="text-accent-light dark:text-accent-dark">Please login to continue</div>
-        </Heading>
+        <div className="text-accent-light dark:text-accent-dark">
+          <H2>Please login to continue</H2>
+        </div>
       </div>
       <div className="flex w-full flex-col gap-6">
         <div>
@@ -72,7 +72,9 @@ export const Inputs = () => {
           />
         </div>
         {displayState.messages.length > 0 ? (
-          <ErrorBox closeFn={clearMessage}>{displayState.messages.join("\n")}</ErrorBox>
+          <ErrorBox closeFn={clearMessage}>
+            {displayState.messages.join("\n")}
+          </ErrorBox>
         ) : (
           <button
             type="submit"

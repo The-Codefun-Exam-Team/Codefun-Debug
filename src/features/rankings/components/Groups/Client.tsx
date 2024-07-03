@@ -5,8 +5,8 @@ import Link from "next/link";
 import type { GroupsData } from "@/features/rankings";
 import { clsx } from "@/utils";
 
-export const GroupsClient = ({ group, data }: { group: string; data: GroupsData }) => {
-  const currentGroupName = data.find((element) => element.gid.toString() === group)?.groupname;
+export const GroupsClient = ({ groupId, data }: { groupId: number; data: GroupsData }) => {
+  const currentGroupName = data.find((element) => element.id === groupId)?.name;
   return (
     <Menu>
       <Menu.Button
@@ -26,21 +26,21 @@ export const GroupsClient = ({ group, data }: { group: string; data: GroupsData 
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute left-0 top-2 z-10 flex h-[60vh] w-full flex-col divide-y divide-slate-300 overflow-auto rounded-md border-2 border-slate-700 bg-white dark:divide-slate-800 dark:border-slate-500 dark:bg-slate-900">
-            {data.map(({ gid, groupname }) => (
+            {data.map(({ id, name }) => (
               <Menu.Item
-                key={`rankings-groups-list-group-${gid}`}
-                disabled={groupname === currentGroupName}
+                key={`rankings-groups-list-group-${id}`}
+                disabled={name === currentGroupName}
               >
                 {({ active }) => (
                   <Link
-                    href={`/rankings/${gid}/1`}
+                    href={`/rankings/${id}/1`}
                     className={clsx(
                       "p-2 text-center text-xl text-slate-700 dark:text-slate-400",
-                      groupname === currentGroupName && "hidden",
+                      name === currentGroupName && "hidden",
                       active && "bg-accent-light/10 dark:bg-accent-dark/10",
                     )}
                   >
-                    {groupname}
+                    {name}
                   </Link>
                 )}
               </Menu.Item>

@@ -1,12 +1,12 @@
 import { cookies } from "next/headers";
 
 export const submitCodefunProblem = async ({
-  pid,
-  codetext,
+  code,
+  source,
   language,
 }: {
-  pid: number;
-  codetext: string;
+  code: string;
+  source: string;
   language: string;
 }): Promise<number> => {
   const token = cookies().get("token");
@@ -17,9 +17,9 @@ export const submitCodefunProblem = async ({
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams({
-      problem: pid.toString(),
+      problem: code,
       language: language,
-      code: codetext,
+      code: source,
     }),
   });
   if (!submissionToCodefun.ok) {

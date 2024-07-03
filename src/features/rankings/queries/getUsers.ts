@@ -1,79 +1,75 @@
 import prisma from "@database/prisma/instance";
-import { Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache } from "next/cache";
 
 import type { RankingsData } from "@/features/rankings";
+import type { UserDisplayInfo } from "@/types";
 import { gravatarFromEmail } from "@/utils";
 
 export const getUsers = async (
-  group: string,
-  page: string,
-  limit: string,
-): Promise<RankingsData[]> => {
+  groupId: number,
+  page: number,
+  limit: number,
+): Promise<RankingsData> => {
   try {
-    // calculate offset
-    const offset = (parseInt(page) - 1) * parseInt(limit);
-
-    // Raw SQL to query score and ranking (prisma not supporting nested group by yet)
-    const rankTableQuery = prisma.$queryRaw`
-      WITH score_table AS (SELECT tid, dpid, MAX(score) as max_score FROM debug_submissions GROUP BY tid, dpid),
-      rank_table AS (SELECT teams.tid, RANK() OVER (ORDER BY SUM(score_table.max_score) DESC) AS rank, SUM(score_table.max_score) AS score
-      FROM score_table 
-      INNER JOIN teams ON teams.tid = score_table.tid
-      GROUP BY tid
-      ORDER BY score DESC)
-      SELECT rank_table.tid, rank_table.rank, rank_table.score, teams.group
-      FROM rank_table INNER JOIN teams ON teams.tid = rank_table.tid
-      WHERE (CASE WHEN ${parseInt(group)} = 0 THEN 1=1 ELSE teams.group = ${parseInt(group)} END)
-      LIMIT ${parseInt(limit)} OFFSET ${offset}
-    `;
-
-    // required users infos
-    const requiredFields = Prisma.validator<Prisma.TeamsSelect>()({
-      tid: true,
-      name: true,
-      teamname: true,
-      status: true,
-      group: true,
-      email: true,
-      solved: true,
-    });
-
     return unstable_cache(
       async () => {
-        const rank_table = (await rankTableQuery) as { tid: number; rank: number; score: number }[];
-        rank_table.sort((a, b) => a.tid - b.tid);
-        const usersInfo = await prisma.teams.findMany({
-          where: {
-            tid: {
-              in: rank_table.map((user) => user.tid),
-            },
+        const offset = (page - 1) * limit;
+        const users = await prisma.debugUserStat.findMany({
+          select: {
+            username: true,
+            displayName: true,
+            groupName: true,
+            userStatus: true,
+            score: true,
+            ratio: true,
+            rank: true,
+            email: true,
           },
-          select: requiredFields,
+          where: {
+            groupId: groupId ? groupId : undefined,
+          },
+          orderBy: {
+            score: "desc",
+          },
+          take: limit,
+          skip: offset,
         });
-        const problemsCount = await prisma.problems.count();
 
-        const users = usersInfo.map((user, index) => {
+        return users.map((user) => {
+          if (user.userStatus === "banned") {
+            return {
+              username: user.username,
+              displayName: user.displayName,
+              groupName: user.groupName,
+              status: "banned",
+              avatar: gravatarFromEmail(user.email),
+              ratio: null,
+              score: null,
+              rank: null,
+            } satisfies UserDisplayInfo;
+          }
+          if (
+            user.score === null ||
+            user.ratio === null ||
+            user.rank === null
+          ) {
+            throw new Error("Internal Server Error");
+          }
           return {
-            id: user.tid,
-            username: user.teamname,
-            name: user.name,
-            group: {
-              id: user.group.gid,
-              name: user.group.groupname,
-            },
-            status: user.status,
-            score: rank_table[index].score,
-            ratio: user.solved / problemsCount,
+            username: user.username,
+            displayName: user.displayName,
+            groupName: user.groupName,
+            status: user.userStatus,
+            score: user.score?.toFixed(2) ?? null,
+            ratio: user.ratio?.toNumber() ?? null,
+            rank: Number(user.rank),
             avatar: gravatarFromEmail(user.email),
-            rank: Number(rank_table[index].rank),
-          } satisfies RankingsData;
+          } satisfies UserDisplayInfo;
         });
-        return users.sort((a, b) => a.rank - b.rank);
       },
-      [`getUsers-${group}-${page}-${limit}`],
-      { revalidate: 10 },
+      [`get-users-${groupId}-${page}-${limit}`],
+      { revalidate: 20 },
     )();
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {

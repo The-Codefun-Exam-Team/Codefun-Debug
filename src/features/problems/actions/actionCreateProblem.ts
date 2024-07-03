@@ -7,10 +7,21 @@ import { z } from "zod";
 
 import { getUser } from "@/features/auth";
 
-export const createProblemSchema = z.object({
-  code: z.string().max(20, "Code must contain at most 20 letters").optional(),
-  name: z.string().max(255, "Name must contain at most 255 letters").optional(),
-  rid: z.number(),
+const createProblemSchema = z.object({
+  code: z
+    .string()
+    .max(20, "Code must contain at most 20 letters")
+    .min(2, "Code must contain at least 2 letters")
+    .includes("D")
+    .or(z.literal("")),
+  name: z
+    .string()
+    .max(255, "Name must contain at most 255 letters")
+    .or(z.literal("")),
+  submissionId: z
+    .string()
+    .min(1, "Submission ID is required")
+    .pipe(z.coerce.number({ message: "Submission ID must be number" })),
 });
 
 export type CreateProblemSchemaType = z.infer<typeof createProblemSchema>;
@@ -22,19 +33,59 @@ export interface CreateProblemResponse {
 }
 
 export interface CreateProblemFormState {
-  code_messages: string[];
-  name_messages: string[];
-  rid_messages: string[];
-  messages: string[];
-  success_messages: string[];
+  codeMessages?: string[];
+  nameMessages?: string[];
+  submissionIdMessages?: string[];
+  errorMessages?: string[];
+  successMessages?: string[];
 }
 
-const initialState: CreateProblemFormState = {
-  code_messages: [],
-  name_messages: [],
-  rid_messages: [],
-  messages: [],
-  success_messages: [],
+const validateInput = async ({
+  code,
+  name,
+  submissionId,
+}: {
+  code: FormDataEntryValue | null;
+  name: FormDataEntryValue | null;
+  submissionId: FormDataEntryValue | null;
+}): Promise<
+  | { ok: true; data: CreateProblemSchemaType }
+  | { ok: false; error: CreateProblemFormState }
+> => {
+  const validatedBody = await createProblemSchema.spa({
+    code,
+    name,
+    submissionId,
+  });
+  if (!validatedBody.success) {
+    // TODO: Consider using validatedBody.error.flatten().fieldErrors
+    const errors = validatedBody.error.format();
+    return {
+      ok: false,
+      error: {
+        codeMessages: errors.code?._errors,
+        nameMessages: errors.name?._errors,
+        submissionIdMessages: errors.submissionId?._errors,
+        errorMessages: errors._errors,
+      },
+    };
+  }
+  return {
+    ok: true,
+    data: validatedBody.data,
+  };
+};
+
+const getSuggestedCode = async () => {
+  const prefixPattern = "D";
+  const numberPattern = "[0-9]+";
+
+  const maxCodeQuery = await prisma.debugProblemsMaxCode.findFirstOrThrow();
+  const maxCode = maxCodeQuery.maxCode;
+  const codeNumber = maxCode.match(numberPattern) ?? ["0"];
+  const newNumber = parseInt(codeNumber[0], 10) + 1;
+  const newCode = `${prefixPattern}${newNumber.toString().padStart(3, "0")}`;
+  return newCode;
 };
 
 export const actionCreateProblem = async (
@@ -42,156 +93,86 @@ export const actionCreateProblem = async (
   formData: FormData,
 ): Promise<CreateProblemFormState> => {
   try {
-    const token = cookies().get("token")?.value;
-    const userInfo = await getUser(token);
-    if (!userInfo.ok || userInfo.user.status !== "Admin") {
+    const token = cookies().get("token");
+    const user = await getUser(token?.value);
+    if (!user.ok || user.user.status !== "Admin") {
       return {
-        ...initialState,
-        messages: ["You are not authorized to create problems"],
-      };
-    }
-    const formRid = formData.get("rid") as unknown;
-    if (isNaN(formRid as number)) {
-      return {
-        ...initialState,
-        rid_messages: ["Submission ID must be a number"],
+        errorMessages: ["You are not authorized to create problems"],
       };
     }
 
-    const validatedBody = await createProblemSchema.spa({
+    const validatedBody = await validateInput({
       code: formData.get("code"),
       name: formData.get("name"),
-      rid: parseInt(formRid as string, 10),
+      submissionId: formData.get("submissionId"),
     });
 
-    if (!validatedBody.success) {
-      const errors = validatedBody.error.format();
+    if (!validatedBody.ok) {
+      return validatedBody.error;
+    }
+
+    const { code, name, submissionId } = validatedBody.data;
+
+    const isExistedCode =
+      (await prisma.debugProblems.count({
+        where: { debugProblemCode: code },
+      })) > 0;
+    if (isExistedCode) {
       return {
-        ...initialState,
-        code_messages: errors.code?._errors ?? [],
-        name_messages: errors.name?._errors ?? [],
-        rid_messages: errors.rid?._errors ?? [],
-        messages: errors._errors ?? [],
+        codeMessages: ["Code already used"],
       };
     }
 
-    const { code, name, rid } = validatedBody.data;
-
-    if (code) {
-      const problemInfo = await prisma.problems.findUnique({
-        where: {
-          code: code,
-        },
-      });
-      if (problemInfo !== null) {
-        return {
-          ...initialState,
-          code_messages: ["Code already used"],
-        };
-      }
-    }
-
-    // check rid validity
-    if ((await prisma.debugProblems.count({ where: { rid: rid } })) > 0) {
-      return {
-        ...initialState,
-        rid_messages: ["Submission already used"],
-      };
-    }
-    const runInfo = await prisma.runs.findUnique({
+    const submission = await prisma.submissions.findUniqueOrThrow({
       where: {
-        rid: rid,
+        id: submissionId,
       },
       select: {
         result: true,
-        score: true,
-        language: true,
-        pid: true,
+        debugProblems: {
+          select: {
+            debugProblemCode: true,
+          },
+        },
       },
     });
-    if (runInfo === null) {
+
+    if (submission.debugProblems !== null) {
       return {
-        ...initialState,
-        rid_messages: ["Submission not found"],
+        submissionIdMessages: [
+          "Submission already used in problem code " +
+            submission.debugProblems.debugProblemCode,
+        ],
       };
     }
-    if (runInfo.result === "AC") {
+    if (submission.result !== "AC") {
       return {
-        ...initialState,
-        rid_messages: ["Accepted submission cannot be used"],
+        submissionIdMessages: ["Accepted submission cannot be used"],
       };
     }
+    const newCode = code.length === 0 ? await getSuggestedCode() : code;
+    const newName = name.length === 0 ? newCode : name;
 
-    if (!code) {
-      // get suggested code
-      const prefixPattern = "D";
-      const numberPattern = "[0-9]+";
-      const suffexPattern = "";
-      const codePattern = `${prefixPattern}${numberPattern}${suffexPattern}`;
-
-      const maxCodeQuery = (await prisma.$queryRaw`
-        SELECT MAX(code) FROM debug_problems 
-        WHERE code REGEXP ${codePattern}`) as { "MAX(code)": string }[];
-      const maxCode = maxCodeQuery[0]["MAX(code)"];
-
-      // assuming maxCode is not null
-      const number = maxCode.match(numberPattern);
-      if (number === null) {
-        return {
-          ...initialState,
-          messages: ["An internal server error occurred"],
-        };
-      }
-      const newNumber = parseInt(number[0], 10) + 1;
-      const newCode = `${prefixPattern}${newNumber.toString().padStart(3, "0")}`;
-
-      await prisma.debugProblems.create({
-        data: {
-          code: newCode,
-          name: name ?? newCode,
-          rid: rid,
-          score: runInfo.score,
-          language: runInfo.language,
-          pid: runInfo.pid,
-          result: runInfo.result,
-          mindiff: 10000,
-        },
-      });
-
-      return {
-        ...initialState,
-        success_messages: [`Created problem code ${newCode}`],
-      };
-    } else {
-      await prisma.debugProblems.create({
-        data: {
-          code: code,
-          name: name ?? code,
-          rid: rid,
-          score: runInfo.score,
-          language: runInfo.language,
-          pid: runInfo.pid,
-          result: runInfo.result,
-          mindiff: 10000,
-        },
-      });
-      return {
-        ...initialState,
-        success_messages: [`Created problem code ${code}`],
-      };
-    }
+    await prisma.debugProblems.create({
+      data: {
+        debugProblemCode: newCode,
+        name: newName,
+        subId: submissionId,
+      },
+    });
+    return {
+      successMessages: [`Created problem code ${newCode}`],
+    };
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.code, e.message);
       return {
-        ...initialState,
-        messages: ["An internal server error occurred"],
+        errorMessages: ["An internal server error occurred"],
       };
     } else {
       console.error(e);
       return {
-        ...initialState,
-        messages: ["An internal server error occurred"],
+        errorMessages: ["An internal server error occurred"],
       };
     }
   }

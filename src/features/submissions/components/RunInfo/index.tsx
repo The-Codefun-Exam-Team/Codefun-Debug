@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 
-import { Heading } from "@/components";
-import type { SubmissionInfo } from "@/features/submissions";
-import type { Results } from "@/types";
+import { H3 } from "@/components";
+import type { DetailedSubmissionsInfo } from "@/features/submissions";
+import type { SubmissionResult } from "@/types";
 import { RESULTS_DICT } from "@/types";
 import { getVerdictTextClass } from "@/utils";
 
@@ -16,7 +16,7 @@ const TestResult = ({
   message,
   count,
 }: {
-  verdict: Results;
+  verdict: SubmissionResult;
   runningTime: number;
   message: string;
   count: number;
@@ -25,7 +25,9 @@ const TestResult = ({
     <div>
       <div className="text-lg font-bold">
         #{count}. Verdict:{" "}
-        <span className={getVerdictTextClass(verdict)}>{RESULTS_DICT[verdict]}</span>
+        <span className={getVerdictTextClass(verdict)}>
+          {RESULTS_DICT[verdict]}
+        </span>
       </div>
       <div>{message}</div>
     </div>
@@ -35,7 +37,13 @@ const TestResult = ({
   </div>
 );
 
-const JudgeError = ({ type, error }: { type: Results; error: string }) => {
+const JudgeError = ({
+  type,
+  error,
+}: {
+  type: SubmissionResult;
+  error: string;
+}) => {
   let judgeErrorMessage: string;
   switch (type) {
     case "CE":
@@ -47,7 +55,7 @@ const JudgeError = ({ type, error }: { type: Results; error: string }) => {
   }
   return (
     <>
-      <Heading type="title">{judgeErrorMessage}</Heading>
+      <H3>{judgeErrorMessage}</H3>
       <div className="my-6 whitespace-pre-wrap break-words border-2 border-slate-600 p-2 text-[.9em]">
         {error}
       </div>
@@ -55,22 +63,22 @@ const JudgeError = ({ type, error }: { type: Results; error: string }) => {
   );
 };
 
-export const RunInfo = ({ data, codetext }: { data: SubmissionInfo; codetext: string }) => {
+export const RunInfo = ({ data }: { data: DetailedSubmissionsInfo }) => {
   const verdictNode =
-    data.result === "Q" ? (
+    data.scoreInfo.result === "Q" ? (
       <InQueue />
-    ) : typeof data.submission_judge === "string" ? (
-      <JudgeError type={data.result} error={data.submission_judge} />
+    ) : typeof data.judge === "string" ? (
+      <JudgeError type={data.scoreInfo.result} error={data.judge} />
     ) : (
-      data.submission_judge.tests.map(({ verdict, runningTime, message }, idx) => (
+      data.judge.tests.map(({ verdict, runningTime, message }, idx) => (
         <TestResult
-          key={`runinfo-${data.drid}-result-number-${idx}`}
+          key={`runinfo-${data.id}-result-number-${idx}`}
           count={idx + 1}
           verdict={verdict}
           runningTime={runningTime}
           message={message}
         />
-      )) ?? <Heading type="title">Unknown verdict, try refreshing.</Heading>
+      )) ?? <H3>Unknown verdict, try refreshing.</H3>
     );
 
   return (
@@ -78,7 +86,7 @@ export const RunInfo = ({ data, codetext }: { data: SubmissionInfo; codetext: st
       verdictNode={verdictNode}
       codeNode={
         <Suspense fallback={<CodeViewText text="Loading..." />}>
-          <RunInfoCode code={codetext} submissionUserId={data.user.tid} />
+          <RunInfoCode source={data.source} username={data.user.username} />
         </Suspense>
       }
     />

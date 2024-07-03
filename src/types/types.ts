@@ -1,9 +1,11 @@
-import type { CODEFUN_ROLES, COLOR_SCHEMES, LANGUAGES, RESULTS_DICT } from "./constants";
+import type { SubmissionResult } from "@prisma/client";
+import type { Decimal } from "@prisma/client/runtime/library";
 
-export type Languages = (typeof LANGUAGES)[number];
-export type Results = keyof typeof RESULTS_DICT;
+import type { CODEFUN_ROLES, COLOR_SCHEMES } from "./constants";
 
-export interface UserData {
+export type { Language, SubmissionResult, UserStatus } from "@prisma/client";
+
+export interface UserInfo {
   id: number;
   username: string;
   name: string;
@@ -11,7 +13,7 @@ export interface UserData {
     id: number;
     name: string;
   };
-  status: "Admin" | "Banned" | "Normal";
+  status: string;
   avatar: string;
   score: number;
   solved: number;
@@ -20,22 +22,39 @@ export interface UserData {
   rank: number;
 }
 
+export interface UserDisplayInfoNormal {
+  username: string;
+  displayName: string;
+  groupName: string;
+  status: "normal" | "admin";
+  score: string;
+  ratio: number;
+  rank: number;
+  avatar: string;
+}
+
+export interface UserDisplayInfoBanned {
+  username: string;
+  displayName: string;
+  groupName: string;
+  status: "banned";
+  avatar: string;
+  ratio: null;
+  score: null;
+  rank: null;
+}
+
+export type UserDisplayInfo = UserDisplayInfoNormal | UserDisplayInfoBanned;
+
 export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
 export type CodefunRoles = (typeof CODEFUN_ROLES)[number];
 
-interface DetailedScoreInfoNotNull {
-  score: number;
-  diff: number | null;
-  result: Results;
-  drid: number;
+export interface ScoreDisplayInfoNotNull {
+  score: Decimal;
+  diff: number;
+  result: SubmissionResult;
+  debugSubmissionId?: number;
 }
 
-interface DetailedScoreInfoNull {
-  score: 0;
-  diff: null;
-  result: null;
-  drid: null;
-}
-
-export type DetailedScoreInfo = DetailedScoreInfoNotNull | DetailedScoreInfoNull;
+export type ScoreDisplayInfo = ScoreDisplayInfoNotNull | null;

@@ -1,396 +1,547 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "views"]
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "suzume"]
 }
 
-model Admin {
-  id       Int     @id @default(autoincrement())
-  variable String? @db.TinyText
-  value    String? @db.LongText
+model GooseDbVersion {
+  id        Int       @id @default(autoincrement())
+  versionId BigInt    @map("version_id")
+  isApplied Boolean   @map("is_applied")
+  tstamp    DateTime? @default(now()) @db.Timestamp(6)
 
-  @@map("admin")
-}
-
-model BlogComments {
-  id      Int    @id @default(autoincrement())
-  blogid  Int
-  tid     Int
-  time    Int    @default(dbgenerated("(current_timestamp())"))
-  parent  Int    @default(0)
-  content String @db.LongText
-  access  String @default("") @db.Text
-
-  @@index([blogid, tid], map: "blogid")
-  @@map("blog_comments")
-}
-
-model Blogs {
-  id       Int     @id @default(autoincrement())
-  name     String  @db.Text
-  tid      Int
-  time     Int     @default(dbgenerated("(current_timestamp())"))
-  content  String  @db.LongText
-  access   String  @default("") @db.Text
-  official Boolean @default(false)
-
-  @@index([tid], map: "tid")
-  @@map("blogs")
-}
-
-model Broadcast {
-  id        Int      @id @default(autoincrement())
-  title     String   @db.TinyText
-  msg       String   @db.Text
-  createdOn DateTime @db.DateTime(0)
-  updatedOn DateTime @db.DateTime(0)
-  deleted   Int      @default(0)
-
-  @@map("broadcast")
-}
-
-model Clar {
-  time       Int     @id
-  tid        Int?
-  pid        Int?
-  query      String? @db.Text
-  reply      String? @db.Text
-  access     String? @db.TinyText
-  createtime Int?
-
-  @@map("clar")
-}
-
-model Contest {
-  id           Int     @id @default(autoincrement())
-  code         String  @db.TinyText
-  name         String  @db.Text
-  starttime    Int
-  endtime      Int
-  announcement String  @db.Text
-  ranktable    String? @db.Text
-
-  @@map("contest")
-}
-
-model ContestHacks {
-  hid     Int    @id @default(autoincrement())
-  tid     Int
-  cid     Int
-  pid     Int
-  subtime Int
-  input   String @db.LongText
-  result  String @db.Text
-  score   Float
-
-  @@index([tid, cid, pid], map: "tid")
-  @@map("contest_hacks")
-}
-
-model ContestProblemsBak {
-  pid       Int    @id @unique(map: "pid") @default(autoincrement())
-  cid       Int
-  sid       Int
-  name      String @db.Text
-  shortname String @db.Text
-  pdesc     String @db.LongText
-  timelimit Float
-  score     Int
-
-  @@index([cid], map: "cid")
-  @@index([cid], map: "cid_2")
-  @@map("contest_problems_bak")
-}
-
-model ContestRuns {
-  rid     Int     @id @default(autoincrement())
-  tid     Int
-  cid     Int
-  pid     Int
-  code    String  @db.LongText
-  iscpp   Boolean @default(true)
-  time    Float
-  result  String  @db.Text
-  subtime Int
-  scored  Boolean @default(false)
-  score   Float   @default(0)
-
-  @@index([cid], map: "cid")
-  @@index([tid, pid, scored], map: "tid")
-  @@map("contest_runs")
-}
-
-model ContestStatus {
-  id   Int @id @default(autoincrement())
-  tid  Int
-  type Int
-  rid  Int @default(0)
-
-  @@index([tid, type], map: "tid")
-  @@map("contest_status")
-}
-
-model ContestTests {
-  tid            Int    @id @default(autoincrement())
-  pid            Int    @unique(map: "pid")
-  cid            Int
-  pretest_input  String @db.LongText
-  pretest_output String @db.LongText
-  final_input    String @db.LongText
-  final_output   String @db.LongText
-  checker        String @db.LongText
-  validator      String @db.LongText
-  jury_code      String @db.LongText
-
-  @@map("contest_tests")
-}
-
-model ContestUsers {
-  cid       Int
-  id        Int    @id @default(autoincrement())
-  last_hack Int
-  tid       Int
-  sum       Int
-  penalty   Int
-  scores    String @db.Text
-
-  @@index([cid, tid], map: "cid")
-  @@map("contest_users")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model Contests {
-  cid          Int      @id @default(autoincrement())
-  contestname  String   @db.Text
-  starttime    DateTime @db.DateTime(0)
-  duration     Int
-  contesttype  String   @db.Text
-  sid          Int
-  announcement String?  @db.LongText
-  rated        Boolean
-
-  @@map("contests")
-}
-
-model DebugProblems {
-  dpid              Int                @id @default(autoincrement())
-  code              String             @unique(map: "code") @db.VarChar(20)
-  name              String             @db.TinyText
-  status            String?            @default("Active") @db.TinyText
-  solved            Int                @default(0)
-  total             Int                @default(0)
-  rid               Int
-  pid               Int
-  language          String             @db.VarChar(8)
-  score             Float              @default(0)
-  result            String             @db.VarChar(8)
-  mindiff           Int                @default(100000)
-  runs              Runs               @relation(fields: [rid], references: [rid], onUpdate: Restrict, map: "debug_problems_ibfk_1")
-  problem           Problems           @relation(fields: [pid], references: [pid], onUpdate: Restrict, map: "debug_problems_ibfk_2")
-  debug_submissions DebugSubmissions[]
-
-  @@index([pid], map: "pid")
-  @@index([rid], map: "rid")
-  @@map("debug_problems")
-}
-
-model DebugQueue {
-  rid  Int @id
-  drid Int @unique(map: "drid")
-
-  @@map("debug_queue")
-}
-
-model DebugSubmissions {
-  drid           Int           @id @default(autoincrement())
-  dpid           Int
-  rid            Int
-  tid            Int
-  language       String        @db.VarChar(8)
-  submittime     Int
-  result         String        @db.VarChar(8)
-  score          Float
-  diff           Int           @default(100000)
-  code           String        @db.LongText
-  debug_problems DebugProblems @relation(fields: [dpid], references: [dpid], onUpdate: Restrict, map: "debug_submissions_ibfk_1")
-  teams          Teams         @relation(fields: [tid], references: [tid], onUpdate: Restrict, map: "debug_submissions_ibfk_2")
-  runs           Runs          @relation(fields: [rid], references: [rid], onUpdate: Restrict, map: "debug_submissions_ibfk_3")
-
-  @@index([rid], map: "rid")
-  @@index([dpid], map: "dpid")
-  @@index([tid], map: "tid")
-  @@map("debug_submissions")
-}
-
-model goose_db_version {
-  id         BigInt    @id @unique(map: "id") @default(autoincrement()) @db.UnsignedBigInt
-  version_id BigInt
-  is_applied Boolean
-  tstamp     DateTime? @default(now()) @db.Timestamp(0)
+  @@map("goose_db_version")
+  @@schema("public")
 }
 
 model Groups {
-  gid       Int     @id @default(autoincrement())
-  groupname String  @db.TinyText
-  teams     Teams[]
+  id    Int     @id @default(autoincrement())
+  name  String  @unique @db.VarChar(128)
+  users Users[]
 
   @@map("groups")
+  @@schema("public")
 }
 
-/// This model has been renamed to 'Renamedin' during introspection, because the original name 'in' is reserved.
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model Renamedin {
-  a Int
+model PasswordResets {
+  userId    Int      @map("user_id")
+  token     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  expiresAt DateTime @default(dbgenerated("(now() + '01:00:00'::interval)")) @map("expires_at") @db.Timestamptz(6)
+  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@map("in")
-  @@ignore
+  @@map("password_resets")
+  @@schema("public")
 }
 
-model logs {
-  time    Int     @id
-  ip      String? @db.TinyText
-  tid     String? @db.Text
-  request String? @db.Text
+model PostComments {
+  id        Int      @id @default(autoincrement())
+  postId    Int      @map("post_id")
+  authorId  Int      @map("author_id")
+  parentId  Int?     @map("parent_id")
+  content   String   @db.VarChar(32000)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  users     Users    @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  posts     Posts    @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([postId, id], map: "post_comments_post")
+  @@index([updatedAt(sort: Desc)], map: "post_comments_updated_at")
+  @@map("post_comments")
+  @@schema("public")
 }
 
-model messages {
-  mid       Int     @id @default(autoincrement())
-  sender    Int
-  recipient Int
-  content   String  @db.LongText
-  time      Int
-  isread    Boolean @default(false)
+model Posts {
+  id           Int            @id @default(autoincrement())
+  title        String         @db.VarChar(128)
+  authorId     Int            @map("author_id")
+  content      String         @db.VarChar(32000)
+  isOfficial   Boolean        @default(false) @map("is_official")
+  createdAt    DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime       @default(now()) @map("updated_at") @db.Timestamptz(6)
+  postComments PostComments[]
+  users        Users          @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@index([sender, recipient, time], map: "sender")
-}
-
-model password_resets {
-  id      Int      @id @default(autoincrement())
-  user    Int
-  token   String   @db.VarChar(64)
-  timeout DateTime @db.DateTime(0)
-
-  @@index([token], map: "token")
-  @@index([user], map: "user")
+  @@index([updatedAt(sort: Desc)], map: "posts_updated_at")
+  @@map("posts")
+  @@schema("public")
 }
 
 model Problems {
-  pid           Int             @id @default(autoincrement())
-  sid           Int             @default(1)
-  code          String          @unique(map: "code") @db.VarChar(20)
-  name          String          @db.TinyText
-  type          String          @db.TinyText
-  scoretype     String          @db.Text
-  cid           Int?
-  status        String?         @db.TinyText
-  pgroup        String          @db.TinyText
-  statement     String          @db.LongText
-  timelimit     Float           @db.Float
-  score         Float           @default(0)
-  usechecker    Boolean         @default(false)
-  checkercode   String          @db.LongText
-  solved        Int             @default(0)
-  total         Int             @default(0)
-  debug_problem DebugProblems[]
+  id            Int           @id @default(autoincrement())
+  setterId      Int           @map("setter_id")
+  problemCode   String        @unique @map("problem_code") @db.VarChar(32)
+  name          String        @db.VarChar(128)
+  scoreType     ScoreType     @map("score_type")
+  problemGroup  String        @map("problem_group") @db.VarChar(128)
+  statements    String        @db.VarChar(32000)
+  timeLimit     Decimal       @map("time_limit") @db.Decimal(4, 2)
+  score         Decimal       @db.Decimal(9, 2)
+  checkerSource String?       @map("checker_source") @db.VarChar(32000)
+  solvedCount   Int           @map("solved_count")
+  totalAttempts Int           @map("total_attempts")
+  users         Users         @relation(fields: [setterId], references: [id], onUpdate: NoAction)
+  submissions   Submissions[]
 
-  @@index([cid], map: "cid")
+  @@unique([problemCode, id, name], map: "problems_problem_code_header")
   @@map("problems")
+  @@schema("public")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model room_rankings {
-  roomid Int
-  tid    Int
-  time   Int @default(0)
-  change Int @default(0)
+model Submissions {
+  id               Int               @id @default(autoincrement())
+  problemId        Int               @map("problem_id")
+  userId           Int               @map("user_id")
+  language         Language
+  createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  result           SubmissionResult
+  runningTime      Decimal           @default(0) @map("running_time") @db.Decimal(5, 3)
+  score            Decimal           @default(0) @db.Decimal(9, 2)
+  isBest           Boolean           @map("is_best")
+  source           String            @db.VarChar(32000)
+  judgeOutput      String?           @map("judge_output")
+  scoredAt         DateTime?         @map("scored_at") @db.Timestamptz(6)
+  problem          Problems          @relation(fields: [problemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users            Users             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debugProblems    DebugProblems?
+  debugSubmissions DebugSubmissions?
 
-  @@index([roomid, tid], map: "roomid")
-  @@ignore
+  @@index([problemId, score, id, userId], map: "submissions_problems_score")
+  @@index([problemId, id(sort: Desc)], map: "subs_by_problem")
+  @@index([userId, id(sort: Desc)], map: "subs_by_user")
+  @@index([userId, problemId, id(sort: Desc)], map: "subs_by_user_problem")
+  @@map("submissions")
+  @@schema("public")
 }
 
-model Rooms {
-  id       Int @id @default(autoincrement())
-  pid      Int
-  duration Int
-  lastrun  Int
+model Users {
+  id               Int                @id @default(autoincrement())
+  username         String             @unique @db.VarChar(32)
+  groupId          Int                @map("group_id")
+  password         String             @db.VarChar(128)
+  email            String?            @unique @db.VarChar(128)
+  displayName      String             @map("display_name") @db.VarChar(128)
+  userStatus       UserStatus         @default(normal) @map("user_status")
+  score            Decimal            @default(0) @db.Decimal(9, 2)
+  solvedCount      Int                @default(0) @map("solved_count")
+  createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  lastLoginAt      DateTime           @default(now()) @map("last_login_at") @db.Timestamptz(6)
+  passwordResets   PasswordResets[]
+  postComments     PostComments[]
+  posts            Posts[]
+  problems         Problems[]
+  submissions      Submissions[]
+  groups           Groups             @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debugSubmissions DebugSubmissions[]
 
-  @@index([pid], map: "pid")
-  @@map("rooms")
+  @@index([score(sort: Desc), id], map: "users_ranking")
+  @@map("users")
+  @@schema("public")
 }
 
-model Runs {
-  rid               Int                @id @default(autoincrement())
-  pid               Int
-  tid               Int
-  language          String             @db.VarChar(8)
-  time              Float              @default(0)
-  result            String             @db.VarChar(3)
-  access            String             @default("private") @db.TinyText
-  submittime        Int
-  scored            Boolean            @default(false)
-  score             Float              @default(0)
-  debug_problems    DebugProblems[]
-  team              Teams              @relation(fields: [tid], references: [tid])
-  subs_code         SubsCode           @relation(fields: [rid], references: [rid])
-  debug_submissions DebugSubmissions[]
+model DebugProblems {
+  id               Int                @id @default(autoincrement())
+  subId            Int                @unique @map("sub_id")
+  name             String             @db.VarChar(128)
+  debugProblemCode String             @unique @map("debug_problem_code") @db.VarChar(32)
+  minDiff          Int                @default(32000) @map("min_diff")
+  submission       Submissions        @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debugSubmissions DebugSubmissions[]
 
-  @@index([pid], map: "pid")
-  @@index([pid, tid, score], map: "pid_2")
-  @@index([result], map: "result")
-  @@index([rid], map: "rid")
-  @@index([tid], map: "tid")
-  @@map("runs")
+  @@map("debug_problems")
+  @@schema("suzume")
 }
 
-model SubsCode {
-  rid   Int    @id @default(autoincrement())
-  code  String @db.LongText
-  error String @default("") @db.Text
-  run   Runs?
+model DebugSubmissions {
+  id             Int              @id @default(autoincrement())
+  userId         Int              @map("user_id")
+  subId          Int              @unique @map("sub_id")
+  debugProblemId Int              @map("debug_problem_id")
+  diff           Int              @default(32000)
+  score          Decimal          @default(0) @db.Decimal(9, 2)
+  result         SubmissionResult @default(Q)
+  is_best        Boolean          @default(false)
+  debugProblem   DebugProblems    @relation(fields: [debugProblemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  submission     Submissions      @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user           Users            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@map("subs_code")
+  @@index([userId])
+  @@map("debug_submissions")
+  @@schema("suzume")
 }
 
-model Teams {
-  tid               Int                @id @default(autoincrement())
-  teamname          String             @unique(map: "teamname") @db.VarChar(32)
-  gid               Int                @map("group")
-  teamname2         String?            @db.TinyText
-  pass              String             @db.TinyText
-  email             String             @default("") @db.Text
-  name              String             @db.Text
-  signature         String             @default("") @db.LongText
-  facebook          String             @default("") @db.Text
-  status            String             @db.TinyText
-  score             Int                @default(0)
-  penalty           Int                @default(0)
-  pscore            Float              @default(0)
-  cscore            Float              @default(0)
-  rating            Int                @default(1500)
-  solved            Int                @default(0)
-  lastlogin         Int                @default(0)
-  game_time         Int                @default(0)
-  game_wins         Int                @default(0)
-  debug_submissions DebugSubmissions[]
-  group             Groups             @relation(fields: [gid], references: [gid])
-  runs              Runs[]
+view UserQuery {
+  userId      Int        @unique @map("user_id")
+  username    String     @db.VarChar(32)
+  displayName String     @map("display_name") @db.VarChar(128)
+  groupId     Int        @map("group_id")
+  groupName   String     @map("group_name") @db.VarChar(128)
+  userStatus  UserStatus @map("user_status")
+  email       String     @db.VarChar(128)
+  userScore   Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved  Int        @map("user_solved")
+  userRatio   Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank    BigInt     @map("user_rank")
 
-  @@index([pscore], map: "pscore")
-  @@index([pscore], map: "pscore_2")
-  @@index([gid])
-  @@map("teams")
+  @@map("user_query")
+  @@schema("public")
 }
 
-model xo_tables {
-  id        Int    @id @default(autoincrement())
-  p1        Int    @default(0)
-  p2        Int    @default(0)
-  last_move String @db.Text
-  move_log  String @db.Text
+view Stats {
+  problemCount BigInt @unique @map("problem_count")
 
-  @@index([p1, p2], map: "p1")
+  @@map("stats")
+  @@schema("public")
+}
+
+view ProblemListing {
+  problemId        Int        @unique @map("problem_id")
+  problemCode      String     @map("problem_code") @db.VarChar(32)
+  problemName      String     @map("problem_name") @db.VarChar(128)
+  userId           Int        @map("user_id")
+  username         String     @db.VarChar(32)
+  displayName      String     @map("display_name") @db.VarChar(128)
+  groupId          Int        @map("group_id")
+  groupName        String     @map("group_name") @db.VarChar(128)
+  userStatus       UserStatus @map("user_status")
+  email            String?    @db.VarChar(128)
+  userScore        Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved       Int        @map("user_solved")
+  userRatio        Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank         BigInt     @map("user_rank")
+  scoreType        ScoreType  @map("score_type")
+  problemGroup     String     @map("problem_group") @db.VarChar(128)
+  problemTimeLimit Decimal    @map("problem_time_limit") @db.Decimal(4, 2)
+  problemScore     Decimal    @map("problem_score") @db.Decimal(9, 2)
+  problemChecker   String     @map("problem_checker") @db.VarChar(32000)
+  problemSolved    Int        @map("problem_solved")
+  problemTotal     Int        @map("problem_total")
+
+  @@map("problem_listing")
+  @@schema("public")
+}
+
+view PostCommentQuery {
+  userId           Int        @map("user_id")
+  username         String     @db.VarChar(32)
+  displayName      String     @map("display_name") @db.VarChar(128)
+  groupId          Int        @map("group_id")
+  groupName        String     @map("group_name") @db.VarChar(128)
+  userStatus       UserStatus @map("user_status")
+  email            String?    @db.VarChar(128)
+  userScore        Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved       Int        @map("user_solved")
+  userRatio        Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank         BigInt     @map("user_rank")
+  commentId        Int        @map("comment_id")
+  commentPostId    Int        @map("comment_post_id")
+  commentContent   String     @map("comment_content") @db.VarChar(32000)
+  commentCreatedAt DateTime   @map("comment_created_at") @db.Timestamptz(6)
+  commentUpdatedAt DateTime   @map("comment_updated_at") @db.Timestamptz(6)
+  commentParentId  Int        @map("comment_parent_id")
+
+  @@unique([commentId, commentPostId])
+  @@map("post_comment_query")
+  @@schema("public")
+}
+
+view PostQuery {
+  userId           Int        @map("user_id")
+  username         String     @db.VarChar(32)
+  displayName      String     @map("display_name") @db.VarChar(128)
+  groupId          Int        @map("group_id")
+  groupName        String     @map("group_name") @db.VarChar(128)
+  userStatus       UserStatus @map("user_status")
+  email            String?    @db.VarChar(128)
+  userScore        Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved       Int        @map("user_solved")
+  userRatio        Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank         BigInt     @map("user_rank")
+  postId           Int        @unique @map("post_id")
+  postTitle        String     @map("post_title") @db.VarChar(128)
+  postContent      String     @map("post_content") @db.VarChar(32000)
+  postIsOfficial   Boolean    @map("post_is_official")
+  postCreatedAt    DateTime   @map("post_created_at") @db.Timestamptz(6)
+  postUpdatedAt    DateTime   @map("post_updated_at") @db.Timestamptz(6)
+  postCommentCount BigInt     @map("post_comment_count")
+
+  @@map("post_query")
+  @@schema("public")
+}
+
+view ProblemQuery {
+  problemId         Int        @unique @map("problem_id")
+  problemCode       String     @map("problem_code") @db.VarChar(32)
+  problemName       String     @map("problem_name") @db.VarChar(128)
+  userId            Int        @map("user_id")
+  username          String     @db.VarChar(32)
+  displayName       String     @map("display_name") @db.VarChar(128)
+  groupId           Int        @map("group_id")
+  groupName         String     @map("group_name") @db.VarChar(128)
+  userStatus        UserStatus @map("user_status")
+  email             String     @db.VarChar(128)
+  userScore         Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved        Int        @map("user_solved")
+  userRatio         Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank          BigInt     @map("user_rank")
+  scoreType         ScoreType  @map("score_type")
+  problemGroup      String     @map("problem_group") @db.VarChar(128)
+  problemTimeLimit  Decimal    @map("problem_time_limit") @db.Decimal(4, 2)
+  problemScore      Decimal    @map("problem_score") @db.Decimal(9, 2)
+  problemChecker    String     @map("problem_checker") @db.VarChar(32000)
+  problemSolved     Int        @map("problem_solved")
+  problemTotal      Int        @map("problem_total")
+  problemStatements String     @map("problem_statements") @db.VarChar(32000)
+
+  @@map("problem_query")
+  @@schema("public")
+}
+
+view SubmissionListing {
+  subId          Int              @unique @map("sub_id")
+  problemId      Int              @map("problem_id")
+  problemCode    String           @map("problem_code") @db.VarChar(32)
+  problemName    String           @map("problem_name") @db.VarChar(128)
+  userId         Int              @map("user_id")
+  username       String           @db.VarChar(32)
+  displayName    String           @map("display_name") @db.VarChar(128)
+  groupId        Int              @map("group_id")
+  groupName      String           @map("group_name") @db.VarChar(128)
+  userStatus     UserStatus       @map("user_status")
+  email          String?          @db.VarChar(128)
+  userScore      Decimal          @map("user_score") @db.Decimal(9, 2)
+  userSolved     Int              @map("user_solved")
+  userRatio      Decimal          @map("user_ratio") @db.Decimal(9, 2)
+  userRank       BigInt           @map("user_rank")
+  subLanguage    Language         @map("sub_language")
+  subResult      SubmissionResult @map("sub_result")
+  subCreatedAt   DateTime         @map("sub_created_at") @db.Timestamptz(6)
+  subRunningTime Decimal          @map("sub_running_time") @db.Decimal(5, 3)
+  subIsBest      Boolean          @map("sub_is_best")
+  subScore       Decimal          @map("sub_score") @db.Decimal(9, 2)
+
+  @@map("submission_listing")
+  @@schema("public")
+}
+
+view SubmissionQuery {
+  subId          Int              @unique @map("sub_id")
+  problemId      Int              @map("problem_id")
+  problemCode    String           @map("problem_code") @db.VarChar(32)
+  problemName    String           @map("problem_name") @db.VarChar(128)
+  userId         Int              @map("user_id")
+  username       String           @db.VarChar(32)
+  displayName    String           @map("display_name") @db.VarChar(128)
+  groupId        Int              @map("group_id")
+  groupName      String           @map("group_name") @db.VarChar(128)
+  userStatus     UserStatus       @map("user_status")
+  email          String           @db.VarChar(128)
+  userScore      Decimal          @map("user_score") @db.Decimal(9, 2)
+  userSolved     Int              @map("user_solved")
+  userRatio      Decimal          @map("user_ratio") @db.Decimal(9, 2)
+  userRank       BigInt           @map("user_rank")
+  subLanguage    Language         @map("sub_language")
+  subResult      SubmissionResult @map("sub_result")
+  subCreatedAt   DateTime         @map("sub_created_at") @db.Timestamptz(6)
+  subRunningTime Decimal          @map("sub_running_time") @db.Decimal(5, 3)
+  subIsBest      Boolean          @map("sub_is_best")
+  subScore       Decimal          @map("sub_score") @db.Decimal(9, 2)
+  subCode        String           @map("sub_code") @db.VarChar(32000)
+  subJudge       String           @map("sub_judge")
+  subScoredAt    DateTime         @map("sub_scored_at") @db.Timestamptz(6)
+
+  @@map("submission_query")
+  @@schema("public")
+}
+
+view GroupQuery {
+  groupId   Int    @unique @map("group_id")
+  groupName String @map("group_name") @db.VarChar(128)
+
+  @@map("group_query")
+  @@schema("public")
+}
+
+view Activities {
+  activityType      String     @map("activity_type")
+  activityCreatedAt DateTime   @map("activity_created_at") @db.Timestamptz(6)
+  postId            Int        @unique @map("post_id")
+  postTitle         String     @map("post_title") @db.VarChar(128)
+  commentId         Int?       @map("comment_id")
+  userId            Int        @map("user_id")
+  username          String     @db.VarChar(32)
+  displayName       String     @map("display_name") @db.VarChar(128)
+  groupId           Int        @map("group_id")
+  groupName         String     @map("group_name") @db.VarChar(128)
+  userStatus        UserStatus @map("user_status")
+  email             String?    @db.VarChar(128)
+  userScore         Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved        Int        @map("user_solved")
+  userRatio         Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank          BigInt     @map("user_rank")
+
+  @@map("activities")
+  @@schema("public")
+}
+
+view JudgeRequests {
+  subId          Int        @unique @map("sub_id")
+  problemCode    String     @map("problem_code") @db.VarChar(32)
+  subCode        String     @map("sub_code") @db.VarChar(32000)
+  subLanguage    Language   @map("sub_language")
+  problemChecker String     @map("problem_checker") @db.VarChar(32000)
+  scoreType      ScoreType? @map("score_type")
+  timeLimit      Decimal    @map("time_limit") @db.Decimal(4, 2)
+
+  @@map("judge_requests")
+  @@schema("public")
+}
+
+view ProblemHeaders {
+  problemId   Int    @unique @map("problem_id")
+  problemCode String @map("problem_code") @db.VarChar(32)
+  problemName String @map("problem_name") @db.VarChar(128)
+
+  @@map("problem_headers")
+  @@schema("public")
+}
+
+view SolvedSubmission {
+  id        Int @unique
+  problemId Int @map("problem_id")
+  userId    Int @map("user_id")
+
+  @@map("solved_submissions")
+  @@schema("public")
+}
+
+view UserStatQuery {
+  problemId      Int      @map("problem_id")
+  problemCode    String   @map("problem_code") @db.VarChar(32)
+  problemName    String   @map("problem_name") @db.VarChar(128)
+  problemScore   Decimal  @map("problem_score") @db.Decimal(9, 2)
+  subId          Int      @unique @map("sub_id")
+  subUserId      Int      @map("sub_user_id")
+  subSubmittedAt DateTime @map("sub_submitted_at") @db.Timestamptz(6)
+  subScore       Decimal  @map("sub_score") @db.Decimal(9, 2)
+
+  @@map("user_stats_query")
+  @@schema("public")
+}
+
+view DebugUserRankings {
+  userId Int     @unique @map("user_id")
+  score  Decimal @db.Decimal
+  rank   BigInt
+
+  @@map("debug_user_rankings")
+  @@schema("suzume")
+}
+
+view DebugUserStat {
+  userId      Int        @unique @map("user_id")
+  username    String     @db.VarChar(32)
+  displayName String     @map("display_name") @db.VarChar(128)
+  groupName   String     @map("group_name") @db.VarChar(128)
+  groupId     Int        @map("group_id")
+  userStatus  UserStatus @map("user_status")
+  score       Decimal?   @db.Decimal
+  ratio       Decimal?   @db.Decimal(9, 2)
+  rank        BigInt?
+  email       String?    @db.VarChar(128)
+
+  @@map("debug_user_stat")
+  @@schema("suzume")
+}
+
+view DebugUserGroup {
+  userId  Int @unique @map("user_id")
+  groupId Int @map("group_id")
+
+  @@map("debug_user_group")
+  @@schema("suzume")
+}
+
+view DebugSubmissionQuery {
+  id                   Int              @unique
+  submitTime           DateTime         @map("submit_time") @db.Timestamptz(6)
+  runtime              Decimal          @db.Decimal(5, 3)
+  source               String           @db.VarChar(32000)
+  username             String           @db.VarChar(32)
+  userDisplayName      String           @map("user_display_name") @db.VarChar(128)
+  userGroupName        String           @map("user_group_name") @db.VarChar(128)
+  userStatus           UserStatus       @map("user_status")
+  userScore            Decimal?         @map("user_score") @db.Decimal
+  userRank             BigInt?          @map("user_rank")
+  userRatio            Decimal?         @map("user_ratio") @db.Decimal(9, 2)
+  userEmail            String?          @map("user_email") @db.VarChar(128)
+  debugProblemCode     String           @map("debug_problem_code") @db.VarChar(32)
+  debugProblemJudge    String           @map("debug_problem_judge")
+  debugProblemSource   String           @map("debug_problem_source") @db.VarChar(32000)
+  debugProblemLanguage Language         @map("debug_problem_language")
+  debugSubmissionJudge String           @map("debug_submission_judge")
+  score                Decimal          @db.Decimal(9, 2)
+  result               SubmissionResult
+  diff                 Int
+
+  @@map("debug_submission_query")
+  @@schema("suzume")
+}
+
+view DebugProblemsMaxCode {
+  maxCode String @unique @map("max_code")
+
+  @@map("debug_problems_max_code")
+  @@schema("suzume")
+}
+
+enum Language {
+  C__     @map("C++")
+  Pascal
+  Java
+  Python2
+  Python3
+  Go
+  Nasm
+
+  @@map("language")
+  @@schema("public")
+}
+
+enum ScoreType {
+  acm
+  oi
+
+  @@map("score_type")
+  @@schema("public")
+}
+
+enum SubmissionResult {
+  AC
+  CE
+  DQ
+  MLE
+  Q
+  RTE
+  SS
+  TLE
+  TO
+  WA
+  Scoring @map("...")
+
+  @@map("submission_result")
+  @@schema("public")
+}
+
+enum UserStatus {
+  normal
+  admin
+  banned
+
+  @@map("user_status")
+  @@schema("public")
 }

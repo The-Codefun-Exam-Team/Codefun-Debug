@@ -1,14 +1,15 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { Heading } from "@/components";
+import { H2, H3 } from "@/components";
 import { CONTRIBUTORS_INFO, TEAM, type TeamMembers } from "@/features/about";
 
 import NO_IMAGE from "./no-image.png";
 
 export const dynamicParams = false;
 
-export const generateStaticParams = () => TEAM.map((member) => ({ id: member }));
+export const generateStaticParams = () =>
+  TEAM.map((member) => ({ id: member }));
 
 const Page = ({ params: { id } }: { params: { id: TeamMembers } }) => {
   const info = CONTRIBUTORS_INFO[id];
@@ -18,8 +19,8 @@ const Page = ({ params: { id } }: { params: { id: TeamMembers } }) => {
   return (
     <div className="flex w-full flex-col items-center gap-6 self-stretch p-6 md:flex-row md:justify-between md:p-24">
       <div className="md:flex-[2_2_0]">
-        <Heading type="title-large">{info.name}</Heading>
-        <Heading type="title">{info.roleDescription}</Heading>
+        <H2>{info.name}</H2>
+        <H3>{info.roleDescription}</H3>
       </div>
       <div className="relative size-full md:size-auto md:flex-[1_1_0] md:self-stretch">
         <Image

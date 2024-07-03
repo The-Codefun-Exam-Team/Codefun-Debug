@@ -1,3 +1,6 @@
+import type { SubmissionResult } from "@prisma/client";
+import { Language } from "@prisma/client";
+
 export const RESULTS_DICT = {
   AC: "Accepted",
   SS: "Partially Scored",
@@ -7,9 +10,15 @@ export const RESULTS_DICT = {
   CE: "Compile Error",
   MLE: "Memory Limit Exceeded",
   Q: "In Queue...",
-  R: "To Be Rejudged...",
-  "...": "Scoring...",
-};
+  Scoring: "Scoring...",
+  TO: "Time Out",
+  DQ: "Disqualified",
+} satisfies { [T in SubmissionResult]: string };
+
+export const LANGUAGES_DICT = {
+  ...Language,
+  ...{ C__: "C++" },
+} satisfies { [T in Language]: string };
 
 export const CODEFUN_ROLES = [
   "newbie",
@@ -25,7 +34,5 @@ export const CODEFUN_ROLES = [
   "admin",
   "mod",
 ] as const;
-
-export const LANGUAGES = ["Python2", "Python3", "C++", "Nasm", "Go", "Java", "Pascal"] as const;
 
 export const COLOR_SCHEMES = ["dark", "light"] as const;

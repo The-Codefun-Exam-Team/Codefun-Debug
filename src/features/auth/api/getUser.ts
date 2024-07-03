@@ -1,8 +1,12 @@
-import type { UserData } from "@/types";
+import { cache } from "react";
+
+import type { UserInfo } from "@/types";
 
 export const getUser = async (
-  token: string | undefined,
-): Promise<{ ok: false; error: string; status: number } | { ok: true; user: UserData }> => {
+  token?: string,
+): Promise<
+  { ok: false; error: string; status: number } | { ok: true; user: UserInfo }
+> => {
   if (!token) {
     return {
       ok: false,
@@ -30,3 +34,5 @@ export const getUser = async (
     user: info.data,
   };
 };
+
+export const getMemoUser = cache(getUser);

@@ -1,7 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
-  return new PrismaClient();
+  return new PrismaClient({
+    log: process.env.NODE_ENV !== "production" ? ["query"] : undefined,
+  });
 };
 
 type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;

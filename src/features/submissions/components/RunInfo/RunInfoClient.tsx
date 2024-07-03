@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { startTransition, useEffect, useState } from "react";
 
-import { Heading } from "@/components";
+import { H3 } from "@/components";
 import { useInterval } from "@/hooks";
 
 export const RunInfoClient = ({
@@ -65,7 +65,9 @@ export const RunInfoClient = ({
         leaveTo="opacity-0"
         afterLeave={toggleView}
       >
-        <div className="absolute left-0 top-0 size-full rounded-md">{codeNode}</div>
+        <div className="absolute left-0 top-0 size-full rounded-md">
+          {codeNode}
+        </div>
       </Transition>
     </div>
   );
@@ -83,5 +85,5 @@ export const InQueue = () => {
     return stop;
   }, [start, stop]);
 
-  return <Heading type="title">In queue...</Heading>;
+  return <H3>In queue...</H3>;
 };
