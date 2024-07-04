@@ -9,7 +9,7 @@ const Page = () => (
         ([username, { name, role, roleDescription, githubUsername }]) => (
           <div
             key={`contributor-${username}`}
-            className="divide-y-2 divide-gray-400 rounded-md border-2 border-gray-400 dark:divide-slate-600 dark:border-slate-600 dark:text-slate-400"
+            className="divide-y-2 divide-gray-400 rounded-md border-2 border-gray-400 dark:divide-slate-600 dark:border-slate-600 dark:text-slate-200"
           >
             <div className="p-2 text-center text-xl font-bold">
               <DecoratedLink href={`/photos/${username}`}>{name}</DecoratedLink>
@@ -18,7 +18,7 @@ const Page = () => (
               <li>Role: {role}</li>
               {githubUsername && (
                 <li>
-                  Github:{" "}
+                  GitHub:{" "}
                   <DecoratedLink
                     href={`https://github.com/${githubUsername}`}
                     target="_blank"

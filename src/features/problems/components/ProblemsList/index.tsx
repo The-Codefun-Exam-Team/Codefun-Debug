@@ -7,7 +7,13 @@ import { clsx } from "@/utils";
 
 import { ProblemScore, ProblemScoreSkeleton } from "./ProblemScore";
 
-export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; page: string }) => (
+export const ProblemsList = ({
+  problemList,
+  page,
+}: {
+  problemList: ProblemList;
+  page: string;
+}) => (
   <div className="w-full">
     <table className="w-full table-fixed">
       <thead>
@@ -32,7 +38,7 @@ export const ProblemsList = ({ problemList, page }: { problemList: ProblemList; 
             key={`problem-page-${page}-code-${problem.id}`}
             className={clsx(
               "h-10 text-center",
-              "font-semibold text-slate-600 dark:text-slate-400 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
+              "font-semibold text-slate-600 dark:text-slate-200 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
             )}
           >
             <td>

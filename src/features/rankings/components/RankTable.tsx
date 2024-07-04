@@ -52,7 +52,7 @@ export const RankTable = async ({
               key={`ranking-page-${page}-user-${user.username}`}
               className={clsx(
                 "h-10 text-center",
-                "font-semibold text-slate-600 dark:text-slate-400 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
+                "font-semibold text-slate-600 dark:text-slate-200 [&>td>div]:line-clamp-2 [&>td>div]:text-ellipsis [&>td>div]:break-words [&>td>div]:px-3 [&>td>div]:py-4",
               )}
             >
               <td>

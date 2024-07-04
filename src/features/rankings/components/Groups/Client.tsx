@@ -5,7 +5,13 @@ import Link from "next/link";
 import type { GroupsData } from "@/features/rankings";
 import { clsx } from "@/utils";
 
-export const GroupsClient = ({ groupId, data }: { groupId: number; data: GroupsData }) => {
+export const GroupsClient = ({
+  groupId,
+  data,
+}: {
+  groupId: number;
+  data: GroupsData;
+}) => {
   const currentGroupName = data.find((element) => element.id === groupId)?.name;
   return (
     <Menu>
@@ -35,7 +41,7 @@ export const GroupsClient = ({ groupId, data }: { groupId: number; data: GroupsD
                   <Link
                     href={`/rankings/${id}/1`}
                     className={clsx(
-                      "p-2 text-center text-xl text-slate-700 dark:text-slate-400",
+                      "p-2 text-center text-xl text-slate-700 dark:text-slate-200",
                       name === currentGroupName && "hidden",
                       active && "bg-accent-light/10 dark:bg-accent-dark/10",
                     )}

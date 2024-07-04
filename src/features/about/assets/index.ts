@@ -21,7 +21,8 @@ export const CONTRIBUTORS_INFO = {
     name: "Tran Gia Huy",
     githubUsername: "Unknown15082",
     role: "Backend Developer and Database Admistrator",
-    roleDescription: "Implements the API's functions; designs and maintains the database.",
+    roleDescription:
+      "Implements the API's functions; designs and maintains the database.",
     image: null,
   },
   kbnopro: {
@@ -45,7 +46,7 @@ export const CONTRIBUTORS_INFO = {
     githubUsername: "DuCanhGH",
     role: "Frontend Supervisor",
     roleDescription:
-      "Organizes frontend's repository and ensures that the codebase is legible and consistent.",
+      "Organizes the frontend's repository and ensures that the codebase is legible and consistent.",
     image: null,
   },
 } satisfies Record<TeamMembers, ContributorsEntry>;

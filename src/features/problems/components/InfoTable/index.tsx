@@ -42,7 +42,11 @@ const verdictsList = (judge: Judge | string) => {
 
   const verdictsEntries = Object.entries(RESULTS_DICT);
   const verdicts = verdictsEntries.map(
-    ([key, _value]) => ({ verdict: key, count: 0 }) as { verdict: SubmissionResult; count: number },
+    ([key, _value]) =>
+      ({ verdict: key, count: 0 }) as {
+        verdict: SubmissionResult;
+        count: number;
+      },
   );
   const verdictsIndex = Object.fromEntries(
     verdictsEntries.map(([key, _value], index) => [key, index]),
@@ -69,7 +73,10 @@ const verdictsList = (judge: Judge | string) => {
           {verdicts.map(
             ({ verdict, count }) =>
               count !== 0 && (
-                <li key={`verdict-${verdict}`} className={getVerdictTextClass(verdict)}>
+                <li
+                  key={`verdict-${verdict}`}
+                  className={getVerdictTextClass(verdict)}
+                >
                   {verdict}: {count}
                 </li>
               ),
@@ -98,17 +105,18 @@ export const InfoTable = async ({ code }: { code: string }) => {
           <tr>
             <td
               className={clsx(
-                "rounded-md text-left text-lg font-semibold text-slate-700 dark:text-slate-400",
+                "rounded-md text-left text-lg font-semibold text-slate-600 dark:text-slate-200",
                 "divide-y divide-slate-300 border border-slate-300 dark:divide-slate-600 dark:border-slate-600",
                 "[&>div]:p-2",
               )}
             >
               <div>
-                <BookOpenIcon className="relative bottom-[3px] inline size-6" /> Problem:{" "}
-                {query.debugProblemCode}
+                <BookOpenIcon className="relative bottom-[3px] inline size-6" />{" "}
+                Problem: {query.debugProblemCode}
               </div>
               <div>
-                <DocumentTextIcon className="relative bottom-[3px] inline size-6" /> Statement:{" "}
+                <DocumentTextIcon className="relative bottom-[3px] inline size-6" />{" "}
+                Statement:{" "}
                 <DecoratedLink
                   target="_blank"
                   rel="noreferrer noopener"
@@ -118,8 +126,8 @@ export const InfoTable = async ({ code }: { code: string }) => {
                 </DecoratedLink>
               </div>
               <div>
-                <LanguageIcon className="relative bottom-[3px] inline size-6" /> Language:{" "}
-                {query.language}
+                <LanguageIcon className="relative bottom-[3px] inline size-6" />{" "}
+                Language: {query.language}
               </div>
               {verdictsList(query.judge)}
             </td>
