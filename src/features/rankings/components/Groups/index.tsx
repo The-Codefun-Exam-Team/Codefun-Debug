@@ -9,8 +9,11 @@ const getGroupsData = cache(() => {
 });
 
 export const Groups = async ({ groupId }: { groupId: number }) => {
-  const data = await getGroupsData();
-  return <GroupsClient groupId={groupId} data={data} />;
+  const query = await getGroupsData();
+  if (!query.ok) {
+    throw new Error(query.message);
+  }
+  return <GroupsClient groupId={groupId} data={query.data} />;
 };
 
 Groups.preload = getGroupsData;
