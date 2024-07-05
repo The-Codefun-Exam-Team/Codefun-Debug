@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
-import { getSubmission, InfoTable, RunInfo } from "@/features/submissions";
+import { getSubmission } from "@/features/submissions";
+
+import { InfoTable } from "./InfoTable";
+import { RunInfo } from "./RunInfo";
 
 // export const generateStaticParams = () => [];
 

@@ -2,7 +2,11 @@ import { H2, H3 } from "@/components";
 import { getUsers } from "@/features/rankings";
 
 export const BriefRankTable = async () => {
-  const data = await getUsers(0, 1, 10);
+  const query = await getUsers(0, 1, 10);
+  if (!query.ok) {
+    throw new Error(query.message);
+  }
+  const data = query.data;
   return (
     <div className="w-full [&>:where(h1,h2)]:!text-accent-light dark:[&>:where(h1,h2)]:!text-accent-dark">
       <H2>Top ranking</H2>

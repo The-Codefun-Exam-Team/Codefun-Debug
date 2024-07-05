@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 
 import { H3, Pagination } from "@/components";
-import {
-  getProblemCount,
-  getProblems,
-  ProblemsList,
-} from "@/features/problems";
+import { getProblemCount, getProblems } from "@/features/problems";
+
+import { ProblemsList } from "./ProblemsList";
 
 export const metadata: Metadata = {
   title: "Problems",
