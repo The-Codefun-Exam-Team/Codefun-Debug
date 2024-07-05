@@ -1,5 +1,4 @@
 import prisma from "@database/prisma/instance";
-import { cookies } from "next/headers";
 
 import { verifyCodefun } from "@/features/auth";
 import { getProblem } from "@/features/problems";
@@ -7,20 +6,30 @@ import {
   setSubmissionDiff,
   submitCodefunProblem,
 } from "@/features/submissions";
-import { calcEditDistance } from "@/utils";
+import type { FunctionReturnType } from "@/types";
+import { calcEditDistance, handleCatch } from "@/utils";
 
-export const submit = async (debugProblemCode: string, source: string) => {
+export const submit = async (
+  debugProblemCode: string,
+  source: string,
+): Promise<FunctionReturnType<number>> => {
   try {
-    const cookiesStore = cookies();
-    const token = cookiesStore.get("token");
     const debugProblem = await getProblem(debugProblemCode);
     if (!debugProblem.ok) {
-      throw new Error(debugProblem.message);
+      return {
+        ok: false,
+        message: debugProblem.message,
+        status: debugProblem.status,
+      };
     }
     const debugProblemData = debugProblem.data;
-    const user = await verifyCodefun(token?.value);
+    const user = await verifyCodefun();
     if (!user.ok) {
-      throw new Error("You are not logged in");
+      return {
+        ok: false,
+        message: user.message,
+        status: user.status,
+      };
     }
     const {
       language,
@@ -47,9 +56,11 @@ export const submit = async (debugProblemCode: string, source: string) => {
       await calcEditDistance(debugProblemData.source, source),
     );
 
-    return debugSubmission.id;
+    return {
+      ok: true,
+      data: debugSubmission.id,
+    };
   } catch (e) {
-    if (e instanceof Error) {
-    }
+    return handleCatch(e);
   }
 };

@@ -94,7 +94,7 @@ export const EditorClient = ({
       setSubmitError(res.message);
       return;
     }
-    router.push(`/submissions/${res.id}`);
+    router.push(`/submissions/${res.data}`);
   };
   useEffect(() => {
     const removeErrorTimer = setTimeout(() => setSubmitError(""), 5000);
