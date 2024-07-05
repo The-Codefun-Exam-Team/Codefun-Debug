@@ -27,8 +27,8 @@ export const actionLogin = async (
       return {
         ok: false,
         message: "",
-        username_message: errors.username?._errors[0],
-        password_message: errors.password?._errors[0],
+        usernameMessage: errors.username?._errors,
+        passwordMessage: errors.password?._errors,
         status: 401,
       };
     }

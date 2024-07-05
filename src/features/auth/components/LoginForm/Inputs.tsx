@@ -49,8 +49,8 @@ export const Inputs = () => {
             label="Username"
             placeholder="Username"
             errorTextId="login-form-username-error-text"
-            error={!state.ok && !!state.username_message}
-            errorText={!state.ok ? state.username_message : ""}
+            error={!state.ok && !!state.usernameMessage?.length}
+            errorText={!state.ok ? state.usernameMessage?.join("\n") : ""}
             disabled={pending}
           />
         </div>
@@ -62,8 +62,8 @@ export const Inputs = () => {
             label="Password"
             placeholder="Password"
             errorTextId="login-form-password-error-text"
-            error={!state.ok && !!state.password_message}
-            errorText={!state.ok ? state.password_message : ""}
+            error={!state.ok && !!state.passwordMessage?.length}
+            errorText={!state.ok ? state.passwordMessage?.join("\n") : ""}
             disabled={pending}
           />
         </div>

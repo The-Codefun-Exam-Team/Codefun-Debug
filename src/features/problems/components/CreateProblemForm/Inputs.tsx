@@ -6,36 +6,51 @@ import { useFormState, useFormStatus } from "react-dom";
 import { ErrorBox, H2, Input, SuccessBox } from "@/components";
 import type { CreateProblemFormState } from "@/features/problems";
 import { actionCreateProblem } from "@/features/problems";
-import { useAppDispatch } from "@/hooks";
 
 const initialState: CreateProblemFormState = {
-  codeMessages: [],
-  nameMessages: [],
-  submissionIdMessages: [],
-  errorMessages: [],
-  successMessages: [],
+  ok: true,
+  data: {
+    code: "",
+    name: "",
+    subId: 0,
+  },
 };
 
 export const Inputs = () => {
-  const dispatch = useAppDispatch();
   const { pending } = useFormStatus();
   const [state, formAction] = useFormState(actionCreateProblem, initialState);
-  const [displayState, setDisplayState] = useState(initialState);
+  const [shouldDisplayError, setShouldDisplayError] = useState(false);
+  const [shouldDisplaySuccess, setShouldDisplaySuccess] = useState(false);
 
   useEffect(() => {
-    setDisplayState(state);
-  }, [state, dispatch]);
-
-  useEffect(() => {
-    if (displayState !== initialState) {
-      const timeout = setTimeout(() => {
-        setDisplayState(initialState);
-      }, 5000);
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (!state.ok && !!state.message) {
+      setShouldDisplayError(true);
     }
-  }, [displayState]);
+  }, [state]);
+
+  useEffect(() => {
+    if (shouldDisplayError) {
+      const timer = setTimeout(() => {
+        setShouldDisplayError(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [shouldDisplayError]);
+
+  useEffect(() => {
+    if (state.ok && !!state.data.code) {
+      setShouldDisplaySuccess(true);
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (shouldDisplaySuccess) {
+      const timer = setTimeout(() => {
+        setShouldDisplaySuccess(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [shouldDisplaySuccess]);
 
   return (
     <>
@@ -53,9 +68,9 @@ export const Inputs = () => {
             label="Code"
             name="code"
             placeholder="(Optional)"
-            error={displayState.codeMessages !== undefined}
+            error={!state.ok && !!state.codeMessages?.length}
             errorTextId="create-problem-form-code-error-text"
-            errorText={displayState.codeMessages?.join(", ")}
+            errorText={!state.ok ? state.codeMessages?.join(", ") : ""}
             disabled={pending}
           />
         </div>
@@ -65,9 +80,9 @@ export const Inputs = () => {
             label="Name"
             name="name"
             placeholder="(Optional)"
-            error={displayState.nameMessages !== undefined}
+            error={!state.ok && !!state.nameMessages?.length}
             errorTextId="create-problem-form-name-error-text"
-            errorText={displayState.nameMessages?.join(", ")}
+            errorText={!state.ok ? state.nameMessages?.join(", ") : ""}
             disabled={pending}
           />
         </div>
@@ -78,29 +93,30 @@ export const Inputs = () => {
           label="Submission ID"
           name="submissionId"
           placeholder="Submission ID"
-          error={displayState.submissionIdMessages !== undefined}
+          error={!state.ok && !!state.submissionIdMessages?.length}
           errorTextId="create-problem-form-submission-id-error-text"
-          errorText={displayState.submissionIdMessages?.join(", ")}
+          errorText={!state.ok ? state.submissionIdMessages?.join(", ") : ""}
           disabled={pending}
         />
       </div>
 
-      {!!displayState.errorMessages && displayState.errorMessages.length > 0 ? (
+      {shouldDisplayError ? (
         <ErrorBox
           closeFn={() => {
-            setDisplayState({ ...displayState, errorMessages: [] });
+            setShouldDisplayError(false);
           }}
         >
-          {displayState.errorMessages.join(", ")}
+          {!state.ok ? state?.message : ""}
         </ErrorBox>
-      ) : displayState.successMessages &&
-        displayState.successMessages.length > 0 ? (
+      ) : shouldDisplaySuccess ? (
         <SuccessBox
           closeFn={() => {
-            setDisplayState({ ...displayState, successMessages: [] });
+            setShouldDisplaySuccess(false);
           }}
         >
-          {displayState.successMessages.join(", ")}
+          {state.ok
+            ? `Problem created successfully using code ${state.data.code}.`
+            : ""}
         </SuccessBox>
       ) : (
         <button

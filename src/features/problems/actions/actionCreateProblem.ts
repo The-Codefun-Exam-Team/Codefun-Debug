@@ -1,10 +1,11 @@
 "use server";
 
 import prisma from "@database/prisma/instance";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { z } from "zod";
 
 import { verifyCodefun } from "@/features/auth";
+import type { CreateProblemFormState } from "@/features/problems";
+import { handleCatch } from "@/utils";
 
 const createProblemSchema = z.object({
   code: z
@@ -24,56 +25,6 @@ const createProblemSchema = z.object({
 });
 
 export type CreateProblemSchemaType = z.infer<typeof createProblemSchema>;
-
-export interface CreateProblemResponse {
-  status: "OK" | "DUPLICATED" | "FAILED";
-  message: string;
-  code: string;
-}
-
-export interface CreateProblemFormState {
-  codeMessages?: string[];
-  nameMessages?: string[];
-  submissionIdMessages?: string[];
-  errorMessages?: string[];
-  successMessages?: string[];
-}
-
-const validateInput = async ({
-  code,
-  name,
-  submissionId,
-}: {
-  code: FormDataEntryValue | null;
-  name: FormDataEntryValue | null;
-  submissionId: FormDataEntryValue | null;
-}): Promise<
-  | { ok: true; data: CreateProblemSchemaType }
-  | { ok: false; error: CreateProblemFormState }
-> => {
-  const validatedBody = await createProblemSchema.spa({
-    code,
-    name,
-    submissionId,
-  });
-  if (!validatedBody.success) {
-    // TODO: Consider using validatedBody.error.flatten().fieldErrors
-    const errors = validatedBody.error.format();
-    return {
-      ok: false,
-      error: {
-        codeMessages: errors.code?._errors,
-        nameMessages: errors.name?._errors,
-        submissionIdMessages: errors.submissionId?._errors,
-        errorMessages: errors._errors,
-      },
-    };
-  }
-  return {
-    ok: true,
-    data: validatedBody.data,
-  };
-};
 
 const getSuggestedCode = async () => {
   const prefixPattern = "D";
@@ -96,18 +47,28 @@ export const actionCreateProblem = async (
     const user = await verifyCodefun();
     if (!user.ok || user.data.status !== "Admin") {
       return {
-        errorMessages: ["You are not authorized to create problems"],
+        ok: false,
+        message: "You are not authorized to create problems",
+        status: 403,
       };
     }
 
-    const validatedBody = await validateInput({
+    const validatedBody = await createProblemSchema.spa({
       code: formData.get("code"),
       name: formData.get("name"),
       submissionId: formData.get("submissionId"),
     });
 
-    if (!validatedBody.ok) {
-      return validatedBody.error;
+    if (!validatedBody.success) {
+      const errors = validatedBody.error.format();
+      return {
+        ok: false,
+        message: "",
+        codeMessages: errors.code?._errors,
+        nameMessages: errors.name?._errors,
+        submissionIdMessages: errors.submissionId?._errors,
+        status: 401,
+      };
     }
 
     const { code, name, submissionId } = validatedBody.data;
@@ -118,7 +79,10 @@ export const actionCreateProblem = async (
       })) > 0;
     if (isExistedCode) {
       return {
+        ok: false,
+        message: "",
         codeMessages: ["Code already used"],
+        status: 409,
       };
     }
 
@@ -138,14 +102,20 @@ export const actionCreateProblem = async (
 
     if (submission.debugProblems !== null) {
       return {
+        ok: false,
+        message: "",
         submissionIdMessages: [
           "Submission already used in problem code " +
             submission.debugProblems.debugProblemCode,
         ],
+        status: 409,
       };
     }
     if (submission.result !== "AC") {
       return {
+        ok: false,
+        message: "",
+        status: 409,
         submissionIdMessages: ["Accepted submission cannot be used"],
       };
     }
@@ -160,19 +130,14 @@ export const actionCreateProblem = async (
       },
     });
     return {
-      successMessages: [`Created problem code ${newCode}`],
+      ok: true,
+      data: {
+        code: newCode,
+        name: newName,
+        subId: submissionId,
+      },
     };
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.error(e.code, e.message);
-      return {
-        errorMessages: ["An internal server error occurred"],
-      };
-    } else {
-      console.error(e);
-      return {
-        errorMessages: ["An internal server error occurred"],
-      };
-    }
+    return handleCatch(e);
   }
 };

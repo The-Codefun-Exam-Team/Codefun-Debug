@@ -47,15 +47,16 @@ interface FunctionReturnTypeErrorBase {
 }
 
 export type FunctionReturnTypeError<T extends object = object> =
-  FunctionReturnTypeErrorBase & {
-    [K in keyof T]?: string;
-  };
+  FunctionReturnTypeErrorBase & T;
+
 type FunctionReturnTypeVoid = { ok: true };
 
 type FunctionReturnTypeNonVoid<Data> = { ok: true; data: Data };
 
+type FunctionReturnTypeSuccess<Data> = Data extends void
+  ? FunctionReturnTypeVoid
+  : FunctionReturnTypeNonVoid<Data>;
+
 export type FunctionReturnType<Data = void, Error extends object = object> =
-  | (Data extends void
-      ? FunctionReturnTypeVoid
-      : FunctionReturnTypeNonVoid<Data>)
+  | FunctionReturnTypeSuccess<Data>
   | FunctionReturnTypeError<Error>;
