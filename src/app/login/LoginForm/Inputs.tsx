@@ -17,18 +17,14 @@ export const Inputs = () => {
   );
 
   useEffect(() => {
-    if (shouldDisplayMessage) {
-      const timer = setTimeout(() => {
-        setShouldDisplayMessage(false);
-      }, 5000);
-      return () => clearTimeout(timer);
+    if (state.ok || !state.message) {
+      setShouldDisplayMessage(false);
     }
-  }, [shouldDisplayMessage]);
-
-  useEffect(() => {
-    if (!state.ok && !!state.message) {
-      setShouldDisplayMessage(true);
-    }
+    setShouldDisplayMessage(true);
+    const timer = setTimeout(() => {
+      setShouldDisplayMessage(false);
+    }, 5000);
+    return () => clearTimeout(timer);
   }, [state]);
 
   return (

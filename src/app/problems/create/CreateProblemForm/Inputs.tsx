@@ -15,9 +15,10 @@ const initialState: CreateProblemFormState = {
   },
 };
 
+type DisplayState = "default" | "error" | "success";
+
 export const Inputs = () => {
-  const [shouldDisplayError, setShouldDisplayError] = useState(false);
-  const [shouldDisplaySuccess, setShouldDisplaySuccess] = useState(false);
+  const [displayState, setDisplayState] = useState<DisplayState>("default");
 
   const [state, formAction, pending] = useActionState(
     actionCreateProblem,
@@ -26,36 +27,21 @@ export const Inputs = () => {
 
   useEffect(() => {
     if (!state.ok && !!state.message) {
-      setShouldDisplayError(true);
+      setDisplayState("error");
+    } else if (state.ok && !!state.data.code) {
+      setDisplayState("success");
     }
+    const timer = setTimeout(() => {
+      setDisplayState("default");
+    }, 5000);
+    return () => clearTimeout(timer);
   }, [state]);
-
-  useEffect(() => {
-    if (shouldDisplayError) {
-      const timer = setTimeout(() => {
-        setShouldDisplayError(false);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [shouldDisplayError]);
-
-  useEffect(() => {
-    if (state.ok && !!state.data.code) {
-      setShouldDisplaySuccess(true);
-    }
-  }, [state]);
-
-  useEffect(() => {
-    if (shouldDisplaySuccess) {
-      const timer = setTimeout(() => {
-        setShouldDisplaySuccess(false);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [shouldDisplaySuccess]);
 
   return (
-    <>
+    <form
+      action={formAction}
+      className="flex w-full flex-col gap-6 text-slate-700"
+    >
       <div className="text-center">
         <H2>
           <div className="text-accent-light dark:text-accent-dark ">
@@ -102,20 +88,12 @@ export const Inputs = () => {
         />
       </div>
 
-      {shouldDisplayError ? (
-        <ErrorBox
-          closeFn={() => {
-            setShouldDisplayError(false);
-          }}
-        >
-          {!state.ok ? state?.message : ""}
+      {displayState === "error" ? (
+        <ErrorBox closeFn={() => setDisplayState("default")}>
+          {!state.ok ? state.message : ""}
         </ErrorBox>
-      ) : shouldDisplaySuccess ? (
-        <SuccessBox
-          closeFn={() => {
-            setShouldDisplaySuccess(false);
-          }}
-        >
+      ) : displayState === "success" ? (
+        <SuccessBox closeFn={() => setDisplayState("default")}>
           {state.ok
             ? `Problem created successfully using code ${state.data.code}.`
             : ""}
@@ -125,11 +103,10 @@ export const Inputs = () => {
           type="submit"
           className="disabled:opacity-7x0 rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity dark:border dark:border-slate-400 dark:text-slate-300"
           disabled={pending}
-          formAction={formAction}
         >
           {pending ? "Creating problem..." : "Create problem"}
         </button>
       )}
-    </>
+    </form>
   );
 };

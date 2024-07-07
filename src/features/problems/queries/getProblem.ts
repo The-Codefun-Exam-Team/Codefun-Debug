@@ -61,4 +61,4 @@ const getProblem = async (
   }
 };
 
-export const getProblemWithMemo = cache<typeof getProblem>(getProblem);
+export const getProblemWithMemo = cache(getProblem);

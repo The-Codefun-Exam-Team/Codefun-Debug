@@ -46,5 +46,4 @@ const getProblemsScore = async (): Promise<
   }
 };
 
-export const getProblemsScoreWithMemo =
-  cache<typeof getProblemsScore>(getProblemsScore);
+export const getProblemsScoreWithMemo = cache(getProblemsScore);

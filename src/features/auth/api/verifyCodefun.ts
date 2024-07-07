@@ -55,4 +55,4 @@ const verifyCodefun = async (
   }
 };
 
-export const verifyCodefunWithMemo = cache<typeof verifyCodefun>(verifyCodefun);
+export const verifyCodefunWithMemo = cache(verifyCodefun);

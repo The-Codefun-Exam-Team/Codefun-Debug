@@ -35,7 +35,6 @@ const getSuggestedCode = async () => {
   const codeNumber = maxCode.match(numberPattern) ?? ["0"];
   const newNumber = parseInt(codeNumber[0], 10) + 1;
   const newCode = `${prefixPattern}${newNumber.toString().padStart(3, "0")}`;
-  console.log(newCode);
   return newCode;
 };
 

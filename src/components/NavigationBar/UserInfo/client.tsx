@@ -30,23 +30,16 @@ export const UserInfoClient = ({
   const roleColor = getCodefunRoleTextClass(role);
 
   useEffect(() => {
-    if (!logoutData.ok) {
-      setShouldDisplayError(true);
-    } else {
+    if (logoutData.ok) {
       setShouldDisplayError(false);
+      return;
     }
-  }, [logoutData.ok, setShouldDisplayError, logoutData]);
-
-  useEffect(() => {
-    if (shouldDisplayError) {
-      const timeout = setTimeout(() => {
-        setShouldDisplayError(false);
-      }, 5000);
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [shouldDisplayError, setShouldDisplayError]);
+    setShouldDisplayError(true);
+    const timeout = setTimeout(() => {
+      setShouldDisplayError(false);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [logoutData]);
 
   return (
     <Menu as="div" className="relative">
