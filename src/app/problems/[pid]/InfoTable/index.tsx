@@ -109,7 +109,7 @@ export const InfoTable = async ({ code }: { code: string }) => {
           <tr>
             <td
               className={clsx(
-                "rounded-md text-left text-lg font-semibold text-slate-700 dark:text-slate-400",
+                "rounded-md text-left text-lg font-semibold text-slate-600 dark:text-slate-200",
                 "divide-y divide-slate-300 border border-slate-300 dark:divide-slate-600 dark:border-slate-600",
                 "[&>div]:p-2",
               )}

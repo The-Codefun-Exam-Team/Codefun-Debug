@@ -1,6 +1,4 @@
-import type { Language } from "@prisma/client";
-
-import type { FunctionReturnType } from "@/types";
+import type { FunctionReturnType, Language } from "@/types";
 import type { Judge } from "@/utils/parseJudge";
 
 export interface ProblemInfo {

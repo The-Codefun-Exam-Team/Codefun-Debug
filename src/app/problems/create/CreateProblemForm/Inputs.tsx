@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect, useState } from "react";
 
 import { ErrorBox, H2, Input, SuccessBox } from "@/components";
 import type { CreateProblemFormState } from "@/features/problems";
@@ -17,10 +16,13 @@ const initialState: CreateProblemFormState = {
 };
 
 export const Inputs = () => {
-  const { pending } = useFormStatus();
-  const [state, formAction] = useFormState(actionCreateProblem, initialState);
   const [shouldDisplayError, setShouldDisplayError] = useState(false);
   const [shouldDisplaySuccess, setShouldDisplaySuccess] = useState(false);
+
+  const [state, formAction, pending] = useActionState(
+    actionCreateProblem,
+    initialState,
+  );
 
   useEffect(() => {
     if (!state.ok && !!state.message) {

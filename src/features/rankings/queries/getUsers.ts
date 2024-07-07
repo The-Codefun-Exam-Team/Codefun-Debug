@@ -1,10 +1,9 @@
 import prisma from "@database/prisma/instance";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { unstable_cache } from "next/cache";
 
 import type { RankingsData } from "@/features/rankings";
 import type { FunctionReturnType, UserDisplayInfo } from "@/types";
-import { gravatarFromEmail } from "@/utils";
+import { gravatarFromEmail, handleCatch } from "@/utils";
 
 export const getUsers = async (
   groupId: number,
@@ -76,11 +75,6 @@ export const getUsers = async (
       { revalidate: 20 },
     )();
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.error(e.code, e.message);
-    } else {
-      console.error(e);
-    }
-    throw new Error("Internal Server Error");
+    return handleCatch(e);
   }
 };

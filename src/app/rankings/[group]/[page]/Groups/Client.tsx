@@ -41,7 +41,7 @@ export const GroupsClient = ({
                   <Link
                     href={`/rankings/${id}/1`}
                     className={clsx(
-                      "p-2 text-center text-xl text-slate-700 dark:text-slate-400",
+                      "p-2 text-center text-xl text-slate-700 dark:text-slate-200",
                       name === currentGroupName && "hidden",
                       active && "bg-accent-light/10 dark:bg-accent-dark/10",
                     )}

@@ -77,6 +77,7 @@ export const actionCreateProblem = async (
       (await prisma.debugProblems.count({
         where: { debugProblemCode: code },
       })) > 0;
+
     if (isExistedCode) {
       return {
         ok: false,

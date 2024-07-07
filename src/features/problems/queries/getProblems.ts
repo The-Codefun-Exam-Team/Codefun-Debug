@@ -1,9 +1,8 @@
 import prisma from "@database/prisma/instance";
-import { Language } from "@prisma/client";
 import { unstable_cache } from "next/cache";
 
 import type { ProblemList } from "@/features/problems";
-import type { FunctionReturnType } from "@/types";
+import { type FunctionReturnType, LANGUAGES_DICT } from "@/types";
 import { handleCatch } from "@/utils";
 
 export const getProblems = async (
@@ -33,7 +32,7 @@ export const getProblems = async (
             id: problem.id,
             debugProblemCode: problem.debugProblemCode,
             name: problem.name,
-            language: Language[problem.submission.language],
+            language: LANGUAGES_DICT[problem.submission.language],
           };
         });
       },

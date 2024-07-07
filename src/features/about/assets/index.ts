@@ -46,7 +46,7 @@ export const CONTRIBUTORS_INFO = {
     githubUsername: "DuCanhGH",
     role: "Frontend Supervisor",
     roleDescription:
-      "Organizes frontend's repository and ensures that the codebase is legible and consistent.",
+      "Organizes the frontend's repository and ensures that the codebase is legible and consistent.",
     image: null,
   },
 } satisfies Record<TeamMembers, ContributorsEntry>;

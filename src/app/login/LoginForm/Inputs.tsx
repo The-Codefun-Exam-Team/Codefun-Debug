@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect, useState } from "react";
 
 import { ErrorBox, H2, Input } from "@/components";
 import type { LoginFormState } from "@/features/auth";
@@ -11,9 +10,11 @@ const initialState: LoginFormState = {
 };
 
 export const Inputs = () => {
-  const { pending } = useFormStatus();
-  const [state, formAction] = useFormState(actionLogin, initialState);
   const [shouldDisplayMessage, setShouldDisplayMessage] = useState(false);
+  const [state, formAction, pending] = useActionState(
+    actionLogin,
+    initialState,
+  );
 
   useEffect(() => {
     if (shouldDisplayMessage) {
@@ -29,10 +30,6 @@ export const Inputs = () => {
       setShouldDisplayMessage(true);
     }
   }, [state]);
-
-  const clearMessage = () => {
-    setShouldDisplayMessage(false);
-  };
 
   return (
     <form action={formAction} className="flex w-full flex-col">
@@ -68,7 +65,13 @@ export const Inputs = () => {
           />
         </div>
         {!state.ok && !!state.message && shouldDisplayMessage ? (
-          <ErrorBox closeFn={clearMessage}>{state.message}</ErrorBox>
+          <ErrorBox
+            closeFn={() => {
+              setShouldDisplayMessage(false);
+            }}
+          >
+            {state.message}
+          </ErrorBox>
         ) : (
           <button
             type="submit"

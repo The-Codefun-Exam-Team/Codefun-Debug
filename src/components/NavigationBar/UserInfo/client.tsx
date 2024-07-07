@@ -1,15 +1,15 @@
 "use client";
 import { Menu, Transition } from "@headlessui/react";
 import { usePathname } from "next/navigation";
-import { type ReactNode, useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import { useEffect, useState } from "react";
+import { type ReactNode, useActionState } from "react";
 
 import { actionLogout } from "@/features/auth";
 import type { CodefunRoles } from "@/types";
 import { clsx, getCodefunRoleTextClass } from "@/utils";
 
 import { ADDITIONAL_LINKS } from "../constants";
-import { BaseNavLink, NAV_BUTTON_CLASS } from "../NavLink";
+import { BaseNavLink } from "../NavLink";
 import { MENU_ITEMS_CLASS } from "./constants";
 import { DarkModeToggler } from "./DarkModeToggler";
 
@@ -25,8 +25,8 @@ export const UserInfoClient = ({
   userInfoNode,
 }: UserInfoClientProps) => {
   const pathname = usePathname();
-  const [logoutData, logout] = useFormState(actionLogout, { ok: true });
   const [shouldDisplayError, setShouldDisplayError] = useState(false);
+  const [logoutData, logout] = useActionState(actionLogout, { ok: true });
   const roleColor = getCodefunRoleTextClass(role);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export const UserInfoClient = ({
               <form action={logout}>
                 <button
                   type="submit"
-                  className={clsx(NAV_BUTTON_CLASS, MENU_ITEMS_CLASS)}
+                  className={clsx("nav-button", MENU_ITEMS_CLASS)}
                 >
                   Sign out
                 </button>
