@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 import { Score } from "@/components";
-import { verifyCodefun } from "@/features/auth";
+import { verifyCodefunWithMemo } from "@/features/auth";
 import { getProblemScore } from "@/features/problems";
 
 export const InfoTableScore = async ({ problemId }: { problemId: number }) => {
@@ -12,7 +12,7 @@ export const InfoTableScore = async ({ problemId }: { problemId: number }) => {
       <div className="pb-4 pt-5 text-center text-2xl">Login to view score</div>
     );
   }
-  const userInfo = await verifyCodefun(token.value);
+  const userInfo = await verifyCodefunWithMemo(token.value);
   if (!userInfo.ok) {
     return <div className="pb-4 pt-5 text-center text-2xl"></div>;
   }

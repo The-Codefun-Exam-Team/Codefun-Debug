@@ -1,4 +1,4 @@
-import { verifyCodefun } from "@/features/auth";
+import { verifyCodefunWithMemo } from "@/features/auth";
 
 import { CodeView } from "./CodeView";
 import { CodeViewText } from "./CodeViewText";
@@ -10,7 +10,7 @@ export const RunInfoCode = async ({
   source: string;
   username: string;
 }) => {
-  const userInfo = await verifyCodefun();
+  const userInfo = await verifyCodefunWithMemo();
   if (
     !userInfo.ok ||
     (userInfo.data.username !== username && userInfo.data.status !== "admin")

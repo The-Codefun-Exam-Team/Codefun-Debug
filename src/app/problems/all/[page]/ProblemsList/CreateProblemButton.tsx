@@ -2,10 +2,10 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { PlusSignIcon } from "@/components/icon";
-import { verifyCodefun } from "@/features/auth";
+import { verifyCodefunWithMemo } from "@/features/auth";
 
 const CreateProblemButtonBase = async () => {
-  const user = await verifyCodefun();
+  const user = await verifyCodefunWithMemo();
   if (!user.ok || !user.data || user.data.status !== "Admin") {
     return <div className="size-7 border-2 border-transparent" />;
   }

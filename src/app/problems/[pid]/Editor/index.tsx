@@ -1,13 +1,13 @@
 import { cookies } from "next/headers";
 
-import { getProblem } from "@/features/problems";
+import { getProblemWithMemo } from "@/features/problems";
 
 import { EditorClient } from "./Client";
 
 export const Editor = async ({ code }: { code: string }) => {
   const cookiesStore = cookies();
   const token = cookiesStore.get("token");
-  const problemData = await getProblem(code);
+  const problemData = await getProblemWithMemo(code);
   if (!problemData.ok) {
     throw new Error(problemData.message);
   }
@@ -20,4 +20,4 @@ export const Editor = async ({ code }: { code: string }) => {
   );
 };
 
-Editor.preload = getProblem;
+Editor.preload = getProblemWithMemo;

@@ -7,7 +7,7 @@ import type { FunctionReturnType } from "@/types";
 import { LANGUAGES_DICT } from "@/types";
 import { handleCatch, parseJudge } from "@/utils";
 
-const getProblemNoMemo = async (
+const getProblem = async (
   code: string,
 ): Promise<FunctionReturnType<DetailedProblemInfo>> => {
   try {
@@ -61,4 +61,4 @@ const getProblemNoMemo = async (
   }
 };
 
-export const getProblem = cache<typeof getProblemNoMemo>(getProblemNoMemo);
+export const getProblemWithMemo = cache<typeof getProblem>(getProblem);

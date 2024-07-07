@@ -1,7 +1,7 @@
 import prisma from "@database/prisma/instance";
 
-import { verifyCodefun } from "@/features/auth";
-import { getProblem } from "@/features/problems";
+import { verifyCodefunWithMemo } from "@/features/auth";
+import { getProblemWithMemo } from "@/features/problems";
 import {
   setSubmissionDiff,
   submitCodefunProblem,
@@ -14,7 +14,7 @@ export const submit = async (
   source: string,
 ): Promise<FunctionReturnType<number>> => {
   try {
-    const debugProblem = await getProblem(debugProblemCode);
+    const debugProblem = await getProblemWithMemo(debugProblemCode);
     if (!debugProblem.ok) {
       return {
         ok: false,
@@ -23,7 +23,7 @@ export const submit = async (
       };
     }
     const debugProblemData = debugProblem.data;
-    const user = await verifyCodefun();
+    const user = await verifyCodefunWithMemo();
     if (!user.ok) {
       return {
         ok: false,

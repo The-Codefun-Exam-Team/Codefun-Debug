@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 
 import { Score } from "@/components";
-import { verifyCodefun } from "@/features/auth";
-import { getProblemsScore } from "@/features/problems";
+import { verifyCodefunWithMemo } from "@/features/auth";
+import { getProblemsScoreWithMemo } from "@/features/problems";
 
 export const ProblemScoreText = ({ text }: { text: string }) => (
   <p className="font-semibold text-slate-600 dark:text-slate-200">{text}</p>
@@ -14,11 +14,11 @@ export const ProblemScore = async ({ id }: { id: number }) => {
   if (!token || !token.value) {
     return <ProblemScoreText text="Not Available" />;
   }
-  const user = await verifyCodefun(token.value);
+  const user = await verifyCodefunWithMemo(token.value);
   if (!user.ok) {
     return <ProblemScoreText text="Not Available" />;
   }
-  const allProblemsScore = await getProblemsScore();
+  const allProblemsScore = await getProblemsScoreWithMemo();
   if (!allProblemsScore.ok) {
     return <ProblemScoreText text="Not Available" />;
   }

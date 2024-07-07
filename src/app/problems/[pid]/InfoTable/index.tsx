@@ -8,7 +8,7 @@ import {
   LanguageIcon,
   SolidDownIcon,
 } from "@/components/icon";
-import { getProblem } from "@/features/problems";
+import { getProblemWithMemo } from "@/features/problems";
 import type { SubmissionResult } from "@/types";
 import { RESULTS_DICT } from "@/types";
 import type { Judge } from "@/utils";
@@ -88,7 +88,7 @@ const verdictsList = (judge: Judge | string) => {
 };
 
 export const InfoTable = async ({ code }: { code: string }) => {
-  const query = await getProblem(code);
+  const query = await getProblemWithMemo(code);
   if (!query.ok) {
     throw new Error(query.message);
   }
@@ -142,4 +142,4 @@ export const InfoTable = async ({ code }: { code: string }) => {
   );
 };
 
-InfoTable.preload = getProblem;
+InfoTable.preload = getProblemWithMemo;

@@ -1,4 +1,4 @@
-import { verifyCodefun } from "@/features/auth";
+import { verifyCodefunWithMemo } from "@/features/auth";
 
 import { SIGNED_IN_LINKS, SIGNED_OUT_LINKS } from "./constants";
 import { HorizontalNavLink, VerticalNavLink } from "./NavLink";
@@ -8,7 +8,7 @@ export interface NavLinksProps {
 }
 
 export const HorizontalNavLinks = async ({ keyPrefix }: NavLinksProps) => {
-  const userInfo = await verifyCodefun();
+  const userInfo = await verifyCodefunWithMemo();
   const links =
     userInfo.ok && userInfo.data ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
   return (
@@ -23,7 +23,7 @@ export const HorizontalNavLinks = async ({ keyPrefix }: NavLinksProps) => {
 };
 
 export const VerticalNavLinks = async ({ keyPrefix }: NavLinksProps) => {
-  const userInfo = await verifyCodefun();
+  const userInfo = await verifyCodefunWithMemo();
   const links =
     userInfo.ok && userInfo.data ? SIGNED_IN_LINKS : SIGNED_OUT_LINKS;
   return (

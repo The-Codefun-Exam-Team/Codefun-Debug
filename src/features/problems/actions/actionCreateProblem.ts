@@ -3,7 +3,7 @@
 import prisma from "@database/prisma/instance";
 import { z } from "zod";
 
-import { verifyCodefun } from "@/features/auth";
+import { verifyCodefunWithMemo } from "@/features/auth";
 import type { CreateProblemFormState } from "@/features/problems";
 import { handleCatch } from "@/utils";
 
@@ -44,7 +44,7 @@ export const actionCreateProblem = async (
   formData: FormData,
 ): Promise<CreateProblemFormState> => {
   try {
-    const user = await verifyCodefun();
+    const user = await verifyCodefunWithMemo();
     if (!user.ok || user.data.status !== "Admin") {
       return {
         ok: false,

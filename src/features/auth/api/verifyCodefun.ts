@@ -3,7 +3,7 @@ import { cache } from "react";
 
 import type { FunctionReturnType, UserInfo } from "@/types";
 
-const verifyCodefunNoMemo = async (
+const verifyCodefun = async (
   token?: string,
 ): Promise<FunctionReturnType<UserInfo>> => {
   try {
@@ -55,5 +55,4 @@ const verifyCodefunNoMemo = async (
   }
 };
 
-export const verifyCodefun =
-  cache<typeof verifyCodefunNoMemo>(verifyCodefunNoMemo);
+export const verifyCodefunWithMemo = cache<typeof verifyCodefun>(verifyCodefun);

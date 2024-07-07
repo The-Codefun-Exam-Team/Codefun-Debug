@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { verifyCodefun } from "@/features/auth";
+import { verifyCodefunWithMemo } from "@/features/auth";
 
 export const middleware = async (request: NextRequest) => {
   const { searchParams, pathname } = request.nextUrl;
@@ -10,7 +10,7 @@ export const middleware = async (request: NextRequest) => {
   const unauthenticatedOnlyPrefixes = ["/login"] as const;
 
   if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
-    const userInfo = await verifyCodefun();
+    const userInfo = await verifyCodefunWithMemo();
     if (!userInfo.ok || userInfo.data.status !== "Admin") {
       return NextResponse.redirect(new URL("/", request.url));
     }

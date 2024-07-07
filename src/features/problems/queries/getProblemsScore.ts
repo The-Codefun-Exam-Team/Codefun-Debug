@@ -1,17 +1,17 @@
 import prisma from "@database/prisma/instance";
 import { cache } from "react";
 
-import { verifyCodefun } from "@/features/auth";
+import { verifyCodefunWithMemo } from "@/features/auth";
 import type { FunctionReturnType, ScoreDisplayInfo } from "@/types";
 import { handleCatch } from "@/utils";
 
 type ProblemScoreMap = Record<number, ScoreDisplayInfo>;
 
-const getProblemsScoreNoMemo = async (): Promise<
+const getProblemsScore = async (): Promise<
   FunctionReturnType<ProblemScoreMap>
 > => {
   try {
-    const user = await verifyCodefun();
+    const user = await verifyCodefunWithMemo();
     if (!user.ok) {
       return { ok: false, message: user.message, status: user.status };
     }
@@ -46,6 +46,5 @@ const getProblemsScoreNoMemo = async (): Promise<
   }
 };
 
-export const getProblemsScore = cache<typeof getProblemsScoreNoMemo>(
-  getProblemsScoreNoMemo,
-);
+export const getProblemsScoreWithMemo =
+  cache<typeof getProblemsScore>(getProblemsScore);

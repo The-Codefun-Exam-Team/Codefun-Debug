@@ -2,13 +2,13 @@ import Image from "next/image";
 import { Suspense } from "react";
 
 import { UserIcon } from "@/components/icon";
-import { verifyCodefun } from "@/features/auth";
+import { verifyCodefunWithMemo } from "@/features/auth";
 import { getCodefunRole } from "@/utils";
 
 import { UserInfoClient } from "./client";
 
 const UserInfoBase = async () => {
-  const userInfo = await verifyCodefun();
+  const userInfo = await verifyCodefunWithMemo();
 
   const user = userInfo.ok ? userInfo.data : undefined;
   const role = user ? getCodefunRole(user.ratio, user.status) : "newbie";
