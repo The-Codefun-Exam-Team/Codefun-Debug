@@ -11,14 +11,15 @@ export const handleCatch = (e: unknown): FunctionReturnTypeError => {
       status: statusCode,
     };
   } else {
-    console.error("Unexpected error: ", e);
     if (e instanceof Error) {
+      console.error("Unexpected error: ", e.message, e.stack);
       return {
         ok: false,
-        message: e.message,
+        message: "An internal server error occurred. Please try again later.",
         status: 500,
       };
     } else {
+      console.log("Unexpected error: ", e);
       return {
         ok: false,
         message: "An internal server error occurred. Please try again later.",
