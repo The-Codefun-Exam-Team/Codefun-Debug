@@ -19,6 +19,7 @@ export const Inputs = () => {
   useEffect(() => {
     if (state.ok || !state.message) {
       setShouldDisplayMessage(false);
+      return;
     }
     setShouldDisplayMessage(true);
     const timer = setTimeout(() => {

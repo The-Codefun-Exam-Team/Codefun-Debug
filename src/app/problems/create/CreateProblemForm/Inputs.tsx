@@ -30,6 +30,9 @@ export const Inputs = () => {
       setDisplayState("error");
     } else if (state.ok && !!state.data.code) {
       setDisplayState("success");
+    } else {
+      setDisplayState("default");
+      return;
     }
     const timer = setTimeout(() => {
       setDisplayState("default");
