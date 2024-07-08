@@ -10,7 +10,8 @@ export const middleware = async (request: NextRequest) => {
   const unauthenticatedOnlyPrefixes = ["/login"] as const;
 
   if (adminOnlyPrefixes.some((path) => pathname.startsWith(path))) {
-    const userInfo = await verifyCodefunWithMemo();
+    const token = request.cookies.get("token");
+    const userInfo = await verifyCodefunWithMemo(token?.value);
     if (!userInfo.ok || userInfo.data.status !== "Admin") {
       return NextResponse.redirect(new URL("/", request.url));
     }
