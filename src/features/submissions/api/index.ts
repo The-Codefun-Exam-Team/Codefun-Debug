@@ -1,1 +1,1 @@
-export * from "./submitCodefunProblem";
+export * from "./submitCodefun";

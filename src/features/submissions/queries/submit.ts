@@ -2,10 +2,7 @@ import prisma from "@database/prisma/instance";
 
 import { verifyCodefunWithMemo } from "@/features/auth";
 import { getProblemWithMemo } from "@/features/problems";
-import {
-  setSubmissionDiff,
-  submitCodefunProblem,
-} from "@/features/submissions";
+import { setSubmissionDiff, submitCodefun } from "@/features/submissions";
 import type { FunctionReturnType } from "@/types";
 import { calcEditDistance, handleCatch } from "@/utils";
 
@@ -35,14 +32,21 @@ export const submit = async (
       language,
       statement: { code: problemCode },
     } = debugProblemData;
-    const submissionId = await submitCodefunProblem({
+    const codefunSubmission = await submitCodefun({
       code: problemCode,
       source,
       language,
     });
+    if (!codefunSubmission.ok) {
+      return {
+        ok: false,
+        message: codefunSubmission.message,
+        status: codefunSubmission.status,
+      };
+    }
     const debugSubmission = await prisma.debugSubmissions.create({
       data: {
-        subId: submissionId,
+        subId: codefunSubmission.data,
         userId: user.data.id,
         debugProblemId: debugProblemData.id,
       },

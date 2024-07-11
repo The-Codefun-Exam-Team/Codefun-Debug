@@ -40,3 +40,17 @@ export const parseJudge = (judge: string | null): Judge | string => {
     return judge;
   }
 };
+
+export const genJudge = async (judge: Judge | string) => {
+  if (typeof judge === "string") {
+    return judge;
+  }
+  const { correct, total, tests } = judge;
+  const summary = `${correct}/${total}`;
+  const details = tests
+    .map((x) => `${x.verdict}|${x.runningTime}|${x.message}`)
+    .join("||");
+  return `${summary}////${details}`;
+};
+
+// TODO write test for 2 functions
