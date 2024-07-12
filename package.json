@@ -16,7 +16,8 @@
     "db:pull": "prisma db pull",
     "db:generate": "prisma generate",
     "db:format": "prisma format",
-    "db:migrate:dev": "prisma migrate dev"
+    "db:migrate:dev": "prisma migrate dev",
+    "test": "vitest"
   },
   "prisma": {
     "schema": "src/database/prisma/schema.prisma"
@@ -44,12 +45,14 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.12",
+    "@testing-library/react": "^16.0.0",
     "@types/node": "20.12.7",
     "@types/react": "18.2.79",
     "@types/react-dom": "18.2.25",
     "@types/shell-quote": "1.7.5",
     "@typescript-eslint/eslint-plugin": "7.7.1",
     "@typescript-eslint/parser": "7.7.1",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "10.4.19",
     "eslint": "8.56.0",
     "eslint-config-next": "15.0.0-canary.53",
@@ -58,6 +61,7 @@
     "eslint-plugin-simple-import-sort": "12.1.0",
     "eslint-plugin-tailwindcss": "3.15.1",
     "husky": "9.0.11",
+    "jsdom": "^24.1.0",
     "lint-staged": "15.2.2",
     "npm-check-updates": "16.14.18",
     "postcss": "8.4.38",
@@ -66,7 +70,8 @@
     "prisma": "^5.7.1",
     "shell-quote": "1.8.1",
     "tailwindcss": "3.4.3",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "vitest": "^2.0.2"
   },
   "packageManager": "pnpm@9.4.0"
 }

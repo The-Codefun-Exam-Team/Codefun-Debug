@@ -59,7 +59,7 @@ export const submitCodefun = async ({
           score: codefunSubmission.score,
           isBest: false,
           source: codefunSubmission.code,
-          judgeOutput: await genJudge(codefunSubmission.judge),
+          judgeOutput: genJudge(codefunSubmission.judge),
           scoredAt: new Date(Date.now()),
         },
       });

@@ -41,7 +41,7 @@ export const parseJudge = (judge: string | null): Judge | string => {
   }
 };
 
-export const genJudge = async (judge: Judge | string) => {
+export const genJudge = (judge: Judge | string) => {
   if (typeof judge === "string") {
     return judge;
   }
@@ -52,5 +52,3 @@ export const genJudge = async (judge: Judge | string) => {
     .join("||");
   return `${summary}////${details}`;
 };
-
-// TODO write test for 2 functions

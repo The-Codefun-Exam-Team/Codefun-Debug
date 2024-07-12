@@ -42,7 +42,7 @@ module.exports = {
     ],
     "import/no-extraneous-dependencies": [
       "error",
-      { devDependencies: ["**/*.config.{cjs,mjs,js,ts}"] },
+      { devDependencies: ["**/*.config.{cjs,mjs,js,ts}", "**/*.test.ts"] },
     ],
     // Doesn't really work with VSCode...
     "import/no-unresolved": "off",
