@@ -21,7 +21,7 @@
   },
   "prisma": {
     "schema": "src/database/prisma/schema",
-    "seed": "tsx src/database/prisma/seed.ts"
+    "seed": "tsx src/database/prisma/seed/main.ts"
   },
   "dependencies": {
     "@headlessui/react": "1.7.19",

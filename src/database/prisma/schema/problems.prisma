@@ -31,7 +31,7 @@ model Problems {
   checkerSource String?       @map("checker_source") @db.VarChar(32000)
   solvedCount   Int           @map("solved_count")
   totalAttempts Int           @map("total_attempts")
-  users         Users         @relation(fields: [setterId], references: [id], onUpdate: NoAction)
+  setter        Users         @relation(fields: [setterId], references: [id], onUpdate: NoAction)
   submissions   Submissions[]
 
   @@unique([problemCode, id, name], map: "problems_problem_code_header")
