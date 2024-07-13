@@ -67,7 +67,7 @@ CREATE OR REPLACE FUNCTION "suzume"."debug_sub_before_update_diff"() RETURNS tri
     WHERE 
       NEW.sub_id = submissions.id;
 
-    IF NEW.diff >= problem_min_diff OR sub_score != 100::dbl_score THEN
+    IF NEW.diff >= problem_min_diff OR sub_score != 100::DECIMAL(9,2) THEN
       NEW.score := 
         100::numeric * CASE 
           WHEN sub_score < dps_score THEN 0
@@ -104,7 +104,7 @@ CREATE OR REPLACE FUNCTION "suzume"."debug_sub_after_update_diff"() RETURNS trig
   BEGIN
     SELECT debug_problems.min_diff INTO problem_min_diff FROM debug_problems WHERE NEW.debug_problem_id = debug_problems.id;
     SELECT submissions.score INTO sub_score FROM public.submissions WHERE NEW.sub_id = submissions.id;
-    IF NEW.diff < problem_min_diff AND sub_score = 100::dbl_score THEN
+    IF NEW.diff < problem_min_diff AND sub_score = 100::DECIMAL(9,2) THEN
       UPDATE debug_submissions ds
       SET
         is_best = FALSE
@@ -133,7 +133,7 @@ CREATE OR REPLACE FUNCTION "suzume"."debug_sub_after_update_diff"() RETURNS trig
         ds.debug_problem_id = NEW.debug_problem_id AND
         ds.user_id = NEW.user_id AND
         ds.is_best = TRUE;
-      IF NEW.score > max_score THEN
+      IF NEW.score > COALESCE(max_score,-1) THEN
         UPDATE debug_submissions ds
         SET
           is_best = FALSE
