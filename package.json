@@ -20,14 +20,14 @@
     "test": "vitest"
   },
   "prisma": {
-    "schema": "src/database/prisma/schema.prisma",
+    "schema": "src/database/prisma/schema",
     "seed": "tsx src/database/prisma/seed.ts"
   },
   "dependencies": {
     "@headlessui/react": "1.7.19",
     "@hookform/resolvers": "3.3.4",
     "@next/bundle-analyzer": "15.0.0-canary.53",
-    "@prisma/client": "^5.13.0",
+    "@prisma/client": "^5.16.2",
     "@reduxjs/toolkit": "2.2.3",
     "client-only": "0.0.1",
     "cross-env": "7.0.3",
@@ -68,7 +68,7 @@
     "postcss": "8.4.38",
     "prettier": "3.2.5",
     "prettier-plugin-tailwindcss": "0.5.14",
-    "prisma": "^5.7.1",
+    "prisma": "^5.16.2",
     "shell-quote": "1.8.1",
     "tailwindcss": "3.4.3",
     "tsx": "^4.16.2",

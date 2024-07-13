@@ -1,0 +1,102 @@
+model Posts {
+  id           Int            @id @default(autoincrement())
+  title        String         @db.VarChar(128)
+  authorId     Int            @map("author_id")
+  content      String         @db.VarChar(32000)
+  isOfficial   Boolean        @default(false) @map("is_official")
+  createdAt    DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime       @default(now()) @map("updated_at") @db.Timestamptz(6)
+  postComments PostComments[]
+  users        Users          @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([updatedAt(sort: Desc)], map: "posts_updated_at")
+  @@map("posts")
+  @@schema("public")
+}
+
+model PostComments {
+  id        Int      @id @default(autoincrement())
+  postId    Int      @map("post_id")
+  authorId  Int      @map("author_id")
+  parentId  Int?     @map("parent_id")
+  content   String   @db.VarChar(32000)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  users     Users    @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  posts     Posts    @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([postId, id], map: "post_comments_post")
+  @@index([updatedAt(sort: Desc)], map: "post_comments_updated_at")
+  @@map("post_comments")
+  @@schema("public")
+}
+
+view PostQuery {
+  userId           Int        @map("user_id")
+  username         String     @db.VarChar(32)
+  displayName      String     @map("display_name") @db.VarChar(128)
+  groupId          Int        @map("group_id")
+  groupName        String     @map("group_name") @db.VarChar(128)
+  userStatus       UserStatus @map("user_status")
+  email            String?    @db.VarChar(128)
+  userScore        Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved       Int        @map("user_solved")
+  userRatio        Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank         BigInt     @map("user_rank")
+  postId           Int        @unique @map("post_id")
+  postTitle        String     @map("post_title") @db.VarChar(128)
+  postContent      String     @map("post_content") @db.VarChar(32000)
+  postIsOfficial   Boolean    @map("post_is_official")
+  postCreatedAt    DateTime   @map("post_created_at") @db.Timestamptz(6)
+  postUpdatedAt    DateTime   @map("post_updated_at") @db.Timestamptz(6)
+  postCommentCount BigInt     @map("post_comment_count")
+
+  @@map("post_query")
+  @@schema("public")
+}
+
+view PostCommentQuery {
+  userId           Int        @map("user_id")
+  username         String     @db.VarChar(32)
+  displayName      String     @map("display_name") @db.VarChar(128)
+  groupId          Int        @map("group_id")
+  groupName        String     @map("group_name") @db.VarChar(128)
+  userStatus       UserStatus @map("user_status")
+  email            String?    @db.VarChar(128)
+  userScore        Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved       Int        @map("user_solved")
+  userRatio        Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank         BigInt     @map("user_rank")
+  commentId        Int        @map("comment_id")
+  commentPostId    Int        @map("comment_post_id")
+  commentContent   String     @map("comment_content") @db.VarChar(32000)
+  commentCreatedAt DateTime   @map("comment_created_at") @db.Timestamptz(6)
+  commentUpdatedAt DateTime   @map("comment_updated_at") @db.Timestamptz(6)
+  commentParentId  Int        @map("comment_parent_id")
+
+  @@unique([commentId, commentPostId])
+  @@map("post_comment_query")
+  @@schema("public")
+}
+
+view Activities {
+  activityType      String     @map("activity_type")
+  activityCreatedAt DateTime   @map("activity_created_at") @db.Timestamptz(6)
+  postId            Int        @unique @map("post_id")
+  postTitle         String     @map("post_title") @db.VarChar(128)
+  commentId         Int?       @map("comment_id")
+  userId            Int        @map("user_id")
+  username          String     @db.VarChar(32)
+  displayName       String     @map("display_name") @db.VarChar(128)
+  groupId           Int        @map("group_id")
+  groupName         String     @map("group_name") @db.VarChar(128)
+  userStatus        UserStatus @map("user_status")
+  email             String?    @db.VarChar(128)
+  userScore         Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved        Int        @map("user_solved")
+  userRatio         Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank          BigInt     @map("user_rank")
+
+  @@map("activities")
+  @@schema("public")
+}

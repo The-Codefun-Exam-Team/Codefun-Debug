@@ -1,0 +1,90 @@
+view DebugUserRankings {
+  userId Int     @unique @map("user_id")
+  score  Decimal @db.Decimal
+  rank   BigInt
+
+  @@map("debug_user_rankings")
+  @@schema("suzume")
+}
+
+view DebugUserStat {
+  userId      Int        @unique @map("user_id")
+  username    String     @db.VarChar(32)
+  displayName String     @map("display_name") @db.VarChar(128)
+  groupName   String     @map("group_name") @db.VarChar(128)
+  groupId     Int        @map("group_id")
+  userStatus  UserStatus @map("user_status")
+  score       Decimal?   @db.Decimal
+  ratio       Decimal?   @db.Decimal(9, 2)
+  rank        BigInt?
+  email       String?    @db.VarChar(128)
+
+  @@map("debug_user_stat")
+  @@schema("suzume")
+}
+
+model Users {
+  id               Int                @id @default(autoincrement())
+  username         String             @unique @db.VarChar(32)
+  groupId          Int                @map("group_id")
+  password         String             @db.VarChar(128)
+  email            String?            @unique @db.VarChar(128)
+  displayName      String             @map("display_name") @db.VarChar(128)
+  userStatus       UserStatus         @default(normal) @map("user_status")
+  score            Decimal            @default(0) @db.Decimal(9, 2)
+  solvedCount      Int                @default(0) @map("solved_count")
+  createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  lastLoginAt      DateTime           @default(now()) @map("last_login_at") @db.Timestamptz(6)
+  passwordResets   PasswordResets[]
+  postComments     PostComments[]
+  posts            Posts[]
+  problems         Problems[]
+  submissions      Submissions[]
+  groups           Groups             @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debugSubmissions DebugSubmissions[]
+
+  @@index([score(sort: Desc), id], map: "users_ranking")
+  @@map("users")
+  @@schema("public")
+}
+
+view UserQuery {
+  userId      Int        @unique @map("user_id")
+  username    String     @db.VarChar(32)
+  displayName String     @map("display_name") @db.VarChar(128)
+  groupId     Int        @map("group_id")
+  groupName   String     @map("group_name") @db.VarChar(128)
+  userStatus  UserStatus @map("user_status")
+  email       String     @db.VarChar(128)
+  userScore   Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved  Int        @map("user_solved")
+  userRatio   Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank    BigInt     @map("user_rank")
+
+  @@map("user_query")
+  @@schema("public")
+}
+
+view UserStatQuery {
+  problemId      Int      @map("problem_id")
+  problemCode    String   @map("problem_code") @db.VarChar(32)
+  problemName    String   @map("problem_name") @db.VarChar(128)
+  problemScore   Decimal  @map("problem_score") @db.Decimal(9, 2)
+  subId          Int      @unique @map("sub_id")
+  subUserId      Int      @map("sub_user_id")
+  subSubmittedAt DateTime @map("sub_submitted_at") @db.Timestamptz(6)
+  subScore       Decimal  @map("sub_score") @db.Decimal(9, 2)
+
+  @@map("user_stats_query")
+  @@schema("public")
+}
+
+model PasswordResets {
+  userId    Int      @map("user_id")
+  token     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  expiresAt DateTime @default(dbgenerated("(now() + '01:00:00'::interval)")) @map("expires_at") @db.Timestamptz(6)
+  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("password_resets")
+  @@schema("public")
+}

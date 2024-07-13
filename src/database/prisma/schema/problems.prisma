@@ -1,0 +1,104 @@
+model DebugProblems {
+  id               Int                @id @default(autoincrement())
+  subId            Int                @unique @map("sub_id")
+  name             String             @db.VarChar(128)
+  debugProblemCode String             @unique @map("debug_problem_code") @db.VarChar(32)
+  minDiff          Int                @default(32000) @map("min_diff")
+  submission       Submissions        @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debugSubmissions DebugSubmissions[]
+
+  @@map("debug_problems")
+  @@schema("suzume")
+}
+
+view DebugProblemsMaxCode {
+  maxCode String @unique @map("max_code")
+
+  @@map("debug_problems_max_code")
+  @@schema("suzume")
+}
+
+model Problems {
+  id            Int           @id @default(autoincrement())
+  setterId      Int           @map("setter_id")
+  problemCode   String        @unique @map("problem_code") @db.VarChar(32)
+  name          String        @db.VarChar(128)
+  scoreType     ScoreType     @map("score_type")
+  problemGroup  String        @map("problem_group") @db.VarChar(128)
+  statements    String        @db.VarChar(32000)
+  timeLimit     Decimal       @map("time_limit") @db.Decimal(4, 2)
+  score         Decimal       @db.Decimal(9, 2)
+  checkerSource String?       @map("checker_source") @db.VarChar(32000)
+  solvedCount   Int           @map("solved_count")
+  totalAttempts Int           @map("total_attempts")
+  users         Users         @relation(fields: [setterId], references: [id], onUpdate: NoAction)
+  submissions   Submissions[]
+
+  @@unique([problemCode, id, name], map: "problems_problem_code_header")
+  @@map("problems")
+  @@schema("public")
+}
+
+view ProblemQuery {
+  problemId         Int        @unique @map("problem_id")
+  problemCode       String     @map("problem_code") @db.VarChar(32)
+  problemName       String     @map("problem_name") @db.VarChar(128)
+  userId            Int        @map("user_id")
+  username          String     @db.VarChar(32)
+  displayName       String     @map("display_name") @db.VarChar(128)
+  groupId           Int        @map("group_id")
+  groupName         String     @map("group_name") @db.VarChar(128)
+  userStatus        UserStatus @map("user_status")
+  email             String     @db.VarChar(128)
+  userScore         Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved        Int        @map("user_solved")
+  userRatio         Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank          BigInt     @map("user_rank")
+  scoreType         ScoreType  @map("score_type")
+  problemGroup      String     @map("problem_group") @db.VarChar(128)
+  problemTimeLimit  Decimal    @map("problem_time_limit") @db.Decimal(4, 2)
+  problemScore      Decimal    @map("problem_score") @db.Decimal(9, 2)
+  problemChecker    String     @map("problem_checker") @db.VarChar(32000)
+  problemSolved     Int        @map("problem_solved")
+  problemTotal      Int        @map("problem_total")
+  problemStatements String     @map("problem_statements") @db.VarChar(32000)
+
+  @@map("problem_query")
+  @@schema("public")
+}
+
+view ProblemListing {
+  problemId        Int        @unique @map("problem_id")
+  problemCode      String     @map("problem_code") @db.VarChar(32)
+  problemName      String     @map("problem_name") @db.VarChar(128)
+  userId           Int        @map("user_id")
+  username         String     @db.VarChar(32)
+  displayName      String     @map("display_name") @db.VarChar(128)
+  groupId          Int        @map("group_id")
+  groupName        String     @map("group_name") @db.VarChar(128)
+  userStatus       UserStatus @map("user_status")
+  email            String?    @db.VarChar(128)
+  userScore        Decimal    @map("user_score") @db.Decimal(9, 2)
+  userSolved       Int        @map("user_solved")
+  userRatio        Decimal    @map("user_ratio") @db.Decimal(9, 2)
+  userRank         BigInt     @map("user_rank")
+  scoreType        ScoreType  @map("score_type")
+  problemGroup     String     @map("problem_group") @db.VarChar(128)
+  problemTimeLimit Decimal    @map("problem_time_limit") @db.Decimal(4, 2)
+  problemScore     Decimal    @map("problem_score") @db.Decimal(9, 2)
+  problemChecker   String     @map("problem_checker") @db.VarChar(32000)
+  problemSolved    Int        @map("problem_solved")
+  problemTotal     Int        @map("problem_total")
+
+  @@map("problem_listing")
+  @@schema("public")
+}
+
+view ProblemHeaders {
+  problemId   Int    @unique @map("problem_id")
+  problemCode String @map("problem_code") @db.VarChar(32)
+  problemName String @map("problem_name") @db.VarChar(128)
+
+  @@map("problem_headers")
+  @@schema("public")
+}
