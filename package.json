@@ -17,7 +17,7 @@
     "db:generate": "prisma generate",
     "db:format": "prisma format",
     "db:migrate:dev": "prisma migrate dev",
-    "test": "vitest"
+    "test": "dotenv -e .env vitest"
   },
   "prisma": {
     "schema": "src/database/prisma/schema",
@@ -55,6 +55,7 @@
     "@typescript-eslint/parser": "7.7.1",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "10.4.19",
+    "dotenv-cli": "^7.4.2",
     "eslint": "8.56.0",
     "eslint-config-next": "15.0.0-canary.53",
     "eslint-config-prettier": "9.1.0",

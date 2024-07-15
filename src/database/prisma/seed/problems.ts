@@ -1,9 +1,9 @@
-import { seedPrisma } from "./connector";
+import prisma from "../instance";
 
 export const PROBLEMS_COUNT = 10;
 
 export const seedProblems = async () => {
-  await seedPrisma.problems.createMany({
+  await prisma.problems.createMany({
     data: Array.from({ length: PROBLEMS_COUNT }, (_, i) => ({
       setterId: 1,
       problemCode: `P${(i + 1).toString().padStart(3, "0")}`,

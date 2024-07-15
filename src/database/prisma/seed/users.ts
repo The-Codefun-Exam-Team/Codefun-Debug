@@ -1,6 +1,6 @@
 import { UserStatus } from "@prisma/client";
 
-import { seedPrisma } from "./connector";
+import prisma from "../instance";
 
 const ADMIN_USERS_COUNT = 5;
 const NORMAL_USERS_COUNT = 100;
@@ -9,7 +9,7 @@ export const USERS_COUNT =
   ADMIN_USERS_COUNT + NORMAL_USERS_COUNT + BANNED_USERS_COUNT;
 
 export const seedUsers = async () => {
-  await seedPrisma.users.createMany({
+  await prisma.users.createMany({
     data: Array.from({ length: ADMIN_USERS_COUNT }, (_, i) => ({
       username: `admin_${i + 1}`,
       displayName: `Admin ${i + 1}`,
@@ -18,7 +18,7 @@ export const seedUsers = async () => {
       password: "",
     })),
   });
-  await seedPrisma.users.createMany({
+  await prisma.users.createMany({
     data: Array.from({ length: NORMAL_USERS_COUNT }, (_, i) => {
       return {
         username: `user_${i + 1}`,
@@ -29,7 +29,7 @@ export const seedUsers = async () => {
       };
     }),
   });
-  await seedPrisma.users.createMany({
+  await prisma.users.createMany({
     data: Array.from({ length: BANNED_USERS_COUNT }, (_, i) => {
       return {
         username: `banned_${i + 1}`,
