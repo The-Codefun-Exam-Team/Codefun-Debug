@@ -11,13 +11,6 @@ model DebugProblems {
   @@schema("suzume")
 }
 
-view DebugProblemsMaxCode {
-  maxCode String @unique @map("max_code")
-
-  @@map("debug_problems_max_code")
-  @@schema("suzume")
-}
-
 model Problems {
   id            Int           @id @default(autoincrement())
   setterId      Int           @map("setter_id")
@@ -37,6 +30,13 @@ model Problems {
   @@unique([problemCode, id, name], map: "problems_problem_code_header")
   @@map("problems")
   @@schema("public")
+}
+
+view DebugProblemsMaxCode {
+  maxCode String @unique @map("max_code")
+
+  @@map("debug_problems_max_code")
+  @@schema("suzume")
 }
 
 view ProblemQuery {

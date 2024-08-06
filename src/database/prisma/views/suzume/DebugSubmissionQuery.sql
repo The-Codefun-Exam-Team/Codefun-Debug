@@ -18,13 +18,16 @@ SELECT
   s.judge_output AS debug_submission_judge,
   ds.score,
   ds.result,
-  ds.diff
+  dsd.diff
 FROM
   (
     (
       (
         (
-          debug_submissions ds
+          (
+            debug_submissions ds
+            JOIN debug_submissions_diff dsd ON ((ds.id = dsd.id))
+          )
           JOIN submissions s ON ((ds.sub_id = s.id))
         )
         JOIN debug_user_stat dus ON ((s.user_id = dus.user_id))
@@ -32,6 +35,4 @@ FROM
       JOIN debug_problems dp ON ((ds.debug_problem_id = dp.id))
     )
     JOIN submissions dps ON ((dp.sub_id = dps.id))
-  )
-ORDER BY
-  s.created_at DESC;
+  );

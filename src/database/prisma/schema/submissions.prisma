@@ -1,44 +1,37 @@
 model DebugSubmissions {
-  id             Int              @id @default(autoincrement())
-  userId         Int              @map("user_id")
-  subId          Int              @unique @map("sub_id")
-  debugProblemId Int              @map("debug_problem_id")
-  diff           Int              @default(32000)
-  score          Decimal          @default(0) @db.Decimal(9, 2)
-  result         SubmissionResult @default(Q)
-  is_best        Boolean          @default(false)
-  debugProblem   DebugProblems    @relation(fields: [debugProblemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  submission     Submissions      @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  user           Users            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                   Int                   @id @default(autoincrement())
+  userId               Int                   @map("user_id")
+  subId                Int                   @unique @map("sub_id")
+  debugProblemId       Int                   @map("debug_problem_id")
+  score                Decimal               @default(0) @db.Decimal(9, 2)
+  result               SubmissionResult      @default(Q)
+  is_best              Boolean               @default(false)
+  debugProblem         DebugProblems         @relation(fields: [debugProblemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  submission           Submissions           @relation(fields: [subId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user                 Users                 @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  debugSubmissionsDiff DebugSubmissionsDiff?
 
   @@index([userId])
   @@map("debug_submissions")
   @@schema("suzume")
 }
 
-view DebugSubmissionQuery {
-  id                   Int              @unique
-  submitTime           DateTime         @map("submit_time") @db.Timestamptz(6)
-  runtime              Decimal          @db.Decimal(5, 3)
-  source               String           @db.VarChar(32000)
-  username             String           @db.VarChar(32)
-  userDisplayName      String           @map("user_display_name") @db.VarChar(128)
-  userGroupName        String           @map("user_group_name") @db.VarChar(128)
-  userStatus           UserStatus       @map("user_status")
-  userScore            Decimal?         @map("user_score") @db.Decimal
-  userRank             BigInt?          @map("user_rank")
-  userRatio            Decimal?         @map("user_ratio") @db.Decimal(9, 2)
-  userEmail            String?          @map("user_email") @db.VarChar(128)
-  debugProblemCode     String           @map("debug_problem_code") @db.VarChar(32)
-  debugProblemJudge    String           @map("debug_problem_judge")
-  debugProblemSource   String           @map("debug_problem_source") @db.VarChar(32000)
-  debugProblemLanguage Language         @map("debug_problem_language")
-  debugSubmissionJudge String           @map("debug_submission_judge")
-  score                Decimal          @db.Decimal(9, 2)
-  result               SubmissionResult
-  diff                 Int
+model DebugSubmissionsDiff {
+  id              Int              @id @default(autoincrement())
+  diff            Int              @default(32000)
+  debugSubmission DebugSubmissions @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@map("debug_submission_query")
+  @@map("debug_submissions_diff")
+  @@schema("suzume")
+}
+
+view DebugSubmissionsResults {
+  id             Int               @id
+  DebugProblemId Int               @map("debug_problem_id")
+  score          Decimal           @db.Decimal(9, 2)
+  result         SubmissionResult?
+
+  @@map("debug_submissions_results")
   @@schema("suzume")
 }
 
@@ -66,6 +59,32 @@ model Submissions {
   @@index([userId, problemId, id(sort: Desc)], map: "subs_by_user_problem")
   @@map("submissions")
   @@schema("public")
+}
+
+view DebugSubmissionQuery {
+  id                   Int              @unique
+  submitTime           DateTime         @map("submit_time") @db.Timestamptz(6)
+  runtime              Decimal          @db.Decimal(5, 3)
+  source               String           @db.VarChar(32000)
+  username             String           @db.VarChar(32)
+  userDisplayName      String           @map("user_display_name") @db.VarChar(128)
+  userGroupName        String           @map("user_group_name") @db.VarChar(128)
+  userStatus           UserStatus       @map("user_status")
+  userScore            Decimal?         @map("user_score") @db.Decimal
+  userRank             BigInt?          @map("user_rank")
+  userRatio            Decimal?         @map("user_ratio") @db.Decimal(9, 2)
+  userEmail            String?          @map("user_email") @db.VarChar(128)
+  debugProblemCode     String           @map("debug_problem_code") @db.VarChar(32)
+  debugProblemJudge    String           @map("debug_problem_judge")
+  debugProblemSource   String           @map("debug_problem_source") @db.VarChar(32000)
+  debugProblemLanguage Language         @map("debug_problem_language")
+  debugSubmissionJudge String           @map("debug_submission_judge")
+  score                Decimal          @db.Decimal(9, 2)
+  result               SubmissionResult
+  diff                 Int
+
+  @@map("debug_submission_query")
+  @@schema("suzume")
 }
 
 view SubmissionListing {

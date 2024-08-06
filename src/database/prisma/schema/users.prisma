@@ -1,28 +1,3 @@
-view DebugUserRankings {
-  userId Int     @unique @map("user_id")
-  score  Decimal @db.Decimal
-  rank   BigInt
-
-  @@map("debug_user_rankings")
-  @@schema("suzume")
-}
-
-view DebugUserStat {
-  userId      Int        @unique @map("user_id")
-  username    String     @db.VarChar(32)
-  displayName String     @map("display_name") @db.VarChar(128)
-  groupName   String     @map("group_name") @db.VarChar(128)
-  groupId     Int        @map("group_id")
-  userStatus  UserStatus @map("user_status")
-  score       Decimal?   @db.Decimal
-  ratio       Decimal?   @db.Decimal(9, 2)
-  rank        BigInt?
-  email       String?    @db.VarChar(128)
-
-  @@map("debug_user_stat")
-  @@schema("suzume")
-}
-
 model Users {
   id               Int                @id @default(autoincrement())
   username         String             @unique @db.VarChar(32)
@@ -46,6 +21,41 @@ model Users {
   @@index([score(sort: Desc), id], map: "users_ranking")
   @@map("users")
   @@schema("public")
+}
+
+model PasswordResets {
+  userId    Int      @map("user_id")
+  token     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  expiresAt DateTime @default(dbgenerated("(now() + '01:00:00'::interval)")) @map("expires_at") @db.Timestamptz(6)
+  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("password_resets")
+  @@schema("public")
+}
+
+view DebugUserRankings {
+  userId Int     @unique @map("user_id")
+  score  Decimal @db.Decimal
+  rank   BigInt
+
+  @@map("debug_user_rankings")
+  @@schema("suzume")
+}
+
+view DebugUserStat {
+  userId      Int        @unique @map("user_id")
+  username    String     @db.VarChar(32)
+  displayName String     @map("display_name") @db.VarChar(128)
+  groupName   String     @map("group_name") @db.VarChar(128)
+  groupId     Int        @map("group_id")
+  userStatus  UserStatus @map("user_status")
+  score       Decimal?   @db.Decimal
+  ratio       Decimal?   @db.Decimal(9, 2)
+  rank        BigInt?
+  email       String?    @db.VarChar(128)
+
+  @@map("debug_user_stat")
+  @@schema("suzume")
 }
 
 view UserQuery {
@@ -76,15 +86,5 @@ view UserStatQuery {
   subScore       Decimal  @map("sub_score") @db.Decimal(9, 2)
 
   @@map("user_stats_query")
-  @@schema("public")
-}
-
-model PasswordResets {
-  userId    Int      @map("user_id")
-  token     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  expiresAt DateTime @default(dbgenerated("(now() + '01:00:00'::interval)")) @map("expires_at") @db.Timestamptz(6)
-  users     Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@map("password_resets")
   @@schema("public")
 }

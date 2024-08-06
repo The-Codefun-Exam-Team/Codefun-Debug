@@ -1,11 +1,3 @@
-view DebugUserGroup {
-  userId  Int @unique @map("user_id")
-  groupId Int @map("group_id")
-
-  @@map("debug_user_group")
-  @@schema("suzume")
-}
-
 model Groups {
   id    Int     @id @default(autoincrement())
   name  String  @unique @db.VarChar(128)
@@ -13,6 +5,14 @@ model Groups {
 
   @@map("groups")
   @@schema("public")
+}
+
+view DebugUserGroup {
+  userId  Int @unique @map("user_id")
+  groupId Int @map("group_id")
+
+  @@map("debug_user_group")
+  @@schema("suzume")
 }
 
 view GroupQuery {

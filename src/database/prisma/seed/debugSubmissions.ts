@@ -31,16 +31,13 @@ export const seedDebugSubmissions = async () => {
       },
     },
   });
-  debugSubmissions.forEach(async (debugSubmission) => {
-    const debugProblemSource = debugSubmission.debugProblem.submission.source;
-    const submissionSource = debugSubmission.submission.source;
-    await prisma.debugSubmissions.update({
-      where: {
-        id: debugSubmission.id,
-      },
-      data: {
-        diff: await calcEditDistance(debugProblemSource, submissionSource),
-      },
-    });
+  await prisma.debugSubmissionsDiff.createMany({
+    data: debugSubmissions.map((debugSubmission) => ({
+      id: debugSubmission.id,
+      diff: calcEditDistance(
+        debugSubmission.debugProblem.submission.source,
+        debugSubmission.submission.source,
+      ),
+    })),
   });
 };
