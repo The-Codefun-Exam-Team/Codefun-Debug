@@ -15,7 +15,7 @@ const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
   return (
     <div className="mx-auto flex w-full flex-col items-start gap-6 self-stretch px-3 py-5 md:max-w-7xl md:flex-row md:gap-4 md:px-2 md:py-10 lg:gap-8 lg:px-4">
       <div className="h-auto w-full flex-[1_1_0]">
-        {/* <InfoTable data={submissionData} /> */}
+        <InfoTable data={submissionData} />
       </div>
       <div className="flex size-full flex-[2_2_0] flex-col gap-2">
         <RunInfo data={submissionData} />
