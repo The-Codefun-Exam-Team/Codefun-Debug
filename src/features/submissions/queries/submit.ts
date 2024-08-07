@@ -39,7 +39,7 @@ export const submit = async (debugProblemCode: string, source: string) => {
 
   void setSubmissionDiff(
     debugSubmission.id,
-    await calcEditDistance(debugProblem.source, source),
+    calcEditDistance(debugProblem.source, source),
   );
 
   return debugSubmission.id;
