@@ -23,7 +23,7 @@ export const InfoTable = ({ data }: { data: DetailedSubmissionsInfo }) => {
       <tbody>
         <tr>
           <td className="divide-y divide-slate-400 rounded-md border border-slate-400 text-left text-lg font-semibold text-slate-700 dark:divide-slate-600 dark:border-slate-600 dark:text-slate-200 [&>div]:p-2 [&>div]:text-left">
-            {/* <div>
+            <div>
               <UserIcon className="relative bottom-[3px] inline size-6" />{" "}
               Owner:{" "}
               <Link
@@ -42,7 +42,7 @@ export const InfoTable = ({ data }: { data: DetailedSubmissionsInfo }) => {
                 {data.debugProblem.debugProblemCode}
               </DecoratedLink>
             </div>
-            <div>
+            {/* <div>
               <LinkIcon className="relative bottom-[3px] inline size-6" />{" "}
               Submission ID: {data.id}
             </div>
