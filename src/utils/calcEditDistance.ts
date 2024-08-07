@@ -1,4 +1,4 @@
-export const calcEditDistance = async (code1: string, code2: string) => {
+export const calcEditDistance = (code1: string, code2: string) => {
   code1 = "#" + code1;
   code2 = "#" + code2;
 

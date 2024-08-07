@@ -55,10 +55,10 @@ export const submit = async (
       },
     });
 
-    void setSubmissionDiff(
-      debugSubmission.id,
-      await calcEditDistance(debugProblemData.source, source),
-    );
+  void setSubmissionDiff(
+    debugSubmission.id,
+    calcEditDistance(debugProblem.source, source),
+  );
 
     return {
       ok: true,
