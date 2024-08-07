@@ -11,7 +11,10 @@ export const NavigationBar = () => (
       <div className="mx-2 my-3">
         <DropDownToggler />
         <div className="relative flex items-center justify-between">
-          <Link href="/" className="mx-4 flex items-center text-2xl font-bold lg:text-3xl">
+          <Link
+            href="/"
+            className="mx-4 flex items-center text-2xl font-bold lg:text-3xl"
+          >
             <div className="hidden sm:inline-block">
               Codefun Debug
               <div className="ml-1 inline-block align-top text-sm font-extrabold text-accent-light dark:text-accent-dark lg:text-base">

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { BriefRankTable, BriefRankTableSkeleton } from "@/features/rankings";
 import { clsx } from "@/utils";
 
 import { Announcements } from "./Announcements";
+import { BriefRankTable, BriefRankTableSkeleton } from "./BriefRankTable";
 
 export const metadata: Metadata = {
   title: "Home",

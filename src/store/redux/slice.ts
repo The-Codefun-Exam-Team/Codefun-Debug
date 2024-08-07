@@ -22,7 +22,9 @@ export const colorSlice = createSlice({
         document.documentElement.dataset.theme = action.payload;
         localStorage.setItem("theme", action.payload);
       } else {
-        const systemTheme: ColorScheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        const systemTheme: ColorScheme = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches
           ? "dark"
           : "light";
         state.selectedScheme = systemTheme;

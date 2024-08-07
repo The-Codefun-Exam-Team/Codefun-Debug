@@ -4,41 +4,30 @@ import { useActionState, useEffect, useState } from "react";
 import { ErrorBox, H2, Input } from "@/components";
 import type { LoginFormState } from "@/features/auth";
 import { actionLogin } from "@/features/auth";
-import { useAppDispatch } from "@/hooks";
 
 const initialState: LoginFormState = {
-  user: null,
-  username_messages: [],
-  password_messages: [],
-  messages: [],
+  ok: true,
 };
 
 export const Inputs = () => {
-  const dispatch = useAppDispatch();
+  const [shouldDisplayMessage, setShouldDisplayMessage] = useState(false);
   const [state, formAction, pending] = useActionState(
     actionLogin,
     initialState,
   );
-  const [displayState, setDisplayState] = useState(initialState);
 
   useEffect(() => {
-    setDisplayState(state);
-  }, [state, dispatch]);
-
-  useEffect(() => {
-    if (displayState !== initialState) {
-      const timeout = setTimeout(() => {
-        setDisplayState(initialState);
-      }, 5000);
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (state.ok || !state.message) {
+      setShouldDisplayMessage(false);
+      return;
     }
-  }, [displayState]);
+    setShouldDisplayMessage(true);
+    const timer = setTimeout(() => {
+      setShouldDisplayMessage(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [state]);
 
-  const clearMessage = () => {
-    setDisplayState({ ...displayState, messages: [] });
-  };
   return (
     <form action={formAction} className="flex w-full flex-col">
       <div className="text-center">
@@ -54,8 +43,8 @@ export const Inputs = () => {
             label="Username"
             placeholder="Username"
             errorTextId="login-form-username-error-text"
-            error={displayState.username_messages.length > 0}
-            errorText={displayState.username_messages.join("\n")}
+            error={!state.ok && !!state.usernameMessage?.length}
+            errorText={!state.ok ? state.usernameMessage?.join("\n") : ""}
             disabled={pending}
           />
         </div>
@@ -67,14 +56,18 @@ export const Inputs = () => {
             label="Password"
             placeholder="Password"
             errorTextId="login-form-password-error-text"
-            error={displayState.password_messages.length > 0}
-            errorText={displayState.password_messages.join("\n")}
+            error={!state.ok && !!state.passwordMessage?.length}
+            errorText={!state.ok ? state.passwordMessage?.join("\n") : ""}
             disabled={pending}
           />
         </div>
-        {displayState.messages.length > 0 ? (
-          <ErrorBox closeFn={clearMessage}>
-            {displayState.messages.join("\n")}
+        {!state.ok && !!state.message && shouldDisplayMessage ? (
+          <ErrorBox
+            closeFn={() => {
+              setShouldDisplayMessage(false);
+            }}
+          >
+            {state.message}
           </ErrorBox>
         ) : (
           <button

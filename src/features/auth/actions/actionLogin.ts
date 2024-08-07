@@ -3,7 +3,9 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { getUser, loginCodefun } from "../api";
+import { handleCatch } from "@/utils/handleCatch";
+
+import { loginCodefun, verifyCodefunWithMemo } from "../api";
 import type { LoginFormState } from "../types";
 
 const loginSchema = z.object({
@@ -11,72 +13,65 @@ const loginSchema = z.object({
   password: z.string().max(64),
 });
 
-const initialState: LoginFormState = {
-  user: null,
-  username_messages: [],
-  password_messages: [],
-  messages: [],
-};
-
 export const actionLogin = async (
   _prevState: LoginFormState,
   formData: FormData,
 ): Promise<LoginFormState> => {
-  const validatedBody = await loginSchema.spa({
-    username: formData.get("username"),
-    password: formData.get("password"),
-  });
-  if (!validatedBody.success) {
-    const errors = validatedBody.error.format();
-    return {
-      ...initialState,
-      username_messages: errors.username?._errors ?? [],
-      password_messages: errors.password?._errors ?? [],
-      messages: errors._errors ?? [],
-    };
-  }
-  const { username, password } = validatedBody.data;
-
-  let token: any;
-
   try {
-    token = await loginCodefun(username, password);
+    const validatedBody = await loginSchema.spa({
+      username: formData.get("username"),
+      password: formData.get("password"),
+    });
+    if (!validatedBody.success) {
+      const errors = validatedBody.error.format();
+      return {
+        ok: false,
+        message: "",
+        usernameMessage: errors.username?._errors,
+        passwordMessage: errors.password?._errors,
+        status: 401,
+      };
+    }
+    const { username, password } = validatedBody.data;
+
+    const loginCodefunRequest = await loginCodefun(username, password);
+    if (!loginCodefunRequest.ok) {
+      const error = loginCodefunRequest.message;
+      return {
+        ok: false,
+        message: error,
+        status: loginCodefunRequest.status,
+      };
+    }
+
+    const token = loginCodefunRequest.data;
+
+    const user = await verifyCodefunWithMemo(token);
+
+    if (!user.ok) {
+      console.error(
+        "Unexpected error verifying user when logging in: ",
+        user.message,
+      );
+      return {
+        ok: false,
+        message: "An internal server error occurred. Please try again later.",
+        status: 500,
+      };
+    }
+
+    cookies().set({
+      name: "token",
+      value: token,
+      maxAge: 60 * 60 * 24,
+      sameSite: "strict",
+      httpOnly: true,
+      secure: true,
+      path: "/",
+    });
   } catch (e) {
-    console.error(e);
-    return {
-      ...initialState,
-      messages: ["An internal server error occurred"],
-    };
+    return handleCatch(e);
   }
-
-  if (typeof token !== "string") {
-    return {
-      ...initialState,
-      messages: ["An internal server error occurred"],
-    };
-  }
-
-  const user = await getUser(token);
-
-  if (!user.ok) {
-    console.error("Error fetching user info");
-    return {
-      ...initialState,
-      messages: [user.error],
-    };
-  }
-
-  cookies().set({
-    name: "token",
-    value: token,
-    maxAge: 60 * 60 * 24,
-    sameSite: "strict",
-    httpOnly: true,
-    secure: true,
-    path: "/",
-  });
-
   const redirectTo = headers().get("X-Redirect-To") ?? "/";
-
   redirect(redirectTo);
 };

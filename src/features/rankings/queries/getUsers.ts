@@ -1,19 +1,17 @@
 import prisma from "@database/prisma/instance";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { unstable_cache, unstable_noStore } from "next/cache";
+import { unstable_cache } from "next/cache";
 
 import type { RankingsData } from "@/features/rankings";
-import type { UserDisplayInfo } from "@/types";
-import { gravatarFromEmail } from "@/utils";
+import type { FunctionReturnType, UserDisplayInfo } from "@/types";
+import { gravatarFromEmail, handleCatch } from "@/utils";
 
 export const getUsers = async (
   groupId: number,
   page: number,
   limit: number,
-): Promise<RankingsData> => {
-  unstable_noStore();
+): Promise<FunctionReturnType<RankingsData>> => {
   try {
-    return unstable_cache(
+    return await unstable_cache(
       async () => {
         const offset = (page - 1) * limit;
         const users = await prisma.debugUserStat.findMany({
@@ -37,7 +35,7 @@ export const getUsers = async (
           skip: offset,
         });
 
-        return users.map((user) => {
+        const data = users.map((user) => {
           if (user.userStatus === "banned") {
             return {
               username: user.username,
@@ -68,16 +66,15 @@ export const getUsers = async (
             avatar: gravatarFromEmail(user.email),
           } satisfies UserDisplayInfo;
         });
+        return {
+          ok: true,
+          data: data,
+        } satisfies { ok: true; data: RankingsData };
       },
       [`get-users-${groupId}-${page}-${limit}`],
       { revalidate: 20 },
     )();
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.error(e.code, e.message);
-    } else {
-      console.error(e);
-    }
-    throw new Error("Internal Server Error");
+    return handleCatch(e);
   }
 };

@@ -15,7 +15,11 @@ export const RankTable = async ({
   group: number;
   page: number;
 }) => {
-  const data = await getRankTableData(group, page);
+  const query = await getRankTableData(group, page);
+  if (!query.ok) {
+    throw new Error(query.message);
+  }
+  const data = query.data;
   if (data.length === 0) {
     return (
       <div className="h-fit w-full">

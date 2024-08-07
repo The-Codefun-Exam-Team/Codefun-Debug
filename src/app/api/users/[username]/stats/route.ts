@@ -25,10 +25,16 @@ export const GET = async (
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.code, e.message);
-      return NextResponse.json({ error: e.message }, { status: parseInt(e.code) });
+      return NextResponse.json(
+        { error: e.message },
+        { status: parseInt(e.code) },
+      );
     } else {
       console.error(e);
-      return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Internal server error" },
+        { status: 500 },
+      );
     }
   }
 };

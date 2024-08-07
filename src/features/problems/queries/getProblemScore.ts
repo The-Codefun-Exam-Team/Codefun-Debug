@@ -1,34 +1,39 @@
 import prisma from "@database/prisma/instance";
-import { unstable_noStore } from "next/cache";
 
-import type { ScoreDisplayInfo } from "@/types";
+import type { FunctionReturnType, ScoreDisplayInfo } from "@/types";
+import { handleCatch } from "@/utils";
 
 export const getProblemScore = async (
   debugProblemId: number,
   userId: number,
-): Promise<ScoreDisplayInfo> => {
-  unstable_noStore();
-
-  const query = await prisma.debugSubmissions.findFirst({
-    where: {
-      userId,
-      debugProblemId,
-      is_best: true,
-    },
-    select: {
-      id: true,
-      score: true,
-      diff: true,
-      result: true,
-    },
-  });
-  if (query) {
+): Promise<FunctionReturnType<ScoreDisplayInfo>> => {
+  try {
+    const query = await prisma.debugSubmissions.findFirst({
+      where: {
+        userId,
+        debugProblemId,
+        is_best: true,
+      },
+      select: {
+        id: true,
+        score: true,
+        diff: true,
+        result: true,
+      },
+    });
+    const data = query
+      ? {
+          score: query.score,
+          diff: query.diff,
+          result: query.result,
+          debugSubmissionId: query.id,
+        }
+      : null;
     return {
-      score: query.score,
-      diff: query.diff,
-      result: query.result,
-      debugSubmissionId: query.id,
+      ok: true,
+      data: data,
     };
+  } catch (e) {
+    return handleCatch(e);
   }
-  return null;
 };

@@ -8,7 +8,7 @@ import {
   LanguageIcon,
   SolidDownIcon,
 } from "@/components/icon";
-import { getMemoProblem } from "@/features/problems";
+import { getProblemWithMemo } from "@/features/problems";
 import type { SubmissionResult } from "@/types";
 import { RESULTS_DICT } from "@/types";
 import type { Judge } from "@/utils";
@@ -88,7 +88,11 @@ const verdictsList = (judge: Judge | string) => {
 };
 
 export const InfoTable = async ({ code }: { code: string }) => {
-  const query = await getMemoProblem(code);
+  const query = await getProblemWithMemo(code);
+  if (!query.ok) {
+    throw new Error(query.message);
+  }
+  const data = query.data;
   return (
     <>
       <table className="w-full table-auto border-separate border-spacing-x-2 border-spacing-y-4 rounded-md border-2 border-slate-500 dark:border-slate-600">
@@ -96,7 +100,7 @@ export const InfoTable = async ({ code }: { code: string }) => {
           <tr>
             <th>
               <Suspense fallback={<InfoTableScoreSkeleton />}>
-                <InfoTableScore problemId={query.id} />
+                <InfoTableScore problemId={data.id} />
               </Suspense>
             </th>
           </tr>
@@ -112,7 +116,7 @@ export const InfoTable = async ({ code }: { code: string }) => {
             >
               <div>
                 <BookOpenIcon className="relative bottom-[3px] inline size-6" />{" "}
-                Problem: {query.debugProblemCode}
+                Problem: {data.debugProblemCode}
               </div>
               <div>
                 <DocumentTextIcon className="relative bottom-[3px] inline size-6" />{" "}
@@ -120,16 +124,16 @@ export const InfoTable = async ({ code }: { code: string }) => {
                 <DecoratedLink
                   target="_blank"
                   rel="noreferrer noopener"
-                  href={`https://codefun.vn/problems/${query.statement.code}`}
+                  href={`https://codefun.vn/problems/${data.statement.code}`}
                 >
-                  {query.statement.name}
+                  {data.statement.name}
                 </DecoratedLink>
               </div>
               <div>
                 <LanguageIcon className="relative bottom-[3px] inline size-6" />{" "}
-                Language: {query.language}
+                Language: {data.language}
               </div>
-              {verdictsList(query.judge)}
+              {verdictsList(data.judge)}
             </td>
           </tr>
         </tbody>
@@ -138,4 +142,4 @@ export const InfoTable = async ({ code }: { code: string }) => {
   );
 };
 
-InfoTable.preload = getMemoProblem;
+InfoTable.preload = getProblemWithMemo;

@@ -4,7 +4,9 @@ import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 
 import { Pagination } from "@/components";
-import { Groups, RankTable } from "@/features/rankings";
+
+import { Groups } from "./Groups";
+import { RankTable } from "./RankTable";
 
 export const metadata: Metadata = {
   title: "Rankings",

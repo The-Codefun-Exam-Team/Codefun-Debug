@@ -20,6 +20,11 @@ export const LANGUAGES_DICT = {
   C__: "C++" as const,
 } satisfies { [T in Language]: string };
 
+export const REVERSE_LANGUAGES_DICT = {
+  ...Language,
+  "C++": "C__" as const,
+} satisfies Record<string, Language>;
+
 export const CODEFUN_ROLES = [
   "newbie",
   "beginner",

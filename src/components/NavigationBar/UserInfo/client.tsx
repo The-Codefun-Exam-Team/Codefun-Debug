@@ -1,6 +1,7 @@
 "use client";
 import { Menu, Transition } from "@headlessui/react";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { type ReactNode, useActionState } from "react";
 
 import { actionLogout } from "@/features/auth";
@@ -24,8 +25,22 @@ export const UserInfoClient = ({
   userInfoNode,
 }: UserInfoClientProps) => {
   const pathname = usePathname();
+  const [shouldDisplayError, setShouldDisplayError] = useState(false);
   const [logoutData, logout] = useActionState(actionLogout, { ok: true });
   const roleColor = getCodefunRoleTextClass(role);
+
+  useEffect(() => {
+    if (logoutData.ok) {
+      setShouldDisplayError(false);
+      return;
+    }
+    setShouldDisplayError(true);
+    const timeout = setTimeout(() => {
+      setShouldDisplayError(false);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [logoutData]);
+
   return (
     <Menu as="div" className="relative">
       <Menu.Button
@@ -88,7 +103,7 @@ export const UserInfoClient = ({
           </Menu.Item>
         </Menu.Items>
       </Transition>
-      {!logoutData.ok && (
+      {!logoutData.ok && shouldDisplayError && (
         <div
           className={clsx(
             "right-0 mt-2 w-44 px-4 py-2",

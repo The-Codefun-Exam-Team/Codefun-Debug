@@ -6,7 +6,10 @@ import type { CodefunRoles } from "@/types";
  * @param status - The user's current status.
  * @returns The user's role in Codefun.
  */
-export const getCodefunRole = (ratio: number, status: string): CodefunRoles | null => {
+export const getCodefunRole = (
+  ratio: number,
+  status: string,
+): CodefunRoles | null => {
   if (status === "Banned") {
     return "banned";
   }

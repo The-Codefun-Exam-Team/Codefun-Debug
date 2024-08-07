@@ -4,7 +4,10 @@ import type { RequireFields } from "@/types";
 
 export type InputErrorTextProps = RequireFields<
   Omit<
-    DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>,
+    DetailedHTMLProps<
+      HTMLAttributes<HTMLParagraphElement>,
+      HTMLParagraphElement
+    >,
     "className" | "ref"
   >,
   "id"
