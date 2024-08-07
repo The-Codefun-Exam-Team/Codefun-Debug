@@ -18,6 +18,9 @@ INTO
 FROM 
   "suzume"."debug_submissions" ds;
 
+-- AlterTable
+ALTER TABLE "suzume"."debug_submissions_diff" ALTER COLUMN "diff" SET NOT NULL;
+
 -- Add primary key
 ALTER TABLE "suzume"."debug_submissions_diff" ADD PRIMARY KEY(id);
 
@@ -147,8 +150,14 @@ CREATE FUNCTION "suzume"."dsd_update_diff"() RETURNS trigger SECURITY DEFINER AS
   END;
   $trigger$ LANGUAGE plpgsql;
 
-CREATE TRIGGER "dsd_update_diff"
+CREATE TRIGGER "dsd_insert"
   AFTER INSERT
+  ON "suzume"."debug_submissions_diff"
+  FOR EACH ROW 
+  EXECUTE FUNCTION "suzume"."dsd_update_diff"();
+
+CREATE TRIGGER "dsd_update_diff"
+  AFTER UPDATE OF diff
   ON "suzume"."debug_submissions_diff"
   FOR EACH ROW 
   EXECUTE FUNCTION "suzume"."dsd_update_diff"();

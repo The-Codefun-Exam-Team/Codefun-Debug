@@ -1,18 +1,27 @@
-export const calcScore = async ({
+import { Decimal } from "@prisma/client/runtime/library";
+
+export const calcScore = ({
   problemScore,
   submissionScore,
   minDiff,
   submissionDiff,
 }: {
-  problemScore: number;
-  submissionScore: number;
+  problemScore: Decimal;
+  submissionScore: Decimal;
   minDiff: number;
-  submissionDiff: number;
+  submissionDiff?: number;
 }) => {
-  if (submissionScore < problemScore) return 0;
-  const reductionPercentage = (Math.max(0, submissionDiff - minDiff) * 5) / 100;
-  const newScore =
-    ((submissionScore - problemScore) / (100 - problemScore)) *
-    Math.max(0, 1 - reductionPercentage);
+  if (submissionDiff === undefined) return new Decimal(0);
+  if (submissionScore.lessThan(problemScore)) return new Decimal(0);
+  const reductionPercentage = Math.max(
+    0,
+    1 - (Math.max(0, submissionDiff - minDiff) * 5) / 100,
+  );
+  const newScore = submissionScore
+    .minus(problemScore)
+    .dividedBy(new Decimal(100).minus(problemScore))
+    .mul(reductionPercentage)
+    .mul(100);
+
   return newScore;
 };

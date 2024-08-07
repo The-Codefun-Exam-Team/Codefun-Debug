@@ -8,11 +8,15 @@ export const setSubmissionDiff = async (
   diff: number,
 ): Promise<FunctionReturnType> => {
   try {
-    await prisma.debugSubmissions.update({
+    await prisma.debugSubmissionsDiff.upsert({
       where: {
         id: debugSubmissionId,
       },
-      data: {
+      create: {
+        id: debugSubmissionId,
+        diff,
+      },
+      update: {
         diff,
       },
     });

@@ -38,7 +38,7 @@ export const submitCodefun = async ({
       };
     }
     const res = await requestToCodefun.json();
-    if (process.env.NODE_ENV !== "production") {
+    if (process.env.NODE_ENV === "development") {
       const codefunSubmissionQuery = await getSubmissionCodefun(res.data);
       if (!codefunSubmissionQuery.ok) {
         return {
