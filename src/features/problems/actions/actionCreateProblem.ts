@@ -145,7 +145,7 @@ export const actionCreateProblem = async (
         ],
       };
     }
-    if (submission.result !== "AC") {
+    if (submission.result === "AC") {
       return {
         submissionIdMessages: ["Accepted submission cannot be used"],
       };
