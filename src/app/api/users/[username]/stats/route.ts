@@ -8,27 +8,53 @@ export const GET = async (
 ) => {
   try {
     const resData = {} as Record<string, number>;
-    // benchmark required
-    const stats = await prisma.$queryRaw<{ code: string; score: number }[]>`
-      SELECT MAX(ds.score) AS score, dp.code
-      FROM debug_submissions ds 
-      JOIN teams tm ON ds.tid = tm.tid 
-      JOIN debug_problems dp ON ds.dpid = dp.dpid
-      WHERE tm.teamname = ${username}
-      GROUP BY ds.dpid
-      ORDER BY ds.dpid ASC
-    `;
-    for (const { code, score } of stats) {
-      resData[code] = score;
+    const stats = await prisma.debugSubmissions.findMany({
+      where: {
+        user: {
+          username,
+        },
+        is_best: true,
+      },
+      select: {
+        debugProblem: {
+          select: {
+            debugProblemCode: true,
+          },
+        },
+        score: true,
+      },
+    });
+    const debugProblemCodes = await prisma.debugProblems.findMany({
+      select: {
+        debugProblemCode: true,
+      },
+      orderBy: {
+        debugProblemCode: "asc",
+      },
+    });
+    for (const { debugProblemCode } of debugProblemCodes) {
+      resData[debugProblemCode] = 0;
+    }
+    for (const {
+      debugProblem: { debugProblemCode },
+      score,
+    } of stats) {
+      resData[debugProblemCode] = score.toNumber();
     }
     return NextResponse.json(resData, { status: 200 });
   } catch (e) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.error(e.code, e.message);
-      return NextResponse.json({ error: e.message }, { status: parseInt(e.code) });
+      return NextResponse.json(
+        { error: e.message },
+        { status: parseInt(e.code) },
+      );
     } else {
       console.error(e);
-      return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Internal server error" },
+        { status: 500 },
+      );
     }
   }
 };
