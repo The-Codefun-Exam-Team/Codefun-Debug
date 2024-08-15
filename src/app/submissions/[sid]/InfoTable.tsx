@@ -52,9 +52,12 @@ export const InfoTable = ({ data }: { data: DetailedSubmissionsInfo }) => {
             </div>
             <div>
               <ClockIcon className="relative bottom-[3px] inline size-6" />{" "}
-              Submit time: {"  "}
+              Submit time:{" "}
               <div className="inline-block">
-                {data.submitTime.toLocaleString("vi-VN")}
+                {new Intl.DateTimeFormat("vi-VN", {
+                  dateStyle: "short",
+                  timeStyle: "long",
+                }).format(data.submitTime)}
               </div>
             </div>
           </td>
