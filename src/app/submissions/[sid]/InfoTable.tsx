@@ -9,6 +9,7 @@ import {
   UserIcon,
 } from "@/components/icon";
 import type { DetailedSubmissionsInfo } from "@/features/submissions";
+import { formatDateTime } from "@/utils";
 
 export const InfoTable = ({ data }: { data: DetailedSubmissionsInfo }) => {
   return (
@@ -54,10 +55,7 @@ export const InfoTable = ({ data }: { data: DetailedSubmissionsInfo }) => {
               <ClockIcon className="relative bottom-[3px] inline size-6" />{" "}
               Submit time:{" "}
               <div className="inline-block">
-                {new Intl.DateTimeFormat("vi-VN", {
-                  dateStyle: "short",
-                  timeStyle: "long",
-                }).format(data.submitTime)}
+                {formatDateTime(data.submitTime)}
               </div>
             </div>
           </td>
