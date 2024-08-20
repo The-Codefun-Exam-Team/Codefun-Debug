@@ -10,6 +10,10 @@ export const ChevronRightIcon = (props: IconProps) => (
     aria-hidden
     {...props}
   >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M8.25 4.5l7.5 7.5-7.5 7.5"
+    />
   </svg>
 );

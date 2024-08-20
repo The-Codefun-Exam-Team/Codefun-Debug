@@ -5,41 +5,46 @@ import { useActionState, useEffect, useState } from "react";
 import { ErrorBox, H2, Input, SuccessBox } from "@/components";
 import type { CreateProblemFormState } from "@/features/problems";
 import { actionCreateProblem } from "@/features/problems";
-import { useAppDispatch } from "@/hooks";
 
 const initialState: CreateProblemFormState = {
-  codeMessages: [],
-  nameMessages: [],
-  submissionIdMessages: [],
-  errorMessages: [],
-  successMessages: [],
+  ok: true,
+  data: {
+    code: "",
+    name: "",
+    subId: 0,
+  },
 };
 
+type DisplayState = "default" | "error" | "success";
+
 export const Inputs = () => {
-  const dispatch = useAppDispatch();
+  const [displayState, setDisplayState] = useState<DisplayState>("default");
+
   const [state, formAction, pending] = useActionState(
     actionCreateProblem,
     initialState,
   );
-  const [displayState, setDisplayState] = useState(initialState);
 
   useEffect(() => {
-    setDisplayState(state);
-  }, [state, dispatch]);
-
-  useEffect(() => {
-    if (displayState !== initialState) {
-      const timeout = setTimeout(() => {
-        setDisplayState(initialState);
-      }, 5000);
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (!state.ok && !!state.message) {
+      setDisplayState("error");
+    } else if (state.ok && !!state.data.code) {
+      setDisplayState("success");
+    } else {
+      setDisplayState("default");
+      return;
     }
-  }, [displayState]);
+    const timer = setTimeout(() => {
+      setDisplayState("default");
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [state]);
 
   return (
-    <>
+    <form
+      action={formAction}
+      className="flex w-full flex-col gap-6 text-slate-700"
+    >
       <div className="text-center">
         <H2>
           <div className="text-accent-light dark:text-accent-dark ">
@@ -54,12 +59,9 @@ export const Inputs = () => {
             label="Code"
             name="code"
             placeholder="(Optional)"
-            error={
-              !!displayState.codeMessages?.length &&
-              displayState.codeMessages.length > 0
-            }
+            error={!state.ok && !!state.codeMessages?.length}
             errorTextId="create-problem-form-code-error-text"
-            errorText={displayState.codeMessages?.join(", ")}
+            errorText={!state.ok ? state.codeMessages?.join(", ") : ""}
             disabled={pending}
           />
         </div>
@@ -69,12 +71,9 @@ export const Inputs = () => {
             label="Name"
             name="name"
             placeholder="(Optional)"
-            error={
-              !!displayState.nameMessages?.length &&
-              displayState.nameMessages.length > 0
-            }
+            error={!state.ok && !!state.nameMessages?.length}
             errorTextId="create-problem-form-name-error-text"
-            errorText={displayState.nameMessages?.join(", ")}
+            errorText={!state.ok ? state.nameMessages?.join(", ") : ""}
             disabled={pending}
           />
         </div>
@@ -85,43 +84,32 @@ export const Inputs = () => {
           label="Submission ID"
           name="submissionId"
           placeholder="Submission ID"
-          error={
-            !!displayState.submissionIdMessages?.length &&
-            displayState.submissionIdMessages.length > 0
-          }
+          error={!state.ok && !!state.submissionIdMessages?.length}
           errorTextId="create-problem-form-submission-id-error-text"
-          errorText={displayState.submissionIdMessages?.join(", ")}
+          errorText={!state.ok ? state.submissionIdMessages?.join(", ") : ""}
           disabled={pending}
         />
       </div>
 
-      {!!displayState.errorMessages && displayState.errorMessages.length > 0 ? (
-        <ErrorBox
-          closeFn={() => {
-            setDisplayState({ ...displayState, errorMessages: [] });
-          }}
-        >
-          {displayState.errorMessages.join(", ")}
+      {displayState === "error" ? (
+        <ErrorBox closeFn={() => setDisplayState("default")}>
+          {!state.ok ? state.message : ""}
         </ErrorBox>
-      ) : displayState.successMessages &&
-        displayState.successMessages.length > 0 ? (
-        <SuccessBox
-          closeFn={() => {
-            setDisplayState({ ...displayState, successMessages: [] });
-          }}
-        >
-          {displayState.successMessages.join(", ")}
+      ) : displayState === "success" ? (
+        <SuccessBox closeFn={() => setDisplayState("default")}>
+          {state.ok
+            ? `Problem created successfully using code ${state.data.code}.`
+            : ""}
         </SuccessBox>
       ) : (
         <button
           type="submit"
           className="disabled:opacity-7x0 rounded-md border-2 border-slate-600 p-2 text-lg font-medium text-slate-700 transition-opacity dark:border dark:border-slate-400 dark:text-slate-300"
           disabled={pending}
-          formAction={formAction}
         >
           {pending ? "Creating problem..." : "Create problem"}
         </button>
       )}
-    </>
+    </form>
   );
 };

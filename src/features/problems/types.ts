@@ -1,4 +1,4 @@
-import type { Language } from "@/types";
+import type { FunctionReturnType, Language } from "@/types";
 import type { Judge } from "@/utils/parseJudge";
 
 export interface ProblemInfo {
@@ -18,3 +18,16 @@ export interface DetailedProblemInfo extends ProblemInfo {
   };
   judge: Judge | string;
 }
+
+export type CreateProblemFormState = FunctionReturnType<
+  {
+    code: string;
+    name: string;
+    subId: number;
+  },
+  {
+    codeMessages?: string[];
+    nameMessages?: string[];
+    submissionIdMessages?: string[];
+  }
+>;

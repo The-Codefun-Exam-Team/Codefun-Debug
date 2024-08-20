@@ -1,29 +1,20 @@
 "use server";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { cookies } from "next/headers";
 
-import { getUser } from "@/features/auth";
 import { submit } from "@/features/submissions";
+import type { FunctionReturnType } from "@/types";
+import { handleCatch } from "@/utils";
 
 export const actionSubmit = async (
   code: string,
   codetext: string,
-): Promise<{ ok: true; id: number } | { ok: false; message: string }> => {
+): Promise<FunctionReturnType<number>> => {
   try {
-    const cookiesStore = cookies();
-    const token = cookiesStore.get("token");
-    const userQuery = await getUser(token?.value);
-    if (!userQuery.ok) {
-      return { ok: false, message: "You are not logged in" };
+    const query = await submit(code, codetext);
+    if (!query.ok) {
+      return { ok: false, message: query.message, status: query.status };
     }
-    const id = await submit(code, codetext);
-    return { ok: true, id };
+    return { ok: true, data: query.data };
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.error(e.code, e.message);
-    } else {
-      console.error(e);
-    }
-    return { ok: false, message: "An internal server error occurred" };
+    return handleCatch(e);
   }
 };

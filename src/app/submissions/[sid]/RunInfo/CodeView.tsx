@@ -9,7 +9,9 @@ import { clsx } from "@/utils";
 import { CodeViewText } from "./CodeViewText";
 
 export const CodeView = ({ source }: { source: string }) => {
-  const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null);
+  const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(
+    null,
+  );
   const editorDomRef = useRef<HTMLDivElement | null>(null);
   const [renderingEditor, setRenderingEditor] = useState(true);
   const monaco = useRef<typeof monacoEditor | null>(null);
@@ -28,16 +30,21 @@ export const CodeView = ({ source }: { source: string }) => {
         if (editorDomRef.current) {
           editorRef.current?.dispose();
 
-          editorRef.current = monaco.current.editor.create(editorDomRef.current, {
-            automaticLayout: true,
-            scrollBeyondLastColumn: 10,
-            readOnly: true,
-            domReadOnly: true,
-          });
+          editorRef.current = monaco.current.editor.create(
+            editorDomRef.current,
+            {
+              automaticLayout: true,
+              scrollBeyondLastColumn: 10,
+              readOnly: true,
+              domReadOnly: true,
+            },
+          );
 
           monaco.current?.editor.setTheme("light");
 
-          editorRef.current.setModel(monaco.current.editor.createModel("", "cpp"));
+          editorRef.current.setModel(
+            monaco.current.editor.createModel("", "cpp"),
+          );
         }
         setRenderingEditor(false);
       }
@@ -49,11 +56,6 @@ export const CodeView = ({ source }: { source: string }) => {
   }, []);
 
   useEffect(() => {
-    <div className="flex size-full">
-      <div className="grow-1 flex w-full flex-col justify-around rounded-md border-2 border-slate-500 text-2xl text-slate-700 dark:border-slate-600 dark:text-slate-200">
-        <div className="text-center text-3xl">Loading...</div>
-      </div>
-    </div>;
     if (renderingEditor) return;
     if (isDark) {
       monaco.current?.editor.setTheme("dark");

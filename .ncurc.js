@@ -5,7 +5,10 @@ module.exports = {
     return dependencyName === "eslint";
   },
   target(dependencyName) {
-    if (/^react(-dom)?$/.test(dependencyName) || /next$|(^@next\/.*$)/.test(dependencyName)) {
+    if (
+      /^react(-dom)?$/.test(dependencyName) ||
+      /next$|(^@next\/.*$)/.test(dependencyName)
+    ) {
       return "@canary";
     }
     return "latest";

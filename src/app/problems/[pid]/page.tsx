@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { Editor, InfoTable } from "@/features/problems";
+import { Editor } from "./Editor";
+import { InfoTable } from "./InfoTable";
 
 export const metadata: Metadata = {
   title: "Problem",

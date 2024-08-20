@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
-import { getSubmission, InfoTable, RunInfo } from "@/features/submissions";
+import { getSubmission } from "@/features/submissions";
+
+import { InfoTable } from "./InfoTable";
+import { RunInfo } from "./RunInfo";
 
 // export const generateStaticParams = () => [];
 
@@ -10,7 +13,11 @@ export const metadata: Metadata = {
 
 const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
   const submissionId = parseInt(sid);
-  const submissionData = await getSubmission(submissionId);
+  const submissionQuery = await getSubmission(submissionId);
+  if (!submissionQuery.ok) {
+    throw new Error(submissionQuery.message);
+  }
+  const submissionData = submissionQuery.data;
 
   return (
     <div className="mx-auto flex w-full flex-col items-start gap-6 self-stretch px-3 py-5 md:max-w-7xl md:flex-row md:gap-4 md:px-2 md:py-10 lg:gap-8 lg:px-4">

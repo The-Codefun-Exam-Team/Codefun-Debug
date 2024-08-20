@@ -2,9 +2,9 @@ import { Suspense } from "react";
 
 import { DecoratedLink } from "@/components";
 import type { ProblemList } from "@/features/problems";
-import { CreateProblemButton } from "@/features/problems";
 import { clsx } from "@/utils";
 
+import { CreateProblemButton } from "./CreateProblemButton";
 import { ProblemScore, ProblemScoreSkeleton } from "./ProblemScore";
 
 export const ProblemsList = ({

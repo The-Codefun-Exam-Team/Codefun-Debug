@@ -17,11 +17,17 @@ export interface EditorClientProps {
   isLoggedIn: boolean;
 }
 
-export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProps) => {
+export const EditorClient = ({
+  problemData,
+  isLoggedIn,
+  code,
+}: EditorClientProps) => {
   // TODO: add options for editor
   const router = useRouter();
   const [submitError, setSubmitError] = useState("");
-  const editorRef = useRef<monacoEditor.editor.IStandaloneDiffEditor | null>(null);
+  const editorRef = useRef<monacoEditor.editor.IStandaloneDiffEditor | null>(
+    null,
+  );
   const editorDomRef = useRef<HTMLDivElement | null>(null);
   const [renderingEditor, setRenderingEditor] = useState(true);
   const monaco = useRef<typeof monacoEditor | null>(null);
@@ -37,12 +43,15 @@ export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProp
         if (editorDomRef.current) {
           editorRef.current?.dispose();
 
-          editorRef.current = monaco.current.editor.createDiffEditor(editorDomRef.current, {
-            automaticLayout: true,
-            renderSideBySide: false,
-            renderOverviewRuler: false,
-            scrollBeyondLastColumn: 10,
-          });
+          editorRef.current = monaco.current.editor.createDiffEditor(
+            editorDomRef.current,
+            {
+              automaticLayout: true,
+              renderSideBySide: false,
+              renderOverviewRuler: false,
+              scrollBeyondLastColumn: 10,
+            },
+          );
 
           editorRef.current.setModel({
             original: monaco.current.editor.createModel("", "cpp"),
@@ -85,7 +94,7 @@ export const EditorClient = ({ problemData, isLoggedIn, code }: EditorClientProp
       setSubmitError(res.message);
       return;
     }
-    router.push(`/submissions/${res.id}`);
+    router.push(`/submissions/${res.data}`);
   };
   useEffect(() => {
     const removeErrorTimer = setTimeout(() => setSubmitError(""), 5000);

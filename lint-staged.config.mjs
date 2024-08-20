@@ -29,7 +29,10 @@ const config = {
     const escapedFileNames = filenames
       .map((filename) => (isWin ? filename : escapeStr([filename])))
       .join(" ");
-    return [`prettier --write ${escapedFileNames}`, `git add ${escapedFileNames}`];
+    return [
+      `prettier --write ${escapedFileNames}`,
+      `git add ${escapedFileNames}`,
+    ];
   },
 };
 

@@ -7,7 +7,9 @@ import { setScheme } from "@/store/redux";
 import { clsx } from "@/utils";
 
 export const DarkModeToggler = () => {
-  const { selectedScheme: colorScheme, isSystemScheme } = useAppSelector((state) => state.color);
+  const { selectedScheme: colorScheme, isSystemScheme } = useAppSelector(
+    (state) => state.color,
+  );
   const dispatch = useAppDispatch();
   return (
     <div className="flex flex-col gap-2 px-3 py-2 font-semibold transition-colors duration-100">

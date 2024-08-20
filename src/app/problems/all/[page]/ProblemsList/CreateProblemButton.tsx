@@ -1,14 +1,12 @@
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
 
 import { PlusSignIcon } from "@/components/icon";
-import { getMemoUser } from "@/features/auth";
+import { verifyCodefunWithMemo } from "@/features/auth";
 
 const CreateProblemButtonBase = async () => {
-  const token = cookies().get("token");
-  const user = await getMemoUser(token?.value);
-  if (!user.ok || !user.user || user.user.status !== "Admin") {
+  const user = await verifyCodefunWithMemo();
+  if (!user.ok || !user.data || user.data.status !== "Admin") {
     return <div className="size-7 border-2 border-transparent" />;
   }
   return (

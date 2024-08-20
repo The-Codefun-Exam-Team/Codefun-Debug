@@ -1,37 +1,49 @@
 import prisma from "@database/prisma/instance";
-import { unstable_noStore } from "next/cache";
 import { cache } from "react";
 
-import type { ScoreDisplayInfo, UserInfo } from "@/types";
+import { verifyCodefunWithMemo } from "@/features/auth";
+import type { FunctionReturnType, ScoreDisplayInfo } from "@/types";
+import { handleCatch } from "@/utils";
 
-export type ProblemScoreMap = Record<number, ScoreDisplayInfo>;
+type ProblemScoreMap = Record<number, ScoreDisplayInfo>;
 
-export const getProblemsScore = async (user: UserInfo) => {
-  unstable_noStore();
-
-  const query = await prisma.debugSubmissions.findMany({
-    where: {
-      userId: user.id,
-      is_best: true,
-    },
-    select: {
-      id: true,
-      score: true,
-      diff: true,
-      result: true,
-      debugProblem: {
-        select: {
-          id: true,
-          debugProblemCode: true,
+const getProblemsScore = async (): Promise<
+  FunctionReturnType<ProblemScoreMap>
+> => {
+  try {
+    const user = await verifyCodefunWithMemo();
+    if (!user.ok) {
+      return { ok: false, message: user.message, status: user.status };
+    }
+    const query = await prisma.debugSubmissions.findMany({
+      where: {
+        userId: user.data.id,
+        is_best: true,
+      },
+      select: {
+        id: true,
+        score: true,
+        diff: true,
+        result: true,
+        debugProblem: {
+          select: {
+            id: true,
+            debugProblemCode: true,
+          },
         },
       },
-    },
-  });
-  const result: ProblemScoreMap = {};
-  for (const { debugProblem, id, ...dsubInfo } of query) {
-    result[debugProblem.id] = { debugSubmissionId: id, ...dsubInfo };
+    });
+    const result: ProblemScoreMap = {};
+    for (const { debugProblem, id, ...dsubInfo } of query) {
+      result[debugProblem.id] = { debugSubmissionId: id, ...dsubInfo };
+    }
+    return {
+      ok: true,
+      data: result,
+    };
+  } catch (e) {
+    return handleCatch(e);
   }
-  return result;
 };
 
-export const getMemoProblemsScore = cache(getProblemsScore);
+export const getProblemsScoreWithMemo = cache(getProblemsScore);

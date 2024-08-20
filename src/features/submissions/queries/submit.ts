@@ -1,46 +1,70 @@
 import prisma from "@database/prisma/instance";
-import { cookies } from "next/headers";
 
-import { getMemoUser } from "@/features/auth";
-import { getMemoProblem } from "@/features/problems";
-import {
-  setSubmissionDiff,
-  submitCodefunProblem,
-} from "@/features/submissions";
-import { calcEditDistance } from "@/utils";
+import { verifyCodefunWithMemo } from "@/features/auth";
+import { getProblemWithMemo } from "@/features/problems";
+import { setSubmissionDiff, submitCodefun } from "@/features/submissions";
+import type { FunctionReturnType } from "@/types";
+import { calcEditDistance, handleCatch } from "@/utils";
 
-export const submit = async (debugProblemCode: string, source: string) => {
-  const cookiesStore = cookies();
-  const token = cookiesStore.get("token");
-  const debugProblem = await getMemoProblem(debugProblemCode);
-  const user = await getMemoUser(token?.value);
-  if (!user.ok) {
-    throw new Error("You are not logged in");
+export const submit = async (
+  debugProblemCode: string,
+  source: string,
+): Promise<FunctionReturnType<number>> => {
+  try {
+    const debugProblem = await getProblemWithMemo(debugProblemCode);
+    if (!debugProblem.ok) {
+      return {
+        ok: false,
+        message: debugProblem.message,
+        status: debugProblem.status,
+      };
+    }
+    const debugProblemData = debugProblem.data;
+    const user = await verifyCodefunWithMemo();
+    if (!user.ok) {
+      return {
+        ok: false,
+        message: user.message,
+        status: user.status,
+      };
+    }
+    const {
+      language,
+      statement: { code: problemCode },
+    } = debugProblemData;
+    const codefunSubmission = await submitCodefun({
+      code: problemCode,
+      source,
+      language,
+    });
+    if (!codefunSubmission.ok) {
+      return {
+        ok: false,
+        message: codefunSubmission.message,
+        status: codefunSubmission.status,
+      };
+    }
+    const debugSubmission = await prisma.debugSubmissions.create({
+      data: {
+        subId: codefunSubmission.data,
+        userId: user.data.id,
+        debugProblemId: debugProblemData.id,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    void setSubmissionDiff(
+      debugSubmission.id,
+      calcEditDistance(debugProblem.data.source, source),
+    );
+
+    return {
+      ok: true,
+      data: debugSubmission.id,
+    };
+  } catch (e) {
+    return handleCatch(e);
   }
-  const {
-    language,
-    statement: { code: problemCode },
-  } = debugProblem;
-  const submissionId = await submitCodefunProblem({
-    code: problemCode,
-    source,
-    language,
-  });
-  const debugSubmission = await prisma.debugSubmissions.create({
-    data: {
-      subId: submissionId,
-      userId: user.user.id,
-      debugProblemId: debugProblem.id,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  void setSubmissionDiff(
-    debugSubmission.id,
-    calcEditDistance(debugProblem.source, source),
-  );
-
-  return debugSubmission.id;
 };

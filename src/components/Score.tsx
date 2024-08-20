@@ -8,27 +8,37 @@ interface ComponentExtraProps {
   disabled?: boolean;
 }
 
-export const Score = (props: ScoreDisplayInfo & ComponentExtraProps) => {
-  if (props.score === null) {
+export const Score = (
+  props: { data: ScoreDisplayInfo } & ComponentExtraProps,
+) => {
+  if (props.data === null) {
     return (
-      <div className={clsx(props.className, "font-semibold", getVerdictTextClass("CE"))}>
+      <div
+        className={clsx(
+          props.className,
+          "font-semibold",
+          getVerdictTextClass("CE"),
+        )}
+      >
         Not Submitted
       </div>
     );
   }
 
-  const isDisabled = props.disabled || !props.debugSubmissionId;
+  const isDisabled = props.disabled || !props.data.debugSubmissionId;
   return (
     <div
       className={clsx(
-        getVerdictTextClass(props.result),
+        getVerdictTextClass(props.data.result),
         props.className,
         !isDisabled && "hover:underline",
-        props.result === "AC" ? "font-bold" : "font-semibold",
+        props.data.result === "AC" ? "font-bold" : "font-semibold",
       )}
     >
-      <Link href={isDisabled ? {} : `/submissions/${props.debugSubmissionId}`}>
-        {props.result === "AC" ? "Accepted" : props.score.toFixed(2)}
+      <Link
+        href={isDisabled ? {} : `/submissions/${props.data.debugSubmissionId}`}
+      >
+        {props.data.result === "AC" ? "Accepted" : props.data.score.toFixed(2)}
       </Link>
     </div>
   );
