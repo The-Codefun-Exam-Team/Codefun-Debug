@@ -1,11 +1,12 @@
 import prisma from "@database/prisma/instance";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, unstable_noStore } from "next/cache";
 
 import type { GroupsData } from "@/features/rankings";
 import type { FunctionReturnType } from "@/types";
 import { handleCatch } from "@/utils";
 
 export const getGroups = async (): Promise<FunctionReturnType<GroupsData>> => {
+  unstable_noStore();
   try {
     return await unstable_cache(
       async () => {

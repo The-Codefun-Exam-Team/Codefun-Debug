@@ -1,5 +1,5 @@
 import prisma from "@database/prisma/instance";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, unstable_noStore } from "next/cache";
 
 import type { ProblemList } from "@/features/problems";
 import { type FunctionReturnType, LANGUAGES_DICT } from "@/types";
@@ -9,6 +9,7 @@ export const getProblems = async (
   page: number,
   limit: number,
 ): Promise<FunctionReturnType<ProblemList>> => {
+  unstable_noStore();
   try {
     const data = await unstable_cache(
       async () => {

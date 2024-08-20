@@ -1,4 +1,5 @@
 import type { Language, SubmissionResult } from "@prisma/client";
+import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 
 import type { FunctionReturnType } from "@/types";
@@ -22,6 +23,7 @@ interface SubmissionCodefun {
 }
 
 export const getSubmissionCodefun = async (id: number) => {
+  unstable_noStore();
   return new Promise<FunctionReturnType<SubmissionCodefun>>((resolve) => {
     const token = cookies().get("token");
     const interval = setInterval(async () => {

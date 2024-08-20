@@ -1,4 +1,5 @@
 import prisma from "@database/prisma/instance";
+import { unstable_noStore } from "next/cache";
 import { cache } from "react";
 
 import { verifyCodefunWithMemo } from "@/features/auth";
@@ -10,6 +11,7 @@ type ProblemScoreMap = Record<number, ScoreDisplayInfo>;
 const getProblemsScore = async (): Promise<
   FunctionReturnType<ProblemScoreMap>
 > => {
+  unstable_noStore();
   try {
     const user = await verifyCodefunWithMemo();
     if (!user.ok) {
