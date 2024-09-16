@@ -23,7 +23,7 @@ const getProblemsScore = async (): Promise<
       select: {
         id: true,
         score: true,
-        diff: true,
+        debugSubmissionsDiff: true,
         result: true,
         debugProblem: {
           select: {
@@ -34,8 +34,17 @@ const getProblemsScore = async (): Promise<
       },
     });
     const result: ProblemScoreMap = {};
-    for (const { debugProblem, id, ...dsubInfo } of query) {
-      result[debugProblem.id] = { debugSubmissionId: id, ...dsubInfo };
+    for (const {
+      debugProblem,
+      id,
+      debugSubmissionsDiff,
+      ...dsubInfo
+    } of query) {
+      result[debugProblem.id] = {
+        debugSubmissionId: id,
+        diff: debugSubmissionsDiff?.diff ?? 1e5,
+        ...dsubInfo,
+      };
     }
     return {
       ok: true,

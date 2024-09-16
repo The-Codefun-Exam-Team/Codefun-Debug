@@ -17,14 +17,14 @@ export const getProblemScore = async (
       select: {
         id: true,
         score: true,
-        diff: true,
         result: true,
+        debugSubmissionsDiff: true,
       },
     });
     const data = query
       ? {
           score: query.score,
-          diff: query.diff,
+          diff: query.debugSubmissionsDiff?.diff ?? 1e5,
           result: query.result,
           debugSubmissionId: query.id,
         }
