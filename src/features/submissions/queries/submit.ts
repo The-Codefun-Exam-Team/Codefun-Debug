@@ -2,7 +2,7 @@ import prisma from "@database/prisma/instance";
 
 import { verifyCodefunWithMemo } from "@/features/auth";
 import { getProblemWithMemo } from "@/features/problems";
-import { setSubmissionDiff, submitCodefun } from "@/features/submissions";
+import { submitCodefun } from "@/features/submissions";
 import type { FunctionReturnType } from "@/types";
 import { calcEditDistance, handleCatch } from "@/utils";
 
@@ -49,16 +49,16 @@ export const submit = async (
         subId: codefunSubmission.data,
         userId: user.data.id,
         debugProblemId: debugProblemData.id,
+        debugSubmissionsDiff: {
+          create: {
+            diff: calcEditDistance(debugProblemData.source, source),
+          },
+        },
       },
       select: {
         id: true,
       },
     });
-
-    void setSubmissionDiff(
-      debugSubmission.id,
-      await calcEditDistance(debugProblemData.source, source),
-    );
 
     return {
       ok: true,
