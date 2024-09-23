@@ -20,7 +20,7 @@ export const ProblemScore = async ({ id }: { id: number }) => {
   }
   const allProblemsScore = await getProblemsScoreWithMemo();
   if (!allProblemsScore.ok) {
-    return <ProblemScoreText text="Not Available" />;
+    throw new Error(allProblemsScore.message);
   }
   const problemScore = allProblemsScore.data[id];
   return (
