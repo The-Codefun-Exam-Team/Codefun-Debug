@@ -1,5 +1,5 @@
 import prisma from "@database/prisma/instance";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, unstable_noStore } from "next/cache";
 import { cache } from "react";
 
 import type { DetailedProblemInfo } from "@/features/problems";
@@ -10,6 +10,7 @@ import { handleCatch, parseJudge } from "@/utils";
 const getProblem = async (
   code: string,
 ): Promise<FunctionReturnType<DetailedProblemInfo>> => {
+  unstable_noStore();
   try {
     const data = await unstable_cache(
       async () => {

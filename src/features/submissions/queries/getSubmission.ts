@@ -1,4 +1,5 @@
 import prisma from "@database/prisma/instance";
+import { unstable_noStore } from "next/cache";
 
 import type { DetailedSubmissionsInfo } from "@/features/submissions";
 import {
@@ -11,6 +12,7 @@ import { gravatarFromEmail, handleCatch, parseJudge } from "@/utils";
 export const getSubmission = async (
   id: number,
 ): Promise<FunctionReturnType<DetailedSubmissionsInfo>> => {
+  unstable_noStore();
   try {
     const query = await prisma.debugSubmissionQuery.findUniqueOrThrow({
       where: {

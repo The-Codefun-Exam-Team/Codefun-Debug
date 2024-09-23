@@ -111,7 +111,7 @@ export const actionCreateProblem = async (
         status: 409,
       };
     }
-    if (submission.result !== "AC") {
+    if (submission.result === "AC") {
       return {
         ok: false,
         message: "",

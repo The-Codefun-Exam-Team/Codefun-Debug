@@ -2,6 +2,7 @@ export * from "./calcEditDistance";
 export * from "./calcScore";
 export * from "./clsx";
 export * from "./createNamespaceComponent";
+export * from "./formatDateTime";
 export * from "./getCodefunRole";
 export * from "./getCodefunRoleTextClass";
 export * from "./getResult";

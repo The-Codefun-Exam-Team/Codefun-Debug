@@ -1,3 +1,4 @@
+import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
@@ -6,6 +7,7 @@ import type { FunctionReturnType, UserInfo } from "@/types";
 const verifyCodefun = async (
   token?: string,
 ): Promise<FunctionReturnType<UserInfo>> => {
+  unstable_noStore();
   try {
     if (!token) {
       token = cookies().get("token")?.value;

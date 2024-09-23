@@ -1,4 +1,5 @@
 import prisma from "@database/prisma/instance";
+import { unstable_noStore } from "next/cache";
 
 import type { FunctionReturnType, ScoreDisplayInfo } from "@/types";
 import { handleCatch } from "@/utils";
@@ -7,6 +8,7 @@ export const getProblemScore = async (
   debugProblemId: number,
   userId: number,
 ): Promise<FunctionReturnType<ScoreDisplayInfo>> => {
+  unstable_noStore();
   try {
     const query = await prisma.debugSubmissions.findFirst({
       where: {
