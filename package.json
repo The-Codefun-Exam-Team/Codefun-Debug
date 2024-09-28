@@ -17,7 +17,7 @@
     "db:generate": "prisma generate",
     "db:format": "prisma format",
     "db:migrate:dev": "prisma migrate dev",
-    "test": "dotenv -e .env.test vitest"
+    "test": "dotenv -e .env.test -- prisma migrate reset --force && dotenv -e .env.test vitest"
   },
   "prisma": {
     "schema": "src/database/prisma/schema",
