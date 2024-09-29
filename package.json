@@ -16,16 +16,18 @@
     "db:pull": "prisma db pull",
     "db:generate": "prisma generate",
     "db:format": "prisma format",
-    "db:migrate:dev": "prisma migrate dev"
+    "db:migrate:dev": "prisma migrate dev",
+    "test": "dotenv -e .env.test -- prisma migrate reset --force && dotenv -e .env.test vitest"
   },
   "prisma": {
-    "schema": "src/database/prisma/schema.prisma"
+    "schema": "src/database/prisma/schema",
+    "seed": "tsx src/database/prisma/seed/main.ts"
   },
   "dependencies": {
     "@headlessui/react": "1.7.19",
     "@hookform/resolvers": "3.3.4",
     "@next/bundle-analyzer": "15.0.0-canary.53",
-    "@prisma/client": "^5.13.0",
+    "@prisma/client": "^5.16.2",
     "@reduxjs/toolkit": "2.2.3",
     "client-only": "0.0.1",
     "cross-env": "7.0.3",
@@ -44,13 +46,16 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.12",
+    "@testing-library/react": "^16.0.0",
     "@types/node": "20.12.7",
     "@types/react": "18.2.79",
     "@types/react-dom": "18.2.25",
     "@types/shell-quote": "1.7.5",
     "@typescript-eslint/eslint-plugin": "7.7.1",
     "@typescript-eslint/parser": "7.7.1",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "10.4.19",
+    "dotenv-cli": "^7.4.2",
     "eslint": "8.56.0",
     "eslint-config-next": "15.0.0-canary.53",
     "eslint-config-prettier": "9.1.0",
@@ -58,15 +63,18 @@
     "eslint-plugin-simple-import-sort": "12.1.0",
     "eslint-plugin-tailwindcss": "3.15.1",
     "husky": "9.0.11",
+    "jsdom": "^24.1.0",
     "lint-staged": "15.2.2",
     "npm-check-updates": "16.14.18",
     "postcss": "8.4.38",
     "prettier": "3.2.5",
     "prettier-plugin-tailwindcss": "0.5.14",
-    "prisma": "^5.7.1",
+    "prisma": "^5.16.2",
     "shell-quote": "1.8.1",
     "tailwindcss": "3.4.3",
-    "typescript": "5.4.5"
+    "tsx": "^4.16.2",
+    "typescript": "5.4.5",
+    "vitest": "^2.0.2"
   },
-  "packageManager": "pnpm@9.4.0"
+  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
 }

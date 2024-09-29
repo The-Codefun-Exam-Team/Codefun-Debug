@@ -1,0 +1,46 @@
+enum Language {
+  C__     @map("C++")
+  Pascal
+  Java
+  Python2
+  Python3
+  Go
+  Nasm
+
+  @@map("language")
+  @@schema("public")
+}
+
+enum ScoreType {
+  acm
+  oi
+
+  @@map("score_type")
+  @@schema("public")
+}
+
+enum SubmissionResult {
+  AC
+  CE
+  DQ
+  MLE
+  Q
+  RTE
+  SS
+  TLE
+  TO
+  WA
+  Scoring @map("...")
+
+  @@map("submission_result")
+  @@schema("public")
+}
+
+enum UserStatus {
+  normal
+  admin
+  banned
+
+  @@map("user_status")
+  @@schema("public")
+}

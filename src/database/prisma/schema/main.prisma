@@ -1,0 +1,27 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "views", "prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "suzume"]
+}
+
+model GooseDbVersion {
+  id        Int       @id @default(autoincrement())
+  versionId BigInt    @map("version_id")
+  isApplied Boolean   @map("is_applied")
+  tstamp    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@map("goose_db_version")
+  @@schema("public")
+}
+
+view Stats {
+  problemCount BigInt @unique @map("problem_count")
+
+  @@map("stats")
+  @@schema("public")
+}

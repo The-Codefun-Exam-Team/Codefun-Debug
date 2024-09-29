@@ -49,3 +49,5 @@ build
 *README.md
 LICENSE
 
+#tests
+__tests__
