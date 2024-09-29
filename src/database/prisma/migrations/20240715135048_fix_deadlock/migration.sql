@@ -202,7 +202,7 @@ CREATE FUNCTION "suzume"."ds_update_score"() RETURNS trigger SECURITY DEFINER AS
       ds.debug_problem_id = NEW.debug_problem_id
       AND ds.user_id = NEW.user_id
       AND is_best = TRUE;
-    IF NEW.score > best_score THEN
+    IF NEW.score >= COALESCE(best_score,0) THEN
       UPDATE 
         debug_submissions ds
       SET
