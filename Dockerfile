@@ -11,7 +11,7 @@ RUN corepack enable pnpm
 RUN pnpm i --frozen-lockfile
 
 # Initialize Prisma
-COPY src/database/prisma/schema.prisma src/database/prisma/schema.prisma
+COPY src/database/prisma/schema/ src/database/prisma/schema/
 RUN pnpm prisma generate
 
 # Next.js collects completely anonymous telemetry data about general usage.
