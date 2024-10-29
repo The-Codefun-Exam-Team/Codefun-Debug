@@ -1,6 +1,7 @@
 import prisma from "@database/prisma/instance";
 import { unstable_noStore } from "next/cache";
 
+import { verifyCodefunWithMemo } from "@/features/auth";
 import type { DetailedSubmissionsInfo } from "@/features/submissions";
 import {
   type FunctionReturnType,
@@ -42,7 +43,7 @@ export const getSubmission = async (
       },
     });
 
-    const user = (): UserDisplayInfo => {
+    const author = (): UserDisplayInfo => {
       if (query.userStatus === "banned") {
         return {
           username: query.username,
@@ -74,6 +75,10 @@ export const getSubmission = async (
       } satisfies UserDisplayInfo;
     };
 
+    const user = await verifyCodefunWithMemo();
+    const canViewCode =
+      user.ok &&
+      (user.data.status == "admin" || user.data.username == author().username);
     const data = {
       id: query.id,
       scoreInfo: {
@@ -83,7 +88,7 @@ export const getSubmission = async (
       },
       submitTime: query.submitTime,
       runtime: query.runtime,
-      source: query.source,
+      source: canViewCode ? query.source : "",
       debugProblem: {
         debugProblemCode: query.debugProblemCode,
         judge: parseJudge(query.debugProblemJudge),
@@ -91,7 +96,7 @@ export const getSubmission = async (
         source: query.debugProblemSource,
       },
       judge: parseJudge(query.debugSubmissionJudge),
-      user: user(),
+      user: author(),
     };
     return {
       ok: true,
