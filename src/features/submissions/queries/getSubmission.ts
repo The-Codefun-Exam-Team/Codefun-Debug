@@ -78,7 +78,7 @@ export const getSubmission = async (
     const user = await verifyCodefunWithMemo();
     const canViewCode =
       user.ok &&
-      (user.data.status == "admin" || user.data.username == author().username);
+      (user.data.status == "Admin" || user.data.username == author().username);
     const data = {
       id: query.id,
       scoreInfo: {

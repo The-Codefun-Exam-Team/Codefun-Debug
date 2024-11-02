@@ -18,7 +18,7 @@ export const GET = async (
         { status: submission.status },
       );
     }
-    return NextResponse.json(submission.data, { status: 200 });
+    return NextResponse.json({ data: submission.data }, { status: 200 });
   } catch (e) {
     console.error(e);
     return NextResponse.json(
