@@ -7,7 +7,7 @@ import type { FunctionReturnType } from "@/types";
 import { LANGUAGES_DICT } from "@/types";
 import { handleCatch, parseJudge } from "@/utils";
 
-const getProblem = async (
+export const getProblem = async (
   code: string,
 ): Promise<FunctionReturnType<DetailedProblemInfo>> => {
   unstable_noStore();
