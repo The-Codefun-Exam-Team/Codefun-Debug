@@ -8,12 +8,12 @@ export const BriefRankTable = async () => {
   }
   const data = query.data;
   return (
-    <div className="w-full [&>:where(h1,h2)]:!text-accent-light dark:[&>:where(h1,h2)]:!text-accent-dark">
+    <div className="[&>:where(h1,h2)]:!text-accent-light dark:[&>:where(h1,h2)]:!text-accent-dark">
       <H2>Top ranking</H2>
       {data.length === 0 ? (
         <H3>There&apos;s nothing here.</H3>
       ) : (
-        <table className="w-full table-auto bg-white px-2 dark:bg-slate-900">
+        <table className="w-full table-auto text-ellipsis bg-white px-2 dark:bg-slate-900 ">
           <thead>
             <tr className="border-b-2 border-slate-200 text-slate-800 dark:border-b-[0.5px] dark:border-slate-700 dark:text-slate-100 [&>th]:p-[14px] [&>th]:text-xl [&>th]:font-bold">
               <th className="text-left">#</th>
@@ -28,7 +28,9 @@ export const BriefRankTable = async () => {
                 className="[&>td]:my-3 [&>td]:p-3"
               >
                 <td className="text-left">{user.rank}</td>
-                <td className="text-left">{user.displayName}</td>
+                <td className="max-w-[35vw] text-ellipsis break-words text-left xl:max-w-[50vw]">
+                  {user.displayName}
+                </td>
                 <td className="text-right">{user.score}</td>
               </tr>
             ))}
