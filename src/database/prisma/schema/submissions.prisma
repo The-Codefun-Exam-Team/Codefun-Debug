@@ -78,7 +78,7 @@ view DebugSubmissionQuery {
   debugProblemJudge    String           @map("debug_problem_judge")
   debugProblemSource   String           @map("debug_problem_source") @db.VarChar(32000)
   debugProblemLanguage Language         @map("debug_problem_language")
-  debugSubmissionJudge String           @map("debug_submission_judge")
+  debugSubmissionJudge String?          @map("debug_submission_judge")
   score                Decimal          @db.Decimal(9, 2)
   result               SubmissionResult
   diff                 Int
