@@ -4,8 +4,12 @@ import { NextResponse } from "next/server";
 
 export const GET = async (
   _req: Request,
-  { params: { username } }: { params: { username: string } },
+  props: { params: Promise<{ username: string }> },
 ) => {
+  const params = await props.params;
+
+  const { username } = params;
+
   try {
     const resData = {} as Record<string, number>;
     const stats = await prisma.debugSubmissions.findMany({

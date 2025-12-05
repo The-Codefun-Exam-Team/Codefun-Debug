@@ -16,7 +16,7 @@ export const submitCodefun = async ({
   language: string;
 }): Promise<FunctionReturnType<number>> => {
   try {
-    const token = cookies().get("token");
+    const token = (await cookies()).get("token");
     const requestToCodefun = await fetch("https://codefun.vn/api/submit", {
       method: "POST",
       headers: {

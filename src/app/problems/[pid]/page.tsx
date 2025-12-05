@@ -8,7 +8,11 @@ export const metadata: Metadata = {
   title: "Problem",
 };
 
-const Page = async ({ params: { pid: code } }: { params: { pid: string } }) => {
+const Page = async (props: { params: Promise<{ pid: string }> }) => {
+  const params = await props.params;
+
+  const { pid: code } = params;
+
   Promise.all([Editor.preload(code), InfoTable.preload(code)]);
   return (
     <div className="mx-auto flex w-full flex-col items-start gap-6 self-stretch px-3 py-5 md:max-w-7xl md:flex-row md:gap-4 md:px-2 md:py-10 lg:gap-8 lg:px-4">

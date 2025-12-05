@@ -60,7 +60,7 @@ export const actionLogin = async (
       };
     }
 
-    cookies().set({
+    (await cookies()).set({
       name: "token",
       value: token,
       maxAge: 60 * 60 * 24,
@@ -72,6 +72,6 @@ export const actionLogin = async (
   } catch (e) {
     return handleCatch(e);
   }
-  const redirectTo = headers().get("X-Redirect-To") ?? "/";
+  const redirectTo = (await headers()).get("X-Redirect-To") ?? "/";
   redirect(redirectTo);
 };

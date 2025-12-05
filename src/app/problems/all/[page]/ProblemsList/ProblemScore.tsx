@@ -9,7 +9,7 @@ export const ProblemScoreText = ({ text }: { text: string }) => (
 );
 
 export const ProblemScore = async ({ id }: { id: number }) => {
-  const cookiesStore = cookies();
+  const cookiesStore = await cookies();
   const token = cookiesStore.get("token");
   if (!token || !token.value) {
     return <ProblemScoreText text="Not Available" />;

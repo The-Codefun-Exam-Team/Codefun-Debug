@@ -37,11 +37,13 @@ const getUserCount = async (groupId: number) => {
   }
 };
 
-const Page = async ({
-  params: { group: groupId, page },
-}: {
-  params: { group: string; page: string };
+const Page = async (props: {
+  params: Promise<{ group: string; page: string }>;
 }) => {
+  const params = await props.params;
+
+  const { group: groupId, page } = params;
+
   if (isNaN(parseInt(groupId)) || isNaN(parseInt(page))) {
     throw new Error("Invalid group or page");
   }

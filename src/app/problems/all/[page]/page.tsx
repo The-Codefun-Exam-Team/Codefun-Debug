@@ -9,7 +9,11 @@ export const metadata: Metadata = {
   title: "Problems",
 };
 
-const Page = async ({ params: { page } }: { params: { page: string } }) => {
+const Page = async (props: { params: Promise<{ page: string }> }) => {
+  const params = await props.params;
+
+  const { page } = params;
+
   const itemsPerPage = 50;
   const pageInt = parseInt(page);
   const [problemCountQuery, problemListQuery] = await Promise.all([

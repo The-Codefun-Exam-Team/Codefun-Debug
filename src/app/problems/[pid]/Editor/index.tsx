@@ -5,7 +5,7 @@ import { getProblemWithMemo } from "@/features/problems";
 import { EditorClient } from "./Client";
 
 export const Editor = async ({ code }: { code: string }) => {
-  const cookiesStore = cookies();
+  const cookiesStore = await cookies();
   const token = cookiesStore.get("token");
   const problemData = await getProblemWithMemo(code);
   if (!problemData.ok) {

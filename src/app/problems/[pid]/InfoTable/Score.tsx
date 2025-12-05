@@ -5,7 +5,7 @@ import { verifyCodefunWithMemo } from "@/features/auth";
 import { getProblemScore } from "@/features/problems";
 
 export const InfoTableScore = async ({ problemId }: { problemId: number }) => {
-  const cookiesStore = cookies();
+  const cookiesStore = await cookies();
   const token = cookiesStore.get("token");
   if (!token || !token.value) {
     return (

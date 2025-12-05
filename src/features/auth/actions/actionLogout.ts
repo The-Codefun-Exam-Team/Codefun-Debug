@@ -6,7 +6,7 @@ import { handleCatch } from "@/utils/handleCatch";
 
 export const actionLogout = async (): Promise<FunctionReturnType> => {
   try {
-    cookies().delete("token");
+    (await cookies()).delete("token");
     return {
       ok: true,
     };

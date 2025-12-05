@@ -11,7 +11,11 @@ export const metadata: Metadata = {
   title: "Submissions",
 };
 
-const Page = async ({ params: { sid } }: { params: { sid: string } }) => {
+const Page = async (props: { params: Promise<{ sid: string }> }) => {
+  const params = await props.params;
+
+  const { sid } = params;
+
   const submissionId = parseInt(sid);
   const submissionQuery = await getSubmission(submissionId);
   if (!submissionQuery.ok) {

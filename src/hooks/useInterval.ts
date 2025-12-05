@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useInterval = (fn: TimerHandler, interval: number) => {
   const [active, setActive] = useState(false);
-  const intervalRef = useRef<number>();
+  const intervalRef = useRef<number | undefined>(undefined);
   const fnRef = useRef<TimerHandler>(() => {
     // do nothing
   });

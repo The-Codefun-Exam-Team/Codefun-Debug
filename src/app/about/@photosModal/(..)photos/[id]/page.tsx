@@ -11,7 +11,11 @@ export const dynamicParams = false;
 export const generateStaticParams = () =>
   TEAM.map((member) => ({ id: member }));
 
-const Page = ({ params: { id } }: { params: { id: TeamMembers } }) => {
+const Page = async (props: { params: Promise<{ id: TeamMembers }> }) => {
+  const params = await props.params;
+
+  const { id } = params;
+
   const info = CONTRIBUTORS_INFO[id];
   if (!info) {
     notFound();

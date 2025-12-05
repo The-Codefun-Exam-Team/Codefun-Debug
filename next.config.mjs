@@ -23,24 +23,25 @@ const nextConfig = {
   /**
    * @param {import("webpack").Configuration} config
    */
-  webpack(config) {
+  webpack(config, { isServer }) {
     if (!config.plugins) {
       config.plugins = [];
     }
 
-    const monacoPlugin = new MonacoWebpackPlugin({
-      languages: ["cpp", "python", "java"],
-      filename: "static/[name].worker.js",
-      globalAPI: false,
-    });
-    // @ts-ignore Monaco's webpack types don't seem to be compatible.
-    config.plugins.push(monacoPlugin);
+    // Only add Monaco plugin for client-side builds
+    if (!isServer) {
+      const monacoPlugin = new MonacoWebpackPlugin({
+        languages: ["cpp", "python", "java"],
+        filename: "static/[name].worker.js",
+        globalAPI: false,
+      });
+      // @ts-ignore Monaco's webpack types don't seem to be compatible.
+      config.plugins.push(monacoPlugin);
+    }
 
     return config;
   },
   experimental: {
-    webpackBuildWorker: true,
-    ppr: true,
     optimizePackageImports: [
       "@/features/auth",
       "@/features/about",

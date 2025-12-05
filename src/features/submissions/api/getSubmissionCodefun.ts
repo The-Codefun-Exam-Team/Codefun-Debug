@@ -24,8 +24,8 @@ interface SubmissionCodefun {
 
 export const getSubmissionCodefun = async (id: number) => {
   unstable_noStore();
+  const token = (await cookies()).get("token");
   return new Promise<FunctionReturnType<SubmissionCodefun>>((resolve) => {
-    const token = cookies().get("token");
     const interval = setInterval(async () => {
       try {
         const requestToCodefun = await fetch(

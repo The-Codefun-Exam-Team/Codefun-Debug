@@ -9,6 +9,17 @@ import { actionSubmit } from "@/features/submissions";
 import { useAppSelector } from "@/hooks";
 import { clsx } from "@/utils";
 
+const getMonacoLanguage = (language: string): string => {
+  const mapping: Record<string, string> = {
+    "C++": "cpp",
+    Python: "python",
+    Java: "java",
+    C: "c",
+    // Add more as needed
+  };
+  return mapping[language] || "plaintext";
+};
+
 export interface EditorClientProps {
   problemData: DetailedProblemInfo;
   code: string;
@@ -25,7 +36,7 @@ export const EditorClient = ({
   // TODO: add options for editor
   const router = useRouter();
   const [submitError, setSubmitError] = useState("");
-  const editorRef = useRef<monacoEditor.editor.IStandaloneDiffEditor | null>(
+  const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(
     null,
   );
   const editorDomRef = useRef<HTMLDivElement | null>(null);
@@ -43,20 +54,15 @@ export const EditorClient = ({
         if (editorDomRef.current) {
           editorRef.current?.dispose();
 
-          editorRef.current = monaco.current.editor.createDiffEditor(
+          editorRef.current = monaco.current.editor.create(
             editorDomRef.current,
             {
               automaticLayout: true,
-              renderSideBySide: false,
-              renderOverviewRuler: false,
               scrollBeyondLastColumn: 10,
+              language: getMonacoLanguage(problemData.language),
+              value: problemData.source || "",
             },
           );
-
-          editorRef.current.setModel({
-            original: monaco.current.editor.createModel("", "cpp"),
-            modified: monaco.current.editor.createModel("", "cpp"),
-          });
         }
         setRenderingEditor(false);
       }
@@ -65,10 +71,10 @@ export const EditorClient = ({
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [problemData.language, problemData.source]);
 
   useEffect(() => {
-    if (renderingEditor) return;
+    if (renderingEditor || !editorRef.current) return;
     if (isDark) {
       monaco.current?.editor.setTheme("dark");
     } else {
@@ -76,19 +82,12 @@ export const EditorClient = ({
     }
   }, [isDark, renderingEditor]);
 
-  useEffect(() => {
-    if (!renderingEditor && editorRef.current) {
-      editorRef.current.getOriginalEditor()?.setValue(problemData.source);
-      editorRef.current.getModifiedEditor()?.setValue(problemData.source);
-    }
-  }, [renderingEditor, problemData.source]);
-
   const submitCode = async () => {
     if (!editorRef.current) {
       setSubmitError("Editor hasn't been loaded.");
       return;
     }
-    const source = editorRef.current.getModifiedEditor().getValue();
+    const source = editorRef.current.getValue();
     const res = await actionSubmit(code, source);
     if (!res.ok) {
       setSubmitError(res.message);

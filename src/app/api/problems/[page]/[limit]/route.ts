@@ -4,8 +4,12 @@ import { getProblems } from "@/features/problems";
 
 export const GET = async (
   _req: Request,
-  { params: { page, limit } }: { params: { page: string; limit: string } },
+  props: { params: Promise<{ page: string; limit: string }> },
 ) => {
+  const params = await props.params;
+
+  const { page, limit } = params;
+
   try {
     const pageInt = parseInt(page);
     const limitInt = parseInt(limit);

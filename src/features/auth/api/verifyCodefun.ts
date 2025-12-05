@@ -10,7 +10,7 @@ const verifyCodefun = async (
   unstable_noStore();
   try {
     if (!token) {
-      token = cookies().get("token")?.value;
+      token = (await cookies()).get("token")?.value;
     }
     if (!token) {
       return {

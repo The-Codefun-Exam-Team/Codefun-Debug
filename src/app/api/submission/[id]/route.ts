@@ -4,8 +4,12 @@ import { getSubmission } from "@/features/submissions";
 
 export const GET = async (
   _req: Request,
-  { params: { id } }: { params: { id: string } },
+  props: { params: Promise<{ id: string }> },
 ) => {
+  const params = await props.params;
+
+  const { id } = params;
+
   try {
     const idInt = parseInt(id);
     if (isNaN(idInt)) {

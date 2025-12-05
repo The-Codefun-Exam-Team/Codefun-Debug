@@ -12,7 +12,7 @@ export const submit = async (
   source: string,
 ): Promise<FunctionReturnType<number>> => {
   try {
-    const cookiesStore = cookies();
+    const cookiesStore = await cookies();
     const token = cookiesStore.get("token");
     const debugProblemQuery = await getProblemWithMemo(debugProblemCode);
     const userQuery = await verifyCodefunWithMemo(token?.value);
