@@ -11,7 +11,7 @@ const seed = async () => {
   await seedGroups();
   await seedUsers();
   await seedProblems();
-  await prisma.$queryRaw`SELECT 1 FROM refresh_rankings();`;
+  await prisma.$queryRaw`SELECT 1 FROM public.refresh_rankings();`;
   await seedSubmissions();
   await seedDebugProblems();
   await seedDebugSubmissions();

@@ -65,13 +65,13 @@ FROM
             debug_submissions ds 
             JOIN debug_submissions_diff dsd ON ((ds.id = dsd.id)) 
           )
-          JOIN submissions s ON ((ds.sub_id = s.id))
+          JOIN public.submissions s ON ((ds.sub_id = s.id))
         )
         JOIN debug_user_stat dus ON ((s.user_id = dus.user_id))
       )
       JOIN debug_problems dp ON ((ds.debug_problem_id = dp.id))
     )
-    JOIN submissions dps ON ((dp.sub_id = dps.id))
+    JOIN public.submissions dps ON ((dp.sub_id = dps.id))
   );
 
 -- Create view to calculate debug submissions results and scores
@@ -91,16 +91,16 @@ SELECT
     )
   )::numeric(9,2) AS score,
   CASE
-    WHEN s.score = 100 AND dsd.diff - dp.min_diff <= 0 THEN 'AC'::submission_result
-    WHEN s.score = 100 THEN 'SS'::submission_result
+    WHEN s.score = 100 AND dsd.diff - dp.min_diff <= 0 THEN 'AC'::public.submission_result
+    WHEN s.score = 100 THEN 'SS'::public.submission_result
     ELSE s.result
   END AS result
 FROM 
   debug_submissions ds
   JOIN debug_submissions_diff dsd ON ds.id = dsd.id
-  JOIN submissions s ON ds.sub_id = s.id
+  JOIN public.submissions s ON ds.sub_id = s.id
   JOIN debug_problems dp ON ds.debug_problem_id = dp.id
-  JOIN submissions dps ON dp.sub_id = dps.id;
+  JOIN public.submissions dps ON dp.sub_id = dps.id;
 
 -- Create trigger function and trigger
 CREATE FUNCTION "suzume"."dsd_update_diff"() RETURNS trigger SECURITY DEFINER AS
@@ -121,7 +121,7 @@ CREATE FUNCTION "suzume"."dsd_update_diff"() RETURNS trigger SECURITY DEFINER AS
       dp_id
     FROM 
       debug_submissions ds
-      JOIN submissions s ON ds.sub_id = s.id
+      JOIN public.submissions s ON ds.sub_id = s.id
       JOIN debug_problems dp ON ds.debug_problem_id = dp.id
     WHERE
       NEW.id = ds.id;    

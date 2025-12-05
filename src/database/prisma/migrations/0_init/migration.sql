@@ -193,7 +193,7 @@ CREATE VIEW "public"."group_query" AS
     id AS group_id,
     name AS group_name
   FROM
-    groups;
+    public.groups;
 
 
 -- CreateView
@@ -201,7 +201,7 @@ CREATE VIEW "public"."stats" AS
   SELECT
     count(*) AS problem_count
   FROM
-    problems;
+    public.problems;
 
 -- CreateView
 CREATE MATERIALIZED VIEW "public"."user_rankings" AS 
@@ -209,7 +209,7 @@ CREATE MATERIALIZED VIEW "public"."user_rankings" AS
     SELECT
       (stats.problem_count) :: numeric(9, 2) AS problem_count
     FROM
-      stats
+      public.stats
     )
   SELECT
     id,
@@ -219,19 +219,19 @@ CREATE MATERIALIZED VIEW "public"."user_rankings" AS
     ) AS rank,
     (
       (
-        (solved_count) :: numeric(9, 2) / (
+        (solved_count) :: numeric(9, 2) / GREATEST(1 :: numeric(9,2) ,(
           SELECT
             computed.problem_count
           FROM
             computed
-        )
+        ))
       )
     ) :: numeric(9, 2) AS ratio
   FROM
-    users
+    public.users
   WHERE
     (
-      user_status <> 'banned' :: user_status
+      user_status <> 'banned' :: public.user_status
     );
 
 -- CreateIndex 
@@ -252,9 +252,9 @@ CREATE VIEW "public"."user_query" AS
     user_rankings.ratio AS user_ratio,
     user_rankings.rank AS user_rank
   FROM
-    users,
-    group_query g,
-    user_rankings
+    public.users,
+    public.group_query g,
+    public.user_rankings
   WHERE
     (
       (g.group_id = users.group_id)
@@ -272,14 +272,14 @@ CREATE VIEW "public"."judge_requests" AS
     problems.score_type,
     problems.time_limit
   FROM
-    submissions,
-    problems
+    public.submissions,
+    public.problems
   WHERE
     (
       (submissions.problem_id = problems.id)
       AND (
         submissions.result = ANY (
-          ARRAY ['Q'::submission_result, '...'::submission_result]
+          ARRAY ['Q'::public.submission_result, '...'::public.submission_result]
         )
       )
     );
@@ -308,13 +308,13 @@ CREATE VIEW "public"."post_query" AS
       SELECT
         count(*) AS count
       FROM
-        post_comments
+        public.post_comments
       WHERE
         (post_comments.post_id = posts.id)
     ) AS post_comment_count
   FROM
-    posts,
-    user_query
+    public.posts,
+    public.user_query
   WHERE
     (user_query.user_id = posts.author_id);
 
@@ -325,7 +325,7 @@ CREATE VIEW "public"."problem_headers" AS
     problem_code,
     name AS problem_name
   FROM
-    problems;
+    public.problems;
 
 -- CreateView
 CREATE VIEW "public"."problem_listing" AS 
@@ -352,9 +352,9 @@ CREATE VIEW "public"."problem_listing" AS
     problems.solved_count AS problem_solved,
     problems.total_attempts AS problem_total
   FROM
-    problems,
-    user_query,
-    problem_headers
+    public.problems,
+    public.user_query,
+    public.problem_headers
   WHERE
     (
       (problems.setter_id = user_query.user_id)
@@ -389,8 +389,8 @@ CREATE VIEW "public"."problem_query" AS
     problem_listing.problem_total,
     problems.statements AS problem_statements
   FROM
-    problems,
-    problem_listing
+    public.problems,
+    public.problem_listing
   WHERE
     (
       (problems.problem_code) :: text = (problem_listing.problem_code) :: text
@@ -403,8 +403,8 @@ CREATE VIEW "public"."solved_submissions" AS
     submissions.problem_id,
     submissions.user_id
   FROM
-    submissions,
-    problems
+    public.submissions,
+    public.problems
   WHERE
     (
       (submissions.problem_id = problems.id)
@@ -441,14 +441,14 @@ CREATE VIEW "public"."submission_listing" AS
   FROM
     (
       (
-        submissions
-        JOIN problem_headers ON (
+        public.submissions
+        JOIN public.problem_headers ON (
           (
             submissions.problem_id = problem_headers.problem_id
           )
         )
       )
-      JOIN user_query ON ((submissions.user_id = user_query.user_id))
+      JOIN public.user_query ON ((submissions.user_id = user_query.user_id))
     );
 
 -- CreateView
@@ -479,8 +479,8 @@ CREATE VIEW "public"."submission_query" AS
     submissions.judge_output AS sub_judge,
     submissions.scored_at AS sub_scored_at
   FROM
-    submission_listing,
-    submissions
+    public.submission_listing,
+    public.submissions
   WHERE
     (submission_listing.sub_id = submissions.id);
 
@@ -496,9 +496,9 @@ CREATE VIEW "public"."user_stats_query" AS
     submissions.created_at AS sub_submitted_at,
     submissions.score AS sub_score
   FROM
-    submissions,
-    problems,
-    problem_headers
+    public.submissions,
+    public.problems,
+    public.problem_headers
   WHERE
     (
       (submissions.is_best = TRUE)
@@ -536,7 +536,7 @@ CREATE VIEW "public"."activities" AS
           posts.title AS post_title,
           NULL :: integer AS comment_id
         FROM
-          posts
+          public.posts
         ORDER BY
           posts.updated_at DESC
       )
@@ -550,15 +550,15 @@ CREATE VIEW "public"."activities" AS
           posts.title AS post_title,
           post_comments.id AS comment_id
         FROM
-          post_comments,
-          posts
+          public.post_comments,
+          public.posts
         WHERE
           (posts.id = post_comments.post_id)
         ORDER BY
           post_comments.updated_at DESC
       )
     ) tbl,
-    user_query
+    public.user_query
   WHERE
     (user_query.user_id = tbl.author_id)
   ORDER BY
@@ -585,8 +585,8 @@ CREATE VIEW "public"."post_comment_query" AS
     post_comments.updated_at AS comment_updated_at,
     post_comments.parent_id AS comment_parent_id
   FROM
-    post_comments,
-    user_query
+    public.post_comments,
+    public.user_query
   WHERE
     (user_query.user_id = post_comments.author_id);
 
@@ -595,19 +595,19 @@ CREATE FUNCTION public.refresh_rankings()
   RETURNS "void"
   LANGUAGE "sql"
   AS $function$
-    REFRESH MATERIALIZED VIEW user_rankings;
+    REFRESH MATERIALIZED VIEW public.user_rankings;
   $function$;
 
 -- CreateRule
 CREATE RULE "user_rankings_update_on_new_user" AS
-  ON INSERT TO users 
-  DO SELECT refresh_rankings() AS refresh_rankings;
+  ON INSERT TO public.users 
+  DO SELECT public.refresh_rankings() AS refresh_rankings;
 
 -- CreateRule
 CREATE RULE "user_rankings_update_on_score_update" AS
-  ON UPDATE TO users
+  ON UPDATE TO public.users
   WHERE old.score::numeric <> new.score::numeric OR old.user_status <> new.user_status 
-  DO SELECT refresh_rankings() AS refresh_rankings;
+  DO SELECT public.refresh_rankings() AS refresh_rankings;
 
 -- CreatePartialIndex
 CREATE INDEX "posts_official" ON "public"."posts"("id" DESC) WHERE ("is_official" = TRUE);
@@ -616,5 +616,5 @@ CREATE INDEX "posts_official" ON "public"."posts"("id" DESC) WHERE ("is_official
 CREATE UNIQUE INDEX "submissions_is_best_problem_user" ON "public"."submissions"("problem_id", "user_id") WHERE ("is_best" = TRUE);
 
 -- CreatePartialIndex
-CREATE INDEX "submissions_queued" ON "public"."submissions"("id" DESC) INCLUDE("problem_id","source","language") WHERE ("result" = ANY (ARRAY['Q'::submission_result, '...'::submission_result]));
+CREATE INDEX "submissions_queued" ON "public"."submissions"("id" DESC) INCLUDE("problem_id","source","language") WHERE ("result" = ANY (ARRAY['Q'::public.submission_result, '...'::public.submission_result]));
 
