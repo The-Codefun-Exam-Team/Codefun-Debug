@@ -1,7 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema", "views", "prismaSchemaFolder"]
-binaryTargets = ["native", "linux-musl"]
+  previewFeatures = ["views"]
+  binaryTargets   = ["native", "linux-musl"]
 }
 
 datasource db {

@@ -19,15 +19,11 @@
     "db:migrate:dev": "prisma migrate dev",
     "test": "dotenv -e .env.test -- prisma migrate reset --force && dotenv -e .env.test vitest"
   },
-  "prisma": {
-    "schema": "src/database/prisma/schema",
-    "seed": "tsx src/database/prisma/seed/main.ts"
-  },
   "dependencies": {
     "@headlessui/react": "1.7.19",
     "@hookform/resolvers": "3.3.4",
     "@next/bundle-analyzer": "15.2.6",
-    "@prisma/client": "^6.2.1",
+    "@prisma/client": "^6.19.3",
     "@reduxjs/toolkit": "2.2.3",
     "client-only": "0.0.1",
     "cross-env": "7.0.3",
@@ -45,6 +41,7 @@
     "zod": "3.23.4"
   },
   "devDependencies": {
+    "@prisma/language-server": "^6.19.0",
     "@tailwindcss/typography": "^0.5.12",
     "@testing-library/react": "^16.0.0",
     "@types/node": "20.12.7",
@@ -69,7 +66,7 @@
     "postcss": "8.4.38",
     "prettier": "3.2.5",
     "prettier-plugin-tailwindcss": "0.5.14",
-    "prisma": "^6.2.1",
+    "prisma": "^6.19.3",
     "shell-quote": "1.8.1",
     "tailwindcss": "3.4.3",
     "tsx": "^4.16.2",
