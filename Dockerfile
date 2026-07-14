@@ -12,6 +12,7 @@ RUN pnpm i --frozen-lockfile
 
 # Initialize Prisma
 COPY src/database/prisma/schema/ src/database/prisma/schema/
+COPY prisma.config.ts prisma.config.ts
 RUN pnpm prisma generate
 
 # Next.js collects completely anonymous telemetry data about general usage.
@@ -32,8 +33,9 @@ ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-# Copy migration folder
+# Copy migration folder and prisma config
 COPY src/database/prisma/ src/database/prisma/
+COPY prisma.config.ts prisma.config.ts
 
 # Uncomment the following line should the `public/` folder be re-added.
 COPY --from=builder /app/public ./public
