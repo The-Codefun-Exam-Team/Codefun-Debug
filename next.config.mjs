@@ -10,6 +10,9 @@ const withBundleAnalyzer = withBundleAnalyzerInit({
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  outputFileTracingIncludes: {
+    "/**/*": ["node_modules/dotenv/**/*"],
+  },
   output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   images: {
     remotePatterns: [

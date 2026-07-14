@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 
 import { setScheme, store } from "@/store/redux";
-import { isColorScheme } from "@/utils";
+import { isColorScheme } from "@/utils/isColorScheme";
 
 let didCheckInitialTheme = false;
 

@@ -8,10 +8,11 @@ WORKDIR /app
 # Support multiple package managers
 COPY package.json pnpm-lock.yaml* ./
 RUN corepack enable pnpm 
-RUN pnpm i --frozen-lockfile
+RUN pnpm i --frozen-lockfile --config.node-linker=hoisted
 
 # Initialize Prisma
 COPY src/database/prisma/schema/ src/database/prisma/schema/
+COPY prisma.config.ts prisma.config.ts
 RUN pnpm prisma generate
 
 # Next.js collects completely anonymous telemetry data about general usage.
@@ -32,8 +33,10 @@ ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-# Copy migration folder
+
+# Copy migration folder and prisma config
 COPY src/database/prisma/ src/database/prisma/
+COPY prisma.config.ts prisma.config.ts
 
 # Uncomment the following line should the `public/` folder be re-added.
 COPY --from=builder /app/public ./public
@@ -42,6 +45,7 @@ COPY --from=builder /app/public ./public
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+
 
 EXPOSE 80
 

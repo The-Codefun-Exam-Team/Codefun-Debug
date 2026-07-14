@@ -4,7 +4,7 @@ import type {
 } from "@prisma/client";
 import type { Decimal } from "@prisma/client/runtime/library";
 
-import type { CODEFUN_ROLES, COLOR_SCHEMES, LANGUAGES_DICT } from "./constants";
+import type { CODEFUN_ROLES, LANGUAGES_DICT } from "./constants";
 
 export type { SubmissionResult, UserStatus } from "@prisma/client";
 
@@ -48,8 +48,6 @@ export interface UserDisplayInfoBanned {
 }
 
 export type UserDisplayInfo = UserDisplayInfoNormal | UserDisplayInfoBanned;
-
-export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
 export type CodefunRoles = (typeof CODEFUN_ROLES)[number];
 
